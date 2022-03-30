@@ -1,46 +1,154 @@
-# Getting Started with Create React App
+# Development Guideline
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## How to read this guideline
 
-## Available Scripts
+-   Developers should do if encounter: SHOULD;
+-   Developers should not do if encounter: SHOULDN'T, NOT RECOMMENDED;
+-   This guideline has not finished yet and may change in the future.
 
-In the project directory, you can run:
+## Setup
 
-### `yarn start`
+After cloning:
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+-   SHOULD:
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+```
+    npm i
+    npm start
+```
 
-### `yarn test`
+After pulling:
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+-   SHOULD:
 
-### `yarn build`
+```
+    npm i
+```
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## IDE
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+### **Ideas**: your feeling, your comfort
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+You can use any IDE you like, but if you use Visual Studio Code, please consider the following things:
 
-### `yarn eject`
+-   Extensions:
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+    -   Pretier (for formating), with config (to avoid git tracking annoying changes):
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+    ```
+    print width: 100
+    tab width: 4
+    semi: true
+    bracket spacing: true
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+    ```
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+    -   Bracket Pair Colorizer (to protect your eyes)
+    -   ESLint
+    -   npm
+    -   npm Intellisense
+    -   Tailwind CSS Intellisense
 
-## Learn More
+## Folder structure
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+```
+--+ /app
+  |--- store.ts                     # store setup
+  |--- hooks.ts                     # utilities
+--+ /component                      # hooks, generic components, utils, etc
+  |--+ /commons                     # common comps, such as Button, Input, Modal, etc. (rarely change)
+  |--+ /icons                       # icons (rarely change)
+  |--+ /layouts                     # layouts (rarely change)
+  |--+ *.tsx                        # domain/objective components, such as Wallet forms, Articles, etc (often change)
+--+ /features                       # contains all "feature folders" (slices of state)
+  |--+ /accessibility               # quick access feature
+     |--- accessibilitySlice.ts     # quick access like toggle sidebar, universal search, etc.
+--+ /routes                         # Pages
+--+ App.tsx                         # The App component
+--+ index.ts                        # App entry
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+
+```
+
+## Git flow
+
+### **Ideas**:
+
+-   to reduce conflicts AMAP
+
+### **Actions**:
+
+When you're preparing for develop a new feature:
+
+-   SHOULD
+    -   create a new feature branch base on `develop` branch
+    -   when finish, create a pull/merge request
+-   NOT RECOMMENDED
+    -   work on any existing branches, especially `develop` branch
+
+When create a new **feature branches**:
+
+-   SHOULD:
+
+    -   if you don't use git-flow:
+
+    ```
+    git checkout develop
+    git checkout -b feature_branch
+    ```
+
+    -   if you use git-flow
+
+    ```
+    git flow feature start feature_branch
+    ...
+    git flow feature finish feature_branch
+    ```
+
+When you're working on your feature branch and **want to get code of another** feature branch:
+
+-   SHOULD:
+    -   rebase your branch to head of `develop` branch
+    ```
+    git rebase develop
+    ```
+-   NOT RECOMMENDED:
+    -   if the another feature branch has not finished yet, you should not rebase your current branch to the head of that branch. If you have to do so, please make sure that it's the last choice.
+
+## Conventions
+
+### Naming
+
+-   SHOULD:
+    -   add "`T`" prefix if your type is gonna be exported:
+    ```
+    export type TAppContext = {...}
+    ```
+    -   add "`I`" prefix if your interface is gonna be exported:
+    ```
+    export interface IWallet {...}
+    ```
+    -   add "`rf`" prefix if your variable is a `ref`:
+    ```
+    const rfIsUnmounted = useRef<boolean>(false);
+    ```
+    -   add "`glb`" prefix if your variable is global:
+    ```
+    let glbLanguage = "en";
+    ```
+    -   add "`b`" prefix if your variable is boolean, but not do it with function name:
+    ```
+    const [bActivated, setActivated] = useState<boolean>();
+    ```
+    -   add "`handle`" prefix to event handler function name:
+    ```
+    const handleOnModalSubmitBtnClicked();
+    ```
+
+### Linter
+
+You SHOULDN'T disable any linters in `/src` folders
+
+## To do
+
+-   Testing guideline (if needed)
