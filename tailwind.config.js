@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 /* eslint-disable @typescript-eslint/no-var-requires */
 /* eslint-disable quotes */
 const plugin = require("tailwindcss/plugin");
@@ -30,9 +31,11 @@ module.exports = {
                 icon: "24px",
                 "icon-sm": "1rem",
                 "icon-xs": "11px",
+                "input-sm": "2.25rem",
                 input: "2.5rem",
                 "input-md": "2.75rem",
                 "input-lg": "3rem",
+                "input-xl": "3.5rem",
                 sidebar: "18rem",
                 modal: "480px",
             },

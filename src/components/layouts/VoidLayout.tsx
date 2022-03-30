@@ -1,24 +1,12 @@
-import React, { useCallback } from "react";
+import React from "react";
 import cn from "classnames";
-import { Header } from "../commons/Header";
-import { Footer } from "../commons/Footer";
 
 type Props = React.BaseHTMLAttributes<HTMLDivElement> & {
     headerNode?: React.ReactNode;
     footerNode?: React.ReactNode;
 };
 
-export function DefaultLayout({ children, headerNode, footerNode }: Props): React.ReactElement {
-    const renderHeader = useCallback(() => {
-        if (headerNode) return headerNode;
-        return <Header />;
-    }, [headerNode]);
-
-    const renderFooter = useCallback(() => {
-        if (footerNode) return footerNode;
-        return <Footer />;
-    }, [footerNode]);
-
+export function VoidLayout({ children }: Props): React.ReactElement {
     return (
         <div
             className={cn(
@@ -28,7 +16,6 @@ export function DefaultLayout({ children, headerNode, footerNode }: Props): Reac
                 "bg-gradient-to-br from-purple-500 to-orange-500"
             )}
         >
-            {renderHeader()}
             <main
                 className={cn(
                     "relative grow py-0 pb-4 w-full",
@@ -37,7 +24,6 @@ export function DefaultLayout({ children, headerNode, footerNode }: Props): Reac
             >
                 {children}
             </main>
-            {renderFooter()}
         </div>
     );
 }

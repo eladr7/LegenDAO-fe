@@ -5,6 +5,7 @@ import { Provider } from "react-redux";
 import store from "./app/store";
 import Home from "./routes/Home";
 import About from "./routes/About";
+import UI from "./routes/UI";
 
 function App(): React.ReactElement {
     const rfIsUnmounted = useRef(false);
@@ -37,6 +38,7 @@ function App(): React.ReactElement {
                 <Routes>
                     <Route path="/" element={<Home />} />
                     <Route path="about" element={<About />} />
+                    <Route path="ui" element={<UI />} />
                 </Routes>
             </div>
         </AppContext.Provider>
