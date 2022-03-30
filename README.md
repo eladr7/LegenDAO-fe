@@ -40,7 +40,6 @@ You can use any IDE you like, but if you use Visual Studio Code, please consider
     tab width: 4
     semi: true
     bracket spacing: true
-
     ```
 
     -   Bracket Pair Colorizer (to protect your eyes)
@@ -142,7 +141,7 @@ When you're working on your feature branch and **want to get code of another** f
     ```
     -   add "`handle`" prefix to event handler function name:
     ```
-    const handleOnModalSubmitBtnClicked();
+    const handleOnModalSubmitBtnClicked = useCallback(...);
     ```
 
 ### Linter
