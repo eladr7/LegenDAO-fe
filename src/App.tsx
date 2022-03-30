@@ -1,4 +1,6 @@
-function App() {
+import React from "react";
+
+function App(): React.ReactElement {
     return (
         <div className="App">
             <header className="App-header">
