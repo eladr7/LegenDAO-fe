@@ -1,0 +1,16 @@
+{
+    "ignorePatterns": ["*.json"],
+    "rules": {
+        "semi": ["warn", "always"],
+        "quotes": ["warn", "double"],
+        "no-console": ["warn"],
+        "valid-typeof": ["error"]
+    },
+    "extends": [
+        "eslint:recommended",
+        "plugin:react/recommended",
+        "plugin:react-hooks/recommended",
+        "plugin:react/jsx-runtime",
+        "plugin:@typescript-eslint/recommended"
+    ]
+}
