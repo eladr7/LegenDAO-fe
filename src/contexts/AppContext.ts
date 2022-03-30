@@ -6,7 +6,13 @@ export type TAppContext = {
         successMessage?: string;
         errorMessage?: string;
     };
-    setBodyElement: React.Dispatch<React.SetStateAction<HTMLBodyElement | undefined>>;
+    setBodyElement?: React.Dispatch<React.SetStateAction<HTMLBodyElement | undefined>>;
     setSuccessMessage?: React.Dispatch<React.SetStateAction<string | undefined>>;
     setErrorMessage?: React.Dispatch<React.SetStateAction<string | undefined>>;
 };
+
+const AppContext: React.Context<TAppContext> = React.createContext<TAppContext>({
+    state: {},
+});
+
+export default AppContext;
