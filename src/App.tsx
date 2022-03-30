@@ -1,8 +1,10 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import AppContext, { TAppContext } from "./contexts/AppContext";
-import { Routes, Route, Link } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import { Provider } from "react-redux";
 import store from "./app/store";
+import Home from "./routes/Home";
+import About from "./routes/About";
 
 function App(): React.ReactElement {
     const rfIsUnmounted = useRef(false);
@@ -32,34 +34,12 @@ function App(): React.ReactElement {
     return (
         <AppContext.Provider value={appContextValue}>
             <div className="App">
-                <header className="App-header">
-                    <h1 className="text-xl">LEGEND-DAO</h1>
-                    <Routes>
-                        <Route path="/" element={<Home />} />
-                        <Route path="about" element={<About />} />
-                    </Routes>
-                </header>
+                <Routes>
+                    <Route path="/" element={<Home />} />
+                    <Route path="about" element={<About />} />
+                </Routes>
             </div>
         </AppContext.Provider>
-    );
-}
-
-function Home(): React.ReactElement {
-    return (
-        <div>
-            <h1>LEGEND-DAO#HOME</h1>
-            <header>
-                <nav>
-                    <Link to="/about">About</Link>
-                </nav>
-            </header>
-        </div>
-    );
-}
-
-function About(): React.ReactElement {
-    return (
-        <div>LEGEND-DAO#ABOUT</div>
     );
 }
 
