@@ -9,10 +9,11 @@ import { useAppSelector } from "../../app/hooks";
 type Props = React.BaseHTMLAttributes<HTMLDivElement> & {
     headerType?: THeaderType;
     headerNode?: React.ReactNode;
+    bFooterOn?: boolean;
     footerNode?: React.ReactNode;
 };
 
-export function DefaultLayout({ children, headerType, headerNode, footerNode }: Props): React.ReactElement {
+export function DefaultLayout({ children, bFooterOn, headerType, headerNode, footerNode }: Props): React.ReactElement {
     const accessibilityState = useAppSelector((state) => state.accessibility);
     const { state } = useContext(AppContext);
 
@@ -22,9 +23,10 @@ export function DefaultLayout({ children, headerType, headerNode, footerNode }: 
     }, [headerNode, headerType]);
 
     const renderFooter = useCallback(() => {
+        if (!bFooterOn) return null;
         if (footerNode) return footerNode;
         return <Footer />;
-    }, [footerNode]);
+    }, [bFooterOn, footerNode]);
 
     const renderSidebar = useCallback(() => {
         if (!state.bodyElement) return null;
@@ -35,7 +37,7 @@ export function DefaultLayout({ children, headerType, headerNode, footerNode }: 
     return (
         <div
             className={cn(
-                "relative mx-auto p-8 w-full max-w-screen-desktop-4 min-h-screen",
+                "relative mx-auto w-full max-w-screen-desktop-4 min-h-screen",
                 "flex flex-col justify-start items-stretch",
                 "font-body font-medium text-slate-700",
                 "bg-gradient-to-br from-indigo-900 to-slate-900"

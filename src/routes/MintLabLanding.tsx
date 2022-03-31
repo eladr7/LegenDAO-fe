@@ -3,8 +3,8 @@ import { DefaultLayout } from "../components/layouts/DefaultLayout";
 
 export function MintLabLanding(): React.ReactElement {
     return (
-        <DefaultLayout headerType="general">
-            
+        <DefaultLayout headerType="general" bFooterOn>
+
         </DefaultLayout>
     );
 }

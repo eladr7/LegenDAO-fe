@@ -28,9 +28,11 @@ module.exports = {
             },
             spacing: {
                 header: "4rem",
-                icon: "24px",
-                "icon-sm": "1rem",
+                footer: "12rem",
                 "icon-xs": "11px",
+                "icon-sm": "1rem",
+                icon: "24px",
+                "icon-lg": "2rem",
                 "input-sm": "2.25rem",
                 input: "2.5rem",
                 "input-md": "2.75rem",

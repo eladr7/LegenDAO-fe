@@ -52,6 +52,7 @@ export function Header({ type }: Props): React.ReactElement {
         return (
             <header
                 className={cn(
+                    "p-8",
                     "flex flex-row flex-nowrap justify-between items-center",
                     "text-white"
                 )}
@@ -88,6 +89,7 @@ export function Header({ type }: Props): React.ReactElement {
         return (
             <header
                 className={cn(
+                    "p-8",
                     "flex flex-row flex-nowrap justify-between items-center",
                     "text-white"
                 )}
@@ -118,6 +120,7 @@ export function Header({ type }: Props): React.ReactElement {
         return (
             <header
                 className={cn(
+                    "p-8",
                     "flex flex-row flex-nowrap justify-between items-center",
                     "text-white"
                 )}
