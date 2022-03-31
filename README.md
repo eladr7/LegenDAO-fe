@@ -4,6 +4,7 @@
 
 -   Developers should do if encounter: SHOULD;
 -   Developers should not do if encounter: SHOULDN'T, NOT RECOMMENDED;
+-   Developers have to do if encounter: HAVE TO;
 -   This guideline has not finished yet and may change in the future.
 
 ## Setup
@@ -104,6 +105,10 @@ When create a new **feature branches**:
     git flow feature finish feature_branch
     ```
 
+- HAVE TO:
+    - add "`#`" prefix before your feature branch name
+    - add "`v`" prefix before a release
+
 When you're working on your feature branch and **want to get code of another** feature branch:
 
 -   SHOULD:
@@ -143,6 +148,29 @@ When you're working on your feature branch and **want to get code of another** f
     ```
     const handleOnModalSubmitBtnClicked = useCallback(...);
     ```
+
+### Creating a new component
+
+- HAVE TO:
+    - create a brand new file (.tsx) in `/components`, name it clearly
+    - if the component has it's own props, declare & define the component Props type, and do NOT export it
+    ```
+    type Props = React.BaseHTMLAttributes<HTMLDivElement> & {...};
+    ```
+- SHOULD:
+    - use `useCallback` hook for component functions
+    - use `useMemo` hook for component variable
+
+### Creating a new feature/slice of state (Redux state)
+- HAVE TO:
+    - create a brand new **folder** in `/features`, name it by a noun, and short;
+    - create a brand new file (.ts) in that new folder, name it by concating the folder name and "`Slice`" suffix;
+
+### Creating a new action of a slice
+- HAVE TO:
+    - create a brand new file (.ts) in `/features/yourSlice/`, name it by a verb, and short;
+    - export the action's domains and import it into your slice.
+
 
 ### Linter
 
