@@ -130,7 +130,7 @@ export function Header({ type }: Props): React.ReactElement {
                 </div>
             </header>
         );
-    }, []);
+    }, [renderActions, renderMenuBtn]);
 
     const renderContent = useCallback((): React.ReactElement => {
         switch (type) {
