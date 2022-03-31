@@ -2,13 +2,13 @@ import React, { useCallback } from "react";
 import cn from "classnames";
 
 interface IButtonAttrs extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-    refV?: React.LegacyRef<HTMLButtonElement>;
+    ref?: React.LegacyRef<HTMLButtonElement>;
     size?: "sm" | "md" | "lg" | "xl";
     bTransparent?: boolean;
 }
 
 export default function Button({
-    refV,
+    ref,
     size,
     bTransparent,
     children,
@@ -33,7 +33,7 @@ export default function Button({
 
     return (
         <button
-            ref={refV}
+            ref={ref}
             className={cn(
                 getSizeClassnames(),
                 "ml-4 first:ml-0 px-4",

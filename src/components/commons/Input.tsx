@@ -2,19 +2,19 @@ import React from "react";
 import cn from "classnames";
 
 interface IInputAttrs extends React.InputHTMLAttributes<HTMLInputElement> {
-    refV?: React.LegacyRef<HTMLInputElement>;
+    ref?: React.LegacyRef<HTMLInputElement>;
     bTransparent?: boolean;
 }
 
 export default function Input({
-    refV,
+    ref,
     bTransparent,
     className,
     ...props
 }: IInputAttrs): React.ReactElement {
     return (
         <input
-            ref={refV}
+            ref={ref}
             className={cn(
                 "h-input",
                 "disabled:opacity-50",

@@ -40,7 +40,10 @@ export default function UI(): React.ReactElement {
             </div>
             {bModalOn && state.bodyElement && (
                 <div className="mb-8 last:mb-0">
-                    <ModalPopup bodyElement={state.bodyElement} onCancelClick={handleModalOnOuterClicked}>
+                    <ModalPopup
+                        bodyElement={state.bodyElement}
+                        onCancelClick={handleModalOnOuterClicked}
+                    >
                         <div className="text-white">MODAL</div>
                     </ModalPopup>
                 </div>

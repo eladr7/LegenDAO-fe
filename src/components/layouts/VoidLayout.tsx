@@ -1,5 +1,8 @@
-import React from "react";
+import React, { useCallback, useContext } from "react";
 import cn from "classnames";
+import { useAppSelector } from "../../app/hooks";
+import Sidebar from "../commons/Sidebar";
+import AppContext from "../../contexts/AppContext";
 
 type Props = React.BaseHTMLAttributes<HTMLDivElement> & {
     headerNode?: React.ReactNode;
@@ -7,6 +10,15 @@ type Props = React.BaseHTMLAttributes<HTMLDivElement> & {
 };
 
 export function VoidLayout({ children }: Props): React.ReactElement {
+    const accessibilityState = useAppSelector((state) => state.accessibility);
+    const { state } = useContext(AppContext);
+
+    const renderSidebar = useCallback(() => {
+        if (!state.bodyElement) return null;
+        if (!accessibilityState.bSidebarOn) return;
+        return <Sidebar bodyElement={state.bodyElement} />;
+    }, [accessibilityState.bSidebarOn, state.bodyElement]);
+
     return (
         <div
             className={cn(
@@ -24,6 +36,7 @@ export function VoidLayout({ children }: Props): React.ReactElement {
             >
                 {children}
             </main>
+            {renderSidebar()}
         </div>
     );
 }

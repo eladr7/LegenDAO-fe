@@ -7,12 +7,20 @@ import DiscordIcon from "../icons/DiscordIcon";
 import TwitterIcon from "../icons/TwitterIcon";
 import Button from "./Button";
 import WalletIcon from "../icons/WalletIcon";
+import { useAppDispatch } from "../../app/hooks";
+import { toggleSidebar } from "../../features/accessibility/accessibilitySlice";
 
 type Props = {
     type?: "intro" | "general" | "collection";
 };
 
 export function Header({ type }: Props): React.ReactElement {
+    const dispatch = useAppDispatch();
+
+    const handleOnMenuBtnClicked = useCallback(() => {
+        dispatch(toggleSidebar());
+    }, [dispatch]);
+
     const renderActions = useCallback(() => {
         return (
             <div className="flex flex-row flex-nowrap justify-end items-center">
@@ -28,11 +36,14 @@ export function Header({ type }: Props): React.ReactElement {
 
     const renderMenuBtn = useCallback(() => {
         return (
-            <div className="w-icon h-icon grow-0 shrink-0 mr-8 last:mr-0">
+            <div
+                className="w-icon h-icon grow-0 shrink-0 mr-8 last:mr-0 cursor-pointer"
+                onClick={handleOnMenuBtnClicked}
+            >
                 <MenuIcon />
             </div>
         );
-    }, []);
+    }, [handleOnMenuBtnClicked]);
 
     const renderIntroHeader = useCallback(() => {
         return (
@@ -48,7 +59,7 @@ export function Header({ type }: Props): React.ReactElement {
                 </div>
                 <div className="flex flex-row flex-nowrap justify-end items-center">
                     <nav className={cn("flex flex-row flex-nowrap mr-12 last:mr-0")}>
-                        <Link className="mr-8 last:mr-0" to="about">
+                        <Link className="mr-8 last:mr-0" to="/about">
                             About
                         </Link>
                         <Link className="mr-8 last:mr-0" to="/">
@@ -115,9 +126,15 @@ export function Header({ type }: Props): React.ReactElement {
                 <div className="ml-8 first:ml-0 grow flex flex-row flex-nowrap justify-between items-center">
                     {renderActions()}
                     <div className="ml-8 first:ml-0 flex flex-row flex-nowrap">
-                        <Button size="sm" bTransparent>Get $LGND</Button>
-                        <Button size="sm" bTransparent>Collections</Button>
-                        <Button size="sm" bTransparent>Create</Button>
+                        <Button size="sm" bTransparent>
+                            Get $LGND
+                        </Button>
+                        <Button size="sm" bTransparent>
+                            Collections
+                        </Button>
+                        <Button size="sm" bTransparent>
+                            Create
+                        </Button>
                         <Button size="sm" bTransparent>
                             <div className="flex flex-row flex-nowrap justify-center items-center">
                                 <div className="w-icon h-icon grow-0 shrink-0 mr-2 last:mr-0">

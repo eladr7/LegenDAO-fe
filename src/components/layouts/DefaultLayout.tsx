@@ -1,7 +1,10 @@
-import React, { useCallback } from "react";
+import React, { useCallback, useContext } from "react";
 import cn from "classnames";
 import { Header } from "../commons/Header";
 import { Footer } from "../commons/Footer";
+import Sidebar from "../commons/Sidebar";
+import AppContext from "../../contexts/AppContext";
+import { useAppSelector } from "../../app/hooks";
 
 type Props = React.BaseHTMLAttributes<HTMLDivElement> & {
     headerNode?: React.ReactNode;
@@ -9,6 +12,9 @@ type Props = React.BaseHTMLAttributes<HTMLDivElement> & {
 };
 
 export function DefaultLayout({ children, headerNode, footerNode }: Props): React.ReactElement {
+    const accessibilityState = useAppSelector((state) => state.accessibility);
+    const { state } = useContext(AppContext);
+
     const renderHeader = useCallback(() => {
         if (headerNode) return headerNode;
         return <Header />;
@@ -18,6 +24,12 @@ export function DefaultLayout({ children, headerNode, footerNode }: Props): Reac
         if (footerNode) return footerNode;
         return <Footer />;
     }, [footerNode]);
+
+    const renderSidebar = useCallback(() => {
+        if (!state.bodyElement) return null;
+        if (!accessibilityState.bSidebarOn) return;
+        return <Sidebar bodyElement={state.bodyElement} />;
+    }, [accessibilityState.bSidebarOn, state.bodyElement]);
 
     return (
         <div
@@ -38,6 +50,7 @@ export function DefaultLayout({ children, headerNode, footerNode }: Props): Reac
                 {children}
             </main>
             {renderFooter()}
+            {renderSidebar()}
         </div>
     );
 }

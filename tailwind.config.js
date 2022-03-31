@@ -36,7 +36,7 @@ module.exports = {
                 "input-md": "2.75rem",
                 "input-lg": "3rem",
                 "input-xl": "3.5rem",
-                sidebar: "18rem",
+                sidebar: "22.5rem",
                 modal: "480px",
             },
         },
