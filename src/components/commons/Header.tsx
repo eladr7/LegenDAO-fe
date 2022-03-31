@@ -144,7 +144,7 @@ export function Header({ type }: Props): React.ReactElement {
                 return renderCollectionHeader();
 
             default:
-                return renderCollectionHeader();
+                return renderIntroHeader();
         }
     }, [renderCollectionHeader, renderGeneralHeader, renderIntroHeader, type]);
 
