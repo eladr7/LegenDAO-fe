@@ -1,24 +1,25 @@
 import React, { useCallback, useContext } from "react";
 import cn from "classnames";
-import { Header } from "../commons/Header";
+import { Header, THeaderType } from "../commons/Header";
 import { Footer } from "../commons/Footer";
 import Sidebar from "../commons/Sidebar";
 import AppContext from "../../contexts/AppContext";
 import { useAppSelector } from "../../app/hooks";
 
 type Props = React.BaseHTMLAttributes<HTMLDivElement> & {
+    headerType?: THeaderType;
     headerNode?: React.ReactNode;
     footerNode?: React.ReactNode;
 };
 
-export function DefaultLayout({ children, headerNode, footerNode }: Props): React.ReactElement {
+export function DefaultLayout({ children, headerType, headerNode, footerNode }: Props): React.ReactElement {
     const accessibilityState = useAppSelector((state) => state.accessibility);
     const { state } = useContext(AppContext);
 
     const renderHeader = useCallback(() => {
         if (headerNode) return headerNode;
-        return <Header />;
-    }, [headerNode]);
+        return <Header type={headerType} />;
+    }, [headerNode, headerType]);
 
     const renderFooter = useCallback(() => {
         if (footerNode) return footerNode;
@@ -37,7 +38,7 @@ export function DefaultLayout({ children, headerNode, footerNode }: Props): Reac
                 "relative mx-auto p-8 w-full max-w-screen-desktop-4 min-h-screen",
                 "flex flex-col justify-start items-stretch",
                 "font-body font-medium text-slate-700",
-                "bg-gradient-to-br from-purple-500 to-orange-500"
+                "bg-gradient-to-br from-indigo-900 to-slate-900"
             )}
         >
             {renderHeader()}
