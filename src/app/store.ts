@@ -1,9 +1,11 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { combineReducers } from "redux";
 import accessibilityReducer from "../features/accessibility/accessibilitySlice";
+import walletReducer from "../features/wallet/walletSlice";
 
 const rootReducer = combineReducers({
     accessibility: accessibilityReducer,
+    wallet: walletReducer,
 });
 
 const store = configureStore({

@@ -21,7 +21,7 @@ export default function Input({
                 "grow shrink",
                 bTransparent
                     ? "px-0 bg-transparent border-b border-b-slate-200 rounded-none outline-none"
-                    : "px-4 bg-slate-100 rounded-xl",
+                    : "px-4 bg-slate-100 rounded-lg",
                 className
             )}
             {...props}

@@ -7,8 +7,10 @@ import DiscordIcon from "../icons/DiscordIcon";
 import TwitterIcon from "../icons/TwitterIcon";
 import Button from "./Button";
 import WalletIcon from "../icons/WalletIcon";
-import { useAppDispatch } from "../../app/hooks";
-import { toggleSidebar } from "../../features/accessibility/accessibilitySlice";
+import { useAppDispatch, useAppSelector } from "../../app/hooks";
+import { toggleBalanceMenu, toggleSidebar } from "../../features/accessibility/accessibilitySlice";
+import Wallet from "../../classes/Wallet";
+import { setPrimaryAddress } from "../../features/wallet/walletSlice";
 
 const HEADER_TYPES = ["intro", "general", "collection"] as const;
 export type THeaderType = typeof HEADER_TYPES[number];
@@ -18,10 +20,24 @@ type Props = {
 };
 
 export function Header({ type }: Props): React.ReactElement {
+    const walletState = useAppSelector((state) => state.wallet);
     const dispatch = useAppDispatch();
+
+    const isWalletConnected = useCallback(() => {
+        const wallet = new Wallet(walletState.primary);
+        return wallet.isConnected();
+    }, [walletState.primary]);
 
     const handleOnMenuBtnClicked = useCallback(() => {
         dispatch(toggleSidebar());
+    }, [dispatch]);
+
+    const handleOnWalletBtnClicked = useCallback(() => {
+        dispatch(toggleBalanceMenu());
+    }, [dispatch]);
+
+    const handleOnConnectWalletBtnClicked = useCallback(() => {
+        dispatch(setPrimaryAddress("0x_wallet_address"));
     }, [dispatch]);
 
     const renderActions = useCallback(() => {
@@ -47,6 +63,36 @@ export function Header({ type }: Props): React.ReactElement {
             </div>
         );
     }, [handleOnMenuBtnClicked]);
+
+    const renderWalletBtn = useCallback(() => {
+        if (isWalletConnected()) {
+            return (
+                <Button size="sm" bTransparent onClick={handleOnWalletBtnClicked}>
+                    <div className="flex flex-row flex-nowrap justify-center items-center">
+                        <div className="w-icon h-icon grow-0 shrink-0 mr-2 last:mr-0">
+                            <WalletIcon />
+                        </div>
+                        <span>{walletState.primary.address}</span>
+                    </div>
+                </Button>
+            );
+        }
+        return (
+            <Button size="sm" bTransparent onClick={handleOnConnectWalletBtnClicked}>
+                <div className="flex flex-row flex-nowrap justify-center items-center">
+                    <div className="w-icon h-icon grow-0 shrink-0 mr-2 last:mr-0">
+                        <WalletIcon />
+                    </div>
+                    <span>Connect Wallet</span>
+                </div>
+            </Button>
+        );
+    }, [
+        handleOnConnectWalletBtnClicked,
+        handleOnWalletBtnClicked,
+        isWalletConnected,
+        walletState.primary.address,
+    ]);
 
     const renderIntroHeader = useCallback(() => {
         return (
@@ -102,19 +148,12 @@ export function Header({ type }: Props): React.ReactElement {
                     {renderActions()}
                     <div className="ml-8 first:ml-0 flex flex-row flex-nowrap">
                         <Button size="sm">Get $LGND</Button>
-                        <Button size="sm" bTransparent>
-                            <div className="flex flex-row flex-nowrap justify-center items-center">
-                                <div className="w-icon h-icon grow-0 shrink-0 mr-2 last:mr-0">
-                                    <WalletIcon />
-                                </div>
-                                <span>Connect Wallet</span>
-                            </div>
-                        </Button>
+                        {renderWalletBtn()}
                     </div>
                 </div>
             </header>
         );
-    }, [renderActions, renderMenuBtn]);
+    }, [renderActions, renderMenuBtn, renderWalletBtn]);
 
     const renderCollectionHeader = useCallback((): React.ReactElement => {
         return (
@@ -141,19 +180,12 @@ export function Header({ type }: Props): React.ReactElement {
                         <Button size="sm" bTransparent>
                             Create
                         </Button>
-                        <Button size="sm" bTransparent>
-                            <div className="flex flex-row flex-nowrap justify-center items-center">
-                                <div className="w-icon h-icon grow-0 shrink-0 mr-2 last:mr-0">
-                                    <WalletIcon />
-                                </div>
-                                <span>wallet_address</span>
-                            </div>
-                        </Button>
+                        {renderWalletBtn()}
                     </div>
                 </div>
             </header>
         );
-    }, [renderActions, renderMenuBtn]);
+    }, [renderActions, renderMenuBtn, renderWalletBtn]);
 
     const renderContent = useCallback((): React.ReactElement => {
         switch (type) {
