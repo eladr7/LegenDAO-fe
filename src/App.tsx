@@ -7,6 +7,7 @@ import Home from "./routes/Home";
 import About from "./routes/About";
 import UI from "./routes/UI";
 import { Asset } from "./routes/Asset";
+import { MintLabLanding } from "./routes/MintLabLanding";
 
 function App(): React.ReactElement {
     const rfIsUnmounted = useRef(false);
@@ -38,9 +39,10 @@ function App(): React.ReactElement {
             <div className="App">
                 <Routes>
                     <Route path="/" element={<Home />} />
-                    <Route path="about" element={<About />} />
-                    <Route path="ui" element={<UI />} />
-                    <Route path="asset" element={<Asset />} />
+                    <Route path="/about" element={<About />} />
+                    <Route path="/ui" element={<UI />} />
+                    <Route path="/asset" element={<Asset />} />
+                    <Route path="/mint-lab" element={<MintLabLanding />} />
                 </Routes>
             </div>
         </AppContext.Provider>
