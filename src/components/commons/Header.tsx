@@ -10,8 +10,11 @@ import WalletIcon from "../icons/WalletIcon";
 import { useAppDispatch } from "../../app/hooks";
 import { toggleSidebar } from "../../features/accessibility/accessibilitySlice";
 
+const HEADER_TYPES = ["intro", "general", "collection"] as const;
+export type THeaderType = typeof HEADER_TYPES[number];
+
 type Props = {
-    type?: "intro" | "general" | "collection";
+    type?: THeaderType;
 };
 
 export function Header({ type }: Props): React.ReactElement {
