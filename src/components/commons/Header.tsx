@@ -67,7 +67,7 @@ export function Header({ type }: Props): React.ReactElement {
     const renderWalletBtn = useCallback(() => {
         if (isWalletConnected()) {
             return (
-                <Button size="sm" bTransparent onClick={handleOnWalletBtnClicked}>
+                <Button bigness="sm" bTransparent onClick={handleOnWalletBtnClicked}>
                     <div className="flex flex-row flex-nowrap justify-center items-center">
                         <div className="w-icon h-icon grow-0 shrink-0 mr-2 last:mr-0">
                             <WalletIcon />
@@ -78,7 +78,7 @@ export function Header({ type }: Props): React.ReactElement {
             );
         }
         return (
-            <Button size="sm" bTransparent onClick={handleOnConnectWalletBtnClicked}>
+            <Button bigness="sm" bTransparent onClick={handleOnConnectWalletBtnClicked}>
                 <div className="flex flex-row flex-nowrap justify-center items-center">
                     <div className="w-icon h-icon grow-0 shrink-0 mr-2 last:mr-0">
                         <WalletIcon />
@@ -147,7 +147,7 @@ export function Header({ type }: Props): React.ReactElement {
                 <div className="flex flex-row flex-nowrap justify-end items-center">
                     {renderActions()}
                     <div className="ml-8 first:ml-0 flex flex-row flex-nowrap">
-                        <Button size="sm">Get $LGND</Button>
+                        <Button bigness="sm">Get $LGND</Button>
                         {renderWalletBtn()}
                     </div>
                 </div>
@@ -171,13 +171,13 @@ export function Header({ type }: Props): React.ReactElement {
                 <div className="ml-8 first:ml-0 grow flex flex-row flex-nowrap justify-between items-center">
                     {renderActions()}
                     <div className="ml-8 first:ml-0 flex flex-row flex-nowrap">
-                        <Button size="sm" bTransparent>
+                        <Button bigness="sm" bTransparent>
                             Get $LGND
                         </Button>
-                        <Button size="sm" bTransparent>
+                        <Button bigness="sm" bTransparent>
                             Collections
                         </Button>
-                        <Button size="sm" bTransparent>
+                        <Button bigness="sm" bTransparent>
                             Create
                         </Button>
                         {renderWalletBtn()}

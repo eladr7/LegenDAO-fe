@@ -1,27 +1,43 @@
-import React from "react";
+import React, { useCallback } from "react";
 import cn from "classnames";
 
-interface IInputAttrs extends React.InputHTMLAttributes<HTMLInputElement> {
+interface IProps extends React.InputHTMLAttributes<HTMLInputElement> {
     ref?: React.LegacyRef<HTMLInputElement>;
+    bigness?: "sm" | "md" | "lg" | "xl";
     bTransparent?: boolean;
 }
 
 export default function Input({
     ref,
+    bigness,
     bTransparent,
     className,
     ...props
-}: IInputAttrs): React.ReactElement {
+}: IProps): React.ReactElement {
+    const getBignessClassNames = useCallback(() => {
+        switch (bigness) {
+            case "sm":
+                return "h-input-sm rounded-lg";
+            case "md":
+                return "h-input-md rounded-lg";
+            case "lg":
+                return "h-input-lg rounded-lg";
+            case "xl":
+                return "h-input-xl rounded-lg";
+
+            default:
+                return "h-input rounded-lg";
+        }
+    }, [bigness]);
+
     return (
         <input
             ref={ref}
             className={cn(
-                "h-input",
+                getBignessClassNames(),
                 "disabled:opacity-50",
-                "grow shrink",
-                bTransparent
-                    ? "px-0 bg-transparent border-b border-b-slate-200 rounded-none outline-none"
-                    : "px-4 bg-slate-100 rounded-lg",
+                "grow shrink px-4",
+                bTransparent ? "bg-slate-900/25 text-white/90" : "bg-slate-900 text-white",
                 className
             )}
             {...props}

@@ -19,7 +19,11 @@ export default function Modal({
                       <div className="w-full h-full fixed top-0 left-0 z-50 flex flex-row items-center justify-center select-none overflow-visible">
                           <div
                               onClick={onOuterClick}
-                              className="absolute top-0 left-0 w-full h-[200vh] select-none cursor-pointer backdrop-filter backdrop-blur-sm bg-slate-900/50"
+                              className={cn(
+                                  "absolute top-0 left-0 w-full h-[200vh]",
+                                  "select-none cursor-pointer",
+                                  "backdrop-filter backdrop-blur-sm bg-slate-900/50"
+                              )}
                           ></div>
                           <div
                               className={cn(

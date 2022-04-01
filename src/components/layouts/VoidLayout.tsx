@@ -24,8 +24,8 @@ export function VoidLayout({ children }: Props): React.ReactElement {
             className={cn(
                 "relative mx-auto p-8 w-full max-w-screen-desktop-4 min-h-screen",
                 "flex flex-col justify-start items-stretch",
-                "font-body font-medium text-slate-700",
-                "bg-gradient-to-br from-purple-500 to-orange-500"
+                "font-body text-slate-700",
+                "bg-gradient-to-br from-indigo-900 to-slate-900"
             )}
         >
             <main
