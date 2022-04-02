@@ -20,7 +20,7 @@ export default function Sidebar({ bodyElement }: Props): React.ReactElement {
     return ReactDOM.createPortal(
         <div
             className={cn(
-                "fixed top-0 left-0 py-8",
+                "fixed top-0 left-0 py-8 z-10",
                 "w-sidebar min-h-screen",
                 "flex flex-col flex-nowrap justify-between items-stretch",
                 "text-white bg-slate-900"

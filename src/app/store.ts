@@ -2,10 +2,12 @@ import { configureStore } from "@reduxjs/toolkit";
 import { combineReducers } from "redux";
 import accessibilityReducer from "../features/accessibility/accessibilitySlice";
 import walletReducer from "../features/wallet/walletSlice";
+import airdropReducer from "../features/airdrop/airdropSlice";
 
 const rootReducer = combineReducers({
     accessibility: accessibilityReducer,
     wallet: walletReducer,
+    airdrop: airdropReducer,
 });
 
 const store = configureStore({

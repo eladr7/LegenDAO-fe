@@ -1,12 +1,15 @@
 import React, { useCallback, useContext, useState } from "react";
+import AirDropStatusPanel from "../components/AirDropStatusPanel";
 import BalancesPanel from "../components/BalancesPanel";
 import Button from "../components/commons/Button";
 import { Header } from "../components/commons/Header";
 import Input from "../components/commons/Input";
-import ModalPopup from "../components/commons/ModalPopup";
+import Modal from "../components/commons/Modal";
 import Panel from "../components/commons/Panel";
+import CreationFormPanel from "../components/CreationFormPanel";
 import DepositPanel from "../components/DepositPanel";
 import { VoidLayout } from "../components/layouts/VoidLayout";
+import StakeFormPanel from "../components/StakeFormPanel";
 import WithdrawPanel from "../components/WithdrawPanel";
 import AppContext from "../contexts/AppContext";
 
@@ -14,7 +17,6 @@ export default function UI(): React.ReactElement {
     const { state } = useContext(AppContext);
     const [bModalOn, setModalOn] = useState<boolean>(false);
     const [bWithdrawPanelOn, setWithdrawPanelOn] = useState<boolean>(true);
-    const [bBalancesPanelOn, setBalancesPanelOn] = useState<boolean>(true);
 
     const handleOnShowModalBtnClicked = useCallback(() => {
         setModalOn((pre: boolean) => !pre);
@@ -26,10 +28,6 @@ export default function UI(): React.ReactElement {
 
     const handleOnWithdrawPanelCloseBtnClicked = useCallback(() => {
         setWithdrawPanelOn(false);
-    }, []);
-
-    const handleOnBalancesPanelCloseBtnClicked = useCallback(() => {
-        setBalancesPanelOn(false);
     }, []);
 
     return (
@@ -54,14 +52,9 @@ export default function UI(): React.ReactElement {
                 <Button onClick={handleOnShowModalBtnClicked}>Show Modal</Button>
             </div>
             {bModalOn && state.bodyElement && (
-                <div className="mb-8 last:mb-0">
-                    <ModalPopup
-                        bodyElement={state.bodyElement}
-                        onCancelClick={handleModalOnOuterClicked}
-                    >
-                        <div className="text-white">MODAL</div>
-                    </ModalPopup>
-                </div>
+                <Modal bodyElement={state.bodyElement} onOuterClick={handleModalOnOuterClicked}>
+                    <DepositPanel />
+                </Modal>
             )}
             <div className="mb-8 last:mb-0 flex flex-row flex-nowrap items-end">
                 <Input className="ml-4 first:ml-0" bigness="sm" placeholder="Small input" />
@@ -91,11 +84,21 @@ export default function UI(): React.ReactElement {
                 <DepositPanel />
             </div>
 
-            {bBalancesPanelOn && (
-                <div className="mb-8 last:mb-0 flex">
-                    <BalancesPanel />
-                </div>
-            )}
+            <div className="mb-8 last:mb-0 flex">
+                <BalancesPanel />
+            </div>
+
+            <div className="mb-8 last:mb-0 flex">
+                <CreationFormPanel />
+            </div>
+
+            <div className="mb-8 last:mb-0 flex">
+                <StakeFormPanel />
+            </div>
+
+            <div className="mb-8 last:mb-0 flex">
+                <AirDropStatusPanel />
+            </div>
         </VoidLayout>
     );
 }

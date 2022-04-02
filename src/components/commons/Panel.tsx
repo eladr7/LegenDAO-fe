@@ -3,29 +3,10 @@ import cn from "classnames";
 import CloseIcon from "../icons/CloseIcon";
 
 type Props = React.BaseHTMLAttributes<HTMLDivElement> & {
-    borderWith?: number;
-    borderRadius?: number;
     onCloseBtnClicked?: React.MouseEventHandler<HTMLElement>;
 };
 
-export default function Panel({
-    borderRadius = 14,
-    borderWith = 1,
-    onCloseBtnClicked,
-    children,
-}: Props): React.ReactElement {
-    const calcClampedBorderWith = useCallback(() => {
-        return Math.min(2, borderWith);
-    }, [borderWith]);
-
-    const calcOuterBorderRadius = useCallback(() => {
-        return Math.max(10, borderRadius);
-    }, [borderRadius]);
-
-    const calcInnerBorderRarius = useCallback(() => {
-        return calcOuterBorderRadius() - calcClampedBorderWith();
-    }, [calcClampedBorderWith, calcOuterBorderRadius]);
-
+export default function Panel({ onCloseBtnClicked, children }: Props): React.ReactElement {
     const renderCloseBtn = useCallback(() => {
         if (!onCloseBtnClicked) return null;
         return (
@@ -41,7 +22,7 @@ export default function Panel({
         <div className="relative p-8 z-10">
             <div
                 className={cn(
-                    `p-[${calcClampedBorderWith()}px] rounded-[${calcOuterBorderRadius()}px]`,
+                    "p-[2px] rounded-xl",
                     "absolute top-0 left-0 bottom-0 right-0 -z-10",
                     "bg-gradient-to-br from-white/25 to-violet-900/75",
                     "flex flex-col flex-none items-stretch"
@@ -50,8 +31,8 @@ export default function Panel({
                 <div
                     className={cn(
                         "grow",
-                        "bg-gradient-to-br from-violet-600/50 via-violet-700/25 to-violet-700/25",
-                        `rounded-[${calcInnerBorderRarius()}px]`,
+                        "bg-gradient-to-br from-violet-900/75 via-violet-700/25 to-violet-700/25",
+                        "rounded-xl",
                         "backdrop-filter backdrop-blur-sm"
                     )}
                 ></div>

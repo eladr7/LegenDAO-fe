@@ -1,5 +1,4 @@
 import React from "react";
-import cn from "classnames";
 import imgYetiHead01 from "../../assets/images/yeti-head-01.png";
 import DiscordIcon from "../icons/DiscordIcon";
 import TwitterIcon from "../icons/TwitterIcon";
