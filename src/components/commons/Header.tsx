@@ -11,6 +11,7 @@ import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { toggleBalanceMenu, toggleSidebar } from "../../features/accessibility/accessibilitySlice";
 import Wallet from "../../classes/Wallet";
 import { setPrimaryAddress } from "../../features/wallet/walletSlice";
+import BalancesPanel from "../BalancesPanel";
 
 const HEADER_TYPES = ["intro", "general", "collection"] as const;
 export type THeaderType = typeof HEADER_TYPES[number];
@@ -21,6 +22,7 @@ type Props = {
 
 export function Header({ type }: Props): React.ReactElement {
     const walletState = useAppSelector((state) => state.wallet);
+    const accessibilityState = useAppSelector((state) => state.accessibility);
     const dispatch = useAppDispatch();
 
     const isWalletConnected = useCallback(() => {
@@ -67,10 +69,22 @@ export function Header({ type }: Props): React.ReactElement {
     const renderWalletBtn = useCallback(() => {
         if (isWalletConnected()) {
             return (
-                <Button bigness="sm" bTransparent onClick={handleOnWalletBtnClicked}>
+                <Button
+                    bigness="sm"
+                    bTransparent
+                    onClick={handleOnWalletBtnClicked}
+                    bActivated={accessibilityState.bBalanceMenuOn}
+                >
                     <div className="flex flex-row flex-nowrap justify-center items-center">
                         <div className="w-icon h-icon grow-0 shrink-0 mr-2 last:mr-0">
-                            <WalletIcon />
+                            <WalletIcon
+                                className={cn(
+                                    accessibilityState.bBalanceMenuOn
+                                        ? "fill-purple-700"
+                                        : "fill-white",
+                                    "group-hover:fill-purple-700 transition-[fill]"
+                                )}
+                            />
                         </div>
                         <span>{walletState.primary.address}</span>
                     </div>
@@ -81,13 +95,14 @@ export function Header({ type }: Props): React.ReactElement {
             <Button bigness="sm" bTransparent onClick={handleOnConnectWalletBtnClicked}>
                 <div className="flex flex-row flex-nowrap justify-center items-center">
                     <div className="w-icon h-icon grow-0 shrink-0 mr-2 last:mr-0">
-                        <WalletIcon />
+                        <WalletIcon className="fill-white group-hover:fill-purple-700 transition-[fill]" />
                     </div>
                     <span>Connect Wallet</span>
                 </div>
             </Button>
         );
     }, [
+        accessibilityState.bBalanceMenuOn,
         handleOnConnectWalletBtnClicked,
         handleOnWalletBtnClicked,
         isWalletConnected,
@@ -98,7 +113,7 @@ export function Header({ type }: Props): React.ReactElement {
         return (
             <header
                 className={cn(
-                    "p-8",
+                    "absolute top-0 left-0 right-0 p-8 z-50",
                     "flex flex-row flex-nowrap justify-between items-center",
                     "text-white"
                 )}
@@ -135,7 +150,7 @@ export function Header({ type }: Props): React.ReactElement {
         return (
             <header
                 className={cn(
-                    "p-8",
+                    "absolute top-0 left-0 right-0 p-8 z-50",
                     "flex flex-row flex-nowrap justify-between items-center",
                     "text-white"
                 )}
@@ -148,18 +163,25 @@ export function Header({ type }: Props): React.ReactElement {
                     {renderActions()}
                     <div className="ml-8 first:ml-0 flex flex-row flex-nowrap">
                         <Button bigness="sm">Get $LGND</Button>
-                        {renderWalletBtn()}
+                        <div className="relative ml-4 first:ml-0">
+                            {renderWalletBtn()}
+                            {accessibilityState.bBalanceMenuOn && (
+                                <div className="absolute top-input-lg right-0">
+                                    <BalancesPanel />
+                                </div>
+                            )}
+                        </div>
                     </div>
                 </div>
             </header>
         );
-    }, [renderActions, renderMenuBtn, renderWalletBtn]);
+    }, [accessibilityState.bBalanceMenuOn, renderActions, renderMenuBtn, renderWalletBtn]);
 
     const renderCollectionHeader = useCallback((): React.ReactElement => {
         return (
             <header
                 className={cn(
-                    "p-8",
+                    "absolute top-0 left-0 right-0 p-8 z-50",
                     "flex flex-row flex-nowrap justify-between items-center",
                     "text-white"
                 )}

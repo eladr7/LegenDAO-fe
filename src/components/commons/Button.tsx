@@ -34,7 +34,7 @@ export default function Button({
     }, [bigness]);
 
     const getTransparentClassNames = useCallback(() => {
-        if (bActivated) return "bg-white text-purple-700";
+        if (bActivated) return "bg-white text-purple-700 border border-transparent";
         return ["bg-transparent border border-white", "hover:bg-white/80 hover:text-purple-700", "active:bg-white active:text-purple-700"];
     }, [bActivated]);
 
@@ -43,7 +43,7 @@ export default function Button({
             ref={ref}
             className={cn(
                 getBignessClassNames(),
-                "ml-4 first:ml-0 px-4",
+                "group ml-4 first:ml-0 px-4",
                 "flex flex-row flex-nowrap justify-center items-center shrink-0 grow-0",
                 "text-white whitespace-nowrap select-none transition-colors",
                 !bTransparent

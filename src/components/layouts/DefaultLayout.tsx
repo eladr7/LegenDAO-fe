@@ -13,7 +13,13 @@ type Props = React.BaseHTMLAttributes<HTMLDivElement> & {
     footerNode?: React.ReactNode;
 };
 
-export function DefaultLayout({ children, bFooterOn, headerType, headerNode, footerNode }: Props): React.ReactElement {
+export function DefaultLayout({
+    children,
+    bFooterOn,
+    headerType,
+    headerNode,
+    footerNode,
+}: Props): React.ReactElement {
     const accessibilityState = useAppSelector((state) => state.accessibility);
     const { state } = useContext(AppContext);
 
@@ -46,7 +52,7 @@ export function DefaultLayout({ children, bFooterOn, headerType, headerNode, foo
             {renderHeader()}
             <main
                 className={cn(
-                    "relative grow py-0 pb-4 w-full",
+                    "relative grow py-0 w-full",
                     "flex flex-col flex-nowrap justify-start items-stretch"
                 )}
             >
