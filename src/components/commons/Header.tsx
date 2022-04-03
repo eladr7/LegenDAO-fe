@@ -1,4 +1,4 @@
-import React, { useCallback } from "react";
+import React, { useCallback, useContext } from "react";
 import cn from "classnames";
 import { Branding } from "./Branding";
 import MenuIcon from "../icons/MenuIcon";
@@ -8,10 +8,19 @@ import TwitterIcon from "../icons/TwitterIcon";
 import Button from "./Button";
 import WalletIcon from "../icons/WalletIcon";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
-import { toggleBalanceMenu, toggleSidebar } from "../../features/accessibility/accessibilitySlice";
+import {
+    toggleBalanceMenu,
+    toggleDepositPanel,
+    toggleSidebar,
+    toggleWithdrawPanel,
+} from "../../features/accessibility/accessibilitySlice";
 import Wallet from "../../classes/Wallet";
 import { setPrimaryAddress } from "../../features/wallet/walletSlice";
 import BalancesPanel from "../BalancesPanel";
+import Modal from "./Modal";
+import WithdrawPanel from "../WithdrawPanel";
+import AppContext from "../../contexts/AppContext";
+import DepositPanel from "../DepositPanel";
 
 const HEADER_TYPES = ["intro", "general", "collection"] as const;
 export type THeaderType = typeof HEADER_TYPES[number];
@@ -21,6 +30,7 @@ type Props = {
 };
 
 export function Header({ type }: Props): React.ReactElement {
+    const { state } = useContext(AppContext);
     const walletState = useAppSelector((state) => state.wallet);
     const accessibilityState = useAppSelector((state) => state.accessibility);
     const dispatch = useAppDispatch();
@@ -40,6 +50,14 @@ export function Header({ type }: Props): React.ReactElement {
 
     const handleOnConnectWalletBtnClicked = useCallback(() => {
         dispatch(setPrimaryAddress("0x_wallet_address"));
+    }, [dispatch]);
+
+    const handleDepositOnCloseBtnClicked = useCallback(() => {
+        dispatch(toggleDepositPanel(false));
+    }, [dispatch]);
+
+    const handleWithdrawOnCloseBtnClicked = useCallback(() => {
+        dispatch(toggleWithdrawPanel(false));
     }, [dispatch]);
 
     const renderActions = useCallback(() => {
@@ -173,9 +191,35 @@ export function Header({ type }: Props): React.ReactElement {
                         </div>
                     </div>
                 </div>
+                {state.bodyElement && accessibilityState.bDepositPanelOn && (
+                    <Modal
+                        bodyElement={state.bodyElement}
+                        onOuterClick={handleDepositOnCloseBtnClicked}
+                    >
+                        <DepositPanel onCloseBtnClicked={handleDepositOnCloseBtnClicked} />
+                    </Modal>
+                )}
+                {state.bodyElement && accessibilityState.bWithdrawPanelOn && (
+                    <Modal
+                        bodyElement={state.bodyElement}
+                        onOuterClick={handleWithdrawOnCloseBtnClicked}
+                    >
+                        <WithdrawPanel onCloseBtnClicked={handleWithdrawOnCloseBtnClicked} />
+                    </Modal>
+                )}
             </header>
         );
-    }, [accessibilityState.bBalanceMenuOn, renderActions, renderMenuBtn, renderWalletBtn]);
+    }, [
+        accessibilityState.bBalanceMenuOn,
+        accessibilityState.bDepositPanelOn,
+        accessibilityState.bWithdrawPanelOn,
+        handleDepositOnCloseBtnClicked,
+        handleWithdrawOnCloseBtnClicked,
+        renderActions,
+        renderMenuBtn,
+        renderWalletBtn,
+        state.bodyElement,
+    ]);
 
     const renderCollectionHeader = useCallback((): React.ReactElement => {
         return (

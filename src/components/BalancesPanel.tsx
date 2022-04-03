@@ -1,13 +1,57 @@
-import React from "react";
+import React, { useCallback } from "react";
 import cn from "classnames";
 import Panel from "./commons/Panel";
 import Button from "./commons/Button";
+import { useAppDispatch, useAppSelector } from "../app/hooks";
+import {
+    toggleDepositPanel,
+    toggleWithdrawPanel,
+} from "../features/accessibility/accessibilitySlice";
 
 type Props = {
     onCloseBtnClicked?: React.MouseEventHandler<HTMLElement>;
+    onDepositBtnClicked?: React.MouseEventHandler<HTMLElement>;
+    onWithdrawBtnClicked?: React.MouseEventHandler<HTMLElement>;
+    onGetLGNDBtnClicked?: React.MouseEventHandler<HTMLElement>;
+    onProfileBtnClicked?: React.MouseEventHandler<HTMLElement>;
+    onManageAssetBtnClicked?: React.MouseEventHandler<HTMLElement>;
+    onMyCollectionBtnClicked?: React.MouseEventHandler<HTMLElement>;
 };
 
-export default function BalancesPanel({ onCloseBtnClicked }: Props): React.ReactElement {
+export default function BalancesPanel({
+    onCloseBtnClicked,
+    onDepositBtnClicked,
+    onWithdrawBtnClicked,
+    onGetLGNDBtnClicked,
+    onProfileBtnClicked,
+    onManageAssetBtnClicked,
+    onMyCollectionBtnClicked,
+}: Props): React.ReactElement {
+    const accessibilityState = useAppSelector((state) => state.accessibility);
+    const dispatch = useAppDispatch();
+
+    const handleOnDepositBtnClicked = useCallback(
+        (e: React.MouseEvent<HTMLElement>) => {
+            if (onDepositBtnClicked) {
+                onDepositBtnClicked(e);
+                return;
+            }
+            dispatch(toggleDepositPanel());
+        },
+        [dispatch, onDepositBtnClicked]
+    );
+
+    const handleOnWithdrawBtnClicked = useCallback(
+        (e: React.MouseEvent<HTMLElement>) => {
+            if (onWithdrawBtnClicked) {
+                onWithdrawBtnClicked(e);
+                return;
+            }
+            dispatch(toggleWithdrawPanel());
+        },
+        [dispatch, onWithdrawBtnClicked]
+    );
+
     return (
         <Panel onCloseBtnClicked={onCloseBtnClicked}>
             <div
@@ -34,26 +78,60 @@ export default function BalancesPanel({ onCloseBtnClicked }: Props): React.React
                 </div>
 
                 <div className="mb-6 last:mb-0 flex flex-row flex-nowrap justify-between">
-                    <Button bigness="sm" className="grow font-light" bTransparent>
+                    <Button
+                        bigness="sm"
+                        className="grow font-light"
+                        bTransparent
+                        bActivated={accessibilityState.bDepositPanelOn}
+                        onClick={handleOnDepositBtnClicked}
+                    >
                         Deposit
                     </Button>
-                    <Button bigness="sm" className="grow font-light">
+                    <Button
+                        bigness="sm"
+                        className="grow font-light"
+                        bTransparent
+                        onClick={handleOnWithdrawBtnClicked}
+                    >
                         Withdraw
                     </Button>
                 </div>
 
                 <div className="mb-6 last:mb-0 flex flex-col flex-nowrap items-stretch">
                     <div className="mb-4 last:mb-0 flex flex-col">
-                        <Button className="font-light" bigness="lg">Get $LGND</Button>
+                        <Button className="font-light" bigness="lg" onClick={onGetLGNDBtnClicked}>
+                            Get $LGND
+                        </Button>
                     </div>
                     <div className="mb-4 last:mb-0 flex flex-col">
-                        <Button className="font-light" bigness="lg" bTransparent>Manage Assets</Button>
+                        <Button
+                            className="font-light"
+                            bigness="lg"
+                            bTransparent
+                            onClick={onManageAssetBtnClicked}
+                        >
+                            Manage Assets
+                        </Button>
                     </div>
                     <div className="mb-4 last:mb-0 flex flex-col">
-                        <Button className="font-light" bigness="lg" bTransparent>Profile</Button>
+                        <Button
+                            className="font-light"
+                            bigness="lg"
+                            bTransparent
+                            onClick={onProfileBtnClicked}
+                        >
+                            Profile
+                        </Button>
                     </div>
                     <div className="mb-4 last:mb-0 flex flex-col">
-                        <Button className="font-light" bigness="lg" bTransparent>My Collections</Button>
+                        <Button
+                            className="font-light"
+                            bigness="lg"
+                            bTransparent
+                            onClick={onMyCollectionBtnClicked}
+                        >
+                            My Collections
+                        </Button>
                     </div>
                 </div>
             </div>
