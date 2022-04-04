@@ -8,6 +8,10 @@ import About from "./routes/About";
 import UI from "./routes/UI";
 import { Asset } from "./routes/Asset";
 import { MintLabLanding } from "./routes/MintLabLanding";
+import Profile from "./routes/Profile";
+import Airdrop from "./routes/AirDrop";
+import MyCollections from "./routes/MyCollections";
+import Stake from "./routes/Stake";
 
 function App(): React.ReactElement {
     const rfIsUnmounted = useRef(false);
@@ -43,6 +47,10 @@ function App(): React.ReactElement {
                     <Route path="/ui" element={<UI />} />
                     <Route path="/asset" element={<Asset />} />
                     <Route path="/mint-lab" element={<MintLabLanding />} />
+                    <Route path="/profile" element={<Profile />} />
+                    <Route path="/airdrop" element={<Airdrop />} />
+                    <Route path="/collections" element={<MyCollections />} />
+                    <Route path="/stake" element={<Stake />} />
                 </Routes>
             </div>
         </AppContext.Provider>

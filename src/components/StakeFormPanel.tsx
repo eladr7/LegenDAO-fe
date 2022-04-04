@@ -3,10 +3,22 @@ import cn from "classnames";
 import Panel from "./commons/Panel";
 
 type Props = {
+    apr: number;
+    value: number;
+    tvl: number;
+    totalLGNDBalance: number;
+    totalFiatBalance: number;
     onCloseBtnClicked?: React.MouseEventHandler<HTMLElement>;
 };
 
-export default function StakeFormPanel({ onCloseBtnClicked }: Props): React.ReactElement {
+export default function StakeFormPanel({
+    apr,
+    value,
+    tvl,
+    totalLGNDBalance,
+    totalFiatBalance,
+    onCloseBtnClicked,
+}: Props): React.ReactElement {
     return (
         <Panel onCloseBtnClicked={onCloseBtnClicked}>
             <div
@@ -23,15 +35,15 @@ export default function StakeFormPanel({ onCloseBtnClicked }: Props): React.Reac
                     <div className="flex flex-row flex-nowrap justify-around">
                         <div className="flex flex-col flex-nowrap">
                             <div className="text-blue-300">APR</div>
-                            <div className="font-bold text-2xl">55.27%</div>
+                            <div className="font-bold text-2xl">{apr.toLocaleString()}%</div>
                         </div>
                         <div className="flex flex-col flex-nowrap">
                             <div className="text-blue-300">Value</div>
-                            <div className="font-bold text-2xl">$2.86</div>
+                            <div className="font-bold text-2xl">${value.toLocaleString()}</div>
                         </div>
                         <div className="flex flex-col flex-nowrap">
                             <div className="text-blue-300">TVL</div>
-                            <div className="font-bold text-2xl">$15,839,485</div>
+                            <div className="font-bold text-2xl">${tvl.toLocaleString()}</div>
                         </div>
                     </div>
                 </div>
@@ -44,10 +56,12 @@ export default function StakeFormPanel({ onCloseBtnClicked }: Props): React.Reac
                 >
                     <label className="mb-2 last:mb-0 opacity-75">Total Staked Balance</label>
                     <div className="flex flex-row flex-nowrap items-end">
-                        <div className="mr-2 last:m-0 leading-none font-bold text-2xl">40.2839</div>
+                        <div className="mr-2 last:m-0 leading-none font-bold text-2xl">
+                            {totalLGNDBalance.toLocaleString()}
+                        </div>
                         <div className="mr-2 last:m-0 leading-none font-semibold">LGND</div>
                         <div className="mr-2 last:m-0 leading-none opacity-75 font-light">
-                            ($80.37)
+                            (${totalFiatBalance.toLocaleString()})
                         </div>
                     </div>
                 </div>

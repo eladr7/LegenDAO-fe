@@ -7,6 +7,7 @@ import {
     toggleDepositPanel,
     toggleWithdrawPanel,
 } from "../features/accessibility/accessibilitySlice";
+import { useNavigate } from "react-router-dom";
 
 type Props = {
     onCloseBtnClicked?: React.MouseEventHandler<HTMLElement>;
@@ -28,7 +29,30 @@ export default function BalancesPanel({
     onMyCollectionBtnClicked,
 }: Props): React.ReactElement {
     const accessibilityState = useAppSelector((state) => state.accessibility);
+    const navigate = useNavigate();
     const dispatch = useAppDispatch();
+
+    const handleOnProfileBtnClicked = useCallback(
+        (e: React.MouseEvent<HTMLElement>) => {
+            if (onProfileBtnClicked) {
+                onProfileBtnClicked(e);
+                return;
+            }
+            navigate("/profile");
+        },
+        [navigate, onProfileBtnClicked]
+    );
+
+    const handleOnMyCollectionBtnClicked = useCallback(
+        (e: React.MouseEvent<HTMLElement>) => {
+            if (onMyCollectionBtnClicked) {
+                onMyCollectionBtnClicked(e);
+                return;
+            }
+            navigate("/collections");
+        },
+        [navigate, onMyCollectionBtnClicked]
+    );
 
     const handleOnDepositBtnClicked = useCallback(
         (e: React.MouseEvent<HTMLElement>) => {
@@ -118,7 +142,7 @@ export default function BalancesPanel({
                             className="font-light"
                             bigness="lg"
                             bTransparent
-                            onClick={onProfileBtnClicked}
+                            onClick={handleOnProfileBtnClicked}
                         >
                             Profile
                         </Button>
@@ -128,7 +152,7 @@ export default function BalancesPanel({
                             className="font-light"
                             bigness="lg"
                             bTransparent
-                            onClick={onMyCollectionBtnClicked}
+                            onClick={handleOnMyCollectionBtnClicked}
                         >
                             My Collections
                         </Button>

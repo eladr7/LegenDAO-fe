@@ -93,7 +93,13 @@ export default function UI(): React.ReactElement {
             </div>
 
             <div className="mb-8 last:mb-0 flex">
-                <StakeFormPanel />
+                <StakeFormPanel
+                    apr={55.27}
+                    value={2.86}
+                    tvl={15839485}
+                    totalLGNDBalance={40.2839}
+                    totalFiatBalance={80.37}
+                />
             </div>
 
             <div className="mb-8 last:mb-0 flex">

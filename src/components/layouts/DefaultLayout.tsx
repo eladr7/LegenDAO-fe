@@ -2,7 +2,7 @@ import React, { useCallback, useContext } from "react";
 import cn from "classnames";
 import { Header, THeaderType } from "../commons/Header";
 import { Footer } from "../commons/Footer";
-import Sidebar from "../commons/Sidebar";
+import Sidebar, { TSidebarTab } from "../commons/Sidebar";
 import AppContext from "../../contexts/AppContext";
 import { useAppSelector } from "../../app/hooks";
 
@@ -11,6 +11,7 @@ type Props = React.BaseHTMLAttributes<HTMLDivElement> & {
     headerNode?: React.ReactNode;
     bFooterOn?: boolean;
     footerNode?: React.ReactNode;
+    sidebarTab?: TSidebarTab;
 };
 
 export function DefaultLayout({
@@ -19,6 +20,7 @@ export function DefaultLayout({
     headerType,
     headerNode,
     footerNode,
+    sidebarTab,
 }: Props): React.ReactElement {
     const accessibilityState = useAppSelector((state) => state.accessibility);
     const { state } = useContext(AppContext);
@@ -37,8 +39,8 @@ export function DefaultLayout({
     const renderSidebar = useCallback(() => {
         if (!state.bodyElement) return null;
         if (!accessibilityState.bSidebarOn) return;
-        return <Sidebar bodyElement={state.bodyElement} />;
-    }, [accessibilityState.bSidebarOn, state.bodyElement]);
+        return <Sidebar bodyElement={state.bodyElement} activatingTab={sidebarTab} />;
+    }, [accessibilityState.bSidebarOn, sidebarTab, state.bodyElement]);
 
     return (
         <div
