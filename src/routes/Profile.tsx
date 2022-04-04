@@ -178,8 +178,8 @@ export default function Profile(): React.ReactElement {
                     )}
                     style={{ backgroundImage: `url(${imgArticleUniverse01Background})` }}
                 ></div>
-                <div className="absolute top-0 left-0 bottom-0 right-0 bg-blue-900/80"></div>
-                <div className="absolute top-0 left-0 bottom-0 right-0 bg-slate-900/50"></div>
+                <div className="absolute top-0 left-0 bottom-0 right-0 bg-blue-900/50"></div>
+                <div className="absolute top-0 left-0 bottom-0 right-0 bg-slate-900/75"></div>
                 <div className="w-full mt-28 px-8 z-10">{renderDomain()}</div>
             </Article>
         </DefaultLayout>

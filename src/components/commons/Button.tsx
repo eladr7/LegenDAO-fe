@@ -20,16 +20,16 @@ export default function Button({
     const getBignessClassNames = useCallback(() => {
         switch (bigness) {
             case "sm":
-                return "h-input-sm rounded-lg";
+                return "h-input-sm rounded-lg px-4";
             case "md":
-                return "h-input-md rounded-lg";
+                return "h-input-md rounded-lg px-4";
             case "lg":
-                return "h-input-lg rounded-lg";
+                return "h-input-lg rounded-lg px-4";
             case "xl":
-                return "h-input-xl rounded-xl";
+                return "h-input-xl rounded-xl px-8";
 
             default:
-                return "h-input rounded-lg";
+                return "h-input rounded-lg px-4";
         }
     }, [bigness]);
 
@@ -43,7 +43,7 @@ export default function Button({
             ref={ref}
             className={cn(
                 getBignessClassNames(),
-                "group ml-4 first:ml-0 px-4",
+                "group ml-4 first:ml-0",
                 "flex flex-row flex-nowrap justify-center items-center shrink-0 grow-0",
                 "text-white whitespace-nowrap select-none transition-colors",
                 !bTransparent
