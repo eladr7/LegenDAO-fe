@@ -9,9 +9,10 @@ import UI from "./routes/UI";
 import { Asset } from "./routes/Asset";
 import { MintLabLanding } from "./routes/MintLabLanding";
 import Profile from "./routes/Profile";
-import Airdrop from "./routes/AirDrop";
 import MyCollections from "./routes/MyCollections";
 import Stake from "./routes/Stake";
+import AirDrop from "./routes/AirDrop";
+import FormCreation from "./routes/FormCreation";
 
 function App(): React.ReactElement {
     const rfIsUnmounted = useRef(false);
@@ -48,8 +49,9 @@ function App(): React.ReactElement {
                     <Route path="/asset" element={<Asset />} />
                     <Route path="/mint-lab" element={<MintLabLanding />} />
                     <Route path="/profile" element={<Profile />} />
-                    <Route path="/airdrop" element={<Airdrop />} />
+                    <Route path="/airdrop" element={<AirDrop />} />
                     <Route path="/collections" element={<MyCollections />} />
+                    <Route path="/form-creation" element={<FormCreation />} />
                     <Route path="/stake" element={<Stake />} />
                 </Routes>
             </div>

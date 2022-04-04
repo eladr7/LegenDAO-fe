@@ -5,6 +5,7 @@ import Button from "./commons/Button";
 import LoadingIcon from "./icons/LoadingIcon";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
 import { setStatus } from "../features/airdrop/airdropSlice";
+import CheckIcon from "./icons/CheckIcon";
 
 type Props = {
     onCloseBtnClicked?: React.MouseEventHandler<HTMLElement>;
@@ -31,12 +32,49 @@ export default function AirDropStatusPanel({ onCloseBtnClicked }: Props): React.
 
                     <div
                         className={cn(
-                            "mb-4 last:mb-0 flex flex-col flex-nowrap",
+                            "relative mb-4 last:mb-0 flex flex-col flex-nowrap",
                             "bg-slate-900/50 p-4 rounded-lg"
                         )}
                     >
                         <div className="flex flex-row flex-nowrap items-end">
                             Wallet Address: Secret | Cosmos | Terra
+                        </div>
+                        <div className="absolute right-4">
+                            <div className="w-icon h-icon grow-0 shrink-0">
+                                <CheckIcon className="fill-green-500" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div
+                        className={cn(
+                            "relative mb-4 last:mb-0 flex flex-col flex-nowrap",
+                            "bg-slate-900/50 p-4 rounded-lg"
+                        )}
+                    >
+                        <div className="flex flex-row flex-nowrap items-end">
+                            Twitter Profile
+                        </div>
+                        <div className="absolute right-4">
+                            <div className="w-icon h-icon grow-0 shrink-0">
+                                <CheckIcon className="fill-green-500" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div
+                        className={cn(
+                            "relative mb-4 last:mb-0 flex flex-col flex-nowrap",
+                            "bg-slate-900/50 p-4 rounded-lg"
+                        )}
+                    >
+                        <div className="flex flex-row flex-nowrap items-end">
+                            Discord User ID
+                        </div>
+                        <div className="absolute right-4">
+                            <div className="w-icon h-icon grow-0 shrink-0">
+                                <CheckIcon className="fill-green-500" />
+                            </div>
                         </div>
                     </div>
 

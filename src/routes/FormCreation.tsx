@@ -5,14 +5,14 @@ import { DefaultLayout } from "../components/layouts/DefaultLayout";
 
 import imgArticleUniverse01Background from "./../assets/images/article-universe-01-background.png";
 import Modal from "../components/commons/Modal";
-import AirDropStatusPanel from "../components/AirDropStatusPanel";
 import AppContext from "../contexts/AppContext";
+import CreationFormPanel from "../components/CreationFormPanel";
 
-export default function AirDrop(): React.ReactElement {
+export default function FormCreation(): React.ReactElement {
     const { state } = useContext(AppContext);
 
     return (
-        <DefaultLayout headerType="general" bFooterOn sidebarTab="tab/airdrop">
+        <DefaultLayout headerType="general" bFooterOn>
             <Article bFullScreen>
                 <div
                     className={cn(
@@ -24,7 +24,7 @@ export default function AirDrop(): React.ReactElement {
                 <div className="absolute top-0 left-0 bottom-0 right-0 bg-slate-900/75"></div>
                 {state.bodyElement && (
                     <Modal bodyElement={state.bodyElement}>
-                        <AirDropStatusPanel />
+                        <CreationFormPanel />
                     </Modal>
                 )}
             </Article>
