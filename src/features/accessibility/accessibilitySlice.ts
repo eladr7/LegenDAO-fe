@@ -5,6 +5,7 @@ export type TAccessibilityState = {
     bBalanceMenuOn: boolean;
     bWithdrawPanelOn: boolean;
     bDepositPanelOn: boolean;
+    
 };
 
 const initialState: TAccessibilityState = {
