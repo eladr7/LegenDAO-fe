@@ -27,9 +27,10 @@ export type THeaderType = typeof HEADER_TYPES[number];
 
 type Props = {
     type?: THeaderType;
+    domainNode?: React.ReactNode;
 };
 
-export function Header({ type }: Props): React.ReactElement {
+export function Header({ type, domainNode }: Props): React.ReactElement {
     const { state } = useContext(AppContext);
     const walletState = useAppSelector((state) => state.wallet);
     const accessibilityState = useAppSelector((state) => state.accessibility);
@@ -59,6 +60,10 @@ export function Header({ type }: Props): React.ReactElement {
     const handleWithdrawOnCloseBtnClicked = useCallback(() => {
         dispatch(toggleWithdrawPanel(false));
     }, [dispatch]);
+
+    const renderDomain = useCallback(() => {
+        return domainNode;
+    }, [domainNode]);
 
     const renderActions = useCallback(() => {
         return (
@@ -177,6 +182,7 @@ export function Header({ type }: Props): React.ReactElement {
                     {renderMenuBtn()}
                     <Branding />
                 </div>
+                {renderDomain()}
                 <div className="flex flex-row flex-nowrap justify-end items-center">
                     {renderActions()}
                     <div className="ml-8 first:ml-0 flex flex-row flex-nowrap">
@@ -216,6 +222,7 @@ export function Header({ type }: Props): React.ReactElement {
         handleDepositOnCloseBtnClicked,
         handleWithdrawOnCloseBtnClicked,
         renderActions,
+        renderDomain,
         renderMenuBtn,
         renderWalletBtn,
         state.bodyElement,

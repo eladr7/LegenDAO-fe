@@ -8,6 +8,7 @@ import { useAppSelector } from "../../app/hooks";
 
 type Props = React.BaseHTMLAttributes<HTMLDivElement> & {
     headerType?: THeaderType;
+    headerDomainNode?: React.ReactNode;
     headerNode?: React.ReactNode;
     bFooterOn?: boolean;
     footerNode?: React.ReactNode;
@@ -18,6 +19,7 @@ export function DefaultLayout({
     children,
     bFooterOn,
     headerType,
+    headerDomainNode,
     headerNode,
     footerNode,
     sidebarTab,
@@ -27,8 +29,8 @@ export function DefaultLayout({
 
     const renderHeader = useCallback(() => {
         if (headerNode) return headerNode;
-        return <Header type={headerType} />;
-    }, [headerNode, headerType]);
+        return <Header type={headerType} domainNode={headerDomainNode} />;
+    }, [headerDomainNode, headerNode, headerType]);
 
     const renderFooter = useCallback(() => {
         if (!bFooterOn) return null;
