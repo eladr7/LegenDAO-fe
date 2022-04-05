@@ -6,10 +6,12 @@ import { useAppDispatch, useAppSelector } from "../app/hooks";
 import {
     toggleDepositPanel,
     toggleWithdrawPanel,
+    turnOffAllPanel,
 } from "../features/accessibility/accessibilitySlice";
 import { useNavigate } from "react-router-dom";
 
 type Props = {
+    
     onCloseBtnClicked?: React.MouseEventHandler<HTMLElement>;
     onDepositBtnClicked?: React.MouseEventHandler<HTMLElement>;
     onWithdrawBtnClicked?: React.MouseEventHandler<HTMLElement>;
@@ -34,24 +36,26 @@ export default function BalancesPanel({
 
     const handleOnProfileBtnClicked = useCallback(
         (e: React.MouseEvent<HTMLElement>) => {
+            dispatch(turnOffAllPanel());
             if (onProfileBtnClicked) {
                 onProfileBtnClicked(e);
                 return;
             }
             navigate("/profile");
         },
-        [navigate, onProfileBtnClicked]
+        [dispatch, navigate, onProfileBtnClicked]
     );
 
     const handleOnMyCollectionBtnClicked = useCallback(
         (e: React.MouseEvent<HTMLElement>) => {
+            dispatch(turnOffAllPanel());
             if (onMyCollectionBtnClicked) {
                 onMyCollectionBtnClicked(e);
                 return;
             }
             navigate("/collections");
         },
-        [navigate, onMyCollectionBtnClicked]
+        [dispatch, navigate, onMyCollectionBtnClicked]
     );
 
     const handleOnDepositBtnClicked = useCallback(
@@ -84,7 +88,7 @@ export default function BalancesPanel({
                 <div className="mb-6 last:mb-0 flex flex-col flex-nowrap">
                     <div className="mb-2 last:mb-0 text-xl font-light">Balance</div>
                     <div className="flex flex-row flex-nowrap items-end">
-                        <div className="font-semibold text-2xl leading-none">40.2839 LGND </div>
+                        <div className="font-semibold text-2xl leading-none">40.2839 LGND</div>
                         <span className="ml-2 first:ml-0 opacity-50 font-light leading-none">
                             ($80.37)
                         </span>
@@ -94,7 +98,7 @@ export default function BalancesPanel({
                 <div className="mb-6 last:mb-0 flex flex-col flex-nowrap">
                     <div className="mb-2 last:mb-0 text-xl font-light">Unclaimed</div>
                     <div className="flex flex-row flex-nowrap items-end">
-                        <div className="font-semibold text-2xl leading-none">25 LGND </div>
+                        <div className="font-semibold text-2xl leading-none">25 LGND</div>
                         <span className="ml-2 first:ml-0 opacity-50 font-light leading-none">
                             ($50.37)
                         </span>

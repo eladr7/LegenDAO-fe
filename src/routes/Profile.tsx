@@ -170,7 +170,7 @@ export default function Profile(): React.ReactElement {
 
     return (
         <DefaultLayout headerType="general" bFooterOn headerDomainNode={renderHeaderDomainNode()}>
-            <Article bFullScreen>
+            <Article className="grow">
                 <div
                     className={cn(
                         "absolute top-0 bottom-0 right-0 left-0",

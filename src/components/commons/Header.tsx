@@ -1,4 +1,4 @@
-import React, { useCallback, useContext } from "react";
+import React, { useCallback } from "react";
 import cn from "classnames";
 import { Branding } from "./Branding";
 import MenuIcon from "../icons/MenuIcon";
@@ -8,19 +8,10 @@ import TwitterIcon from "../icons/TwitterIcon";
 import Button from "./Button";
 import WalletIcon from "../icons/WalletIcon";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
-import {
-    toggleBalanceMenu,
-    toggleDepositPanel,
-    toggleSidebar,
-    toggleWithdrawPanel,
-} from "../../features/accessibility/accessibilitySlice";
+import { toggleBalanceMenu, toggleSidebar } from "../../features/accessibility/accessibilitySlice";
 import Wallet from "../../classes/Wallet";
 import { setPrimaryAddress } from "../../features/wallet/walletSlice";
 import BalancesPanel from "../BalancesPanel";
-import Modal from "./Modal";
-import WithdrawPanel from "../WithdrawPanel";
-import AppContext from "../../contexts/AppContext";
-import DepositPanel from "../DepositPanel";
 
 const HEADER_TYPES = ["intro", "general", "collection"] as const;
 export type THeaderType = typeof HEADER_TYPES[number];
@@ -31,7 +22,6 @@ type Props = {
 };
 
 export function Header({ type, domainNode }: Props): React.ReactElement {
-    const { state } = useContext(AppContext);
     const walletState = useAppSelector((state) => state.wallet);
     const accessibilityState = useAppSelector((state) => state.accessibility);
     const dispatch = useAppDispatch();
@@ -53,13 +43,9 @@ export function Header({ type, domainNode }: Props): React.ReactElement {
         dispatch(setPrimaryAddress("0x_wallet_address"));
     }, [dispatch]);
 
-    const handleDepositOnCloseBtnClicked = useCallback(() => {
-        dispatch(toggleDepositPanel(false));
-    }, [dispatch]);
-
-    const handleWithdrawOnCloseBtnClicked = useCallback(() => {
-        dispatch(toggleWithdrawPanel(false));
-    }, [dispatch]);
+    const handleOnGetLGNDBtnClicked = useCallback(() => {
+        window.open("https://app.osmosis.zone/?from=ATOM&to=OSMO", "_blank");
+    }, []);
 
     const renderDomain = useCallback(() => {
         return domainNode;
@@ -186,7 +172,9 @@ export function Header({ type, domainNode }: Props): React.ReactElement {
                 <div className="flex flex-row flex-nowrap justify-end items-center">
                     {renderActions()}
                     <div className="ml-8 first:ml-0 flex flex-row flex-nowrap">
-                        <Button bigness="sm">Get $LGND</Button>
+                        <Button bigness="sm" onClick={handleOnGetLGNDBtnClicked}>
+                            Get $LGND
+                        </Button>
                         <div className="relative ml-4 first:ml-0">
                             {renderWalletBtn()}
                             {accessibilityState.bBalanceMenuOn && (
@@ -197,35 +185,15 @@ export function Header({ type, domainNode }: Props): React.ReactElement {
                         </div>
                     </div>
                 </div>
-                {state.bodyElement && accessibilityState.bDepositPanelOn && (
-                    <Modal
-                        bodyElement={state.bodyElement}
-                        onOuterClick={handleDepositOnCloseBtnClicked}
-                    >
-                        <DepositPanel onCloseBtnClicked={handleDepositOnCloseBtnClicked} />
-                    </Modal>
-                )}
-                {state.bodyElement && accessibilityState.bWithdrawPanelOn && (
-                    <Modal
-                        bodyElement={state.bodyElement}
-                        onOuterClick={handleWithdrawOnCloseBtnClicked}
-                    >
-                        <WithdrawPanel onCloseBtnClicked={handleWithdrawOnCloseBtnClicked} />
-                    </Modal>
-                )}
             </header>
         );
     }, [
         accessibilityState.bBalanceMenuOn,
-        accessibilityState.bDepositPanelOn,
-        accessibilityState.bWithdrawPanelOn,
-        handleDepositOnCloseBtnClicked,
-        handleWithdrawOnCloseBtnClicked,
+        handleOnGetLGNDBtnClicked,
         renderActions,
         renderDomain,
         renderMenuBtn,
         renderWalletBtn,
-        state.bodyElement,
     ]);
 
     const renderCollectionHeader = useCallback((): React.ReactElement => {
@@ -244,7 +212,7 @@ export function Header({ type, domainNode }: Props): React.ReactElement {
                 <div className="ml-8 first:ml-0 grow flex flex-row flex-nowrap justify-between items-center">
                     {renderActions()}
                     <div className="ml-8 first:ml-0 flex flex-row flex-nowrap">
-                        <Button bigness="sm" bTransparent>
+                        <Button bigness="sm" bTransparent onClick={handleOnGetLGNDBtnClicked}>
                             Get $LGND
                         </Button>
                         <Button bigness="sm" bTransparent>
@@ -253,12 +221,19 @@ export function Header({ type, domainNode }: Props): React.ReactElement {
                         <Button bigness="sm" bTransparent>
                             Create
                         </Button>
-                        {renderWalletBtn()}
+                        <div className="relative ml-4 first:ml-0">
+                            {renderWalletBtn()}
+                            {accessibilityState.bBalanceMenuOn && (
+                                <div className="absolute top-input-lg right-0">
+                                    <BalancesPanel />
+                                </div>
+                            )}
+                        </div>
                     </div>
                 </div>
             </header>
         );
-    }, [renderActions, renderMenuBtn, renderWalletBtn]);
+    }, [accessibilityState.bBalanceMenuOn, handleOnGetLGNDBtnClicked, renderActions, renderMenuBtn, renderWalletBtn]);
 
     const renderContent = useCallback((): React.ReactElement => {
         switch (type) {

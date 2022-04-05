@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useCallback } from "react";
 import cn from "classnames";
 import Button from "./commons/Button";
 import Article from "./commons/Article";
@@ -8,8 +8,20 @@ import TwitterIcon from "./icons/TwitterIcon";
 import imgYetiHoodie01 from "./../assets/images/yeti-hoodie-01.png";
 import imgYetiGirl01 from "./../assets/images/yeti-girl-01.png";
 import imgArticleUniverse01Background from "./../assets/images/article-universe-01-background.png";
+import { useAppDispatch } from "../app/hooks";
+import { toggleCreationFormPanel } from "../features/accessibility/accessibilitySlice";
 
 export default function LegendaryUniverseArticle(): React.ReactElement {
+    const dispatch = useAppDispatch();
+
+    const handleOnGetLGNDBtnClicked = useCallback(() => {
+        window.open("https://app.osmosis.zone/?from=ATOM&to=OSMO", "_blank");
+    }, []);
+
+    const handleOnContactUsBtnClicked = useCallback(() => {
+        dispatch(toggleCreationFormPanel(true));
+    }, [dispatch]);
+
     return (
         <Article>
             <div
@@ -67,8 +79,10 @@ export default function LegendaryUniverseArticle(): React.ReactElement {
                     </p>
                 </div>
                 <div className="mb-8 last:mb-0 flex flex-row flex-nowrap items-center">
-                    <Button>Get $LGND</Button>
-                    <Button bTransparent>Creator? Contact Us</Button>
+                    <Button onClick={handleOnGetLGNDBtnClicked}>Get $LGND</Button>
+                    <Button bTransparent onClick={handleOnContactUsBtnClicked}>
+                        Creator? Contact Us
+                    </Button>
                     <div className="ml-4 first:ml-0 w-icon-lg h-icon-lg grow-0 shrink-0">
                         <DiscordIcon />
                     </div>

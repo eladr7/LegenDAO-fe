@@ -3,10 +3,15 @@ import cn from "classnames";
 import CloseIcon from "../icons/CloseIcon";
 
 type Props = React.BaseHTMLAttributes<HTMLDivElement> & {
+    className?: string;
     onCloseBtnClicked?: React.MouseEventHandler<HTMLElement>;
 };
 
-export default function Panel({ onCloseBtnClicked, children }: Props): React.ReactElement {
+export default function Panel({
+    onCloseBtnClicked,
+    children,
+    className,
+}: Props): React.ReactElement {
     const renderCloseBtn = useCallback(() => {
         if (!onCloseBtnClicked) return null;
         return (
@@ -19,7 +24,7 @@ export default function Panel({ onCloseBtnClicked, children }: Props): React.Rea
     }, [onCloseBtnClicked]);
 
     return (
-        <div className="relative p-8 z-10">
+        <div className={cn("relative p-8 z-10", className)}>
             <div
                 className={cn(
                     "p-[2px] rounded-xl",

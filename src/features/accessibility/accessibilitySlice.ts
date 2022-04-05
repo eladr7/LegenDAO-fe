@@ -5,7 +5,9 @@ export type TAccessibilityState = {
     bBalanceMenuOn: boolean;
     bWithdrawPanelOn: boolean;
     bDepositPanelOn: boolean;
-    
+    bCreationFormPanelOn: boolean;
+    bMintConfirmPurchasePanelOn: boolean;
+    bMintSuccessfulPanelOn: boolean;
 };
 
 const initialState: TAccessibilityState = {
@@ -13,12 +15,18 @@ const initialState: TAccessibilityState = {
     bBalanceMenuOn: false,
     bWithdrawPanelOn: false,
     bDepositPanelOn: false,
+    bCreationFormPanelOn: false,
+    bMintConfirmPurchasePanelOn: false,
+    bMintSuccessfulPanelOn: false,
 };
 
 const _turnOffAllPanel: CaseReducer<TAccessibilityState> = (state) => {
     state.bBalanceMenuOn = false;
     state.bWithdrawPanelOn = false;
     state.bDepositPanelOn = false;
+    state.bCreationFormPanelOn = false;
+    state.bMintConfirmPurchasePanelOn = false;
+    state.bMintSuccessfulPanelOn = false;
 };
 
 const _toggleSidebar: CaseReducer<TAccessibilityState, PayloadAction<boolean | undefined>> = (
@@ -26,6 +34,13 @@ const _toggleSidebar: CaseReducer<TAccessibilityState, PayloadAction<boolean | u
     action
 ) => {
     state.bSidebarOn = action.payload ?? !state.bSidebarOn;
+};
+
+const _toggleCreationFormPanel: CaseReducer<TAccessibilityState, PayloadAction<boolean | undefined>> = (
+    state,
+    action
+) => {
+    state.bCreationFormPanelOn = action.payload ?? !state.bCreationFormPanelOn;
 };
 
 const _toggleWithdrawPanel: CaseReducer<TAccessibilityState, PayloadAction<boolean | undefined>> = (
@@ -49,6 +64,20 @@ const _toggleBalanceMenu: CaseReducer<TAccessibilityState, PayloadAction<boolean
     state.bBalanceMenuOn = action.payload ?? !state.bBalanceMenuOn;
 };
 
+const _toggleMintConfirmPurchasePanel: CaseReducer<TAccessibilityState, PayloadAction<boolean | undefined>> = (
+    state,
+    action
+) => {
+    state.bMintConfirmPurchasePanelOn = action.payload ?? !state.bMintConfirmPurchasePanelOn;
+};
+
+const _toggleMintSuccessfulPanelOn: CaseReducer<TAccessibilityState, PayloadAction<boolean | undefined>> = (
+    state,
+    action
+) => {
+    state.bMintSuccessfulPanelOn = action.payload ?? !state.bMintSuccessfulPanelOn;
+};
+
 const accessibilitySlice = createSlice({
     name: "accessibility",
     initialState,
@@ -58,15 +87,21 @@ const accessibilitySlice = createSlice({
         toggleBalanceMenu: _toggleBalanceMenu,
         toggleWithdrawPanel: _toggleWithdrawPanel,
         toggleDepositPanel: _toggleDepositPanel,
+        toggleCreationFormPanel: _toggleCreationFormPanel,
+        toggleMintConfirmPurchasePanel: _toggleMintConfirmPurchasePanel,
+        toggleMintSuccessfulPanelOn: _toggleMintSuccessfulPanelOn,
     },
 });
 
 export const {
+    toggleMintConfirmPurchasePanel,
+    toggleMintSuccessfulPanelOn,
     turnOffAllPanel,
     toggleSidebar,
     toggleBalanceMenu,
     toggleDepositPanel,
     toggleWithdrawPanel,
+    toggleCreationFormPanel,
 } = accessibilitySlice.actions;
 
 export default accessibilitySlice.reducer;

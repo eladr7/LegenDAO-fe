@@ -13,7 +13,7 @@ export default function Stake(): React.ReactElement {
 
     return (
         <DefaultLayout headerType="general" bFooterOn sidebarTab="tab/stake">
-            <Article bFullScreen>
+            <Article className="grow">
                 <div
                     className={cn(
                         "absolute top-0 bottom-0 right-0 left-0",

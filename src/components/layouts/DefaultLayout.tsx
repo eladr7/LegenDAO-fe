@@ -4,7 +4,12 @@ import { Header, THeaderType } from "../commons/Header";
 import { Footer } from "../commons/Footer";
 import Sidebar, { TSidebarTab } from "../commons/Sidebar";
 import AppContext from "../../contexts/AppContext";
-import { useAppSelector } from "../../app/hooks";
+import { useAppDispatch, useAppSelector } from "../../app/hooks";
+import Modal from "../commons/Modal";
+import CreationFormPanel from "../CreationFormPanel";
+import { turnOffAllPanel } from "../../features/accessibility/accessibilitySlice";
+import DepositPanel from "../DepositPanel";
+import WithdrawPanel from "../WithdrawPanel";
 
 type Props = React.BaseHTMLAttributes<HTMLDivElement> & {
     headerType?: THeaderType;
@@ -25,7 +30,12 @@ export function DefaultLayout({
     sidebarTab,
 }: Props): React.ReactElement {
     const accessibilityState = useAppSelector((state) => state.accessibility);
+    const dispatch = useAppDispatch();
     const { state } = useContext(AppContext);
+
+    const handleOnModalOuterClicked = useCallback(() => {
+        dispatch(turnOffAllPanel());
+    }, [dispatch]);
 
     const renderHeader = useCallback(() => {
         if (headerNode) return headerNode;
@@ -43,6 +53,39 @@ export function DefaultLayout({
         if (!accessibilityState.bSidebarOn) return;
         return <Sidebar bodyElement={state.bodyElement} activatingTab={sidebarTab} />;
     }, [accessibilityState.bSidebarOn, sidebarTab, state.bodyElement]);
+
+    const renderModal = useCallback(() => {
+        if (!state.bodyElement) return null;
+        if (accessibilityState.bCreationFormPanelOn) {
+            return (
+                <Modal bodyElement={state.bodyElement} onOuterClick={handleOnModalOuterClicked}>
+                    <CreationFormPanel onCloseBtnClicked={handleOnModalOuterClicked} />
+                </Modal>
+            );
+        }
+
+        if (accessibilityState.bDepositPanelOn) {
+            return (
+                <Modal bodyElement={state.bodyElement} onOuterClick={handleOnModalOuterClicked}>
+                    <DepositPanel onCloseBtnClicked={handleOnModalOuterClicked} />
+                </Modal>
+            );
+        }
+
+        if (accessibilityState.bWithdrawPanelOn) {
+            return (
+                <Modal bodyElement={state.bodyElement} onOuterClick={handleOnModalOuterClicked}>
+                    <WithdrawPanel onCloseBtnClicked={handleOnModalOuterClicked} />
+                </Modal>
+            );
+        }
+    }, [
+        accessibilityState.bCreationFormPanelOn,
+        accessibilityState.bDepositPanelOn,
+        accessibilityState.bWithdrawPanelOn,
+        handleOnModalOuterClicked,
+        state.bodyElement,
+    ]);
 
     return (
         <div
@@ -64,6 +107,7 @@ export function DefaultLayout({
             </main>
             {renderFooter()}
             {renderSidebar()}
+            {renderModal()}
         </div>
     );
 }
