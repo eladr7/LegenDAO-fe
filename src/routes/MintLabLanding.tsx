@@ -6,6 +6,7 @@ import MountainsOfSodArticle from "../components/MountainsOfSodArticle";
 import SecretCollectionsArticle from "../components/SecretCollectionsArticle";
 import LegendaryTokenArticle from "../components/LegendaryTokenArticle";
 import TeamArticle from "../components/TeamArticle";
+import RoadmapArticle from "../components/RoadmapArticle";
 
 export function MintLabLanding(): React.ReactElement {
     return (
@@ -15,6 +16,7 @@ export function MintLabLanding(): React.ReactElement {
             <MountainsOfSodArticle />
             <SecretCollectionsArticle />
             <LegendaryTokenArticle />
+            <RoadmapArticle />
             <TeamArticle />
         </DefaultLayout>
     );
