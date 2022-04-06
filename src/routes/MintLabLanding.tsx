@@ -9,15 +9,15 @@ import TeamArticle from "../components/TeamArticle";
 import RoadmapArticle from "../components/RoadmapArticle";
 
 export function MintLabLanding(): React.ReactElement {
-  return (
-    <DefaultLayout headerType="general" bFooterOn>
-      <LegendaryUniverseArticle />
-      <LegendaryPlatformArticle />
-      <MountainsOfSodArticle />
-      <SecretCollectionsArticle />
-      <RoadmapArticle />
-      <LegendaryTokenArticle />
-      <TeamArticle />
-    </DefaultLayout>
-  );
+    return (
+        <DefaultLayout headerType="general" bFooterOn>
+            <LegendaryUniverseArticle />
+            <LegendaryPlatformArticle />
+            <MountainsOfSodArticle />
+            <SecretCollectionsArticle />
+            <LegendaryTokenArticle />
+            <RoadmapArticle />
+            <TeamArticle />
+        </DefaultLayout>
+    );
 }
