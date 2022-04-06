@@ -1,18 +1,18 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
-import AppContext, { TAppContext } from "./contexts/AppContext";
-import { Routes, Route } from "react-router-dom";
 import { Provider } from "react-redux";
+import { Route, Routes } from "react-router-dom";
 import store from "./app/store";
-import Home from "./routes/Home";
-import About from "./routes/About";
-import UI from "./routes/UI";
-import { Asset } from "./routes/Asset";
-import { MintLabLanding } from "./routes/MintLabLanding";
-import Profile from "./routes/Profile";
-import MyCollections from "./routes/MyCollections";
-import Stake from "./routes/Stake";
+import AppContext, { TAppContext } from "./contexts/AppContext";
 import AirDrop from "./routes/AirDrop";
+import { Asset } from "./routes/Asset";
 import FormCreation from "./routes/FormCreation";
+import Home from "./routes/Home";
+import { MintLabLanding } from "./routes/MintLabLanding";
+import MyCollections from "./routes/MyCollections";
+import NotFound from "./routes/NotFound";
+import Profile from "./routes/Profile";
+import Stake from "./routes/Stake";
+import UI from "./routes/UI";
 
 function App(): React.ReactElement {
     const rfIsUnmounted = useRef(false);
@@ -44,7 +44,11 @@ function App(): React.ReactElement {
             <div className="App">
                 <Routes>
                     <Route path="/" element={<Home />} />
-                    <Route path="/about" element={<About />} />
+                    {/* <Route path="/about" element={<About />} />
+                    <Route path="/docs" element={<Docs />} />
+                    <Route path="/faq" element={<Faq />} />
+                    <Route path="/governance" element={<Governance />} />
+                    <Route path="/community" element={<Community />} /> */}
                     <Route path="/ui" element={<UI />} />
                     <Route path="/asset" element={<Asset />} />
                     <Route path="/mint-lab" element={<MintLabLanding />} />
@@ -53,6 +57,7 @@ function App(): React.ReactElement {
                     <Route path="/collections" element={<MyCollections />} />
                     <Route path="/form-creation" element={<FormCreation />} />
                     <Route path="/stake" element={<Stake />} />
+                    <Route path="*" element={<NotFound />} />
                 </Routes>
             </div>
         </AppContext.Provider>

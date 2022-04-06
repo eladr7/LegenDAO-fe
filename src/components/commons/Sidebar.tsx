@@ -35,6 +35,10 @@ export default function Sidebar({ bodyElement, activatingTab }: Props): React.Re
     const handleOnStakeTabClicked = useCallback(() => {
         navigate("/stake");
     }, [navigate]);
+    
+    const handleOnGovernanceTabClicked = useCallback(() => {
+        navigate("/governance");
+    }, [navigate]);
 
     const handleOnCollectionsTabClicked = useCallback(() => {
         navigate("/collections");
@@ -42,6 +46,10 @@ export default function Sidebar({ bodyElement, activatingTab }: Props): React.Re
 
     const handleOnAirdropTabClicked = useCallback(() => {
         navigate("/airdrop");
+    }, [navigate]);
+    
+    const handleOnDocsTabClicked = useCallback(() => {
+        navigate("/docs");
     }, [navigate]);
 
     return ReactDOM.createPortal(
@@ -113,6 +121,7 @@ export default function Sidebar({ bodyElement, activatingTab }: Props): React.Re
                     className={cn(
                         "px-12 flex flex-row justify-center items-center select-none cursor-pointer"
                     )}
+                    onClick={handleOnGovernanceTabClicked}
                 >
                     <div
                         className={cn("py-4 grow text-center", "border-b border-slate-800", {
@@ -140,6 +149,7 @@ export default function Sidebar({ bodyElement, activatingTab }: Props): React.Re
                     className={cn(
                         "px-12 flex flex-row justify-center items-center select-none cursor-pointer"
                     )}
+                    onClick={handleOnDocsTabClicked}
                 >
                     <div
                         className={cn("py-4 grow text-center", "border-b border-slate-800", {

@@ -5,6 +5,7 @@ import TwitterIcon from "../icons/TwitterIcon";
 import InstagramIcon from "../icons/InstagramIcon";
 import TelegramIcon from "../icons/TelegramIcon";
 import Input from "./Input";
+import { SOCIAL_NETWORK_URL } from "../../constants/linkSocial";
 
 export function Footer(): React.ReactElement {
     return (
@@ -22,16 +23,36 @@ export function Footer(): React.ReactElement {
             <div className="flex flex-col flex-nowrap items-center">
                 <div className="font-bold mb-4 last:mb-0">Join our community</div>
                 <div className="flex flex-row flex-nowrap items-center">
-                    <div className="w-icon-lg h-iconw-icon-lg grow-0 shrink-0 mr-8 last:mr-0">
+                    <div
+                        className="w-icon-lg h-iconw-icon-lg grow-0 shrink-0 mr-8 last:mr-0"
+                        onClick={() => {
+                            window.open(SOCIAL_NETWORK_URL.discord, "_blank");
+                        }}
+                    >
                         <DiscordIcon className="fill-slate-300" />
                     </div>
-                    <div className="w-icon-lg h-iconw-icon-lg grow-0 shrink-0 mr-8 last:mr-0">
+                    <div
+                        className="w-icon-lg h-iconw-icon-lg grow-0 shrink-0 mr-8 last:mr-0"
+                        onClick={() => {
+                            window.open(SOCIAL_NETWORK_URL.twitter, "_blank");
+                        }}
+                    >
                         <TwitterIcon className="fill-slate-300" />
                     </div>
-                    <div className="w-icon-lg h-iconw-icon-lg grow-0 shrink-0 mr-8 last:mr-0">
-                        <InstagramIcon className="fill-slate-300" />
+                    <div
+                        className="w-icon-lg h-iconw-icon-lg grow-0 shrink-0 mr-8 last:mr-0"
+                        onClick={() => {
+                            window.open(SOCIAL_NETWORK_URL.instagram, "_blank");
+                        }}
+                    >
+                            <InstagramIcon className="fill-slate-300" />
                     </div>
-                    <div className="w-icon-lg h-iconw-icon-lg grow-0 shrink-0 mr-8 last:mr-0">
+                    <div
+                        className="w-icon-lg h-iconw-icon-lg grow-0 shrink-0 mr-8 last:mr-0"
+                        onClick={() => {
+                            window.open(SOCIAL_NETWORK_URL.telegram, "_blank");
+                        }}
+                    >
                         <TelegramIcon className="fill-slate-300" />
                     </div>
                 </div>
