@@ -11,22 +11,34 @@ import imgYetiHoodie01 from "./../assets/images/yeti-hoodie-01.png";
 import imgBox01 from "./../assets/images/box-01.png";
 import ProfileCollectedPanel from "../components/ProfileCollectedPanel";
 import ProfileMyCollectionPanel from "../components/ProfileMyCollectionPanel";
+import { useLocation } from "react-router-dom";
 
-type Tab = "profile/general" | "profile/collected" | "profile/created";
+const TABS = ["/profile/general", "/profile/collected", "/profile/created"] as const;
+type Tab = typeof TABS[number];
+
+function isTab(tab: string): tab is Tab {
+    return TABS.includes(tab as Tab);
+}
 
 export default function Profile(): React.ReactElement {
-    const [tab, setTab] = useState<Tab>("profile/general");
+    const { pathname } = useLocation();
+    const getInitialTab = useCallback((): Tab => {        
+        if (!isTab(pathname)) return "/profile/general";
+        return pathname;
+    }, [pathname]);
+
+    const [tab, setTab] = useState<Tab>(getInitialTab());
 
     const handleOnGeneralTabClicked = useCallback(() => {
-        setTab("profile/general");
+        setTab("/profile/general");
     }, []);
 
     const handleOnCollectedTabClicked = useCallback(() => {
-        setTab("profile/collected");
+        setTab("/profile/collected");
     }, []);
 
     const handleOnCreatedTabClicked = useCallback(() => {
-        setTab("profile/created");
+        setTab("/profile/created");
     }, []);
 
     const renderHeaderDomainNode = useCallback(() => {
@@ -34,7 +46,7 @@ export default function Profile(): React.ReactElement {
             <div className="flex flex-row flex-nowrap text-lg">
                 <div
                     className={cn("ml-8 first:ml-0 cursor-pointer", {
-                        "text-purple-400": tab === "profile/general",
+                        "text-purple-400": tab === "/profile/general",
                     })}
                     onClick={handleOnGeneralTabClicked}
                 >
@@ -43,7 +55,7 @@ export default function Profile(): React.ReactElement {
                 <div className="ml-8 first:ml-0 opacity-25">|</div>
                 <div
                     className={cn("ml-8 first:ml-0 cursor-pointer", {
-                        "text-purple-400": tab === "profile/collected",
+                        "text-purple-400": tab === "/profile/collected",
                     })}
                     onClick={handleOnCollectedTabClicked}
                 >
@@ -52,7 +64,7 @@ export default function Profile(): React.ReactElement {
                 <div className="ml-8 first:ml-0 opacity-25">|</div>
                 <div
                     className={cn("ml-8 first:ml-0 cursor-pointer", {
-                        "text-purple-400": tab === "profile/created",
+                        "text-purple-400": tab === "/profile/created",
                     })}
                     onClick={handleOnCreatedTabClicked}
                 >
@@ -64,7 +76,7 @@ export default function Profile(): React.ReactElement {
 
     const renderDomain = useCallback(() => {
         switch (tab) {
-            case "profile/general": {
+            case "/profile/general": {
                 return (
                     <div className="w-full grid grid-cols-3 z-10 text-white justify-items-center items-start">
                         <div className="flex flex-row flex-nowrap items-center justify-self-start">
@@ -104,7 +116,7 @@ export default function Profile(): React.ReactElement {
                 );
             }
 
-            case "profile/collected": {
+            case "/profile/collected": {
                 return (
                     <div className="w-full grid grid-cols-3 z-10 text-white justify-items-center items-start">
                         <div className="justify-self-start">
@@ -135,7 +147,7 @@ export default function Profile(): React.ReactElement {
                 );
             }
 
-            case "profile/created": {
+            case "/profile/created": {
                 return (
                     <div className="w-full grid grid-cols-3 z-10 text-white justify-items-center items-start">
                         <div className="justify-self-start">

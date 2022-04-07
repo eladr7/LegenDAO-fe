@@ -53,6 +53,7 @@ function App(): React.ReactElement {
                     <Route path="/asset" element={<Asset />} />
                     <Route path="/mint-lab" element={<MintLabLanding />} />
                     <Route path="/profile" element={<Profile />} />
+                    <Route path="/profile/collected" element={<Profile />} />
                     <Route path="/airdrop" element={<AirDrop />} />
                     <Route path="/collections" element={<MyCollections />} />
                     <Route path="/form-creation" element={<FormCreation />} />

@@ -34,7 +34,7 @@ export default function CreationFormPanel({ onCloseBtnClicked }: Props): React.R
     });
 
     const onSubmit = (data: ICreationForms) => {
-        console.log(data);
+        return Boolean(data);
     };
 
     return (

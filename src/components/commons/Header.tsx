@@ -2,13 +2,17 @@ import React, { useCallback } from "react";
 import cn from "classnames";
 import { Branding } from "./Branding";
 import MenuIcon from "../icons/MenuIcon";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import DiscordIcon from "../icons/DiscordIcon";
 import TwitterIcon from "../icons/TwitterIcon";
 import Button from "./Button";
 import WalletIcon from "../icons/WalletIcon";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
-import { toggleBalanceMenu, toggleSidebar } from "../../features/accessibility/accessibilitySlice";
+import {
+    toggleBalanceMenu,
+    toggleCreationFormPanel,
+    toggleSidebar,
+} from "../../features/accessibility/accessibilitySlice";
 import Wallet from "../../classes/Wallet";
 import { setPrimaryAddress } from "../../features/wallet/walletSlice";
 import BalancesPanel from "../BalancesPanel";
@@ -23,6 +27,7 @@ type Props = {
 };
 
 export function Header({ type, domainNode }: Props): React.ReactElement {
+    const navigate = useNavigate();
     const walletState = useAppSelector((state) => state.wallet);
     const accessibilityState = useAppSelector((state) => state.accessibility);
     const dispatch = useAppDispatch();
@@ -48,6 +53,14 @@ export function Header({ type, domainNode }: Props): React.ReactElement {
         window.open("https://app.osmosis.zone/?from=ATOM&to=OSMO", "_blank");
     }, []);
 
+    const handleOnCollectionsBtnClicked = useCallback(() => {
+        navigate("/profile/collected");
+    }, [navigate]);
+
+    const handleOnCreateBtnClicked = useCallback(() => {
+        dispatch(toggleCreationFormPanel(true));
+    }, [dispatch]);
+
     const renderDomain = useCallback(() => {
         return domainNode;
     }, [domainNode]);
@@ -55,7 +68,7 @@ export function Header({ type, domainNode }: Props): React.ReactElement {
     const renderActions = useCallback(() => {
         return (
             <div className="flex flex-row flex-nowrap justify-end items-center">
-                <div 
+                <div
                     className="w-icon h-icon grow-0 shrink-0 mr-8 last:mr-0"
                     onClick={() => {
                         window.open(SOCIAL_NETWORK_URL.discord, "_blank");
@@ -63,7 +76,7 @@ export function Header({ type, domainNode }: Props): React.ReactElement {
                 >
                     <DiscordIcon />
                 </div>
-                <div 
+                <div
                     className="w-icon h-icon grow-0 shrink-0 mr-8 last:mr-0"
                     onClick={() => {
                         window.open(SOCIAL_NETWORK_URL.twitter, "_blank");
@@ -226,10 +239,10 @@ export function Header({ type, domainNode }: Props): React.ReactElement {
                         <Button bigness="sm" bTransparent onClick={handleOnGetLGNDBtnClicked}>
                             Get $LGND
                         </Button>
-                        <Button bigness="sm" bTransparent>
+                        <Button bigness="sm" bTransparent onClick={handleOnCollectionsBtnClicked}>
                             Collections
                         </Button>
-                        <Button bigness="sm" bTransparent>
+                        <Button bigness="sm" bTransparent onClick={handleOnCreateBtnClicked}>
                             Create
                         </Button>
                         <div className="relative ml-4 first:ml-0">
@@ -244,7 +257,15 @@ export function Header({ type, domainNode }: Props): React.ReactElement {
                 </div>
             </header>
         );
-    }, [accessibilityState.bBalanceMenuOn, handleOnGetLGNDBtnClicked, renderActions, renderMenuBtn, renderWalletBtn]);
+    }, [
+        accessibilityState.bBalanceMenuOn,
+        handleOnCollectionsBtnClicked,
+        handleOnCreateBtnClicked,
+        handleOnGetLGNDBtnClicked,
+        renderActions,
+        renderMenuBtn,
+        renderWalletBtn,
+    ]);
 
     const renderContent = useCallback((): React.ReactElement => {
         switch (type) {

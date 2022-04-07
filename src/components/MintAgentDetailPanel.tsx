@@ -2,7 +2,6 @@ import React from "react";
 import cn from "classnames";
 import Panel from "./commons/Panel";
 import { TMintAgent } from "../classes/MintAgent";
-import Button from "./commons/Button";
 
 type Props = {
     mintAgent: TMintAgent;

@@ -24,8 +24,10 @@ import {
 import { setSuccessMessage } from "../features/mint/mintSlice";
 import MintAgentDetailPanel from "../components/MintAgentDetailPanel";
 import { SOCIAL_NETWORK_URL } from "../constants/linkSocial";
+import { useNavigate } from "react-router-dom";
 
 export default function MyCollections(): React.ReactElement {
+    const navigate = useNavigate();
     const { state } = useContext(AppContext);
     const collectionState = useAppSelector((state) => state.collection);
     const accessibilityState = useAppSelector((state) => state.accessibility);
@@ -47,8 +49,8 @@ export default function MyCollections(): React.ReactElement {
     }, [dispatch]);
 
     const handleOnMyCollectionBtnClicked = useCallback(() => {
-        console.log("work");
-    }, []);
+        navigate("/profile/collected");
+    }, [navigate]);
 
     const handleOnEnterBtnClicked = useCallback(() => {
         dispatch(toggleEnter(true));
