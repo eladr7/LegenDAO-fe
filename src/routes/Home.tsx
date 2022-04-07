@@ -2,6 +2,11 @@ import Article from "../components/commons/Article";
 import cn from "classnames";
 import { DefaultLayout } from "../components/layouts/DefaultLayout";
 
+import imgTank01 from "./../assets/images/tank-01.png";
+import imgYetiSleep01 from "./../assets/images/yeti-sleep-01.png";
+import imgTank01Filter from "./../assets/images/tank-01-filter.png";
+import imgYeti01 from "./../assets/images/yeti-01.png";
+import imgYeti02 from "./../assets/images/yeti-02.png";
 import imgMountain01 from "./../assets/images/mountain-01.png";
 import imgLab01 from "./../assets/images/lab-01.png";
 import Button from "../components/commons/Button";
@@ -30,6 +35,28 @@ function Home(): React.ReactElement {
                     )}
                     style={{ backgroundImage: `url(${imgLab01})` }}
                 >
+                    <div
+                        className={cn(
+                            "absolute left-0 bottom-20 w-[400px] h-[800px]",
+                            "bg-no-repeat bg-contain bg-left-bottom"
+                        )}
+                        style={{ backgroundImage: `url(${imgTank01})` }}
+                    ></div>
+                    <div
+                        className={cn(
+                            "absolute left-0 bottom-60 w-[280px] h-[700px]",
+                            "bg-no-repeat bg-contain bg-left-bottom"
+                        )}
+                        style={{ backgroundImage: `url(${imgYetiSleep01})` }}
+                    ></div>
+                    <div
+                        className={cn(
+                            "absolute left-0 bottom-52 w-[285px] h-[700px]",
+                            "bg-no-repeat bg-contain bg-left-bottom"
+                        )}
+                        style={{ backgroundImage: `url(${imgTank01Filter})` }}
+                    ></div>
+
                     <div
                         className={cn("absolute top-0 left-0 right-0 bottom-0", "bg-cyan-900/50")}
                     ></div>
@@ -60,7 +87,22 @@ function Home(): React.ReactElement {
                     style={{ backgroundImage: `url(${imgMountain01})` }}
                 >
                     <div
-                        className={cn("absolute top-0 left-0 right-0 bottom-0", "bg-red-900/25")}
+                        className={cn(
+                            "absolute right-0 bottom-0 w-3/4 h-3/4",
+                            "bg-no-repeat bg-contain bg-right-bottom"
+                        )}
+                        style={{ backgroundImage: `url(${imgYeti01})` }}
+                    ></div>
+                    <div
+                        className={cn(
+                            "absolute left-0 bottom-0 w-2/3 h-2/3",
+                            "bg-no-repeat bg-contain bg-left-bottom"
+                        )}
+                        style={{ backgroundImage: `url(${imgYeti02})` }}
+                    ></div>
+
+                    <div
+                        className={cn("absolute top-0 left-0 right-0 bottom-0", "bg-pink-600/40")}
                     ></div>
                     <div
                         className={cn("absolute top-0 left-0 right-0 bottom-0", "bg-slate-900/40")}
