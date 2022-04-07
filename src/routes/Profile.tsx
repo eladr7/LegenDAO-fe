@@ -27,7 +27,7 @@ function isTab(tab: string): tab is Tab {
 
 export default function Profile(): React.ReactElement {
     const { pathname } = useLocation();
-    const getInitialTab = useCallback((): Tab => {        
+    const getInitialTab = useCallback((): Tab => {
         if (!isTab(pathname)) return "/profile/general";
         return pathname;
     }, [pathname]);
@@ -81,7 +81,6 @@ export default function Profile(): React.ReactElement {
     }, [handleOnCollectedTabClicked, handleOnCreatedTabClicked, handleOnGeneralTabClicked, tab]);
 
     const renderDomain = useCallback(() => {
-
         const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
             const value = e.target.value;
             let error = "";
@@ -90,12 +89,12 @@ export default function Profile(): React.ReactElement {
                 error = "You can use letters and digits only";
             }
             setMyName({
-                ...myName, 
-                value, 
-                error 
+                ...myName,
+                value,
+                error,
             });
         };
-        
+
         switch (tab) {
             case "/profile/general": {
                 return (
@@ -109,14 +108,16 @@ export default function Profile(): React.ReactElement {
                             </label>
                             <div className="flex flex-col text-red-800">
                                 <label className="h-[40px] text-base">{myName?.error}</label>
-                                <div className="flex flex-row items-center px-[26px] py-3 bg-slate-900 text-white rounded-[10px]">
+                                <div className="flex flex-row items-center px-6 py-3 bg-slate-900 text-white rounded-[10px]">
                                     <Input
                                         id="input-profile/general/my-name"
                                         placeholder="Enter your name"
                                         className="px-0 py-0 bg-slate-900/0 text-white/100 focus:outline-none h-fit"
                                         onChange={handleOnChange}
                                     />
-                                    <PencilIcon size="18" className="w-[18px] h-[18px]"/>
+                                    <div className="ml-6 w-[18px] h-[18px] grow-0 shrink-0">
+                                        <PencilIcon size={18} />
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -129,7 +130,9 @@ export default function Profile(): React.ReactElement {
                         <div className="justify-self-end flex flex-col flex-nowrap justify-start items-stretch">
                             <ProfileItemsPanel />
                             <div className="mt-8 flex flex-col flex-nowrap justify-start items-center">
-                                <div className="mb-4 last:mb-0 font-semibold text-lg">Loot Boxes</div>
+                                <div className="mb-4 last:mb-0 font-semibold text-lg">
+                                    Loot Boxes
+                                </div>
                                 <div className="mb-8 last:mb-0 text-center text-base">
                                     Where do they come from? What&apos;s inside?
                                     <br />
@@ -160,7 +163,9 @@ export default function Profile(): React.ReactElement {
                         <div className="justify-self-end flex flex-col flex-nowrap justify-start items-stretch">
                             <ProfileItemsPanel />
                             <div className="mt-8 flex flex-col flex-nowrap justify-start items-center">
-                                <div className="mb-4 last:mb-0 font-semibold text-lg">Loot Boxes</div>
+                                <div className="mb-4 last:mb-0 font-semibold text-lg">
+                                    Loot Boxes
+                                </div>
                                 <div className="mb-8 last:mb-0 text-center text-base">
                                     Where do they come from? What&apos;s inside?
                                     <br />
@@ -191,7 +196,9 @@ export default function Profile(): React.ReactElement {
                         <div className="justify-self-end flex flex-col flex-nowrap justify-start items-stretch">
                             <ProfileItemsPanel />
                             <div className="mt-8 flex flex-col flex-nowrap justify-start items-center">
-                                <div className="mb-4 last:mb-0 font-semibold text-lg">Loot Boxes</div>
+                                <div className="mb-4 last:mb-0 font-semibold text-lg">
+                                    Loot Boxes
+                                </div>
                                 <div className="mb-8 last:mb-0 text-center text-base">
                                     Where do they come from? What&apos;s inside?
                                     <br />

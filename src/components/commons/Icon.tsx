@@ -4,13 +4,13 @@ import cn from "classnames";
 type Props = {
     children: React.ReactNode;
     className?: string;
-    size?: string;
+    size?: number;
 };
 
 export default function Icon({
     children,
     className,
-    size = "24",
+    size = 24,
 }: Props): React.ReactElement {
     return (
         <svg
