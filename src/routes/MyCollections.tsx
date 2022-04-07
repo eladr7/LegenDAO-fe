@@ -97,11 +97,13 @@ export default function MyCollections(): React.ReactElement {
         if (!collectionState.bEntered) {
             return (
                 <div
-                    className="w-full max-w-[700px] h-[500px] bg-no-repeat container bg-center flex justify-center items-center"
+                    className="relative w-full max-w-[700px] h-[500px] bg-no-repeat container bg-center flex justify-center items-center"
                     style={{ backgroundImage: `url(${imgTopSecretCol01})` }}
                 >
-                    <Button bigness="xl" onClick={handleOnEnterBtnClicked}>
-                        <span className="font-bold">Enter</span>
+                    <div className="absolute top-0 left-0 right-0 bottom-0 bg-slate-900/75"></div>
+                    <div className="absolute top-0 left-0 right-0 bottom-0 bg-blue-900/25"></div>
+                    <Button className="z-10" onClick={handleOnEnterBtnClicked}>
+                        <span className="px-12 font-bold">Enter</span>
                     </Button>
                 </div>
             );
@@ -111,20 +113,18 @@ export default function MyCollections(): React.ReactElement {
             <div
                 className={cn(
                     "relative flex justify-center items-center",
-                    "w-full max-w-[700px] h-[500px] bg-no-repeat container bg-center",
-                    { grayscale: !collectionState.whitelistSpot }
+                    "w-full max-w-[700px] h-[500px] bg-no-repeat container bg-center"
                 )}
                 style={{ backgroundImage: `url(${imgTopSecretColMintBg01})` }}
             >
-                <div className="absolute top-0 left-0 right-0 bottom-0 bg-slate-900/50"></div>
+                <div className="absolute top-0 left-0 right-0 bottom-0 bg-slate-900/70"></div>
                 <Button
-                    bigness="xl"
                     onClick={handleOnMintBtnClicked}
                     className="z-10"
                     bTransparent={!collectionState.whitelistSpot}
                     disabled={!collectionState.whitelistSpot}
                 >
-                    <span className="font-bold">Mint</span>
+                    <span className="px-12 font-bold">Mint</span>
                 </Button>
             </div>
         );
@@ -223,7 +223,7 @@ export default function MyCollections(): React.ReactElement {
 
                     <div className="mb-8 last:mb-0 flex flex-row flex-nowrap justify-start items-center">
                         <div className="ml-8 first:ml-0 font-bold">Creators: XXXX XXXXX XXXX</div>
-                        <div 
+                        <div
                             className="ml-8 first:ml-0 w-icon h-icon grow-0 shrink-0"
                             onClick={() => {
                                 window.open(SOCIAL_NETWORK_URL.discord, "_blank");
@@ -231,7 +231,7 @@ export default function MyCollections(): React.ReactElement {
                         >
                             <DiscordIcon />
                         </div>
-                        <div 
+                        <div
                             className="ml-8 first:ml-0 w-icon h-icon grow-0 shrink-0"
                             onClick={() => {
                                 window.open(SOCIAL_NETWORK_URL.twitter, "_blank");
@@ -267,13 +267,19 @@ export default function MyCollections(): React.ReactElement {
                             onClick={handleOnGetWhitelistSpotBtnClicked}
                         >
                             <div className="flex flex-row flex-nowrap">
-                                <span>
-                                    {collectionState.whitelistSpot
-                                        ? "Whitelisted"
-                                        : "Get a Whitelist Spot"}
-                                </span>
+                                {collectionState.whitelistSpot ? (
+                                    <span className="w-44">Whitelisted</span>
+                                ) : (
+                                    <span className="w-44">Get a Whitelist Spot</span>
+                                )}
+
                                 {collectionState.whitelistSpot && (
-                                    <div className="ml-4 first:ml-0 w-icon h-icon grow-0 shrink-0">
+                                    <div
+                                        className={cn(
+                                            "absolute right-4",
+                                            "ml-4 first:ml-0 w-icon h-icon grow-0 shrink-0"
+                                        )}
+                                    >
                                         <CheckIcon className="fill-purple-700" />
                                     </div>
                                 )}
@@ -281,7 +287,7 @@ export default function MyCollections(): React.ReactElement {
                         </Button>
                         {collectionState.bEntered && (
                             <Button bTransparent onClick={handleOnMyCollectionBtnClicked}>
-                                My Collection
+                                <span className="w-44">My Collection</span>
                             </Button>
                         )}
                     </div>
