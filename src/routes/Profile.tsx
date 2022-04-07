@@ -7,14 +7,19 @@ import Input from "../components/commons/Input";
 
 import ProfileItemsPanel from "../components/ProfileItemsPanel";
 import imgArticleUniverse01Background from "./../assets/images/article-universe-01-background.png";
-import imgYetiHoodie01 from "./../assets/images/yeti-hoodie-01.png";
+import imgYetiProfile01 from "./../assets/images/yeti-profile-01.png";
 import imgBox01 from "./../assets/images/box-01.png";
 import ProfileCollectedPanel from "../components/ProfileCollectedPanel";
 import ProfileMyCollectionPanel from "../components/ProfileMyCollectionPanel";
 import { useLocation } from "react-router-dom";
+import PencilIcon from "../components/icons/PencilIcon";
 
 const TABS = ["/profile/general", "/profile/collected", "/profile/created"] as const;
 type Tab = typeof TABS[number];
+interface IMyName {
+    value: string;
+    error: string;
+}
 
 function isTab(tab: string): tab is Tab {
     return TABS.includes(tab as Tab);
@@ -28,6 +33,7 @@ export default function Profile(): React.ReactElement {
     }, [pathname]);
 
     const [tab, setTab] = useState<Tab>(getInitialTab());
+    const [myName, setMyName] = useState<IMyName>();
 
     const handleOnGeneralTabClicked = useCallback(() => {
         setTab("/profile/general");
@@ -75,33 +81,56 @@ export default function Profile(): React.ReactElement {
     }, [handleOnCollectedTabClicked, handleOnCreatedTabClicked, handleOnGeneralTabClicked, tab]);
 
     const renderDomain = useCallback(() => {
+
+        const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+            const value = e.target.value;
+            let error = "";
+            const regex = /^[0-9a-zA-Z]+$/.test(value);
+            if (value && !regex) {
+                error = "You can use letters and digits only";
+            }
+            setMyName({
+                ...myName, 
+                value, 
+                error 
+            });
+        };
+        
         switch (tab) {
             case "/profile/general": {
                 return (
                     <div className="w-full grid grid-cols-3 z-10 text-white justify-items-center items-start">
-                        <div className="flex flex-row flex-nowrap items-center justify-self-start">
+                        <div className="flex flex-row flex-nowrap items-end justify-self-start">
                             <label
-                                className="mr-4 last:mr-0"
+                                className="mr-4 last:mr-0 h-[40px]"
                                 htmlFor="input-profile/general/my-name"
                             >
                                 My name:
                             </label>
-                            <Input
-                                id="input-profile/general/my-name"
-                                placeholder="Enter your name"
-                            />
+                            <div className="flex flex-col text-red-800">
+                                <label className="h-[40px] text-base">{myName?.error}</label>
+                                <div className="flex flex-row items-center px-[26px] py-3 bg-slate-900 text-white rounded-[10px]">
+                                    <Input
+                                        id="input-profile/general/my-name"
+                                        placeholder="Enter your name"
+                                        className="px-0 py-0 bg-slate-900/0 text-white/100 focus:outline-none h-fit"
+                                        onChange={handleOnChange}
+                                    />
+                                    <PencilIcon size="18" className="w-[18px] h-[18px]"/>
+                                </div>
+                            </div>
                         </div>
 
                         <div
                             className="w-[500px] h-[600px] bg-contain bg-top bg-no-repeat"
-                            style={{ backgroundImage: `url(${imgYetiHoodie01})` }}
+                            style={{ backgroundImage: `url(${imgYetiProfile01})` }}
                         ></div>
 
                         <div className="justify-self-end flex flex-col flex-nowrap justify-start items-stretch">
                             <ProfileItemsPanel />
                             <div className="mt-8 flex flex-col flex-nowrap justify-start items-center">
-                                <div className="mb-4 last:mb-0 font-bold">Loot Boxes</div>
-                                <div className="mb-8 last:mb-0 text-center">
+                                <div className="mb-4 last:mb-0 font-semibold text-lg">Loot Boxes</div>
+                                <div className="mb-8 last:mb-0 text-center text-base">
                                     Where do they come from? What&apos;s inside?
                                     <br />
                                     Stay tuned to learn more
@@ -125,14 +154,14 @@ export default function Profile(): React.ReactElement {
 
                         <div
                             className="w-[500px] h-[600px] bg-contain bg-top bg-no-repeat"
-                            style={{ backgroundImage: `url(${imgYetiHoodie01})` }}
+                            style={{ backgroundImage: `url(${imgYetiProfile01})` }}
                         ></div>
 
                         <div className="justify-self-end flex flex-col flex-nowrap justify-start items-stretch">
                             <ProfileItemsPanel />
                             <div className="mt-8 flex flex-col flex-nowrap justify-start items-center">
-                                <div className="mb-4 last:mb-0 font-bold">Loot Boxes</div>
-                                <div className="mb-8 last:mb-0 text-center">
+                                <div className="mb-4 last:mb-0 font-semibold text-lg">Loot Boxes</div>
+                                <div className="mb-8 last:mb-0 text-center text-base">
                                     Where do they come from? What&apos;s inside?
                                     <br />
                                     Stay tuned to learn more
@@ -156,14 +185,14 @@ export default function Profile(): React.ReactElement {
 
                         <div
                             className="w-[500px] h-[600px] bg-contain bg-top bg-no-repeat"
-                            style={{ backgroundImage: `url(${imgYetiHoodie01})` }}
+                            style={{ backgroundImage: `url(${imgYetiProfile01})` }}
                         ></div>
 
                         <div className="justify-self-end flex flex-col flex-nowrap justify-start items-stretch">
                             <ProfileItemsPanel />
                             <div className="mt-8 flex flex-col flex-nowrap justify-start items-center">
-                                <div className="mb-4 last:mb-0 font-bold">Loot Boxes</div>
-                                <div className="mb-8 last:mb-0 text-center">
+                                <div className="mb-4 last:mb-0 font-semibold text-lg">Loot Boxes</div>
+                                <div className="mb-8 last:mb-0 text-center text-base">
                                     Where do they come from? What&apos;s inside?
                                     <br />
                                     Stay tuned to learn more
@@ -178,7 +207,7 @@ export default function Profile(): React.ReactElement {
                 );
             }
         }
-    }, [tab]);
+    }, [tab, myName]);
 
     return (
         <DefaultLayout headerType="general" headerDomainNode={renderHeaderDomainNode()}>
