@@ -96,6 +96,17 @@ export default function BalancesPanel({
                 </div>
 
                 <div className="mb-6 last:mb-0 flex flex-col flex-nowrap">
+                    <div className="mb-2 last:mb-0 text-xl font-light">Undelegate</div>
+                    <div className="flex flex-row flex-nowrap items-end">
+                        <div className="font-semibold text-2xl leading-none">15 LGND</div>
+                        <span className="ml-2 first:ml-0 opacity-50 font-light leading-none">
+                            ($30.47)
+                        </span>
+                        <div className="ml-4 first:ml-0 opacity-50 leading-none text-sm border border-white rounded-lg py-1 px-4 cursor-pointer">Claim</div>
+                    </div>
+                </div>
+
+                <div className="mb-6 last:mb-0 flex flex-col flex-nowrap">
                     <div className="mb-2 last:mb-0 text-xl font-light">Unclaimed</div>
                     <div className="flex flex-row flex-nowrap items-end">
                         <div className="font-semibold text-2xl leading-none">25 LGND</div>
