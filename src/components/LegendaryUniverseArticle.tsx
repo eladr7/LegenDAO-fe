@@ -10,6 +10,7 @@ import imgYetiGirl01 from "./../assets/images/yeti-girl-01.png";
 import imgArticleUniverse01Background from "./../assets/images/article-universe-01-background.png";
 import { useAppDispatch } from "../app/hooks";
 import { toggleCreationFormPanel } from "../features/accessibility/accessibilitySlice";
+import { SOCIAL_NETWORK_URL } from "../constants/linkSocial";
 
 export default function LegendaryUniverseArticle(): React.ReactElement {
     const dispatch = useAppDispatch();
@@ -83,10 +84,20 @@ export default function LegendaryUniverseArticle(): React.ReactElement {
                     <Button bTransparent onClick={handleOnContactUsBtnClicked}>
                         Creator? Contact Us
                     </Button>
-                    <div className="ml-4 first:ml-0 w-icon-lg h-icon-lg grow-0 shrink-0">
+                    <div 
+                        className="ml-4 first:ml-0 w-icon-lg h-icon-lg grow-0 shrink-0"
+                        onClick={() => {
+                            window.open(SOCIAL_NETWORK_URL.discord, "_blank");
+                        }}
+                    >
                         <DiscordIcon />
                     </div>
-                    <div className="ml-4 first:ml-0 w-icon-lg h-icon-lg grow-0 shrink-0">
+                    <div 
+                        className="ml-4 first:ml-0 w-icon-lg h-icon-lg grow-0 shrink-0"
+                        onClick={() => {
+                            window.open(SOCIAL_NETWORK_URL.twitter, "_blank");
+                        }}
+                    >
                         <TwitterIcon />
                     </div>
                 </div>

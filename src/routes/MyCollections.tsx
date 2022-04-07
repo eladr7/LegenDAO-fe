@@ -23,6 +23,7 @@ import {
 } from "../features/accessibility/accessibilitySlice";
 import { setSuccessMessage } from "../features/mint/mintSlice";
 import MintAgentDetailPanel from "../components/MintAgentDetailPanel";
+import { SOCIAL_NETWORK_URL } from "../constants/linkSocial";
 
 export default function MyCollections(): React.ReactElement {
     const { state } = useContext(AppContext);
@@ -220,10 +221,20 @@ export default function MyCollections(): React.ReactElement {
 
                     <div className="mb-8 last:mb-0 flex flex-row flex-nowrap justify-start items-center">
                         <div className="ml-8 first:ml-0 font-bold">Creators: XXXX XXXXX XXXX</div>
-                        <div className="ml-8 first:ml-0 w-icon h-icon grow-0 shrink-0">
+                        <div 
+                            className="ml-8 first:ml-0 w-icon h-icon grow-0 shrink-0"
+                            onClick={() => {
+                                window.open(SOCIAL_NETWORK_URL.discord, "_blank");
+                            }}
+                        >
                             <DiscordIcon />
                         </div>
-                        <div className="ml-8 first:ml-0 w-icon h-icon grow-0 shrink-0">
+                        <div 
+                            className="ml-8 first:ml-0 w-icon h-icon grow-0 shrink-0"
+                            onClick={() => {
+                                window.open(SOCIAL_NETWORK_URL.twitter, "_blank");
+                            }}
+                        >
                             <TwitterIcon />
                         </div>
                     </div>

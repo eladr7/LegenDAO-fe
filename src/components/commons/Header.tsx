@@ -12,6 +12,7 @@ import { toggleBalanceMenu, toggleSidebar } from "../../features/accessibility/a
 import Wallet from "../../classes/Wallet";
 import { setPrimaryAddress } from "../../features/wallet/walletSlice";
 import BalancesPanel from "../BalancesPanel";
+import { SOCIAL_NETWORK_URL } from "../../constants/linkSocial";
 
 const HEADER_TYPES = ["intro", "general", "collection"] as const;
 export type THeaderType = typeof HEADER_TYPES[number];
@@ -54,10 +55,20 @@ export function Header({ type, domainNode }: Props): React.ReactElement {
     const renderActions = useCallback(() => {
         return (
             <div className="flex flex-row flex-nowrap justify-end items-center">
-                <div className="w-icon h-icon grow-0 shrink-0 mr-8 last:mr-0">
+                <div 
+                    className="w-icon h-icon grow-0 shrink-0 mr-8 last:mr-0"
+                    onClick={() => {
+                        window.open(SOCIAL_NETWORK_URL.discord, "_blank");
+                    }}
+                >
                     <DiscordIcon />
                 </div>
-                <div className="w-icon h-icon grow-0 shrink-0 mr-8 last:mr-0">
+                <div 
+                    className="w-icon h-icon grow-0 shrink-0 mr-8 last:mr-0"
+                    onClick={() => {
+                        window.open(SOCIAL_NETWORK_URL.twitter, "_blank");
+                    }}
+                >
                     <TwitterIcon />
                 </div>
             </div>
@@ -136,16 +147,16 @@ export function Header({ type, domainNode }: Props): React.ReactElement {
                         <Link className="mr-8 last:mr-0" to="/about">
                             About
                         </Link>
-                        <Link className="mr-8 last:mr-0" to="/">
+                        <Link className="mr-8 last:mr-0" to="/docs">
                             Docs
                         </Link>
-                        <Link className="mr-8 last:mr-0" to="/">
+                        <Link className="mr-8 last:mr-0" to="/faq">
                             FAQ
                         </Link>
-                        <Link className="mr-8 last:mr-0" to="/">
+                        <Link className="mr-8 last:mr-0" to="/governance">
                             Governance
                         </Link>
-                        <Link className="mr-8 last:mr-0" to="/">
+                        <Link className="mr-8 last:mr-0" to="/community">
                             Community
                         </Link>
                     </nav>
