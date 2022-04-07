@@ -117,15 +117,19 @@ export default function MyCollections(): React.ReactElement {
                 )}
                 style={{ backgroundImage: `url(${imgTopSecretColMintBg01})` }}
             >
-                <div className="absolute top-0 left-0 right-0 bottom-0 bg-slate-900/70"></div>
-                <Button
-                    onClick={handleOnMintBtnClicked}
-                    className="z-10"
-                    bTransparent={!collectionState.whitelistSpot}
-                    disabled={!collectionState.whitelistSpot}
-                >
-                    <span className="px-12 font-bold">Mint</span>
-                </Button>
+                {!mintState.agent && (
+                    <div className="absolute top-0 left-0 right-0 bottom-0 bg-slate-900/70"></div>
+                )}
+                {!mintState.agent && (
+                    <Button
+                        onClick={handleOnMintBtnClicked}
+                        className="z-10"
+                        bTransparent={!collectionState.whitelistSpot}
+                        disabled={!collectionState.whitelistSpot}
+                    >
+                        <span className="px-12 font-bold">Mint</span>
+                    </Button>
+                )}
             </div>
         );
     }, [
@@ -133,6 +137,7 @@ export default function MyCollections(): React.ReactElement {
         collectionState.whitelistSpot,
         handleOnEnterBtnClicked,
         handleOnMintBtnClicked,
+        mintState.agent,
     ]);
 
     const renderModal = useCallback(() => {
