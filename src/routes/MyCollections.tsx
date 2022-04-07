@@ -322,7 +322,7 @@ export default function MyCollections(): React.ReactElement {
     }, []);
 
     return (
-        <DefaultLayout headerType="collection" bFooterOn sidebarTab="tab/collections">
+        <DefaultLayout headerType="collection" sidebarTab="tab/collections">
             <Article className="grow text-white">
                 <div
                     className={cn(

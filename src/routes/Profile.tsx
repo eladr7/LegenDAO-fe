@@ -169,7 +169,7 @@ export default function Profile(): React.ReactElement {
     }, [tab]);
 
     return (
-        <DefaultLayout headerType="general" bFooterOn headerDomainNode={renderHeaderDomainNode()}>
+        <DefaultLayout headerType="general" headerDomainNode={renderHeaderDomainNode()}>
             <Article className="grow">
                 <div
                     className={cn(
