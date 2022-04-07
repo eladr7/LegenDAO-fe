@@ -37,21 +37,21 @@ function Home(): React.ReactElement {
                 >
                     <div
                         className={cn(
-                            "absolute left-0 bottom-20 w-[400px] h-[800px]",
+                            "absolute left-0 bottom-20 w-[400px] h-[1000px]",
                             "bg-no-repeat bg-contain bg-left-bottom"
                         )}
                         style={{ backgroundImage: `url(${imgTank01})` }}
                     ></div>
                     <div
                         className={cn(
-                            "absolute left-0 bottom-60 w-[280px] h-[700px]",
+                            "absolute left-0 bottom-60 w-[380px] h-[700px]",
                             "bg-no-repeat bg-contain bg-left-bottom"
                         )}
                         style={{ backgroundImage: `url(${imgYetiSleep01})` }}
                     ></div>
                     <div
                         className={cn(
-                            "absolute left-0 bottom-52 w-[285px] h-[700px]",
+                            "absolute left-0 bottom-60 w-[350px] h-[700px]",
                             "bg-no-repeat bg-contain bg-left-bottom"
                         )}
                         style={{ backgroundImage: `url(${imgTank01Filter})` }}
