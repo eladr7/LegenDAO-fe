@@ -43,7 +43,7 @@ export default function Button({
             ref={ref}
             className={cn(
                 getBignessClassNames(),
-                "group ml-4 first:ml-0",
+                "relative group ml-4 first:ml-0",
                 "flex flex-row flex-nowrap justify-center items-center shrink-0 grow-0",
                 "text-white whitespace-nowrap select-none transition-colors",
                 !bTransparent
