@@ -17,20 +17,20 @@ export default function LegendaryTokenArticle(): React.ReactElement {
             <div
                 className={cn(
                     "absolute bottom-0 left-0 right-0 h-[200px] z-20",
-                    "bg-gradient-to-t from-slate-900 to-slate-900/0"
+                    "bg-gradient-to-t from-primary-mint-lab to-slate-900/0"
                 )}
             ></div>
 
             <div
                 className={cn(
                     "absolute top-0 left-0 right-0 h-[200px] z-20",
-                    "bg-gradient-to-b from-slate-900 to-slate-900/0"
+                    "bg-gradient-to-b from-primary-mint-lab to-slate-900/0"
                 )}
             ></div>
 
             <div
                 className={cn(
-                    "w-1/2 z-20 bg-slate-900 px-16",
+                    "w-1/2 z-20 bg-primary-mint-lab px-16",
                     "text-white flex flex-col flex-nowrap justify-center items-end"
                 )}
             >
@@ -49,7 +49,7 @@ export default function LegendaryTokenArticle(): React.ReactElement {
                 <div
                     className={cn(
                         "absolute top-0 bottom-0 left-0 w-1/2",
-                        "bg-gradient-to-r from-slate-900 to-slate-900/0"
+                        "bg-gradient-to-r from-primary-mint-lab to-slate-900/0"
                     )}
                 ></div>
                 <div

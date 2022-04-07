@@ -36,7 +36,7 @@ export default function LegendaryUniverseArticle(): React.ReactElement {
             <div
                 className={cn(
                     "absolute bottom-0 left-0 right-0 h-[200px] z-20",
-                    "bg-gradient-to-t from-slate-900 via-slate-900/75 to-slate-900/0"
+                    "bg-gradient-to-t from-primary-mint-lab via-primary-mint-lab-900/75 to-slate-900/0"
                 )}
             ></div>
 
@@ -44,7 +44,7 @@ export default function LegendaryUniverseArticle(): React.ReactElement {
                 <div
                     className={cn(
                         "absolute top-0 bottom-0 right-0 w-1/2",
-                        "bg-gradient-to-l from-slate-900 via-slate-900/75 to-slate-900/0"
+                        "bg-gradient-to-l from-primary-mint-lab via-primary-mint-lab/75 to-slate-900/0"
                     )}
                 ></div>
                 <div
@@ -64,7 +64,7 @@ export default function LegendaryUniverseArticle(): React.ReactElement {
             </div>
             <div
                 className={cn(
-                    "w-1/2 z-10 bg-slate-900 px-16",
+                    "w-1/2 z-10 bg-primary-mint-lab px-16",
                     "text-white flex flex-col flex-nowrap justify-center items-stretch"
                 )}
             >
