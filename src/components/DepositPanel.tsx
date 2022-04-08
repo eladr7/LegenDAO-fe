@@ -10,7 +10,7 @@ type Props = {
 
 export default function DepositPanel({ onCloseBtnClicked }: Props): React.ReactElement {
     return (
-        <Panel onCloseBtnClicked={onCloseBtnClicked}>
+        <Panel color="lighten" onCloseBtnClicked={onCloseBtnClicked}>
             <div
                 className={cn("w-[655px] text-white", "flex flex-col items-stretch justify-start")}
             >
@@ -32,7 +32,9 @@ export default function DepositPanel({ onCloseBtnClicked }: Props): React.ReactE
                     />
                 </div>
                 <div className="mb-6 last:mb-0 flex flex-col flex-nowrap">
-                    <Button className="font-bold" bigness="xl">Deposit</Button>
+                    <Button className="font-bold" bigness="xl">
+                        Deposit
+                    </Button>
                 </div>
             </div>
         </Panel>

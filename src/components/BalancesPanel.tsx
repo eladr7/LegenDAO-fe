@@ -88,7 +88,7 @@ export default function BalancesPanel({
     );
 
     return (
-        <Panel onCloseBtnClicked={onCloseBtnClicked}>
+        <Panel color="lighten" onCloseBtnClicked={onCloseBtnClicked}>
             <div
                 className={cn("w-[274px] text-white", "flex flex-col items-stretch justify-start")}
             >

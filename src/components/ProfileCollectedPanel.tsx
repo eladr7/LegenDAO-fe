@@ -29,33 +29,27 @@ export default function ProfileCollectedPanel(): React.ReactElement {
         ];
     }, []);
 
-    const renderListItem = useCallback(
-        () => {
-            return listItems.map((item, index) => {
-                return (
-                    <div className="flex flex-col justify-center items-center" key={index}>
-                        <div
-                            className={cn(
-                                "w-[124px] h-[124px] bg-slate-900/75 rounded-lg hover:bg-slate-900 transition-colors",
-                                "bg-contain bg-center bg-no-repeat cursor-pointer"
-                            )}
-                            style={{backgroundImage: `url(${item.image})`}}
-                        ></div>
-                        <div className="mt-2 text-teal-200 font-normal text-sm">{item.name}</div>
-                    </div>
-                );
-            });
-        },
-        [listItems],
-    );
-    
+    const renderListItem = useCallback(() => {
+        return listItems.map((item, index) => {
+            return (
+                <div className="flex flex-col justify-center items-center" key={index}>
+                    <div
+                        className={cn(
+                            "w-[124px] h-[124px] bg-slate-900/75 rounded-lg hover:bg-slate-900 transition-colors",
+                            "bg-contain bg-center bg-no-repeat cursor-pointer"
+                        )}
+                        style={{ backgroundImage: `url(${item.image})` }}
+                    ></div>
+                    <div className="mt-2 text-teal-200 font-normal text-sm">{item.name}</div>
+                </div>
+            );
+        });
+    }, [listItems]);
 
     return (
-        <Panel className="min-h-[694px]">
+        <Panel color="lighten" className="min-h-[694px]">
             <div className="mb-4 last:mb-0 text-teal-200 text-xl">Collected</div>
-            <div className="grid grid-cols-2 gap-4">
-                { renderListItem() }
-            </div>
+            <div className="grid grid-cols-2 gap-4">{renderListItem()}</div>
         </Panel>
     );
 }

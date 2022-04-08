@@ -162,6 +162,7 @@ export default function MyCollections(): React.ReactElement {
                     onOuterClick={handleOnMintSuccessfulModalOuterClicked}
                 >
                     <Panel
+                        color="lighten"
                         className="text-white"
                         onCloseBtnClicked={handleOnMintSuccessfulModalOuterClicked}
                     >
