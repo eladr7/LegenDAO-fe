@@ -25,7 +25,7 @@ export default function Panel({
         );
     }, [onCloseBtnClicked]);
 
-    const renderPanel: any = useCallback(() => {
+    const renderPanel = useCallback(() => {
         if (color === "darker") {
             return (
                 <div className={cn("relative p-8 z-10", className)}>
@@ -100,5 +100,9 @@ export default function Panel({
         }
     }, [renderCloseBtn, children, className, color]);
 
-    return renderPanel();
+    const renderContent = useCallback(() => {
+        return <>{renderPanel()}</>;
+    }, [renderPanel]);
+
+    return renderContent();
 }
