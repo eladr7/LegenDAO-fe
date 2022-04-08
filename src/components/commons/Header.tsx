@@ -107,6 +107,7 @@ export function Header({ type, domainNode }: Props): React.ReactElement {
                     bTransparent
                     onClick={handleOnWalletBtnClicked}
                     bActivated={accessibilityState.bBalanceMenuOn}
+                    className={`${accessibilityState.bBalanceMenuOn && "z-10"}`}
                 >
                     <div className="flex flex-row flex-nowrap justify-center items-center">
                         <div className="w-icon h-icon grow-0 shrink-0 mr-2 last:mr-0">
@@ -203,6 +204,12 @@ export function Header({ type, domainNode }: Props): React.ReactElement {
                             {renderWalletBtn()}
                             {accessibilityState.bBalanceMenuOn && (
                                 <div className="absolute top-input-lg right-0">
+                                    <div 
+                                        className={cn(
+                                            "fixed w-full h-screen left-0 top-0",
+                                            "bg-slate-900/70"
+                                        )}
+                                    ></div>
                                     <BalancesPanel />
                                 </div>
                             )}
@@ -249,6 +256,12 @@ export function Header({ type, domainNode }: Props): React.ReactElement {
                             {renderWalletBtn()}
                             {accessibilityState.bBalanceMenuOn && (
                                 <div className="absolute top-input-lg right-0">
+                                    <div 
+                                        className={cn(
+                                            "fixed w-full h-screen left-0 top-0",
+                                            "bg-slate-900/70"
+                                        )}
+                                    ></div>
                                     <BalancesPanel />
                                 </div>
                             )}
