@@ -11,7 +11,6 @@ import {
 import { useNavigate } from "react-router-dom";
 
 type Props = {
-    
     onCloseBtnClicked?: React.MouseEventHandler<HTMLElement>;
     onDepositBtnClicked?: React.MouseEventHandler<HTMLElement>;
     onWithdrawBtnClicked?: React.MouseEventHandler<HTMLElement>;
@@ -86,9 +85,11 @@ export default function BalancesPanel({
                 className={cn("w-[274px] text-white", "flex flex-col items-stretch justify-start")}
             >
                 <div className="mb-6 last:mb-0 flex flex-col flex-nowrap">
-                    <div className="mb-2 last:mb-0 text-[18px] font-light text-white text-opacity-70">Balance</div>
+                    <div className="mb-2 last:mb-0 text-lg font-light text-white text-opacity-70">
+                        Balance
+                    </div>
                     <div className="flex flex-row flex-nowrap items-end">
-                        <div className="font-semibold text-[26px] leading-none">40.2839 LGND</div>
+                        <div className="font-semibold text-2xl leading-none">40.2839 LGND</div>
                         <span className="ml-2 first:ml-0 opacity-50 font-light leading-none">
                             ($80.37)
                         </span>
@@ -96,20 +97,32 @@ export default function BalancesPanel({
                 </div>
 
                 <div className="mb-6 last:mb-0 flex flex-col flex-nowrap">
-                    <div className="mb-2 last:mb-0 text-[18px] font-light text-white text-opacity-70">Undelegate</div>
-                    <div className="flex flex-row flex-nowrap items-end">
-                        <div className="font-semibold text-[26px] leading-none">15 LGND</div>
+                    <div className="mb-2 last:mb-0 text-lg font-light text-white text-opacity-70">
+                        Undelegate
+                    </div>
+                    <div className="flex flex-row flex-nowrap items-center">
+                        <div className="font-semibold text-2xl leading-none">15 LGND</div>
                         <span className="ml-2 first:ml-0 opacity-50 font-light leading-none">
                             ($30.47)
                         </span>
-                        <div className="ml-4 first:ml-0 leading-none text-sm border border-[#B2BAC7] rounded-lg py-1 px-4 cursor-pointer text-[#B2BAC7] opacity-30">Claim</div>
+                        
+                        <div
+                            className={cn(
+                                "ml-4 first:ml-0 py-1 px-4 leading-none text-sm",
+                                "border rounded-lg cursor-pointer opacity-30"
+                            )}
+                        >
+                            Claim
+                        </div>
                     </div>
                 </div>
 
                 <div className="mb-6 last:mb-0 flex flex-col flex-nowrap">
-                    <div className="mb-2 last:mb-0 text-[18px] font-light text-white text-opacity-70">Unclaimed</div>
+                    <div className="mb-2 last:mb-0 text-lg font-light text-white text-opacity-70">
+                        Unclaimed
+                    </div>
                     <div className="flex flex-row flex-nowrap items-end">
-                        <div className="font-semibold text-[26px] leading-none">25 LGND</div>
+                        <div className="font-semibold text-2xl leading-none">25 LGND</div>
                         <span className="ml-2 first:ml-0 opacity-50 font-light leading-none">
                             ($50.37)
                         </span>
@@ -119,7 +132,7 @@ export default function BalancesPanel({
                 <div className="mb-6 last:mb-0 flex flex-row flex-nowrap justify-between">
                     <Button
                         bigness="sm"
-                        className="grow font-light text-base h-[28px]"
+                        className="grow font-normal"
                         bTransparent
                         bActivated={accessibilityState.bDepositPanelOn}
                         onClick={handleOnDepositBtnClicked}
@@ -128,7 +141,7 @@ export default function BalancesPanel({
                     </Button>
                     <Button
                         bigness="sm"
-                        className="grow font-light text-base h-[28px]"
+                        className="grow font-normal"
                         bTransparent
                         onClick={handleOnWithdrawBtnClicked}
                     >
@@ -138,13 +151,13 @@ export default function BalancesPanel({
 
                 <div className="mb-6 last:mb-0 flex flex-col flex-nowrap items-stretch">
                     <div className="mb-4 last:mb-0 flex flex-col">
-                        <Button className="font-normal text-lg h-[42px]" bigness="lg" onClick={onGetLGNDBtnClicked}>
+                        <Button className="font-normal" bigness="lg" onClick={onGetLGNDBtnClicked}>
                             Get $LGND
                         </Button>
                     </div>
                     <div className="mb-4 last:mb-0 flex flex-col">
                         <Button
-                            className="font-light"
+                            className="font-normal"
                             bigness="lg"
                             bTransparent
                             onClick={onManageAssetBtnClicked}
@@ -154,7 +167,7 @@ export default function BalancesPanel({
                     </div>
                     <div className="mb-4 last:mb-0 flex flex-col">
                         <Button
-                            className="font-normal text-lg h-[42px]"
+                            className="font-normal"
                             bigness="lg"
                             bTransparent
                             onClick={handleOnProfileBtnClicked}
@@ -164,7 +177,7 @@ export default function BalancesPanel({
                     </div>
                     <div className="mb-4 last:mb-0 flex flex-col">
                         <Button
-                            className="font-normal text-lg h-[42px]"
+                            className="font-normal"
                             bigness="lg"
                             bTransparent
                             onClick={handleOnMyCollectionBtnClicked}
