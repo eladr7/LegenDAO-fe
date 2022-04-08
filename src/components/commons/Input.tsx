@@ -2,16 +2,18 @@ import React, { useCallback } from "react";
 import cn from "classnames";
 
 interface IProps extends React.InputHTMLAttributes<HTMLInputElement> {
-    ref?: React.LegacyRef<HTMLInputElement>;
+    refV?: React.LegacyRef<HTMLInputElement>;
     bigness?: "sm" | "md" | "lg" | "xl";
+    rightIconNode?: React.ReactNode;
     bTransparent?: boolean;
 }
 
 export default function Input({
-    ref,
+    refV,
     bigness,
     bTransparent,
     className,
+    rightIconNode,
     ...props
 }: IProps): React.ReactElement {
     const getBignessClassNames = useCallback(() => {
@@ -30,17 +32,41 @@ export default function Input({
         }
     }, [bigness]);
 
-    return (
-        <input
-            ref={ref}
-            className={cn(
-                getBignessClassNames(),
-                "disabled:opacity-50",
-                "grow shrink px-4",
-                bTransparent ? "bg-slate-900/25 text-white/90" : "bg-slate-900 text-white",
-                className
-            )}
-            {...props}
-        />
-    );
+    const renderInput = useCallback(() => {
+        return (
+            <input
+                ref={refV}
+                className={cn(
+                    getBignessClassNames(),
+                    "focus:outline-none disabled:opacity-50",
+                    "grow shrink px-4",
+                    { "pr-12": rightIconNode },
+                    bTransparent ? "bg-slate-900/25 text-white/90" : "bg-slate-900 text-white",
+                    className
+                )}
+                {...props}
+            />
+        );
+    }, [bTransparent, className, getBignessClassNames, props, refV, rightIconNode]);
+
+    const renderContent = useCallback(() => {
+        if (!rightIconNode) return renderInput();
+        return (
+            <div className="relative">
+                {renderInput()}
+                <div
+                    className={cn(
+                        "absolute right-4 top-0 bottom-0",
+                        "flex justify-center items-center"
+                    )}
+                >
+                    <div className="w-4 h-icon-sm grow-0 shrink-0 flex justify-center">
+                        {rightIconNode}
+                    </div>
+                </div>
+            </div>
+        );
+    }, [renderInput, rightIconNode]);
+
+    return renderContent();
 }

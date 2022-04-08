@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useRef, useState } from "react";
 import cn from "classnames";
 import Article from "../components/commons/Article";
 import { DefaultLayout } from "../components/layouts/DefaultLayout";
@@ -14,18 +14,17 @@ import ProfileMyCollectionPanel from "../components/ProfileMyCollectionPanel";
 import { useLocation } from "react-router-dom";
 import PencilIcon from "../components/icons/PencilIcon";
 
+const REGEXP_USERNAME = "^[0-9a-zA-Z]+$";
+
 const TABS = ["/profile/general", "/profile/collected", "/profile/created"] as const;
 type Tab = typeof TABS[number];
-interface IMyName {
-    value: string;
-    error: string;
-}
 
 function isTab(tab: string): tab is Tab {
     return TABS.includes(tab as Tab);
 }
 
 export default function Profile(): React.ReactElement {
+    const rfMyNameInput = useRef<HTMLInputElement>(null);
     const { pathname } = useLocation();
     const getInitialTab = useCallback((): Tab => {
         if (!isTab(pathname)) return "/profile/general";
@@ -33,7 +32,8 @@ export default function Profile(): React.ReactElement {
     }, [pathname]);
 
     const [tab, setTab] = useState<Tab>(getInitialTab());
-    const [myName, setMyName] = useState<IMyName>();
+    const [myName, setMyName] = useState<string>("");
+    const [myNameErrorMessage, setMyNameErrorMessage] = useState<string | undefined>(undefined);
 
     const handleOnGeneralTabClicked = useCallback(() => {
         setTab("/profile/general");
@@ -45,6 +45,22 @@ export default function Profile(): React.ReactElement {
 
     const handleOnCreatedTabClicked = useCallback(() => {
         setTab("/profile/created");
+    }, []);
+
+    const handleOnMyNameChanged = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+        if (!rfMyNameInput.current) return;
+
+        const value = e.target.value;
+        setMyName(value);
+
+        const usernameRegexp = new RegExp(REGEXP_USERNAME);
+
+        if (value && !usernameRegexp.test(value)) {
+            setMyNameErrorMessage("You can use letters and digits only");
+            rfMyNameInput.current.reportValidity();
+        } else {
+            setMyNameErrorMessage(undefined);
+        }
     }, []);
 
     const renderHeaderDomainNode = useCallback(() => {
@@ -81,46 +97,37 @@ export default function Profile(): React.ReactElement {
     }, [handleOnCollectedTabClicked, handleOnCreatedTabClicked, handleOnGeneralTabClicked, tab]);
 
     const renderDomain = useCallback(() => {
-        const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-            const value = e.target.value;
-            let error = "";
-            const regex = /^[0-9a-zA-Z]+$/.test(value);
-            if (value && !regex) {
-                error = "You can use letters and digits only";
-            }
-            setMyName({
-                ...myName,
-                value,
-                error,
-            });
-        };
-
         switch (tab) {
             case "/profile/general": {
                 return (
                     <div className="w-full grid grid-cols-3 z-10 text-white justify-items-center items-start">
-                        <div className="flex flex-row flex-nowrap items-end justify-self-start">
-                            <label
-                                className="mr-4 last:mr-0 h-[40px]"
-                                htmlFor="input-profile/general/my-name"
-                            >
-                                My name:
-                            </label>
-                            <div className="flex flex-col text-red-800">
-                                <label className="h-[40px] text-base">{myName?.error}</label>
-                                <div className="flex flex-row items-center px-6 py-3 bg-slate-900 text-white rounded-[10px]">
-                                    <Input
-                                        id="input-profile/general/my-name"
-                                        placeholder="Enter your name"
-                                        className="px-0 py-0 bg-slate-900/0 text-white/100 focus:outline-none h-fit"
-                                        onChange={handleOnChange}
-                                    />
-                                    <div className="ml-6 w-[18px] h-[18px] grow-0 shrink-0">
-                                        <PencilIcon size={18} />
-                                    </div>
-                                </div>
+                        <form
+                            className="flex flex-row flex-nowrap items-center justify-self-start"
+                            onSubmit={(e: React.FormEvent) => {
+                                e.preventDefault();
+                            }}
+                        >
+                            <div className="flex flex-col mr-4 last:mr-0">
+                                <label className="pt-8" htmlFor="input-profile/general/my-name">
+                                    My name:
+                                </label>
                             </div>
-                        </div>
+                            <div className="flex flex-col">
+                                <label className="text-red-500 h-8">{myNameErrorMessage}</label>
+
+                                <Input
+                                    refV={rfMyNameInput}
+                                    rightIconNode={<PencilIcon size={18} />}
+                                    bigness="lg"
+                                    id="input-profile/general/my-name"
+                                    placeholder="Enter your name"
+                                    onChange={handleOnMyNameChanged}
+                                    value={myName}
+                                    pattern={REGEXP_USERNAME}
+                                    autoComplete="off"
+                                />
+                            </div>
+                        </form>
 
                         <div
                             className="w-[500px] h-[600px] bg-contain bg-top bg-no-repeat"
@@ -214,7 +221,7 @@ export default function Profile(): React.ReactElement {
                 );
             }
         }
-    }, [tab, myName]);
+    }, [tab, myNameErrorMessage, handleOnMyNameChanged, myName]);
 
     return (
         <DefaultLayout headerType="general" headerDomainNode={renderHeaderDomainNode()}>
