@@ -45,6 +45,14 @@ export default function BalancesPanel({
         [dispatch, navigate, onProfileBtnClicked]
     );
 
+    const handleOnGetLGNDBtnClicked = useCallback((e: React.MouseEvent<HTMLElement>) => {
+        if (onGetLGNDBtnClicked) {
+            onGetLGNDBtnClicked(e);
+            return;
+        }
+        window.open("https://app.osmosis.zone/?from=ATOM&to=OSMO", "_blank");
+    }, [onGetLGNDBtnClicked]);
+
     const handleOnMyCollectionBtnClicked = useCallback(
         (e: React.MouseEvent<HTMLElement>) => {
             dispatch(turnOffAllPanel());
@@ -52,7 +60,7 @@ export default function BalancesPanel({
                 onMyCollectionBtnClicked(e);
                 return;
             }
-            navigate("/collections");
+            navigate("/profile/collected");
         },
         [dispatch, navigate, onMyCollectionBtnClicked]
     );
@@ -105,7 +113,7 @@ export default function BalancesPanel({
                         <span className="ml-2 first:ml-0 opacity-50 font-light leading-none">
                             ($30.47)
                         </span>
-                        
+
                         <div
                             className={cn(
                                 "ml-4 first:ml-0 py-1 px-4 leading-none text-sm",
@@ -151,7 +159,7 @@ export default function BalancesPanel({
 
                 <div className="mb-6 last:mb-0 flex flex-col flex-nowrap items-stretch">
                     <div className="mb-4 last:mb-0 flex flex-col">
-                        <Button className="font-normal" bigness="lg" onClick={onGetLGNDBtnClicked}>
+                        <Button className="font-normal" bigness="lg" onClick={handleOnGetLGNDBtnClicked}>
                             Get $LGND
                         </Button>
                     </div>
