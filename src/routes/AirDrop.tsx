@@ -12,7 +12,7 @@ export default function AirDrop(): React.ReactElement {
     const { state } = useContext(AppContext);
 
     return (
-        <DefaultLayout headerType="general" bFooterOn sidebarTab="tab/airdrop">
+        <DefaultLayout headerType="general" sidebarTab="tab/airdrop">
             <Article bFullScreen>
                 <div
                     className={cn(

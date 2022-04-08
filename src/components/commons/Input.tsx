@@ -32,6 +32,26 @@ export default function Input({
         }
     }, [bigness]);
 
+    const getIconBignessClassName = useCallback(() => {
+        switch (bigness) {
+            case "xl":
+                return "w-6 h-icon";
+
+            default:
+                return "w-4 h-icon-sm";
+        }
+    }, [bigness]);
+
+    const getIconRightMargin = useCallback(() => {
+        switch (bigness) {
+            case "xl":
+                return "pr-14";
+
+            default:
+                return "pr-12";
+        }
+    }, [bigness]);
+
     const renderInput = useCallback(() => {
         return (
             <input
@@ -40,17 +60,25 @@ export default function Input({
                     getBignessClassNames(),
                     "focus:outline-none disabled:opacity-50",
                     "grow shrink px-4",
-                    { "pr-12": rightIconNode },
+                    { [getIconRightMargin()]: rightIconNode },
                     bTransparent ? "bg-slate-900/25 text-white/90" : "bg-slate-900 text-white",
                     className
                 )}
                 {...props}
             />
         );
-    }, [bTransparent, className, getBignessClassNames, props, refV, rightIconNode]);
+    }, [
+        bTransparent,
+        className,
+        getBignessClassNames,
+        getIconRightMargin,
+        props,
+        refV,
+        rightIconNode,
+    ]);
 
     const renderContent = useCallback(() => {
-        if (!rightIconNode) return renderInput();
+        if (!rightIconNode) return <div className="relative">{renderInput()}</div>;
         return (
             <div className="relative">
                 {renderInput()}
@@ -60,13 +88,18 @@ export default function Input({
                         "flex justify-center items-center"
                     )}
                 >
-                    <div className="w-4 h-icon-sm grow-0 shrink-0 flex justify-center">
+                    <div
+                        className={cn(
+                            "grow-0 shrink-0 flex justify-center",
+                            getIconBignessClassName()
+                        )}
+                    >
                         {rightIconNode}
                     </div>
                 </div>
             </div>
         );
-    }, [renderInput, rightIconNode]);
+    }, [getIconBignessClassName, renderInput, rightIconNode]);
 
     return renderContent();
 }
