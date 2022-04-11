@@ -45,13 +45,16 @@ export default function BalancesPanel({
         [dispatch, navigate, onProfileBtnClicked]
     );
 
-    const handleOnGetLGNDBtnClicked = useCallback((e: React.MouseEvent<HTMLElement>) => {
-        if (onGetLGNDBtnClicked) {
-            onGetLGNDBtnClicked(e);
-            return;
-        }
-        window.open("https://app.osmosis.zone/?from=ATOM&to=OSMO", "_blank");
-    }, [onGetLGNDBtnClicked]);
+    const handleOnGetLGNDBtnClicked = useCallback(
+        (e: React.MouseEvent<HTMLElement>) => {
+            if (onGetLGNDBtnClicked) {
+                onGetLGNDBtnClicked(e);
+                return;
+            }
+            window.open("https://app.osmosis.zone/?from=ATOM&to=OSMO", "_blank");
+        },
+        [onGetLGNDBtnClicked]
+    );
 
     const handleOnMyCollectionBtnClicked = useCallback(
         (e: React.MouseEvent<HTMLElement>) => {

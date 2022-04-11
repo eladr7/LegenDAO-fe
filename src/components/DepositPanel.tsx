@@ -32,7 +32,9 @@ export default function DepositPanel({ onCloseBtnClicked }: Props): React.ReactE
                     />
                 </div>
                 <div className="mb-6 last:mb-0 flex flex-col flex-nowrap">
-                    <Button className="font-bold" bigness="xl">Deposit</Button>
+                    <Button className="font-bold" bigness="xl">
+                        Deposit
+                    </Button>
                 </div>
             </div>
         </Panel>
