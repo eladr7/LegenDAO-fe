@@ -6,13 +6,15 @@ type Props = React.BaseHTMLAttributes<HTMLDivElement> & {
     className?: string;
     onCloseBtnClicked?: React.MouseEventHandler<HTMLElement>;
     color?: "darker" | "lighten";
+    bBordered?: boolean;
 };
 
 export default function Panel({
     onCloseBtnClicked,
     children,
     className,
-    color = "darker",
+    color,
+    bBordered = true,
 }: Props): React.ReactElement {
     const renderCloseBtn = useCallback(() => {
         if (!onCloseBtnClicked) return null;
@@ -32,20 +34,21 @@ export default function Panel({
                     {renderCloseBtn()}
                     <div
                         className={cn(
-                            "p-[2px] rounded-xl",
+                            {"p-[2px] rounded-xl": bBordered},
                             "absolute top-0 left-0 bottom-0 right-0 -z-10",
-                            "bg-gradient-to-br from-white/40 to-white/0"
+                            "bg-gradient-to-br from-white/40 via-white/5 to-white/0"
                         )}
                     >
                         <div
                             className={cn(
-                                "absolute m-[2px] overflow-hidden rounded-xl top-0 left-0 bottom-0 right-0 z-20 bg-[#001B47]"
+                                {"m-[2px] rounded-xl": bBordered},
+                                "absolute overflow-hidden top-0 left-0 bottom-0 right-0 z-20 bg-[#001B47]"
                             )}
                         >
                             <div
                                 className={cn(
                                     "absolute -translate-x-1/2 w-1/4 left-1/2 -top-1/3 -bottom-1/3 rotate-[38deg] ",
-                                    "bg-gradient-to-br from-white/100 to-white/0 mix-blend-overlay ",
+                                    "bg-gradient-to-br from-white/100 to-white/50 mix-blend-overlay",
                                     "rounded-xl ",
                                     "blur-xl"
                                 )}
@@ -64,48 +67,47 @@ export default function Panel({
                 </div>
             );
         }
-        if (color === "lighten") {
-            return (
-                <div className={cn("relative p-8 z-10", className)}>
-                    {renderCloseBtn()}
+        return (
+            <div className={cn("relative p-8 z-10", className)}>
+                {renderCloseBtn()}
+                <div
+                    className={cn(
+                        { "p-[2px] rounded-xl": bBordered },
+                        "absolute top-0 left-0 bottom-0 right-0 -z-10",
+                        "bg-gradient-to-br from-white/40 via-white/5 to-white/0",
+                        "backdrop-filter backdrop-blur-sm"
+                    )}
+                >
                     <div
                         className={cn(
-                            "p-[2px] rounded-xl",
-                            "absolute top-0 left-0 bottom-0 right-0 -z-10",
-                            "bg-gradient-to-br from-white/40 to-white/0"
+                            { "m-[2px] rounded-xl": bBordered },
+                            "absolute overflow-hidden top-0 left-0 bottom-0 right-0 z-20 bg-[#001B47]/25"
                         )}
                     >
                         <div
                             className={cn(
-                                "absolute m-[2px] overflow-hidden rounded-xl top-0 left-0 bottom-0 right-0 z-20 bg-[#001B47]"
+                                "absolute -translate-x-1/2 w-1/4 left-1/2 -top-1/3 -bottom-1/3 rotate-[38deg] ",
+                                "bg-gradient-to-br from-white/50 to-white/0 mix-blend-overlay ",
+                                "rounded-xl blur-2xl"
                             )}
                         >
-                            <div
-                                className={cn(
-                                    "absolute -translate-x-1/2 w-1/4 left-1/2 -top-1/3 -bottom-1/3 rotate-[38deg] ",
-                                    "bg-gradient-to-br from-white/100 to-white/0 mix-blend-overlay ",
-                                    "rounded-xl ",
-                                    "blur-xl"
-                                )}
-                            >
-                                <div className="bg-[#4771A1]/60 w-full h-full"></div>
-                            </div>
-                            <div
-                                className={cn(
-                                    "absolute top-0 left-0 bottom-0 right-0 ",
-                                    "bg-[#341D65]/60 backdrop-blur-md"
-                                )}
-                            ></div>
+                            <div className="bg-[#4771A1]/50 w-full h-full"></div>
                         </div>
+                        <div
+                            className={cn(
+                                "absolute top-0 left-0 bottom-0 right-0 ",
+                                "bg-[#341D65]/50"
+                            )}
+                        ></div>
                     </div>
-                    <div className="relative z-30">{children}</div>
                 </div>
-            );
-        }
-    }, [renderCloseBtn, children, className, color]);
+                <div className="relative z-30">{children}</div>
+            </div>
+        );
+    }, [color, className, renderCloseBtn, bBordered, children]);
 
     const renderContent = useCallback(() => {
-        return <>{renderPanel()}</>;
+        return renderPanel();
     }, [renderPanel]);
 
     return renderContent();

@@ -10,7 +10,7 @@ type Props = {
 
 export default function DepositPanel({ onCloseBtnClicked }: Props): React.ReactElement {
     return (
-        <Panel color="lighten" onCloseBtnClicked={onCloseBtnClicked}>
+        <Panel onCloseBtnClicked={onCloseBtnClicked}>
             <div
                 className={cn("w-[655px] text-white", "flex flex-col items-stretch justify-start")}
             >

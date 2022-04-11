@@ -30,16 +30,16 @@ export default function CollectionItem({
                 className={cn("h-[150px]  bg-cover bg-no-repeat bg-center")}
                 style={{ backgroundImage: `url(${coverImgUrl})` }}
             ></div>
-            <Panel color="lighten">
+            <Panel bBordered={false}>
                 <div
                     className={cn(
-                        "flex flex-col flex-none items-stretch py-4"
+                        "flex flex-col flex-none items-stretch"
                         // "bg-gradient-to-br from-violet-900/75 via-violet-700/25 to-violet-700/25"
                     )}
                 >
-                    <div className="mb-2 last:mb-0 px-6 font-semibold">{name}</div>
-                    <div className="mb-2 last:mb-0 px-6 text-sm">{description}</div>
-                    <div className="mb-2 last:mb-0 px-6 flex flex-row flex-nowrap justify-between items-center text-sm">
+                    <div className="mb-2 last:mb-0 font-semibold">{name}</div>
+                    <div className="mb-2 last:mb-0 text-sm">{description}</div>
+                    <div className="mb-2 last:mb-0 flex flex-row flex-nowrap justify-between items-center text-sm">
                         <div className="flex flex-col">
                             <div className="text-blue-300">Starting Date</div>
                             <div className="font-bold">

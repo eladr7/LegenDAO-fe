@@ -47,7 +47,7 @@ export default function MintConfirmPurchasePanel({
     }, [dispatch]);
 
     return (
-        <Panel color="lighten" onCloseBtnClicked={onCloseBtnClicked}>
+        <Panel onCloseBtnClicked={onCloseBtnClicked}>
             <div className={cn("text-white", "flex flex-col items-stretch justify-start")}>
                 <h1 className="mb-6 last:mb-0 text-2xl font-bold">Confirm Purchase</h1>
                 <div className="mb-6 last:mb-0 flex flex-row flex-nowrap items-start">

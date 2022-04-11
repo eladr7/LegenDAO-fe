@@ -61,7 +61,7 @@ export default function Input({
                     "focus:outline-none disabled:opacity-50",
                     "grow shrink px-4",
                     { [getIconRightMargin()]: rightIconNode },
-                    bTransparent ? "bg-slate-900/25 text-white/90" : "bg-slate-900 text-white",
+                    bTransparent ? "bg-slate-900/50 text-white/90" : "bg-slate-900 text-white",
                     className
                 )}
                 {...props}
@@ -78,9 +78,9 @@ export default function Input({
     ]);
 
     const renderContent = useCallback(() => {
-        if (!rightIconNode) return <div className="relative">{renderInput()}</div>;
+        if (!rightIconNode) return <div className="relative flex">{renderInput()}</div>;
         return (
-            <div className="relative">
+            <div className="relative flex">
                 {renderInput()}
                 <div
                     className={cn(

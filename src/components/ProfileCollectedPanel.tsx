@@ -47,7 +47,7 @@ export default function ProfileCollectedPanel(): React.ReactElement {
     }, [listItems]);
 
     return (
-        <Panel color="lighten" className="min-h-[694px]">
+        <Panel className="min-h-[694px]">
             <div className="mb-4 last:mb-0 text-teal-200 text-xl">Collected</div>
             <div className="grid grid-cols-2 gap-4">{renderListItem()}</div>
         </Panel>

@@ -13,7 +13,7 @@ export default function MintAgentDetailPanel({
     onCloseBtnClicked,
 }: Props): React.ReactElement {
     return (
-        <Panel color="lighten" className="text-white" onCloseBtnClicked={onCloseBtnClicked}>
+        <Panel className="text-white" onCloseBtnClicked={onCloseBtnClicked}>
             <div className={cn("flex flex-col items-stretch justify-start")}>
                 <div className="py-4 border-b last:border-b-0 border-white/10 flex flex-col flex-nowrap">
                     <div className="mb-2 last:mb-0 text-blue-300">Description</div>

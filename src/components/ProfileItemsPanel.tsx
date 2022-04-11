@@ -4,7 +4,7 @@ import Panel from "./commons/Panel";
 
 export default function ProfileItemsPanel(): React.ReactElement {
     return (
-        <Panel color="lighten">
+        <Panel>
             <div className="mb-4 last:mb-0 text-teal-200 text-xl">Items</div>
             <div className="grid grid-cols-3 gap-4">
                 <div
