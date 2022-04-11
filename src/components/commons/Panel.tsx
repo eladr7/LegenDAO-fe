@@ -32,31 +32,33 @@ export default function Panel({
                     {renderCloseBtn()}
                     <div
                         className={cn(
-                            "p-[2px] rounded-xl overflow-hidden	",
-                            "absolute top-0 left-0 bottom-0 right-0 z-10"
+                            "p-[2px] rounded-xl",
+                            "absolute top-0 left-0 bottom-0 right-0 -z-10",
+                            "bg-gradient-to-br from-white/40 to-white/0"
                         )}
                     >
                         <div
                             className={cn(
-                                "absolute top-0 left-0 bottom-0 right-0 z-20",
-                                "bg-gradient-to-br  from-white/20 to-white/0 mix-blend-overlay "
-                            )}
-                        ></div>
-                        <div
-                            className={cn(
-                                "absolute -translate-x-1/2 w-1/4 left-1/2 -top-1/3 -bottom-1/3 rotate-[38deg] ",
-                                "rounded-xl ",
-                                "blur-xl"
+                                "absolute m-[2px] overflow-hidden rounded-xl top-0 left-0 bottom-0 right-0 z-20 bg-[#001B47]"
                             )}
                         >
-                            <div className="bg-[#4771A1]/80 w-full h-full"></div>
+                            <div
+                                className={cn(
+                                    "absolute -translate-x-1/2 w-1/4 left-1/2 -top-1/3 -bottom-1/3 rotate-[38deg] ",
+                                    "bg-gradient-to-br from-white/100 to-white/0 mix-blend-overlay ",
+                                    "rounded-xl ",
+                                    "blur-xl"
+                                )}
+                            >
+                                <div className="bg-[#4771A1]/20 w-full h-full"></div>
+                            </div>
+                            <div
+                                className={cn(
+                                    "absolute top-0 left-0 bottom-0 right-0 ",
+                                    "bg-[#B235FF]/10 blur-xl "
+                                )}
+                            ></div>
                         </div>
-                        <div
-                            className={cn(
-                                "absolute top-0 left-0 bottom-0 right-0 ",
-                                "bg-[#B235FF]/10 blur-xl "
-                            )}
-                        ></div>
                     </div>
                     <div className="relative z-30">{children}</div>
                 </div>
@@ -68,31 +70,33 @@ export default function Panel({
                     {renderCloseBtn()}
                     <div
                         className={cn(
-                            "p-[2px] rounded-xl overflow-hidden	",
-                            "absolute top-0 left-0 bottom-0 right-0 z-10"
+                            "p-[2px] rounded-xl",
+                            "absolute top-0 left-0 bottom-0 right-0 -z-10",
+                            "bg-gradient-to-br from-white/40 to-white/0"
                         )}
                     >
                         <div
                             className={cn(
-                                "absolute top-0 left-0 bottom-0 right-0 z-20",
-                                "from-white/20 to-white/0 mix-blend-overlay "
-                            )}
-                        ></div>
-                        <div
-                            className={cn(
-                                "absolute -translate-x-1/2 w-1/4 left-1/2 -top-1/3 -bottom-1/3 rotate-[38deg] ",
-                                "rounded-xl ",
-                                "blur-xl"
+                                "absolute m-[2px] overflow-hidden rounded-xl top-0 left-0 bottom-0 right-0 z-20 bg-[#001B47]"
                             )}
                         >
-                            <div className="bg-[#4771A1]/60 w-full h-full"></div>
+                            <div
+                                className={cn(
+                                    "absolute -translate-x-1/2 w-1/4 left-1/2 -top-1/3 -bottom-1/3 rotate-[38deg] ",
+                                    "bg-gradient-to-br from-white/100 to-white/0 mix-blend-overlay ",
+                                    "rounded-xl ",
+                                    "blur-xl"
+                                )}
+                            >
+                                <div className="bg-[#4771A1]/60 w-full h-full"></div>
+                            </div>
+                            <div
+                                className={cn(
+                                    "absolute top-0 left-0 bottom-0 right-0 ",
+                                    "bg-[#341D65]/60 backdrop-blur-md"
+                                )}
+                            ></div>
                         </div>
-                        <div
-                            className={cn(
-                                "absolute top-0 left-0 bottom-0 right-0 ",
-                                "bg-[#341D65]/60 blur-xl "
-                            )}
-                        ></div>
                     </div>
                     <div className="relative z-30">{children}</div>
                 </div>
