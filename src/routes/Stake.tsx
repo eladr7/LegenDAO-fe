@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useCallback, useContext } from "react";
 import cn from "classnames";
 import Article from "../components/commons/Article";
 import { DefaultLayout } from "../components/layouts/DefaultLayout";
@@ -7,9 +7,15 @@ import imgArticleUniverse01Background from "./../assets/images/article-universe-
 import Modal from "../components/commons/Modal";
 import AppContext from "../contexts/AppContext";
 import StakeFormPanel from "../components/StakeFormPanel";
+import { useNavigate } from "react-router-dom";
 
 export default function Stake(): React.ReactElement {
+    const navigate = useNavigate();
     const { state } = useContext(AppContext);
+
+    const handleOnCloseBtnClicked = useCallback(() => {
+        navigate(-1);
+    }, [navigate]);
 
     return (
         <DefaultLayout headerType="general" bFooterOn sidebarTab="tab/stake">
@@ -30,6 +36,7 @@ export default function Stake(): React.ReactElement {
                             tvl={15839485}
                             totalLGNDBalance={40.2839}
                             totalFiatBalance={80.37}
+                            onCloseBtnClicked={handleOnCloseBtnClicked}
                         />
                     </Modal>
                 )}

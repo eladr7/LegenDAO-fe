@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useCallback, useContext } from "react";
 import cn from "classnames";
 import Article from "../components/commons/Article";
 import { DefaultLayout } from "../components/layouts/DefaultLayout";
@@ -7,9 +7,15 @@ import imgArticleUniverse01Background from "./../assets/images/article-universe-
 import Modal from "../components/commons/Modal";
 import AirDropStatusPanel from "../components/AirDropStatusPanel";
 import AppContext from "../contexts/AppContext";
+import { useNavigate } from "react-router-dom";
 
 export default function AirDrop(): React.ReactElement {
+    const navigate = useNavigate();
     const { state } = useContext(AppContext);
+
+    const handleOnCloseBtnClicked = useCallback(() => {
+        navigate(-1);
+    }, [navigate]);
 
     return (
         <DefaultLayout headerType="general" sidebarTab="tab/airdrop">
@@ -24,7 +30,7 @@ export default function AirDrop(): React.ReactElement {
                 <div className="absolute top-0 left-0 bottom-0 right-0 bg-slate-900/75"></div>
                 {state.bodyElement && (
                     <Modal bodyElement={state.bodyElement}>
-                        <AirDropStatusPanel />
+                        <AirDropStatusPanel onCloseBtnClicked={handleOnCloseBtnClicked} />
                     </Modal>
                 )}
             </Article>

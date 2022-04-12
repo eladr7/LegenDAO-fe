@@ -222,7 +222,7 @@ export default function AirDropStatusPanel({ onCloseBtnClicked }: Props): React.
 
     const renderEligibleForm = useCallback(() => {
         return (
-            <Panel>
+            <Panel onCloseBtnClicked={onCloseBtnClicked}>
                 <div
                     className={cn(
                         "w-[500px] text-white",
@@ -267,11 +267,11 @@ export default function AirDropStatusPanel({ onCloseBtnClicked }: Props): React.
                 </div>
             </Panel>
         );
-    }, []);
+    }, [onCloseBtnClicked]);
 
     const renderNotEligibleForm = useCallback(() => {
         return (
-            <Panel>
+            <Panel onCloseBtnClicked={onCloseBtnClicked}>
                 <div
                     className={cn(
                         "w-[500px] text-white",
@@ -315,7 +315,7 @@ export default function AirDropStatusPanel({ onCloseBtnClicked }: Props): React.
                 </div>
             </Panel>
         );
-    }, []);
+    }, [onCloseBtnClicked]);
 
     const renderContent = useCallback(() => {
         switch (airdropState.status) {
