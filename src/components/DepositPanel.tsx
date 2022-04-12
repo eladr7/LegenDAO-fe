@@ -25,6 +25,7 @@ export default function DepositPanel({ onCloseBtnClicked }: Props): React.ReactE
                         <label className="opacity-75">Balance: 40.2839 LGND</label>
                     </div>
                     <Input
+                        rightButtonText="Max"
                         className="text-2xl"
                         bigness="xl"
                         value={"0.00"}

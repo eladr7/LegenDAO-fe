@@ -1,10 +1,13 @@
 import React, { useCallback } from "react";
 import cn from "classnames";
+import Button from "./Button";
 
 interface IProps extends React.InputHTMLAttributes<HTMLInputElement> {
     refV?: React.LegacyRef<HTMLInputElement>;
     bigness?: "sm" | "md" | "lg" | "xl";
     rightIconNode?: React.ReactNode;
+    rightButtonText?: string;
+    rightButtonOnClick?: React.MouseEventHandler<HTMLElement>;
     bTransparent?: boolean;
 }
 
@@ -14,6 +17,8 @@ export default function Input({
     bTransparent,
     className,
     rightIconNode,
+    rightButtonText,
+    rightButtonOnClick,
     ...props
 }: IProps): React.ReactElement {
     const getBignessClassNames = useCallback(() => {
@@ -60,7 +65,8 @@ export default function Input({
                     getBignessClassNames(),
                     "focus:outline-none disabled:opacity-50",
                     "grow shrink px-4",
-                    { [getIconRightMargin()]: rightIconNode },
+                    { [getIconRightMargin()]: Boolean(rightIconNode) },
+                    { "pr-36": Boolean(rightButtonText) },
                     bTransparent ? "bg-slate-900/50 text-white/90" : "bg-slate-900 text-white",
                     className
                 )}
@@ -74,32 +80,59 @@ export default function Input({
         getIconRightMargin,
         props,
         refV,
+        rightButtonText,
         rightIconNode,
     ]);
 
     const renderContent = useCallback(() => {
-        if (!rightIconNode) return <div className="relative flex">{renderInput()}</div>;
-        return (
-            <div className="relative flex">
-                {renderInput()}
-                <div
-                    className={cn(
-                        "absolute right-4 top-0 bottom-0",
-                        "flex justify-center items-center"
-                    )}
-                >
+        if (rightIconNode) {
+            return (
+                <div className="relative flex">
+                    {renderInput()}
                     <div
                         className={cn(
-                            "grow-0 shrink-0 flex justify-center",
-                            getIconBignessClassName()
+                            "absolute right-4 top-0 bottom-0",
+                            "flex justify-center items-center"
                         )}
                     >
-                        {rightIconNode}
+                        <div
+                            className={cn(
+                                "grow-0 shrink-0 flex justify-center",
+                                getIconBignessClassName()
+                            )}
+                        >
+                            {rightIconNode}
+                        </div>
                     </div>
                 </div>
-            </div>
-        );
-    }, [getIconBignessClassName, renderInput, rightIconNode]);
+            );
+        }
+
+        if (rightButtonText) {
+            return (
+                <div className="relative flex">
+                    {renderInput()}
+                    <div
+                        className={cn(
+                            "absolute right-4 top-0 bottom-0",
+                            "flex justify-center items-center"
+                        )}
+                    >
+                        <Button
+                            bTransparent
+                            onClick={rightButtonOnClick}
+                            bigness="sm"
+                            className="px-6 opacity-50 hover:opacity-100"
+                        >
+                            {rightButtonText}
+                        </Button>
+                    </div>
+                </div>
+            );
+        }
+
+        return <div className="relative flex">{renderInput()}</div>;
+    }, [getIconBignessClassName, renderInput, rightButtonOnClick, rightButtonText, rightIconNode]);
 
     return renderContent();
 }
