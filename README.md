@@ -105,9 +105,9 @@ When create a new **feature branches**:
     git flow feature finish feature_branch
     ```
 
-- HAVE TO:
-    - add "`#`" prefix before your feature branch name
-    - add "`v`" prefix before a release
+-   HAVE TO:
+    -   add "`#`" prefix before your feature branch name
+    -   add "`v`" prefix before a release
 
 When you're working on your feature branch and **want to get code of another** feature branch:
 
@@ -151,31 +151,51 @@ When you're working on your feature branch and **want to get code of another** f
 
 ### Creating a new component
 
-- HAVE TO:
-    - create a brand new file (.tsx) in `/components`, name it clearly
-    - if the component has it's own props, declare & define the component Props type, and do NOT export it
+-   HAVE TO:
+    -   create a brand new file (.tsx) in `/components`, name it clearly
+    -   if the component has it's own props, declare & define the component Props type, and do NOT export it
     ```
     type Props = React.BaseHTMLAttributes<HTMLDivElement> & {...};
     ```
-- SHOULD:
-    - use `useCallback` hook for component functions
-    - use `useMemo` hook for component variable
+-   SHOULD:
+    -   use `useCallback` hook for component functions
+    -   use `useMemo` hook for component variable
 
 ### Creating a new feature/slice of state (Redux state)
-- HAVE TO:
-    - create a brand new **folder** in `/features`, name it by a noun, and short;
-    - create a brand new file (.ts) in that new folder, name it by concating the folder name and "`Slice`" suffix;
+
+-   HAVE TO:
+    -   create a brand new **folder** in `/features`, name it by a noun, and short;
+    -   create a brand new file (.ts) in that new folder, name it by concating the folder name and "`Slice`" suffix;
 
 ### Creating a new action of a slice
-- HAVE TO:
-    - create a brand new file (.ts) in `/features/yourSlice/`, name it by a verb, and short;
-    - export the action's domains and import it into your slice.
 
+-   HAVE TO:
+    -   create a brand new file (.ts) in `/features/yourSlice/`, name it by a verb, and short;
+    -   export the action's domains and import it into your slice.
 
 ### Linter
 
 You SHOULDN'T disable any linters in `/src` folders
 
-## To do
+## Typography
 
--   Testing guideline (if needed)
+### Font
+
+Use sans-serif font family
+
+### Scale
+
+| Category                         | Class       | Code                                                    |
+| :------------------------------- | :---------- | :------------------------------------------------------ |
+| Giant title                      | `text-8xl`  | `line-height: 1; font-size: 6rem; /* 96px */`           |
+| -                                | `text-7xl`  | `line-height: 1; font-size: 4.5rem; /* 72px */`         |
+| -                                | `text-6xl`  | `line-height: 1; font-size: 3.75rem; /* 60px */`        |
+| Heading 1                        | `text-5xl`  | `line-height: 1; font-size: 3rem; /* 48px */`           |
+| -                                | `text-4xl`  | `line-height: 2.5rem; font-size: 2.25rem; /* 36px */`   |
+| Heading 2                        | `text-3xl`  | `line-height: 2.25rem; font-size: 1.875rem; /* 30px */` |
+| Panel heading 1                  | `text-2xl`  | `line-height: 2rem; font-size: 1.5rem; /* 24px */`      |
+| Roadmap article, Panel heading 2 | `text-xl`   | `line-height: 1.75rem; font-size: 1.25rem; /* 20px */`  |
+| Articles                         | `text-lg`   | `line-height: 1.75rem; font-size: 1.125rem; /* 18px */` |
+| Base                             | `text-base` | `line-height: 1.5rem; font-size: 1rem; /* 16px */`      |
+| Sub                              | `text-md`   | `line-height: 1.25rem; font-size: 0.875rem; /* 14px */` |
+| Tiny                             | `text-sm`   | `line-height: 1rem; font-size: 0.75rem; /* 12px */`     |
