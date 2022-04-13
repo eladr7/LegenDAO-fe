@@ -59,7 +59,7 @@ export default function MintConfirmPurchasePanel({
                         <div className="text-blue-300">Item Price</div>
                         <div className="">
                             <span className="font-bold text-lg">{priceInLGND} $LGND</span>
-                            <span className="opacity-75">(${priceInFiat})</span>
+                            <span className="ml-4 opacity-75">(${priceInFiat})</span>
                         </div>
                     </div>
                 </div>
@@ -78,6 +78,7 @@ export default function MintConfirmPurchasePanel({
 
                 <div className="flex flex-row">
                     <Button
+                        bigness="xl"
                         onClick={handleOnMintNowBtnClicked}
                         bTransparent={!mintState.bAgreeTermOfService}
                         disabled={!mintState.bAgreeTermOfService}

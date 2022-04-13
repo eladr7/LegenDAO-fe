@@ -85,7 +85,7 @@ export default function LegendaryUniverseArticle(): React.ReactElement {
                         Creator? Contact Us
                     </Button>
                     <div 
-                        className="ml-4 first:ml-0 w-icon-lg h-icon-lg grow-0 shrink-0"
+                        className="ml-8 first:ml-0 w-icon-lg h-icon-lg grow-0 shrink-0"
                         onClick={() => {
                             window.open(SOCIAL_NETWORK_URL.discord, "_blank");
                         }}
@@ -93,7 +93,7 @@ export default function LegendaryUniverseArticle(): React.ReactElement {
                         <DiscordIcon />
                     </div>
                     <div 
-                        className="ml-4 first:ml-0 w-icon-lg h-icon-lg grow-0 shrink-0"
+                        className="ml-8 first:ml-0 w-icon-lg h-icon-lg grow-0 shrink-0"
                         onClick={() => {
                             window.open(SOCIAL_NETWORK_URL.twitter, "_blank");
                         }}

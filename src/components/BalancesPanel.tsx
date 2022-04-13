@@ -151,29 +151,37 @@ export default function BalancesPanel({
                     </div>
                 </div>
 
-                <div className="mb-6 last:mb-0 flex flex-row flex-nowrap justify-between">
-                    <Button
-                        bigness="sm"
-                        className="grow font-normal"
-                        bTransparent
-                        bActivated={accessibilityState.bDepositPanelOn}
-                        onClick={handleOnDepositBtnClicked}
-                    >
-                        Deposit
-                    </Button>
-                    <Button
-                        bigness="sm"
-                        className="grow font-normal"
-                        bTransparent
-                        onClick={handleOnWithdrawBtnClicked}
-                    >
-                        Withdraw
-                    </Button>
+                <div className="mb-6 last:mb-0 grid grid-cols-2 gap-4 justify-items-stretch">
+                    <div className="grow flex">
+                        <Button
+                            bigness="sm"
+                            className="grow font-normal"
+                            bTransparent
+                            bActivated={accessibilityState.bDepositPanelOn}
+                            onClick={handleOnDepositBtnClicked}
+                        >
+                            Deposit
+                        </Button>
+                    </div>
+                    <div className="grow flex">
+                        <Button
+                            bigness="sm"
+                            className="grow font-normal"
+                            bTransparent
+                            onClick={handleOnWithdrawBtnClicked}
+                        >
+                            Withdraw
+                        </Button>
+                    </div>
                 </div>
 
                 <div className="mb-6 last:mb-0 flex flex-col flex-nowrap items-stretch">
                     <div className="mb-4 last:mb-0 flex flex-col">
-                        <Button className="font-normal" bigness="lg" onClick={handleOnGetLGNDBtnClicked}>
+                        <Button
+                            className="font-normal"
+                            bigness="lg"
+                            onClick={handleOnGetLGNDBtnClicked}
+                        >
                             Get $LGND
                         </Button>
                     </div>

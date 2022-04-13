@@ -35,10 +35,6 @@ export default function Sidebar({ bodyElement, activatingTab }: Props): React.Re
     const handleOnStakeTabClicked = useCallback(() => {
         navigate("/stake");
     }, [navigate]);
-    
-    const handleOnGovernanceTabClicked = useCallback(() => {
-        navigate("/governance");
-    }, [navigate]);
 
     const handleOnCollectionsTabClicked = useCallback(() => {
         navigate("/collections");
@@ -75,7 +71,7 @@ export default function Sidebar({ bodyElement, activatingTab }: Props): React.Re
             <div className={cn("grow flex flex-col flex-nowrap justify-center items-stretch")}>
                 <div
                     className={cn(
-                        "px-12 flex flex-row justify-center items-center select-none cursor-pointer"
+                        "px-12 flex flex-row justify-center items-center select-none cursor-pointer hover:text-purple-400"
                     )}
                     onClick={handleOnHomeTabClicked}
                 >
@@ -91,7 +87,7 @@ export default function Sidebar({ bodyElement, activatingTab }: Props): React.Re
                 </div>
                 <div
                     className={cn(
-                        "px-12 flex flex-row justify-center items-center select-none cursor-pointer"
+                        "px-12 flex flex-row justify-center items-center select-none cursor-pointer hover:text-purple-400"
                     )}
                     onClick={handleOnStakeTabClicked}
                 >
@@ -105,7 +101,7 @@ export default function Sidebar({ bodyElement, activatingTab }: Props): React.Re
                 </div>
                 <div
                     className={cn(
-                        "px-12 flex flex-row justify-center items-center select-none cursor-pointer"
+                        "px-12 flex flex-row justify-center items-center select-none cursor-pointer hover:text-purple-400"
                     )}
                     onClick={handleOnCollectionsTabClicked}
                 >
@@ -117,23 +113,10 @@ export default function Sidebar({ bodyElement, activatingTab }: Props): React.Re
                         Collections
                     </div>
                 </div>
+                
                 <div
                     className={cn(
-                        "px-12 flex flex-row justify-center items-center select-none cursor-pointer"
-                    )}
-                    onClick={handleOnGovernanceTabClicked}
-                >
-                    <div
-                        className={cn("py-4 grow text-center", "border-b border-slate-800", {
-                            "text-purple-400": activatingTab === "tab/governance",
-                        })}
-                    >
-                        Governance
-                    </div>
-                </div>
-                <div
-                    className={cn(
-                        "px-12 flex flex-row justify-center items-center select-none cursor-pointer"
+                        "px-12 flex flex-row justify-center items-center select-none cursor-pointer hover:text-purple-400"
                     )}
                     onClick={handleOnAirdropTabClicked}
                 >
@@ -147,7 +130,7 @@ export default function Sidebar({ bodyElement, activatingTab }: Props): React.Re
                 </div>
                 <div
                     className={cn(
-                        "px-12 flex flex-row justify-center items-center select-none cursor-pointer"
+                        "px-12 flex flex-row justify-center items-center select-none cursor-pointer hover:text-purple-400"
                     )}
                     onClick={handleOnDocsTabClicked}
                 >

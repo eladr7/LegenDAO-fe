@@ -9,6 +9,8 @@ module.exports = {
         extend: {
             colors: {
                 "primary-mint-lab": "#001b47",
+                "btn-from": "#985dd5",
+                "btn-to": "#4e4acf",
             },
             fontFamily: {
                 body: [

@@ -73,7 +73,9 @@ function Home(): React.ReactElement {
                             <MintLabStatusPanel price={0.5} apy={55} liquidity={25} volume={2.5} />
                         </div>
                         <div className="mb-8 last:mb-0 flex flex-col justify-center items-center">
-                            <Button onClick={handleOnMintLabLaunchBtnClicked}>Launch</Button>
+                            <Button bigness="lg" onClick={handleOnMintLabLaunchBtnClicked}>
+                                <span className="px-12">Launch</span>
+                            </Button>
                         </div>
                     </div>
                 </div>
@@ -112,8 +114,8 @@ function Home(): React.ReactElement {
                         Legend Universe
                     </div>
                     <div className="flex flex-col flex-nowrap z-10">
-                        <Button bTransparent disabled>
-                            Comming Soon
+                        <Button bigness="lg" bTransparent bPlaceholder disabled>
+                            <span className="px-4">Comming Soon</span>
                         </Button>
                     </div>
                 </div>

@@ -45,6 +45,7 @@ export default function MyCollections(): React.ReactElement {
     }, [dispatch]);
 
     const handleOnGetWhitelistSpotBtnClicked = useCallback(() => {
+        window.open("https://discord.com/invite/nRFUkj3sxZ", "_blank");
         dispatch(setWhitelistSpot(true));
     }, [dispatch]);
 
@@ -336,7 +337,7 @@ export default function MyCollections(): React.ReactElement {
 
     return (
         <DefaultLayout headerType="collection" sidebarTab="tab/collections">
-            <Article className="grow text-white">
+            <Article className="grow text-white pb-20">
                 <div
                     className={cn(
                         "absolute top-0 bottom-0 right-0 left-0",

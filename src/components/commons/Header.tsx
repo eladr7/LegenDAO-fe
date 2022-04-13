@@ -22,11 +22,12 @@ const HEADER_TYPES = ["intro", "general", "collection"] as const;
 export type THeaderType = typeof HEADER_TYPES[number];
 
 type Props = {
+    bMenuOn?: boolean;
     type?: THeaderType;
     domainNode?: React.ReactNode;
 };
 
-export function Header({ type, domainNode }: Props): React.ReactElement {
+export function Header({ bMenuOn = true, type, domainNode }: Props): React.ReactElement {
     const navigate = useNavigate();
     const walletState = useAppSelector((state) => state.wallet);
     const accessibilityState = useAppSelector((state) => state.accessibility);
@@ -88,6 +89,7 @@ export function Header({ type, domainNode }: Props): React.ReactElement {
     }, []);
 
     const renderMenuBtn = useCallback(() => {
+        if (!bMenuOn) return null;
         return (
             <div
                 className="w-icon h-icon grow-0 shrink-0 mr-8 last:mr-0 cursor-pointer"
@@ -96,7 +98,7 @@ export function Header({ type, domainNode }: Props): React.ReactElement {
                 <MenuIcon />
             </div>
         );
-    }, [handleOnMenuBtnClicked]);
+    }, [bMenuOn, handleOnMenuBtnClicked]);
 
     const renderWalletBtn = useCallback(() => {
         if (isWalletConnected()) {
@@ -152,7 +154,6 @@ export function Header({ type, domainNode }: Props): React.ReactElement {
                 )}
             >
                 <div className="flex flex-row flex-nowrap items-center">
-                    {renderMenuBtn()}
                     <Branding />
                 </div>
                 <div className="flex flex-row flex-nowrap justify-end items-center">
@@ -177,7 +178,7 @@ export function Header({ type, domainNode }: Props): React.ReactElement {
                 </div>
             </header>
         );
-    }, [renderActions, renderMenuBtn]);
+    }, [renderActions]);
 
     const renderGeneralHeader = useCallback((): React.ReactElement => {
         return (
