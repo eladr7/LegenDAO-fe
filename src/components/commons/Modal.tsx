@@ -10,7 +10,7 @@ type Props = React.BaseHTMLAttributes<HTMLDivElement> & {
 export default function Modal({
     children,
     bodyElement,
-    // onOuterClick,
+    onOuterClick,
 }: Props): React.ReactElement | null {
     const renderContent = useCallback(
         () =>
@@ -18,7 +18,7 @@ export default function Modal({
                 ? ReactDOM.createPortal(
                       <div className="w-full h-full fixed top-0 left-0 z-50 flex flex-row items-center justify-center select-none overflow-visible">
                           <div
-                            //   onClick={onOuterClick}
+                              onClick={onOuterClick}
                               className={cn(
                                   "absolute top-0 left-0 w-full h-[200vh]",
                                   "select-none cursor-pointer",
@@ -38,7 +38,7 @@ export default function Modal({
                       bodyElement
                   )
                 : null,
-        [bodyElement, children]
+        [bodyElement, children, onOuterClick]
     );
 
     return renderContent();

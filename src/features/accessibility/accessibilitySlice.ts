@@ -21,7 +21,7 @@ const initialState: TAccessibilityState = {
 };
 
 const _turnOffAllPanel: CaseReducer<TAccessibilityState> = (state) => {
-    state.bBalanceMenuOn = false;
+    // state.bBalanceMenuOn = false;
     state.bWithdrawPanelOn = false;
     state.bDepositPanelOn = false;
     state.bCreationFormPanelOn = false;
