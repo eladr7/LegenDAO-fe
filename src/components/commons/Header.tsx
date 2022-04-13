@@ -16,6 +16,7 @@ import {
 import { walletAsyncActions } from "../../features/wallet/walletSlice";
 import BalancesPanel from "../BalancesPanel";
 import { SOCIAL_NETWORK_URL } from "../../constants/linkSocial";
+import { shortenAddress } from "../../functions/format";
 
 const HEADER_TYPES = ["intro", "general", "collection"] as const;
 export type THeaderType = typeof HEADER_TYPES[number];
@@ -118,7 +119,7 @@ export function Header({ type, domainNode }: Props): React.ReactElement {
                                 )}
                             />
                         </div>
-                        <span className="truncate max-w-[200px]" title={walletState.primary?.address}>{walletState.primary?.address}</span>
+                        <span className="truncate max-w-[200px]" title={walletState.primary?.address}>{shortenAddress(walletState.primary?.address)}</span>
                     </div>
                 </Button>
             );
