@@ -69,7 +69,7 @@ export default function MyCollections(): React.ReactElement {
         return (
             <div className="mt-8 px-8 flex flex-col flex-nowrap">
                 <div className="mb-4 last:mb-0 font-bold">Following Collections</div>
-                <div className="grid grid-cols-[repeat(auto-fill,_minmax(300px,_1fr))] gap-4">
+                <div className="grid grid-cols-[repeat(auto-fill,_minmax(350px,_1fr))] gap-10">
                     <CollectionItem
                         coverImgUrl={imgTopSecretColBg01}
                         name="Hall of Legend"
