@@ -78,7 +78,7 @@ export default function RoadmapArticle(): React.ReactElement {
 
     const renderArr = useCallback(() => {
         const left = (
-            <div className="flex flex-col w-1/3 -mt-16">
+            <div className="flex flex-col -mt-16">
                 {arr
                     .filter((item, index) => {
                         return index % 2 === 0;
@@ -102,7 +102,7 @@ export default function RoadmapArticle(): React.ReactElement {
         );
 
         const right = (
-            <div className="flex flex-col w-1/3">
+            <div className="flex flex-col">
                 {arr
                     .filter((item, index) => {
                         return index % 2 === 1;

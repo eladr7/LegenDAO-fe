@@ -64,8 +64,12 @@ export function ArticleBox({
                 .filter((item) => {
                     return item;
                 })
-                .map((colume) => {
-                    return colume;
+                .map((colume, index) => {
+                    return (
+                        <div key={index} className="w-1/3">
+                            {colume}
+                        </div>
+                    );
                 })}
         </div>
     );
