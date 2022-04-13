@@ -13,8 +13,7 @@ import {
     toggleCreationFormPanel,
     toggleSidebar,
 } from "../../features/accessibility/accessibilitySlice";
-import Wallet from "../../classes/Wallet";
-import { setPrimaryAddress } from "../../features/wallet/walletSlice";
+import { walletAsyncActions } from "../../features/wallet/walletSlice";
 import BalancesPanel from "../BalancesPanel";
 import { SOCIAL_NETWORK_URL } from "../../constants/linkSocial";
 
@@ -33,8 +32,7 @@ export function Header({ type, domainNode }: Props): React.ReactElement {
     const dispatch = useAppDispatch();
 
     const isWalletConnected = useCallback(() => {
-        const wallet = new Wallet(walletState.primary);
-        return wallet.isConnected();
+        return Boolean(walletState.primary);
     }, [walletState.primary]);
 
     const handleOnMenuBtnClicked = useCallback(() => {
@@ -45,8 +43,8 @@ export function Header({ type, domainNode }: Props): React.ReactElement {
         dispatch(toggleBalanceMenu());
     }, [dispatch]);
 
-    const handleOnConnectWalletBtnClicked = useCallback(() => {
-        dispatch(setPrimaryAddress("0x_wallet_address"));
+    const handleOnConnectWalletBtnClicked = useCallback(() => {        
+        dispatch(walletAsyncActions.connect({ delay: 200 }));
     }, [dispatch]);
 
     const handleOnGetLGNDBtnClicked = useCallback(() => {
@@ -120,7 +118,7 @@ export function Header({ type, domainNode }: Props): React.ReactElement {
                                 )}
                             />
                         </div>
-                        <span>{walletState.primary.address}</span>
+                        <span className="truncate max-w-[200px]" title={walletState.primary?.address}>{walletState.primary?.address}</span>
                     </div>
                 </Button>
             );
@@ -140,7 +138,7 @@ export function Header({ type, domainNode }: Props): React.ReactElement {
         handleOnConnectWalletBtnClicked,
         handleOnWalletBtnClicked,
         isWalletConnected,
-        walletState.primary.address,
+        walletState.primary?.address,
     ]);
 
     const renderIntroHeader = useCallback(() => {
@@ -204,7 +202,7 @@ export function Header({ type, domainNode }: Props): React.ReactElement {
                             {renderWalletBtn()}
                             {accessibilityState.bBalanceMenuOn && (
                                 <div className="absolute top-input-lg right-0">
-                                    <div 
+                                    <div
                                         className={cn(
                                             "fixed w-full h-screen left-0 top-0",
                                             "bg-slate-900/70"
@@ -256,7 +254,7 @@ export function Header({ type, domainNode }: Props): React.ReactElement {
                             {renderWalletBtn()}
                             {accessibilityState.bBalanceMenuOn && (
                                 <div className="absolute top-input-lg right-0">
-                                    <div 
+                                    <div
                                         className={cn(
                                             "fixed w-full h-screen left-0 top-0",
                                             "bg-slate-900/70"

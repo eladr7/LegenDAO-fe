@@ -4,12 +4,18 @@ import { BrowserRouter } from "react-router-dom";
 import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
+import { Window as KeplrWindow } from "@keplr-wallet/types";
 
 /**
  * To future if Legend-DAO need a routing:
  * Serving Apps with Client-Side Routing
  * https://create-react-app.dev/docs/deployment/#serving-apps-with-client-side-routing
  */
+
+declare global {
+    // eslint-disable-next-line @typescript-eslint/no-empty-interface
+    interface Window extends KeplrWindow {}
+}
 
 ReactDOM.render(
     <React.StrictMode>

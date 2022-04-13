@@ -1,7 +1,7 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { combineReducers } from "redux";
 import accessibilityReducer from "../features/accessibility/accessibilitySlice";
-import walletReducer from "../features/wallet/walletSlice";
+import walletReducer, { walletAsyncActions } from "../features/wallet/walletSlice";
 import collectionReducer from "../features/collection/collectionSlice";
 import airdropReducer from "../features/airdrop/airdropSlice";
 import mintReducer from "../features/mint/mintSlice";
@@ -16,7 +16,12 @@ const rootReducer = combineReducers({
 
 const store = configureStore({
     reducer: rootReducer,
-    middleware: (getDefaultMiddleware) => getDefaultMiddleware(),
+    middleware: (getDefaultMiddleware) =>
+        getDefaultMiddleware({
+            serializableCheck: {
+                ignoredActions: [walletAsyncActions.connect.fulfilled.type],
+            },
+        }),
     // .concat(timeoutSchedulerMiddleware)
     // .concat(thunk)
     // .concat(vanillaPromiseMiddleware)

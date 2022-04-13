@@ -58,13 +58,13 @@ export default function BalancesPanel({
 
     const handleOnManageAssetBtnClicked = useCallback(
         (e: React.MouseEvent<HTMLElement>) => {
-            if (onGetLGNDBtnClicked) {
-                onGetLGNDBtnClicked(e);
+            if (onManageAssetBtnClicked) {
+                onManageAssetBtnClicked(e);
                 return;
             }
             window.open("https://app.osmosis.zone/?from=ATOM&to=OSMO", "_blank");
         },
-        [onGetLGNDBtnClicked]
+        [onManageAssetBtnClicked]
     );
 
     const handleOnMyCollectionBtnClicked = useCallback(

@@ -278,7 +278,7 @@ export default function MyCollections(): React.ReactElement {
                                     <span className="w-44">Get a Whitelist Spot</span>
                                 )}
 
-                                {collectionState.whitelistSpot && (
+                                {Boolean(collectionState.whitelistSpot) && (
                                     <div
                                         className={cn(
                                             "absolute right-4",
