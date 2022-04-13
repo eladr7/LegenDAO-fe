@@ -33,7 +33,7 @@ module.exports = {
             },
             spacing: {
                 header: "4rem",
-                footer: "12rem",
+                footer: "14rem",
                 "icon-xs": "11px",
                 "icon-sm": "1rem",
                 icon: "24px",
