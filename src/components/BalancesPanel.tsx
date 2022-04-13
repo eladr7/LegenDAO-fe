@@ -62,7 +62,7 @@ export default function BalancesPanel({
                 onManageAssetBtnClicked(e);
                 return;
             }
-            window.open("https://app.osmosis.zone/?from=ATOM&to=OSMO", "_blank");
+            window.open("https://app.osmosis.zone/assets", "_blank");
         },
         [onManageAssetBtnClicked]
     );
