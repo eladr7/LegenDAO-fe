@@ -29,24 +29,29 @@ export default function Sidebar({ bodyElement, activatingTab }: Props): React.Re
     }, [dispatch]);
 
     const handleOnHomeTabClicked = useCallback(() => {
+        dispatch(toggleSidebar(false));
         navigate("/mint-lab");
-    }, [navigate]);
+    }, [dispatch, navigate]);
 
     const handleOnStakeTabClicked = useCallback(() => {
+        dispatch(toggleSidebar(false));
         navigate("/stake");
-    }, [navigate]);
+    }, [dispatch, navigate]);
 
     const handleOnCollectionsTabClicked = useCallback(() => {
+        dispatch(toggleSidebar(false));
         navigate("/collections");
-    }, [navigate]);
+    }, [dispatch, navigate]);
 
     const handleOnAirdropTabClicked = useCallback(() => {
+        dispatch(toggleSidebar(false));
         navigate("/airdrop");
-    }, [navigate]);
+    }, [dispatch, navigate]);
     
     const handleOnDocsTabClicked = useCallback(() => {
+        dispatch(toggleSidebar(false));
         navigate("/docs");
-    }, [navigate]);
+    }, [dispatch, navigate]);
 
     return ReactDOM.createPortal(
         <div
