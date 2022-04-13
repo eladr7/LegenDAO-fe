@@ -9,6 +9,7 @@ import Button from "./Button";
 import WalletIcon from "../icons/WalletIcon";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import {
+    accessibilityActions,
     toggleBalanceMenu,
     toggleCreationFormPanel,
     toggleSidebar,
@@ -45,7 +46,7 @@ export function Header({ bMenuOn = true, type, domainNode }: Props): React.React
         dispatch(toggleBalanceMenu());
     }, [dispatch]);
 
-    const handleOnConnectWalletBtnClicked = useCallback(() => {        
+    const handleOnConnectWalletBtnClicked = useCallback(() => {
         dispatch(walletAsyncActions.connect({ delay: 200 }));
     }, [dispatch]);
 
@@ -59,6 +60,10 @@ export function Header({ bMenuOn = true, type, domainNode }: Props): React.React
 
     const handleOnCreateBtnClicked = useCallback(() => {
         dispatch(toggleCreationFormPanel(true));
+    }, [dispatch]);
+
+    const handleOnBalancesPanelOuterClicked = useCallback(() => {
+        dispatch(accessibilityActions.toggleBalanceMenu(false));
     }, [dispatch]);
 
     const renderDomain = useCallback(() => {
@@ -121,7 +126,12 @@ export function Header({ bMenuOn = true, type, domainNode }: Props): React.React
                                 )}
                             />
                         </div>
-                        <span className="truncate max-w-[200px]" title={walletState.primary?.address}>{shortenAddress(walletState.primary?.address)}</span>
+                        <span
+                            className="truncate max-w-[200px]"
+                            title={walletState.primary?.address}
+                        >
+                            {shortenAddress(walletState.primary?.address)}
+                        </span>
                     </div>
                 </Button>
             );
@@ -209,6 +219,7 @@ export function Header({ bMenuOn = true, type, domainNode }: Props): React.React
                                             "fixed w-full h-screen left-0 top-0",
                                             "bg-slate-900/70"
                                         )}
+                                        onClick={handleOnBalancesPanelOuterClicked}
                                     ></div>
                                     <BalancesPanel />
                                 </div>
@@ -220,6 +231,7 @@ export function Header({ bMenuOn = true, type, domainNode }: Props): React.React
         );
     }, [
         accessibilityState.bBalanceMenuOn,
+        handleOnBalancesPanelOuterClicked,
         handleOnGetLGNDBtnClicked,
         renderActions,
         renderDomain,

@@ -29,7 +29,7 @@ export default function Sidebar({ bodyElement, activatingTab }: Props): React.Re
     }, [dispatch]);
 
     const handleOnHomeTabClicked = useCallback(() => {
-        navigate("/");
+        navigate("/mint-lab");
     }, [navigate]);
 
     const handleOnStakeTabClicked = useCallback(() => {

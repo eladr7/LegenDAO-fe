@@ -104,4 +104,6 @@ export const {
     toggleCreationFormPanel,
 } = accessibilitySlice.actions;
 
+export const accessibilityActions = accessibilitySlice.actions;
+
 export default accessibilitySlice.reducer;
