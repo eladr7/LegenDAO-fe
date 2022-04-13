@@ -131,7 +131,7 @@ export default function BalancesPanel({
                         <div
                             className={cn(
                                 "ml-4 first:ml-0 py-1 px-4 leading-none text-sm",
-                                "border rounded-lg cursor-pointer opacity-30"
+                                "border rounded-lg opacity-30"
                             )}
                         >
                             Claim
