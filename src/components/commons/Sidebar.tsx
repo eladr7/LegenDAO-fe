@@ -3,7 +3,7 @@ import cn from "classnames";
 import ReactDOM from "react-dom";
 import { Branding } from "./Branding";
 import CloseIcon from "../icons/CloseIcon";
-import { useAppDispatch } from "../../app/hooks";
+import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { toggleSidebar } from "../../features/accessibility/accessibilitySlice";
 import { useNavigate } from "react-router-dom";
 
@@ -22,6 +22,7 @@ type Props = React.BaseHTMLAttributes<HTMLDivElement> & {
 
 export default function Sidebar({ bodyElement, activatingTab }: Props): React.ReactElement {
     const navigate = useNavigate();
+    const accessibilityState = useAppSelector((state) => state.accessibility);
     const dispatch = useAppDispatch();
 
     const handleOnCloseBtnClicked = useCallback(() => {
@@ -47,7 +48,7 @@ export default function Sidebar({ bodyElement, activatingTab }: Props): React.Re
         dispatch(toggleSidebar(false));
         navigate("/airdrop");
     }, [dispatch, navigate]);
-    
+
     const handleOnDocsTabClicked = useCallback(() => {
         dispatch(toggleSidebar(false));
         navigate("/docs");
@@ -56,6 +57,8 @@ export default function Sidebar({ bodyElement, activatingTab }: Props): React.Re
     return ReactDOM.createPortal(
         <div
             className={cn(
+                "transition-transform",
+                { "-translate-x-full": !accessibilityState.bSidebarOn },
                 "fixed top-0 left-0 py-8 z-50",
                 "w-sidebar min-h-screen",
                 "flex flex-col flex-nowrap justify-between items-stretch",
@@ -118,7 +121,7 @@ export default function Sidebar({ bodyElement, activatingTab }: Props): React.Re
                         Collections
                     </div>
                 </div>
-                
+
                 <div
                     className={cn(
                         "px-12 flex flex-row justify-center items-center select-none cursor-pointer hover:text-purple-400"

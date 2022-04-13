@@ -50,9 +50,8 @@ export function DefaultLayout({
 
     const renderSidebar = useCallback(() => {
         if (!state.bodyElement) return null;
-        if (!accessibilityState.bSidebarOn) return;
         return <Sidebar bodyElement={state.bodyElement} activatingTab={sidebarTab} />;
-    }, [accessibilityState.bSidebarOn, sidebarTab, state.bodyElement]);
+    }, [sidebarTab, state.bodyElement]);
 
     const renderModal = useCallback(() => {
         if (!state.bodyElement) return null;
