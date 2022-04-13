@@ -34,14 +34,16 @@ export default function LegendaryTokenArticle(): React.ReactElement {
                     "text-white flex flex-col flex-nowrap justify-center items-end"
                 )}
             >
-                <h1 className="mb-8 last:mb-0 font-bold text-5xl">Legendary Tokens</h1>
-                <div className="mb-8 last:mb-0 max-w-xl">
-                    <p className="mb-4 last:mb-0 opacity-75 text-lg text-justify">
-                        The legendary token (LGND) is the native token of the Legendary universe.
-                        The LGND token is used to purchase NFT collections, NFT avatars, and loot
-                        boxes. The APY earned by staking is connected to the avatar rank - the
-                        higher the avatar&apos;s rank, the higher the APY.
-                    </p>
+                <div className="flex flex-col flex-nowrap justify-center items-start">
+                    <h1 className="mb-8 last:mb-0 font-bold text-5xl">Legendary Tokens</h1>
+                    <div className="mb-8 last:mb-0 max-w-xl">
+                        <p className="mb-4 last:mb-0 opacity-75 text-lg text-justify">
+                            The legendary token (LGND) is the native token of the Legendary
+                            universe. The LGND token is used to purchase NFT collections, NFT
+                            avatars, and loot boxes. The APY earned by staking is connected to the
+                            avatar rank - the higher the avatar&apos;s rank, the higher the APY.
+                        </p>
+                    </div>
                 </div>
             </div>
 

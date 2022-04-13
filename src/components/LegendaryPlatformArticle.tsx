@@ -38,28 +38,34 @@ export default function LegendaryPlatformArticle(): React.ReactElement {
                         "text-white flex flex-col flex-nowrap justify-center items-end"
                     )}
                 >
-                    <h1 className="mb-8 last:mb-0 font-bold text-5xl">The Legendary Platform</h1>
-                    <div className="mb-8 last:mb-0 max-w-xl">
-                        <p className="mb-4 last:mb-0 opacity-75 text-lg text-justify">
-                            The Legendary universe is a home for artists and their art. Through the
-                            Legendary platform, artists and creators can distribute their art.
-                        </p>
+                    <div className="flex flex-col flex-nowrap justify-center items-start">
+                        <h1 className="mb-8 last:mb-0 font-bold text-5xl">
+                            The Legendary Platform
+                        </h1>
+                        <div className="mb-8 last:mb-0 max-w-xl">
+                            <p className="mb-4 last:mb-0 opacity-75 text-lg text-justify">
+                                The Legendary universe is a home for artists and their art. Through
+                                the Legendary platform, artists and creators can distribute their
+                                art.
+                            </p>
 
-                        <p className="mb-4 last:mb-0 opacity-75 text-lg text-justify">
-                            Legendary is a mixed-in and out-of-universe experience with its own
-                            backstory, in which users start with a unique character (a baseline
-                            NFT). This character can grow stronger by interacting with loot boxes,
-                            that distribute in-universe items alongside partner drops. Growing
-                            stronger allows users to earn more of the in-universe currency, which
-                            they use to buy more loot.
-                        </p>
-                        <p className="mb-4 last:mb-0 opacity-75 text-lg text-justify">
-                            As a creator, Secret NFTs will provide you with a unique value for your
-                            work. As a collector, you will have access to unique collections that
-                            contain art and secret content only available to the owner. As an
-                            investor, the Legendary platform gives you the chance to participate in
-                            a new project and purchase tokens at a low cost.
-                        </p>
+                            <p className="mb-4 last:mb-0 opacity-75 text-lg text-justify">
+                                Legendary is a mixed-in and out-of-universe experience with its own
+                                backstory, in which users start with a unique character (a baseline
+                                NFT). This character can grow stronger by interacting with loot
+                                boxes, that distribute in-universe items alongside partner drops.
+                                Growing stronger allows users to earn more of the in-universe
+                                currency, which they use to buy more loot.
+                            </p>
+                            <p className="mb-4 last:mb-0 opacity-75 text-lg text-justify">
+                                As a creator, Secret NFTs will provide you with a unique value for
+                                your work. As a collector, you will have access to unique
+                                collections that contain art and secret content only available to
+                                the owner. As an investor, the Legendary platform gives you the
+                                chance to participate in a new project and purchase tokens at a low
+                                cost.
+                            </p>
+                        </div>
                     </div>
                 </div>
 

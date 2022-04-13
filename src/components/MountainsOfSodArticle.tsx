@@ -44,7 +44,7 @@ export default function MountainsOfSodArticle(): React.ReactElement {
                     "text-white flex flex-col flex-nowrap justify-center items-start"
                 )}
             >
-                <h1 className="mb-8 last:mb-0 font-bold text-5xl">The Mountains of Sod</h1>
+                <h1 className="mb-8 last:mb-0 font-bold text-5xl">The Hidden Ridge</h1>
                 <div className="mb-8 last:mb-0 max-w-2xl">
                     <p className="mb-4 last:mb-0 opacity-75 text-lg">
                         Hidden in the secret mountain ridge of Sod, hide the true creators of

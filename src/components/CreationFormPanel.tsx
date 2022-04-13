@@ -51,7 +51,7 @@ export default function CreationFormPanel({ onCloseBtnClicked }: Props): React.R
                 <form onSubmit={handleSubmit(onSubmit)}>
                     <div className="mb-4 last:mb-0 flex flex-col flex-nowrap">
                         {errors?.name?.type === "required" && (
-                            <label className="mb-2 last:mb-0 pl-4 opacity-75">
+                            <label className="mb-2 last:mb-0 pl-4 opacity-75 text-red-500">
                                 This field is required
                             </label>
                         )}
@@ -70,7 +70,7 @@ export default function CreationFormPanel({ onCloseBtnClicked }: Props): React.R
 
                     <div className="mb-4 last:mb-0 flex flex-col flex-nowrap">
                         {errors?.email?.type === "required" && (
-                            <label className="mb-2 last:mb-0 pl-4 opacity-75">
+                            <label className="mb-2 last:mb-0 pl-4 opacity-75 text-red-500">
                                 This field is required
                             </label>
                         )}
