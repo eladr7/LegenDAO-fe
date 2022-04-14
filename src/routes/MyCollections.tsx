@@ -37,6 +37,7 @@ export default function MyCollections(): React.ReactElement {
     const handleOnMintAgainBtnClicked = useCallback(() => {
         dispatch(setSuccessMessage(undefined));
         dispatch(turnOffAllPanel());
+        dispatch(toggleMintConfirmPurchasePanel(true));
     }, [dispatch]);
 
     const handleOnMintSuccessfulModalOuterClicked = useCallback(() => {
