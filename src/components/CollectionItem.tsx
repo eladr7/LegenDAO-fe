@@ -22,13 +22,13 @@ export default function CollectionItem({
     return (
         <div className={cn("max-w-lg flex flex-col flex-nowrap rounded-xl overflow-hidden ")}>
             <div
-                className={cn("h-[150px]  bg-cover bg-no-repeat bg-center")}
+                className={cn("h-[200px]  bg-cover bg-no-repeat bg-center")}
                 style={{ backgroundImage: `url(${coverImgUrl})` }}
             ></div>
             <Panel bBordered={false} className="py-6">
                 <div className={cn("flex flex-col flex-none items-stretch")}>
                     <div className="mb-2 last:mb-0 font-semibold">{name}</div>
-                    <div className="mb-6 last:mb-0 text-sm">{description}</div>
+                    <div className="mb-4 last:mb-0 text-sm">{description}</div>
                     <div className="mb-2 last:mb-0 flex flex-row flex-nowrap justify-between items-center text-sm">
                         <div className="flex flex-col">
                             <div className="text-blue-300">Starting Date</div>
