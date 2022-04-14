@@ -6,6 +6,7 @@ interface IProps extends React.InputHTMLAttributes<HTMLInputElement> {
     refV?: React.LegacyRef<HTMLInputElement>;
     bigness?: "sm" | "md" | "lg" | "xl";
     rightIconNode?: React.ReactNode;
+    rightIconOnClick?: React.MouseEventHandler<HTMLElement>;
     rightButtonText?: string;
     rightButtonOnClick?: React.MouseEventHandler<HTMLElement>;
     bTransparent?: boolean;
@@ -17,6 +18,7 @@ export default function Input({
     bTransparent,
     className,
     rightIconNode,
+    rightIconOnClick,
     rightButtonText,
     rightButtonOnClick,
     ...props
@@ -96,6 +98,7 @@ export default function Input({
                         )}
                     >
                         <div
+                            onClick={rightIconOnClick}
                             className={cn(
                                 "grow-0 shrink-0 flex justify-center",
                                 getIconBignessClassName()
@@ -132,7 +135,14 @@ export default function Input({
         }
 
         return <div className="relative flex">{renderInput()}</div>;
-    }, [getIconBignessClassName, renderInput, rightButtonOnClick, rightButtonText, rightIconNode]);
+    }, [
+        getIconBignessClassName,
+        renderInput,
+        rightButtonOnClick,
+        rightButtonText,
+        rightIconNode,
+        rightIconOnClick,
+    ]);
 
     return renderContent();
 }
