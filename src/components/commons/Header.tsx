@@ -23,12 +23,18 @@ const HEADER_TYPES = ["intro", "general", "collection"] as const;
 export type THeaderType = typeof HEADER_TYPES[number];
 
 type Props = {
+    bAlwaysOnTop?: boolean;
     bMenuOn?: boolean;
     type?: THeaderType;
     domainNode?: React.ReactNode;
 };
 
-export function Header({ bMenuOn = true, type, domainNode }: Props): React.ReactElement {
+export function Header({
+    bAlwaysOnTop,
+    bMenuOn = true,
+    type,
+    domainNode,
+}: Props): React.ReactElement {
     const navigate = useNavigate();
     const walletState = useAppSelector((state) => state.wallet);
     const accessibilityState = useAppSelector((state) => state.accessibility);
@@ -158,7 +164,8 @@ export function Header({ bMenuOn = true, type, domainNode }: Props): React.React
         return (
             <header
                 className={cn(
-                    "absolute top-0 left-0 right-0 p-8 z-50",
+                    "absolute top-0 left-0 right-0 p-8",
+                    bAlwaysOnTop ? "z-[100]" : "z-50",
                     "flex flex-row flex-nowrap justify-between items-center",
                     "text-white"
                 )}
@@ -188,13 +195,14 @@ export function Header({ bMenuOn = true, type, domainNode }: Props): React.React
                 </div>
             </header>
         );
-    }, [renderActions]);
+    }, [bAlwaysOnTop, renderActions]);
 
     const renderGeneralHeader = useCallback((): React.ReactElement => {
         return (
             <header
                 className={cn(
-                    "absolute top-0 left-0 right-0 p-8 z-50",
+                    "absolute top-0 left-0 right-0 p-8",
+                    bAlwaysOnTop ? "z-[100]" : "z-50",
                     "flex flex-row flex-nowrap justify-between items-center",
                     "text-white"
                 )}
@@ -231,6 +239,7 @@ export function Header({ bMenuOn = true, type, domainNode }: Props): React.React
         );
     }, [
         accessibilityState.bBalanceMenuOn,
+        bAlwaysOnTop,
         handleOnBalancesPanelOuterClicked,
         handleOnGetLGNDBtnClicked,
         renderActions,
@@ -243,7 +252,8 @@ export function Header({ bMenuOn = true, type, domainNode }: Props): React.React
         return (
             <header
                 className={cn(
-                    "absolute top-0 left-0 right-0 p-8 z-50",
+                    "absolute top-0 left-0 right-0 p-8",
+                    bAlwaysOnTop ? "z-[100]" : "z-50",
                     "flex flex-row flex-nowrap justify-between items-center",
                     "text-white"
                 )}
@@ -284,6 +294,7 @@ export function Header({ bMenuOn = true, type, domainNode }: Props): React.React
         );
     }, [
         accessibilityState.bBalanceMenuOn,
+        bAlwaysOnTop,
         handleOnCollectionsBtnClicked,
         handleOnCreateBtnClicked,
         handleOnGetLGNDBtnClicked,

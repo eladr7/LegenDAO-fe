@@ -59,7 +59,7 @@ export default function Sidebar({ bodyElement, activatingTab }: Props): React.Re
             className={cn(
                 "transition-transform",
                 { "-translate-x-full": !accessibilityState.bSidebarOn },
-                "fixed top-0 left-0 py-8 z-50",
+                "fixed top-0 left-0 py-8 z-[100]",
                 "w-sidebar min-h-screen",
                 "flex flex-col flex-nowrap justify-between items-stretch",
                 "text-white bg-gradient-to-br from-slate-900 to-slate-800"

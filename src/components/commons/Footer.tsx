@@ -2,8 +2,6 @@ import React from "react";
 import imgYetiHead01 from "../../assets/images/yeti-head-01.png";
 import DiscordIcon from "../icons/DiscordIcon";
 import TwitterIcon from "../icons/TwitterIcon";
-import InstagramIcon from "../icons/InstagramIcon";
-import TelegramIcon from "../icons/TelegramIcon";
 import Input from "./Input";
 import { SOCIAL_NETWORK_URL } from "../../constants/linkSocial";
 import Button from "./Button";

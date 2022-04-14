@@ -12,6 +12,7 @@ import DepositPanel from "../DepositPanel";
 import WithdrawPanel from "../WithdrawPanel";
 
 type Props = React.BaseHTMLAttributes<HTMLDivElement> & {
+    bHeaderAlwaysOnTop?: boolean;
     headerType?: THeaderType;
     headerDomainNode?: React.ReactNode;
     headerNode?: React.ReactNode;
@@ -22,6 +23,7 @@ type Props = React.BaseHTMLAttributes<HTMLDivElement> & {
 
 export function DefaultLayout({
     children,
+    bHeaderAlwaysOnTop,
     bFooterOn,
     headerType,
     headerDomainNode,
@@ -39,8 +41,14 @@ export function DefaultLayout({
 
     const renderHeader = useCallback(() => {
         if (headerNode) return headerNode;
-        return <Header type={headerType} domainNode={headerDomainNode} />;
-    }, [headerDomainNode, headerNode, headerType]);
+        return (
+            <Header
+                bAlwaysOnTop={bHeaderAlwaysOnTop}
+                type={headerType}
+                domainNode={headerDomainNode}
+            />
+        );
+    }, [bHeaderAlwaysOnTop, headerDomainNode, headerNode, headerType]);
 
     const renderFooter = useCallback(() => {
         if (!bFooterOn) return null;
