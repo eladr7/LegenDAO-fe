@@ -135,7 +135,14 @@ export default function Input({
         }
 
         return <div className="relative flex">{renderInput()}</div>;
-    }, [getIconBignessClassName, renderInput, rightButtonOnClick, rightButtonText, rightIconNode]);
+    }, [
+        getIconBignessClassName,
+        renderInput,
+        rightButtonOnClick,
+        rightButtonText,
+        rightIconNode,
+        rightIconOnClick,
+    ]);
 
     return renderContent();
 }
