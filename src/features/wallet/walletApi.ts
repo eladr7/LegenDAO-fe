@@ -20,9 +20,11 @@ const _connect: TSend<TWalletConnectReturn, TWalletConnectOptions> = sendCreator
             return;
         }
         const chainId = options.chainId || process.env.REACT_APP_NETWORK_CHAINID || "";
-        experimentalSuggestChain()
+        const experimentalSuggestChainProm = experimentalSuggestChain();
+        experimentalSuggestChainProm && experimentalSuggestChainProm
             .then(() => {
-                if (window.keplr) window.keplr.enable(chainId);
+                if (!window.keplr) return;
+                return window.keplr.enable(chainId);
             })
             .then(() => {
                 if (!window.keplr) {
