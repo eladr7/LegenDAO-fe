@@ -43,12 +43,13 @@ export default function Button({
 
     const getTransparentClassNames = useCallback(() => {
         if (bActivated) return "bg-white text-purple-700 border border-transparent";
+        if (bPlaceholder) return null;
         return [
             "bg-transparent border border-white",
             "hover:bg-white/80 hover:text-purple-700",
             "active:bg-white active:text-purple-700",
         ];
-    }, [bActivated]);
+    }, [bActivated, bPlaceholder]);
 
     return (
         <button
