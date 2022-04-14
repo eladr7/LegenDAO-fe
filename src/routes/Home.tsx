@@ -115,7 +115,7 @@ function Home(): React.ReactElement {
                     </div>
                     <div className="flex flex-col flex-nowrap z-10">
                         <Button bigness="lg" bTransparent bPlaceholder disabled>
-                            <span className="px-4 text-lg">Comming Soon</span>
+                            <span className="px-4 text-lg">Coming Soon</span>
                         </Button>
                     </div>
                 </div>
