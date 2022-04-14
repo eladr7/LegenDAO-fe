@@ -74,7 +74,7 @@ function Home(): React.ReactElement {
                         </div>
                         <div className="mb-8 last:mb-0 flex flex-col justify-center items-center">
                             <Button bigness="lg" onClick={handleOnMintLabLaunchBtnClicked}>
-                                <span className="px-12">Launch</span>
+                                <span className="px-12 text-lg">Launch</span>
                             </Button>
                         </div>
                     </div>
@@ -115,7 +115,7 @@ function Home(): React.ReactElement {
                     </div>
                     <div className="flex flex-col flex-nowrap z-10">
                         <Button bigness="lg" bTransparent bPlaceholder disabled>
-                            <span className="px-4">Comming Soon</span>
+                            <span className="px-4 text-lg">Comming Soon</span>
                         </Button>
                     </div>
                 </div>

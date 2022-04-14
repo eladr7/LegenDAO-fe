@@ -36,7 +36,7 @@ export default function Button({
     }, [bigness]);
 
     const getDisabledClassNames = useCallback(() => {
-        if (bPlaceholder) return "disabled:bg-white/25 disabled:text disabled:border-0";
+        if (bPlaceholder) return "disabled:bg-white/25 disabled:text disabled:border-0 opacity-50";
         
         return "disabled:bg-slate-500 disabled:text-slate-300 disabled:hover:bg-slate-600";
     }, [bPlaceholder]);
