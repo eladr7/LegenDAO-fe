@@ -1,5 +1,6 @@
 import { Key } from "@keplr-wallet/types";
 import { attachAbortController, sendCreator, TSend } from "../../app/commons/api";
+import { experimentalSuggestChain } from "./experimentalSuggestChain";
 
 export const SECRET_CHAIN_ID = "secret-4";
 
@@ -18,9 +19,11 @@ const _connect: TSend<TWalletConnectReturn, TWalletConnectOptions> = sendCreator
             reject("Can not detect Keplr wallet");
             return;
         }
-        const chainId = options.chainId || SECRET_CHAIN_ID;
-        window.keplr
-            .enable(chainId)
+        const chainId = options.chainId || process.env.REACT_APP_NETWORK_CHAINID || "";
+        experimentalSuggestChain()
+            .then(() => {
+                if (window.keplr) window.keplr.enable(chainId);
+            })
             .then(() => {
                 if (!window.keplr) {
                     reject("Somthing went wrong with Keplr wallet extension");

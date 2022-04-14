@@ -5,21 +5,21 @@ export const experimentalSuggestChain = async (
   currencies = [SCRT],
   feeCurrencies = [SCRT],
   stakeCurrency = SCRT,
+  chain = "secret",
   gasPriceStep = {
-    low: 25,
-    average: 50,
-    high: 100,
+    low: 0.01,
+    average: 0.025,
+    high: 0.03,
   },
 ) => {
   const chainId = process.env.REACT_APP_NETWORK_CHAINID || "";
-  const chain = chainId.split("-")[0];
   const chainInfo: IChainInfo = {
     chainId,
-    chainName: process.env.REACT_APP_NETWORK_CHAIN_NAME || "",
+    chainName: "Secret Testnet" || "",
     rpc: process.env.REACT_APP_NETWORK_RPC || "",
     rest: process.env.REACT_APP_NETWORK_REST || "",
     bip44: {
-      coinType: 118,
+      coinType: 529,
     },
     bech32Config: {
       bech32PrefixAccAddr: chain,
