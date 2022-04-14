@@ -18,7 +18,7 @@ export function Footer(): React.ReactElement {
                         style={{ backgroundImage: `url(${imgYetiHead01})` }}
                     ></div>
                     <div className="flex flex-col flex-nowrap">
-                        <div className="font-semibold text-2xl">The SOD</div>
+                        <div className="font-semibold text-2xl">The Legendao</div>
                         <div className="font-bold text-4xl leading-none">Universe</div>
                     </div>
                 </div>
