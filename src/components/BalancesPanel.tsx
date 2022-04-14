@@ -4,6 +4,7 @@ import Panel from "./commons/Panel";
 import Button from "./commons/Button";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
 import {
+    accessibilityActions,
     toggleDepositPanel,
     toggleWithdrawPanel,
     turnOffAllPanel,
@@ -40,6 +41,7 @@ export default function BalancesPanel({
                 onProfileBtnClicked(e);
                 return;
             }
+            dispatch(accessibilityActions.toggleBalanceMenu(false));
             navigate("/profile");
         },
         [dispatch, navigate, onProfileBtnClicked]
@@ -51,9 +53,10 @@ export default function BalancesPanel({
                 onGetLGNDBtnClicked(e);
                 return;
             }
+            dispatch(accessibilityActions.toggleBalanceMenu(false));
             window.open("https://app.osmosis.zone/?from=ATOM&to=OSMO", "_blank");
         },
-        [onGetLGNDBtnClicked]
+        [dispatch, onGetLGNDBtnClicked]
     );
 
     const handleOnManageAssetBtnClicked = useCallback(
@@ -62,9 +65,10 @@ export default function BalancesPanel({
                 onManageAssetBtnClicked(e);
                 return;
             }
+            dispatch(accessibilityActions.toggleBalanceMenu(false));
             window.open("https://app.osmosis.zone/assets", "_blank");
         },
-        [onManageAssetBtnClicked]
+        [dispatch, onManageAssetBtnClicked]
     );
 
     const handleOnMyCollectionBtnClicked = useCallback(
@@ -74,7 +78,8 @@ export default function BalancesPanel({
                 onMyCollectionBtnClicked(e);
                 return;
             }
-            navigate("/profile/collected");
+            dispatch(accessibilityActions.toggleBalanceMenu(false));
+            navigate("/collections");
         },
         [dispatch, navigate, onMyCollectionBtnClicked]
     );
