@@ -61,7 +61,7 @@ export function Header({
     }, []);
 
     const handleOnCollectionsBtnClicked = useCallback(() => {
-        navigate("/profile/collected");
+        navigate("/collections/o");
     }, [navigate]);
 
     const handleOnCreateBtnClicked = useCallback(() => {

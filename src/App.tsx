@@ -10,6 +10,7 @@ import Home from "./routes/Home";
 import { MintLabLanding } from "./routes/MintLabLanding";
 import MyCollections from "./routes/MyCollections";
 import NotFound from "./routes/NotFound";
+import OldCollections from "./routes/OldCollections";
 import Profile from "./routes/Profile";
 import Stake from "./routes/Stake";
 import UI from "./routes/UI";
@@ -56,6 +57,7 @@ function App(): React.ReactElement {
                     <Route path="/profile/collected" element={<Profile />} />
                     <Route path="/airdrop" element={<AirDrop />} />
                     <Route path="/collections" element={<MyCollections />} />
+                    <Route path="/collections/o" element={<OldCollections />} />
                     <Route path="/form-creation" element={<FormCreation />} />
                     <Route path="/stake" element={<Stake />} />
                     <Route path="*" element={<NotFound />} />
