@@ -18,7 +18,7 @@ export default function RoadmapArticle(): React.ReactElement {
                 stage: "Stage 1:",
                 title: "Presale - New Token is Born & the First Drops",
                 desc: `A new token is created! You will be able to purchase NFT collections, stake and upgrade
-          your avatar using the LGN token.
+          your avatar using the LGND token.
           Launch of the first secret NFT collections in the Legendary universe. With private metadata, creators can now spread their creations in new ways.`,
             },
             {
@@ -42,7 +42,7 @@ export default function RoadmapArticle(): React.ReactElement {
                 desc: `Loot boxes are found in the mystic mountains. What
           do these mysterious boxes contain?
           Buy a loot box and reveal its treasures. Will it
-          contain LGN tokens? Or maybe a whitelist spot?`,
+          contain LGND tokens? Or maybe a whitelist spot?`,
             },
             {
                 stage: "Stage 5:",
@@ -54,8 +54,8 @@ export default function RoadmapArticle(): React.ReactElement {
             {
                 stage: "Stage 6:",
                 title: "SOD - The House of Creators",
-                desc: `Legendary becomes the place for creators all over the cosmos
-          universe. The SNFT collections are unique and o!er new value to
+                desc: `Legendary becomes the place for creators all over the Cosmos
+          universe. The SNFT collections are unique and offer new value to
           artists and users alike. A new world is created inside the
           metaverse!`,
             },

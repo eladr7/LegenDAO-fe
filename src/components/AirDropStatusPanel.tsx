@@ -96,9 +96,7 @@ export default function AirDropStatusPanel({ onCloseBtnClicked }: Props): React.
             }
 
             if (!rfDiscordUserIdInput.current?.reportValidity()) {
-                setDiscordUserIdErrorMsg(
-                    "Discord user ID is not valid, please enter a valid ID"
-                );
+                setDiscordUserIdErrorMsg("Discord user ID is not valid, please enter a valid ID");
             } else {
                 setDiscordUserIdErrorMsg(undefined);
             }
@@ -197,7 +195,7 @@ export default function AirDropStatusPanel({ onCloseBtnClicked }: Props): React.
                             bigness="xl"
                             onClick={handleOnCheckBtnClicked}
                         >
-                            Check AirDrop
+                            Check Airdrop
                         </Button>
                     </div>
                 </form>
