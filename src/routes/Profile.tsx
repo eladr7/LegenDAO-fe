@@ -33,6 +33,7 @@ export default function Profile(): React.ReactElement {
 
     const [tab, setTab] = useState<Tab>(getInitialTab());
     const [myName, setMyName] = useState<string>("");
+    const [isDisableInput, setIsDisableInput] = useState<boolean>(true);
     const [myNameErrorMessage, setMyNameErrorMessage] = useState<string | undefined>(undefined);
 
     const handleOnGeneralTabClicked = useCallback(() => {
@@ -118,6 +119,11 @@ export default function Profile(): React.ReactElement {
                                 <Input
                                     refV={rfMyNameInput}
                                     rightIconNode={<PencilIcon size={18} />}
+                                    rightIconOnClick={async () => {
+                                        await setIsDisableInput(false);
+                                        rfMyNameInput.current?.focus();
+                                    }}
+                                    disabled={isDisableInput}
                                     bigness="lg"
                                     id="input-profile/general/my-name"
                                     placeholder="Enter your name"
@@ -221,7 +227,7 @@ export default function Profile(): React.ReactElement {
                 );
             }
         }
-    }, [tab, myNameErrorMessage, handleOnMyNameChanged, myName]);
+    }, [tab, myNameErrorMessage, handleOnMyNameChanged, myName, isDisableInput, setIsDisableInput]);
 
     return (
         <DefaultLayout headerType="general" headerDomainNode={renderHeaderDomainNode()}>
