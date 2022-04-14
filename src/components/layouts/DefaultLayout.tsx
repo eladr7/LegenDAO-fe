@@ -100,7 +100,7 @@ export function DefaultLayout({
                 "relative mx-auto w-full max-w-screen-desktop-4 min-h-screen",
                 "flex flex-col justify-start items-stretch",
                 "font-body text-slate-700",
-                "bg-gradient-to-br from-indigo-900 to-slate-900"
+                "bg-primary-mint-lab"
             )}
         >
             {renderHeader()}
