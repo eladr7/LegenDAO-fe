@@ -2,45 +2,17 @@ import React from "react";
 import cn from "classnames";
 import Article from "./commons/Article";
 
-import imgMountain02 from "./../assets/images/mountain-02.png";
+import imgArticlePlatform02Background from "./../assets/images/article-platform-02-background.png";
 
 export default function MountainsOfSodArticle(): React.ReactElement {
     return (
-        <Article className="min-h-[900px]">
+        <Article
+            style={{ backgroundImage: `url(${imgArticlePlatform02Background})` }}
+            className="min-h-[1300px] "
+        >
             <div
                 className={cn(
-                    "absolute top-0 bottom-0 right-0 left-0",
-                    "bg-no-repeat bg-cover bg-center"
-                )}
-                style={{ backgroundImage: `url(${imgMountain02})` }}
-            ></div>
-
-            <div
-                className={cn(
-                    "absolute bottom-0 left-0 right-0 h-[200px] z-20",
-                    "bg-gradient-to-t from-primary-mint-lab to-slate-900/0"
-                )}
-            ></div>
-
-            <div
-                className={cn(
-                    "absolute top-0 left-0 right-0 h-[200px] z-20",
-                    "bg-gradient-to-b from-primary-mint-lab to-slate-900/0"
-                )}
-            ></div>
-
-            <div className="relative w-1/2 z-10">
-                <div
-                    className={cn(
-                        "absolute top-0 bottom-0 right-0 w-1/2",
-                        "bg-gradient-to-l from-primary-mint-lab to-slate-900/0"
-                    )}
-                ></div>
-            </div>
-
-            <div
-                className={cn(
-                    "w-1/2 z-20 bg-primary-mint-lab px-16",
+                    "w-1/2 z-20  px-16 ml-[50%] ",
                     "text-white flex flex-col flex-nowrap justify-center items-start"
                 )}
             >

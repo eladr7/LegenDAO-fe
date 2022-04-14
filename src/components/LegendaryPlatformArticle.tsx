@@ -2,39 +2,19 @@ import React from "react";
 import cn from "classnames";
 import Article from "./commons/Article";
 
-import imgArticleUniverse01Background from "./../assets/images/article-universe-01-background.png";
-import imgYetiNinja01 from "./../assets/images/yeti-ninja-01.png";
+import imgArticlePlatform01Background from "./../assets/images/article-platform-01-background.png";
 import imgPlatform01 from "./../assets/images/platform-01.png";
 
 export default function LegendaryPlatformArticle(): React.ReactElement {
     return (
         <>
-            <Article>
+            <Article
+                className="min-h-[1000px] bg-right-top bg-primary-mint-lab "
+                style={{ backgroundImage: `url(${imgArticlePlatform01Background})` }}
+            >
                 <div
                     className={cn(
-                        "absolute top-0 bottom-0 right-0 left-0",
-                        "bg-no-repeat bg-cover bg-bottom"
-                    )}
-                    style={{ backgroundImage: `url(${imgArticleUniverse01Background})` }}
-                ></div>
-
-                <div
-                    className={cn(
-                        "absolute bottom-0 left-0 right-0 h-[200px] z-20",
-                        "bg-gradient-to-t from-primary-mint-lab to-slate-900/0"
-                    )}
-                ></div>
-
-                <div
-                    className={cn(
-                        "absolute top-0 left-0 right-0 h-[200px] z-20",
-                        "bg-gradient-to-b from-primary-mint-lab to-slate-900/0"
-                    )}
-                ></div>
-
-                <div
-                    className={cn(
-                        "w-1/2 z-20 bg-primary-mint-lab px-16",
+                        "w-1/2 z-20 px-16",
                         "text-white flex flex-col flex-nowrap justify-center items-end"
                     )}
                 >
@@ -67,22 +47,6 @@ export default function LegendaryPlatformArticle(): React.ReactElement {
                             </p>
                         </div>
                     </div>
-                </div>
-
-                <div className="relative w-1/2 z-10">
-                    <div
-                        className={cn(
-                            "absolute top-0 bottom-0 left-0 w-1/2",
-                            "bg-gradient-to-r from-slate-900 to-slate-900/0"
-                        )}
-                    ></div>
-                    <div
-                        className={cn(
-                            "absolute left-0 -bottom-12 w-full h-full",
-                            "bg-no-repeat bg-contain bg-left-bottom"
-                        )}
-                        style={{ backgroundImage: `url(${imgYetiNinja01})` }}
-                    ></div>
                 </div>
             </Article>
             <Article className="min-h-[1000px] bg-primary-mint-lab">
