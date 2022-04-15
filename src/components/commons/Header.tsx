@@ -1,4 +1,4 @@
-import React, { useCallback } from "react";
+import React, { useCallback, useEffect } from "react";
 import cn from "classnames";
 import { Branding } from "./Branding";
 import MenuIcon from "../icons/MenuIcon";
@@ -18,6 +18,7 @@ import { walletAsyncActions } from "../../features/wallet/walletSlice";
 import BalancesPanel from "../BalancesPanel";
 import { SOCIAL_NETWORK_URL } from "../../constants/linkSocial";
 import { shortenAddress } from "../../functions/format";
+import { getAllBlances, getBalanceToken } from "../../functions/getBalances";
 
 const HEADER_TYPES = ["intro", "general", "collection"] as const;
 export type THeaderType = typeof HEADER_TYPES[number];
@@ -39,7 +40,6 @@ export function Header({
     const walletState = useAppSelector((state) => state.wallet);
     const accessibilityState = useAppSelector((state) => state.accessibility);
     const dispatch = useAppDispatch();
-
     const isWalletConnected = useCallback(() => {
         return Boolean(walletState.primary);
     }, [walletState.primary]);
@@ -75,6 +75,15 @@ export function Header({
     const renderDomain = useCallback(() => {
         return domainNode;
     }, [domainNode]);
+
+    useEffect(() => {
+        (async() => {
+            const allBalances = await getAllBlances();
+            const scrt = await getBalanceToken("uscrt");
+
+            console.log({allBalances, scrt});
+        })();
+    }, []);
 
     const renderActions = useCallback(() => {
         return (
