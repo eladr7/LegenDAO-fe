@@ -65,7 +65,7 @@ export default function Input({
                 ref={refV}
                 className={cn(
                     getBignessClassNames(),
-                    "focus:outline-none disabled:opacity-50",
+                    "focus:outline-none disabled:opacity-75",
                     "grow shrink px-4",
                     { [getIconRightMargin()]: Boolean(rightIconNode) },
                     { "pr-36": Boolean(rightButtonText) },
