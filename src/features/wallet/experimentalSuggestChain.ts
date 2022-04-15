@@ -15,7 +15,7 @@ export const experimentalSuggestChain = (
     const chainId = process.env.REACT_APP_NETWORK_CHAINID || "";
     const chainInfo: IChainInfo = {
         chainId,
-        chainName: "Secret Testnet" || "",
+        chainName: process.env.REACT_APP_NETWORK_CHAIN_NAME || "",
         rpc: process.env.REACT_APP_NETWORK_RPC || "",
         rest: process.env.REACT_APP_NETWORK_REST || "",
         bip44: {
