@@ -123,6 +123,9 @@ export default function Profile(): React.ReactElement {
                                         await setIsDisableInput(false);
                                         rfMyNameInput.current?.focus();
                                     }}
+                                    onBlur={() => {
+                                        setIsDisableInput(true);
+                                    }}
                                     disabled={isDisableInput}
                                     bigness="lg"
                                     id="input-profile/general/my-name"
