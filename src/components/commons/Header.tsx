@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect } from "react";
+import React, { useCallback } from "react";
 import cn from "classnames";
 import { Branding } from "./Branding";
 import MenuIcon from "../icons/MenuIcon";
@@ -17,8 +17,7 @@ import {
 import { walletAsyncActions } from "../../features/wallet/walletSlice";
 import BalancesPanel from "../BalancesPanel";
 import { SOCIAL_NETWORK_URL } from "../../constants/linkSocial";
-import { shortenAddress } from "../../functions/format";
-import { getAllBlances, getBalanceToken } from "../../functions/getBalances";
+import { shortenAddress } from "../../helpers/format";
 
 const HEADER_TYPES = ["intro", "general", "collection"] as const;
 export type THeaderType = typeof HEADER_TYPES[number];
@@ -75,15 +74,6 @@ export function Header({
     const renderDomain = useCallback(() => {
         return domainNode;
     }, [domainNode]);
-
-    useEffect(() => {
-        (async() => {
-            const allBalances = await getAllBlances();
-            const scrt = await getBalanceToken("uscrt");
-
-            console.log({allBalances, scrt});
-        })();
-    }, []);
 
     const renderActions = useCallback(() => {
         return (
@@ -152,12 +142,19 @@ export function Header({
             );
         }
         return (
-            <Button bigness="sm" bTransparent onClick={handleOnConnectWalletBtnClicked}>
+            <Button
+                disabled={!walletState.bSuggested}
+                bigness="sm"
+                bTransparent
+                className={cn({ "animate-pulse": !walletState.bSuggested })}
+                onClick={handleOnConnectWalletBtnClicked}
+            >
                 <div className="flex flex-row flex-nowrap justify-center items-center">
                     <div className="w-icon h-icon grow-0 shrink-0 mr-2 last:mr-0">
                         <WalletIcon className="fill-white group-hover:fill-purple-700 transition-[fill]" />
                     </div>
-                    <span>Connect Wallet</span>
+
+                    <span>{walletState.bSuggested ? "Connect Wallet" : "Suggesting Chain..."}</span>
                 </div>
             </Button>
         );
@@ -166,6 +163,7 @@ export function Header({
         handleOnConnectWalletBtnClicked,
         handleOnWalletBtnClicked,
         isWalletConnected,
+        walletState.bSuggested,
         walletState.primary?.address,
     ]);
 

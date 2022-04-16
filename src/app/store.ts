@@ -5,9 +5,12 @@ import walletReducer, { walletAsyncActions } from "../features/wallet/walletSlic
 import collectionReducer from "../features/collection/collectionSlice";
 import airdropReducer from "../features/airdrop/airdropSlice";
 import mintReducer from "../features/mint/mintSlice";
+import networkReducer from "../features/network/networkSlice";
+import { netMiddleware } from "./middlewares/net";
 
 const rootReducer = combineReducers({
     accessibility: accessibilityReducer,
+    network: networkReducer,
     wallet: walletReducer,
     airdrop: airdropReducer,
     collection: collectionReducer,
@@ -21,7 +24,7 @@ const store = configureStore({
             serializableCheck: {
                 ignoredActions: [walletAsyncActions.connect.fulfilled.type],
             },
-        }),
+        }).concat(netMiddleware),
     // .concat(timeoutSchedulerMiddleware)
     // .concat(thunk)
     // .concat(vanillaPromiseMiddleware)

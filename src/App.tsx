@@ -1,8 +1,11 @@
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { Provider } from "react-redux";
 import { Route, Routes } from "react-router-dom";
+import { useAppDispatch, useAppSelector } from "./app/hooks";
 import store from "./app/store";
 import AppContext, { TAppContext } from "./contexts/AppContext";
+import { networkActions } from "./features/network/networkSlice";
+import { walletAsyncActions } from "./features/wallet/walletSlice";
 import AirDrop from "./routes/AirDrop";
 import { Asset } from "./routes/Asset";
 import FormCreation from "./routes/FormCreation";
@@ -16,10 +19,10 @@ import Stake from "./routes/Stake";
 import UI from "./routes/UI";
 
 function App(): React.ReactElement {
-    const rfIsUnmounted = useRef(false);
-
     // App context (for stuffs that should not use redux by performance)
     const [bodyElement, setBodyElement] = useState<HTMLBodyElement>();
+    const walletState = useAppSelector((state) => state.wallet);
+    const dispatch = useAppDispatch();
 
     const appContextValue: TAppContext = {
         state: {
@@ -31,14 +34,18 @@ function App(): React.ReactElement {
     const getBodyElement = useCallback(() => document.querySelector("body"), []);
 
     useEffect(() => {
-        return () => {
-            rfIsUnmounted.current = true;
-        };
-    }, []);
-
-    useEffect(() => {
         setBodyElement(getBodyElement() || undefined);
     }, [getBodyElement]);
+
+    useEffect(() => {
+        !walletState.bSuggested && dispatch(walletAsyncActions.suggestChain({ delay: 500 }));
+    }, [dispatch, walletState.bSuggested]);
+
+    useEffect(() => {
+        if (walletState.bSuggested) {
+            dispatch(networkActions.tryConnecting());
+        }
+    }, [dispatch, walletState.bSuggested]);
 
     return (
         <AppContext.Provider value={appContextValue}>

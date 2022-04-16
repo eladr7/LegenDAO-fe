@@ -1,3 +1,4 @@
+import { AppCurrency } from "@keplr-wallet/types";
 
 export interface ICurrency {
   readonly coinDenom: string;
@@ -6,7 +7,7 @@ export interface ICurrency {
   readonly coinGeckoId?: string;
 }
 
-export const SCRT: ICurrency = {
+export const SCRT: AppCurrency = {
   coinDenom: "SCRT",
   coinMinimalDenom: "uscrt",
   coinDecimals: 6,

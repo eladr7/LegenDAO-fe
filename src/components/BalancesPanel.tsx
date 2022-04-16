@@ -1,4 +1,4 @@
-import React, { useCallback } from "react";
+import React, { useCallback, useEffect } from "react";
 import cn from "classnames";
 import Panel from "./commons/Panel";
 import Button from "./commons/Button";
@@ -10,6 +10,7 @@ import {
     turnOffAllPanel,
 } from "../features/accessibility/accessibilitySlice";
 import { useNavigate } from "react-router-dom";
+import { walletActions } from "../features/wallet/walletSlice";
 
 type Props = {
     onCloseBtnClicked?: React.MouseEventHandler<HTMLElement>;
@@ -33,6 +34,8 @@ export default function BalancesPanel({
     const accessibilityState = useAppSelector((state) => state.accessibility);
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
+    const walletState = useAppSelector((state) => state.wallet);
+    const networkState = useAppSelector((state) => state.network);
 
     const handleOnProfileBtnClicked = useCallback(
         (e: React.MouseEvent<HTMLElement>) => {
@@ -106,6 +109,11 @@ export default function BalancesPanel({
         [dispatch, onWithdrawBtnClicked]
     );
 
+    useEffect(() => {
+        if (!networkState.bIsConnected) return;
+        dispatch(walletActions.getBalance({denom: "uscrt"}));
+    }, [dispatch, networkState.bIsConnected]);
+
     return (
         <Panel onCloseBtnClicked={onCloseBtnClicked}>
             <div
@@ -116,9 +124,11 @@ export default function BalancesPanel({
                         Balance
                     </div>
                     <div className="flex flex-row flex-nowrap items-end">
-                        <div className="font-semibold text-2xl leading-none">40.2839 LGND</div>
+                        <div className="font-semibold text-2xl leading-none uppercase">
+                            {walletState.balance.amount || "--"} {walletState.balance.denom}
+                        </div>
                         <span className="ml-2 first:ml-0 opacity-50 font-light leading-none">
-                            ($80.37)
+                            (${walletState.fiatBalance.amount.toFixed(2)})
                         </span>
                     </div>
                 </div>
@@ -128,9 +138,11 @@ export default function BalancesPanel({
                         Undelegate
                     </div>
                     <div className="flex flex-row flex-nowrap items-center">
-                        <div className="font-semibold text-2xl leading-none">15 LGND</div>
+                        <div className="font-semibold text-2xl leading-none uppercase">
+                            {walletState.undelegate.amount || "--"} {walletState.undelegate.denom}
+                        </div>
                         <span className="ml-2 first:ml-0 opacity-50 font-light leading-none">
-                            ($30.47)
+                            (${walletState.fiatUndelegate.amount.toFixed(2)})
                         </span>
 
                         <div
@@ -149,9 +161,11 @@ export default function BalancesPanel({
                         Unclaimed
                     </div>
                     <div className="flex flex-row flex-nowrap items-end">
-                        <div className="font-semibold text-2xl leading-none">25 LGND</div>
+                        <div className="font-semibold text-2xl leading-none uppercase">
+                            {walletState.unclaim.amount || "--"} {walletState.unclaim.denom}
+                        </div>
                         <span className="ml-2 first:ml-0 opacity-50 font-light leading-none">
-                            ($50.37)
+                            (${walletState.fiatUnclaim.amount.toFixed(2)})
                         </span>
                     </div>
                 </div>
