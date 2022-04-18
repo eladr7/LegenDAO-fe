@@ -2,13 +2,13 @@ import { AppCurrency, ChainInfo, Key } from "@keplr-wallet/types";
 import { attachAbortController, sendCreator, TSend } from "../../app/commons/api";
 import { TNetError } from "../../app/commons/types";
 import { COIN_TYPES } from "../../classes/Currency";
-import { DF_CHAIN, DF_DENOM, DF_DENOM_MINIMAL, DF_GECKO_ID } from "../../constants/defaults";
+import { DF_CHAIN, NET_COINGECKO_ID, NET_DENOM, NET_DENOM_MINIMAL } from "../../constants/defaults";
 
 const DF_CURRENCY_DOMAIN: AppCurrency = {
-    coinDenom: DF_DENOM,
-    coinMinimalDenom: DF_DENOM_MINIMAL,
+    coinDenom: NET_DENOM,
+    coinMinimalDenom: NET_DENOM_MINIMAL,
     coinDecimals: 6,
-    coinGeckoId: DF_GECKO_ID,
+    coinGeckoId: NET_COINGECKO_ID,
 };
 const DF_CURRENCIES: AppCurrency[] = [DF_CURRENCY_DOMAIN];
 
