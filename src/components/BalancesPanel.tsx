@@ -111,7 +111,7 @@ export default function BalancesPanel({
 
     useEffect(() => {
         if (!networkState.bIsConnected) return;
-        dispatch(walletActions.getBalance({denom: "uscrt"}));
+        dispatch(walletActions.getBalance({denom: "lgnd"}));
     }, [dispatch, networkState.bIsConnected]);
 
     return (

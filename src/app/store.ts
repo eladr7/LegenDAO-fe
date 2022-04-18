@@ -6,11 +6,13 @@ import collectionReducer from "../features/collection/collectionSlice";
 import airdropReducer from "../features/airdrop/airdropSlice";
 import mintReducer from "../features/mint/mintSlice";
 import networkReducer from "../features/network/networkSlice";
+import transactionReducer from "../features/transaction/transactionSlice";
 import { netMiddleware } from "./middlewares/net";
 
 const rootReducer = combineReducers({
     accessibility: accessibilityReducer,
     network: networkReducer,
+    transaction: transactionReducer,
     wallet: walletReducer,
     airdrop: airdropReducer,
     collection: collectionReducer,

@@ -9,6 +9,8 @@ import walletAPI, {
     TWalletSuggestChainOptions,
     TWalletSuggestChainReturn,
 } from "./walletApi";
+import { DF_DENOM } from "../../constants/defaults";
+import { TDenomination } from "../../classes/Currency";
 
 export type TWalletState = {
     primary?: TWallet;
@@ -33,17 +35,17 @@ const initialState: TWalletState = {
     primary: undefined,
     balance: {
         amount: "0",
-        denom: "uscrt",
+        denom: DF_DENOM,
     },
     fiatBalance: { amount: 0 },
     undelegate: {
         amount: "0",
-        denom: "uscrt",
+        denom: DF_DENOM,
     },
     fiatUndelegate: { amount: 0 },
     unclaim: {
         amount: "0",
-        denom: "uscrt",
+        denom: DF_DENOM,
     },
     fiatUnclaim: { amount: 0 },
     bSuggested: false,
@@ -71,7 +73,7 @@ const _getAllBalances: CaseReducer<
 
 const _getBalance: CaseReducer<
     TWalletState,
-    PayloadAction<{ client?: SecretNetworkClient; denom?: string; balance?: Coin } | undefined>
+    PayloadAction<{ client?: SecretNetworkClient; denom?: TDenomination; balance?: Coin } | undefined>
 > = (state, action) => {
     console.log(action.payload);
     if (!action.payload?.balance) return;

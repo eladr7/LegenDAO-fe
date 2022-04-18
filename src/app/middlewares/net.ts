@@ -1,4 +1,5 @@
 /* eslint-disable no-console */
+import { Buffer } from "buffer";
 import { SecretNetworkClient } from "secretjs";
 import { AccountData } from "secretjs/dist/wallet_amino";
 import { Middleware, MiddlewareAPI } from "redux";
@@ -6,6 +7,9 @@ import { TAppDispatch, TRootState } from "../store";
 import { TNetError } from "../commons/types";
 import { networkActions } from "../../features/network/networkSlice";
 import { walletActions } from "../../features/wallet/walletSlice";
+import { LGND_ADDRESS, PLATFORM_ADDRESS } from "../../constants/contractAddress";
+import { transactionActions } from "../../features/transaction/transactionSlice";
+import { DF_DENOM } from "../../constants/defaults";
 
 const _connect = (): Promise<{ client: SecretNetworkClient; account: AccountData }> => {
     return new Promise((resolve, reject: (reason?: TNetError) => void) => {
@@ -103,7 +107,7 @@ const _netMiddlewareClosure = (): Middleware => {
                 client.query.bank
                     .balance({
                         address: primaryAccount.address,
-                        denom: action.payload.denom || "uscrt",
+                        denom: action.payload.denom || DF_DENOM,
                     })
                     .then((result) => {
                         next({ ...action, payload: { balance: result.balance } });
@@ -111,6 +115,90 @@ const _netMiddlewareClosure = (): Middleware => {
                     .catch((err) => {
                         console.warn(err);
                     });
+                break;
+            }
+
+            case transactionActions.sendTokenFromPlatformToContract.type: {
+                const platformContractAddress: string = PLATFORM_ADDRESS || "";
+                if (!client || !platformContractAddress) return;
+
+                const { sendAmount, mintAmount, destinationContract, forAddress } = action.payload;
+
+                console.log({ sendAmount, mintAmount, destinationContract, forAddress });
+
+                store.dispatch(transactionActions.startTransaction());
+
+                const wantedMsg = Buffer.from(
+                    JSON.stringify({
+                        mint: {
+                            amount_to_mint: mintAmount,
+                            mint_for: forAddress || client.address,
+                        },
+                    })
+                ).toString("base64");
+
+                console.log(wantedMsg);
+
+                client.tx.compute
+                    .executeContract(
+                        {
+                            sender: client.address,
+                            contractAddress: platformContractAddress,
+                            msg: {
+                                send_from_platform: {
+                                    contract_addr: destinationContract,
+                                    amount: sendAmount.toString(),
+                                    msg: wantedMsg,
+                                },
+                            },
+                        },
+                        { gasLimit: 500_000 }
+                    )
+                    .then((tx) => {
+                        next({ ...action, payload: { ...action.payload, tx } });
+                    })
+                    .catch((err) => {
+                        console.error(err);
+                    });
+
+                break;
+            }
+
+            case transactionActions.depositToPlatform.type: {
+                const { snipContractAddress, amount, toAddress } = action.payload;
+                const platformContractAddress: string | undefined = PLATFORM_ADDRESS;
+                const targetContractAddress: string | undefined =
+                    snipContractAddress || LGND_ADDRESS;
+                if (!client || !platformContractAddress || !targetContractAddress) return;
+
+                console.log({ amount, toAddress });
+
+                const msg = Buffer.from(
+                    JSON.stringify({ deposit: { to: toAddress || client.address } })
+                ).toString("base64");
+
+                client.tx.snip20
+                    .send(
+                        {
+                            sender: client.address,
+                            contractAddress: targetContractAddress,
+                            msg: {
+                                send: {
+                                    recipient: platformContractAddress,
+                                    amount: amount.toString(),
+                                    msg,
+                                },
+                            },
+                        },
+                        { gasLimit: 500_000 }
+                    )
+                    .then((tx) => {
+                        next({ ...action, payload: { ...action.payload, tx } });
+                    })
+                    .catch((err) => {
+                        console.error(err);
+                    });
+
                 break;
             }
 

@@ -1,19 +1,16 @@
 import { AppCurrency, ChainInfo, Key } from "@keplr-wallet/types";
 import { attachAbortController, sendCreator, TSend } from "../../app/commons/api";
 import { TNetError } from "../../app/commons/types";
+import { COIN_TYPES } from "../../classes/Currency";
+import { DF_CHAIN, DF_DENOM, DF_DENOM_MINIMAL, DF_GECKO_ID } from "../../constants/defaults";
 
 const DF_CURRENCY_DOMAIN: AppCurrency = {
-    coinDenom: "SCRT",
-    coinMinimalDenom: "uscrt",
+    coinDenom: DF_DENOM,
+    coinMinimalDenom: DF_DENOM_MINIMAL,
     coinDecimals: 6,
-    coinGeckoId: "secret",
+    coinGeckoId: DF_GECKO_ID,
 };
 const DF_CURRENCIES: AppCurrency[] = [DF_CURRENCY_DOMAIN];
-const DF_CHAIN = "secret";
-const COIN_TYPES = {
-    scrt: 529, // Secret Network
-    atom: 118, // Cosmos Hub
-};
 
 export type TWalletSuggestChainOptions = {
     delay?: number;
