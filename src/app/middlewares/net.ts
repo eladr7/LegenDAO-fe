@@ -7,7 +7,7 @@ import { TAppDispatch, TRootState } from "../store";
 import { TNetError } from "../commons/types";
 import { networkActions } from "../../features/network/networkSlice";
 import { walletActions } from "../../features/wallet/walletSlice";
-import { LGND_ADDRESS, PLATFORM_ADDRESS } from "../../constants/contractAddress";
+import { LGND_ADDRESS, NFT_ADDRESS, PLATFORM_ADDRESS } from "../../constants/contractAddress";
 import { transactionActions } from "../../features/transaction/transactionSlice";
 import { DF_DENOM } from "../../constants/defaults";
 
@@ -194,6 +194,264 @@ const _netMiddlewareClosure = (): Middleware => {
                     )
                     .then((tx) => {
                         next({ ...action, payload: { ...action.payload, tx } });
+                    })
+                    .catch((err) => {
+                        console.error(err);
+                    });
+
+                break;
+            }
+
+            case transactionActions.addMinters.type: {
+                const { minters, codeHash } = action.payload;
+                const nftContractAddress: string | undefined = NFT_ADDRESS;
+                if (!client || !nftContractAddress) return;
+
+                client.tx.compute
+                    .executeContract(
+                        {
+                            sender: client.address,
+                            contractAddress: nftContractAddress,
+                            msg: { add_minters: { minters } },
+                            codeHash,
+                        },
+                        {
+                            gasLimit: 30_000,
+                            gasPriceInFeeDenom: 0.1,
+                        }
+                    )
+                    .then((tx) => {
+                        next({ ...action, payload: { ...action.payload, tx } });
+                    })
+                    .catch((err) => {
+                        console.error(err);
+                    });
+
+                break;
+            }
+
+            case transactionActions.mintNfts.type: {
+                const { amount } = action.payload;
+                const nftContractAddress: string | undefined = NFT_ADDRESS;
+                if (!client || !nftContractAddress) return;
+
+                client.tx.compute
+                    .executeContract(
+                        {
+                            sender: client.address,
+                            contractAddress: nftContractAddress,
+                            msg: { mint: { amount } },
+                            sentFunds: [
+                                { denom: "uscrt", amount: String(1_000_000 * Number(amount)) },
+                            ],
+                        },
+                        {
+                            gasPriceInFeeDenom: 0.1,
+                        }
+                    )
+                    .then((tx) => {
+                        next({ ...action, payload: { ...action.payload, tx } });
+                    })
+                    .catch((err) => {
+                        console.error(err);
+                    });
+
+                break;
+            }
+
+            case transactionActions.mintNftsWithSnip.type: {
+                const { snipContract, priceForEach, amountToBuy, buyFor } = action.payload;
+                const nftContractAddress: string | undefined = NFT_ADDRESS;
+                if (!client || !nftContractAddress) return;
+                const msg = Buffer.from(
+                    JSON.stringify({
+                        mint: {
+                            amount_to_mint: amountToBuy,
+                            mint_for: buyFor || client.address,
+                        },
+                    })
+                ).toString("base64");
+
+                client.tx.snip20
+                    .send(
+                        {
+                            sender: client.address,
+                            contractAddress: snipContract,
+                            msg: {
+                                send: {
+                                    recipient: nftContractAddress,
+                                    amount: (Number(priceForEach) * Number(amountToBuy)).toString(),
+                                    msg,
+                                },
+                            },
+                        },
+                        {
+                            gasLimit: 500_000,
+                            gasPriceInFeeDenom: 0.1,
+                        }
+                    )
+                    .then((tx) => {
+                        next({ ...action, payload: { ...action.payload, tx } });
+                    })
+                    .catch((err) => {
+                        console.error(err);
+                    });
+
+                break;
+            }
+
+            case transactionActions.mintAdminNfts.type: {
+                const { amount } = action.payload;
+                const nftContractAddress: string | undefined = NFT_ADDRESS;
+                if (!client || !nftContractAddress) return;
+
+                client.tx.compute
+                    .executeContract(
+                        {
+                            sender: client.address,
+                            contractAddress: nftContractAddress,
+                            msg: { mint_admin: { amount } },
+                        },
+                        {
+                            gasLimit: 500_000,
+                            gasPriceInFeeDenom: 0.1,
+                        }
+                    )
+                    .then((tx) => {
+                        next({ ...action, payload: { ...action.payload, tx } });
+                    })
+                    .catch((err) => {
+                        console.error(err);
+                    });
+
+                break;
+            }
+
+            case transactionActions.setTokenAttributes.type: {
+                const { attributes, codeHash } = action.payload;
+                const nftContractAddress: string | undefined = NFT_ADDRESS;
+                if (!client || !nftContractAddress) return;
+
+                client.tx.compute
+                    .executeContract(
+                        {
+                            sender: client.address,
+                            contractAddress: nftContractAddress,
+                            msg: { set_attributes: { tokens: attributes } },
+                            codeHash,
+                        },
+                        {
+                            gasLimit: 1_500_000,
+                            gasPriceInFeeDenom: 0.1,
+                        }
+                    )
+                    .then((tx) => {
+                        next({ ...action, payload: { ...action.payload, tx } });
+                    })
+                    .catch((err) => {
+                        console.error(err);
+                    });
+
+                break;
+            }
+
+            case transactionActions.changeWhitelistLevel.type: {
+                const { newLevel, codeHash } = action.payload;
+                const nftContractAddress: string | undefined = NFT_ADDRESS;
+                if (!client || !nftContractAddress) return;
+
+                client.tx.compute
+                    .executeContract(
+                        {
+                            sender: client.address,
+                            contractAddress: nftContractAddress,
+                            msg: { changing_minting_state: { mint_state: newLevel } },
+                            codeHash,
+                        },
+                        {
+                            gasLimit: 50_000,
+                            gasPriceInFeeDenom: 0.1,
+                        }
+                    )
+                    .then((tx) => {
+                        next({ ...action, payload: { ...action.payload, tx } });
+                    })
+                    .catch((err) => {
+                        console.error(err);
+                    });
+
+                break;
+            }
+
+            case transactionActions.addToWhitelist.type: {
+                const { address, codeHash } = action.payload;
+                const nftContractAddress: string | undefined = NFT_ADDRESS;
+                if (!client || !nftContractAddress) return;
+
+                client.tx.compute
+                    .executeContract(
+                        {
+                            sender: client.address,
+                            contractAddress: nftContractAddress,
+                            msg: { add_whitelist: { addresses: [{ address, amount: 3 }] } },
+                            codeHash,
+                        },
+                        {
+                            gasLimit: 500_000,
+                            gasPriceInFeeDenom: 0.1,
+                        }
+                    )
+                    .then((tx) => {
+                        next({ ...action, payload: { ...action.payload, tx } });
+                    })
+                    .catch((err) => {
+                        console.error(err);
+                    });
+
+                break;
+            }
+
+            case transactionActions.viewTokens.type: {
+                const { codeHash, address, key } = action.payload;
+                const nftContractAddress: string | undefined = NFT_ADDRESS;
+                if (!client || !nftContractAddress) return;
+
+                client.query.snip721
+                    .GetOwnedTokens({
+                        contract: {
+                            codeHash,
+                            address: nftContractAddress,
+                        },
+                        owner: address,
+                        auth: {
+                            viewer: {
+                                address: address,
+                                viewing_key: key,
+                            },
+                        },
+                    })
+                    .then((results) => {
+                        next({ ...action, payload: { ...action.payload, results } });
+                    })
+                    .catch((err) => {
+                        console.error(err);
+                    });
+
+                break;
+            }
+
+            case transactionActions.isWhitelisted.type: {
+                const { address } = action.payload;
+                const nftContractAddress: string | undefined = NFT_ADDRESS;
+                if (!client || !nftContractAddress) return;
+
+                client.query.compute
+                    .queryContract({
+                        contractAddress: nftContractAddress,
+                        query: { is_whitelisted: { address } },
+                    })
+                    .then((results) => {
+                        next({ ...action, payload: { ...action.payload, results } });
                     })
                     .catch((err) => {
                         console.error(err);
