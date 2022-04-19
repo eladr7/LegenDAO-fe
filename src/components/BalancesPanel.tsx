@@ -12,6 +12,7 @@ import {
 import { useNavigate } from "react-router-dom";
 import { walletActions } from "../features/wallet/walletSlice";
 import { formatBalance } from "../helpers/format";
+import { LGND_ADDRESS } from "../constants/contractAddress";
 
 type Props = {
     onCloseBtnClicked?: React.MouseEventHandler<HTMLElement>;
@@ -112,7 +113,7 @@ export default function BalancesPanel({
 
     useEffect(() => {
         if (!networkState.bIsConnected) return;
-        dispatch(walletActions.getBalance({denom: "lgnd"}));
+        dispatch(walletActions.getBalance({ denom: "lgnd", tokenAddress: LGND_ADDRESS as string }));
     }, [dispatch, networkState.bIsConnected]);
 
     return (
@@ -126,7 +127,9 @@ export default function BalancesPanel({
                     </div>
                     <div className="flex flex-row flex-nowrap items-end">
                         <div className="font-semibold text-2xl leading-none uppercase">
-                            {formatBalance(walletState.balance.amount) || "--"} {walletState.balance.denom}
+                            {formatBalance(walletState.balances[LGND_ADDRESS as string].amount) ||
+                                "--"}{" "}
+                            {walletState.balances[LGND_ADDRESS as string].denom}
                         </div>
                         <span className="ml-2 first:ml-0 opacity-50 font-light leading-none">
                             (${walletState.fiatBalance.amount.toFixed(2)})

@@ -11,10 +11,30 @@ import walletAPI, {
 } from "./walletApi";
 import { DF_DENOM } from "../../constants/defaults";
 import { TDenomination } from "../../classes/Currency";
+import { LGND_ADDRESS } from "../../constants/contractAddress";
+
+interface IBalance {
+    [key: string]: {
+        denom: string;
+        amount: string;
+        tokenAddress?: string;
+        staked?: string;
+        pending_redeem?: {
+            claimable?: string;
+            unbondings?: []
+        }
+    };
+}
+
+type TBalance = {
+    denom: string;
+    amount: string;
+    tokenAddress?: string;
+};
 
 export type TWalletState = {
     primary?: TWallet;
-    balance: Coin;
+    balances: IBalance;
     fiatBalance: {
         amount: number;
     };
@@ -33,9 +53,12 @@ export type TWalletState = {
 
 const initialState: TWalletState = {
     primary: undefined,
-    balance: {
-        amount: "0",
-        denom: DF_DENOM,
+    balances: {
+        [LGND_ADDRESS as string]: {
+            amount: "0",
+            denom: DF_DENOM,
+            tokenAddress: "",
+        },
     },
     fiatBalance: { amount: 0 },
     undelegate: {
@@ -73,11 +96,13 @@ const _getAllBalances: CaseReducer<
 
 const _getBalance: CaseReducer<
     TWalletState,
-    PayloadAction<{ client?: SecretNetworkClient; denom?: TDenomination; balance?: Coin } | undefined>
+    PayloadAction<{ denom: TDenomination; balance?: TBalance; tokenAddress: string } | undefined>
 > = (state, action) => {
-    console.log(action.payload);
     if (!action.payload?.balance) return;
-    state.balance = action.payload.balance;
+    const key = action.payload.balance?.tokenAddress;
+    state.balances[key as string] = {
+        ...action.payload.balance,
+    };
 };
 
 const walletSlice = createSlice({

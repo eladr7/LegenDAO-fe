@@ -7,6 +7,7 @@ import { useAppDispatch, useAppSelector } from "../app/hooks";
 import { transactionActions } from "../features/transaction/transactionSlice";
 import validator from "../helpers/validator";
 import { formatBalance, parseBalance } from "../helpers/format";
+import { LGND_ADDRESS } from "../constants/contractAddress";
 
 type Props = {
     onCloseBtnClicked?: React.MouseEventHandler<HTMLElement>;
@@ -43,8 +44,8 @@ export default function DepositPanel({ onCloseBtnClicked }: Props): React.ReactE
     );
 
     const handleOnMaxBtnClicked = useCallback(() => {
-        setInputAmount(formatBalance(walletState.balance.amount));
-    }, [walletState.balance.amount]);
+        setInputAmount(formatBalance(walletState.balances[LGND_ADDRESS as string].amount));
+    }, [walletState.balances]);
 
     return (
         <Panel onCloseBtnClicked={onCloseBtnClicked}>
@@ -66,8 +67,8 @@ export default function DepositPanel({ onCloseBtnClicked }: Props): React.ReactE
                     <div className="mb-2 last:mb-0 flex flex-row justify-between items-center">
                         <label className="opacity-75">Amount to Deposit</label>
                         <label className="opacity-75">
-                            Balance: {formatBalance(walletState.balance.amount)}{" "}
-                            {walletState.balance.denom.toUpperCase()}
+                            Balance: {formatBalance(walletState.balances[LGND_ADDRESS as string].amount)}{" "}
+                            {walletState.balances[LGND_ADDRESS as string].denom.toUpperCase()}
                         </label>
                     </div>
                     <Input
