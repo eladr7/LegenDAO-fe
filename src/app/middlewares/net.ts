@@ -7,12 +7,7 @@ import { TAppDispatch, TRootState } from "../store";
 import { TNetError } from "../commons/types";
 import { networkActions } from "../../features/network/networkSlice";
 import { walletActions } from "../../features/wallet/walletSlice";
-import {
-    LGND_ADDRESS,
-    NFT_ADDRESS,
-    NFT_MINTING_ADDRESS,
-    PLATFORM_ADDRESS,
-} from "../../constants/contractAddress";
+import { LGND_ADDRESS, NFT_ADDRESS, PLATFORM_ADDRESS } from "../../constants/contractAddress";
 import { transactionActions } from "../../features/transaction/transactionSlice";
 import { DF_DENOM } from "../../constants/defaults";
 
@@ -21,13 +16,6 @@ interface IBalanceSnip20 {
         amount: string;
         denom: string;
         tokenAddress: string;
-    };
-}
-
-interface ICodeHash {
-    [key: string]: {
-        codeHash?: string;
-        address?: string;
     };
 }
 
@@ -82,7 +70,6 @@ const _connect = (): Promise<{ client: SecretNetworkClient; account: AccountData
 const _netMiddlewareClosure = (): Middleware => {
     let client: SecretNetworkClient | null = null;
     let primaryAccount: AccountData | null = null;
-    const codeHashs: ICodeHash = {};
     return (store: MiddlewareAPI<TAppDispatch, TRootState>) => (next) => (action) => {
         switch (action.type) {
             case networkActions.tryConnecting.type: {
@@ -109,34 +96,6 @@ const _netMiddlewareClosure = (): Middleware => {
             }
 
             case walletActions.getAllBalances.type: {
-                break;
-            }
-
-            case walletActions.getAllCodeHash.type: {
-                const getCoshHash = async (contractAddress: string) => {
-                    return {
-                        codeHash: await client?.query.compute.contractCodeHash(contractAddress),
-                        address: contractAddress,
-                    };
-                };
-
-                const contractAddress = action.payload?.contractAddress;
-
-                const initAddressArray = [LGND_ADDRESS, PLATFORM_ADDRESS, NFT_MINTING_ADDRESS];
-
-                const addressArray = contractAddress ? codeHashs.length
-                    ? [...Object.keys(codeHashs), ...contractAddress]
-                    : [...initAddressArray, ...contractAddress]
-                    : [...initAddressArray];
-                const codeHashArr = addressArray.map((address) => {
-                    return getCoshHash(address as string);
-                });
-                Promise.all(codeHashArr).then((res) => {
-                    for (let index = 0; index < addressArray.length; index++) {
-                        codeHashs[addressArray[index] as string] = { ...res[index] };
-                    }
-                });
-
                 break;
             }
 
@@ -183,7 +142,6 @@ const _netMiddlewareClosure = (): Middleware => {
                         client.query.snip20
                             .queryContract({
                                 contractAddress: tokenAddress,
-                                codeHash: codeHashs[tokenAddress]?.codeHash || "",
                                 query: {
                                     with_permit: {
                                         query: { balance: {} },
@@ -222,10 +180,10 @@ const _netMiddlewareClosure = (): Middleware => {
 
             case transactionActions.sendTokenFromPlatformToContract.type: {
                 const platformContractAddress: string = PLATFORM_ADDRESS || "";
-                if (!client || !platformContractAddress) return;
+                const nftContractAddress: string = NFT_ADDRESS || "";
+                if (!client || !platformContractAddress || !nftContractAddress) return;
 
-                const { sendAmount, amountToMint, forAddress, mintingContractAddress } =
-                    action.payload;
+                const { sendAmount, amountToMint, forAddress, mintingContractAddress } = action.payload;
                 console.log({ sendAmount, amountToMint, forAddress, mintingContractAddress });
                 if (!sendAmount || !amountToMint) {
                     return next({ ...action, payload: { ...action.payload, tx: undefined } });
@@ -245,7 +203,6 @@ const _netMiddlewareClosure = (): Middleware => {
                         {
                             sender: client.address,
                             contractAddress: platformContractAddress,
-                            codeHash: codeHashs[platformContractAddress].codeHash || "",
                             msg: {
                                 send_from_platform: {
                                     contract_addr: mintingContractAddress,
@@ -284,7 +241,6 @@ const _netMiddlewareClosure = (): Middleware => {
                         {
                             sender: client.address,
                             contractAddress: targetContractAddress,
-                            codeHash: codeHashs[targetContractAddress]?.codeHash || "",
                             msg: {
                                 send: {
                                     recipient: platformContractAddress,
@@ -571,7 +527,6 @@ const _netMiddlewareClosure = (): Middleware => {
                     .executeContract(
                         {
                             contractAddress: PLATFORM_ADDRESS as string,
-                            codeHash: codeHashs[platformContractAddress].codeHash || "",
                             sender: client.address,
                             msg: {
                                 claim_redeemed: {},
@@ -601,11 +556,10 @@ const _netMiddlewareClosure = (): Middleware => {
                     .executeContract(
                         {
                             contractAddress: PLATFORM_ADDRESS as string,
-                            codeHash: codeHashs[platformContractAddress].codeHash || "",
                             sender: client.address,
                             msg: {
                                 redeem: {
-                                    amount,
+                                    amount
                                 },
                             },
                         },
