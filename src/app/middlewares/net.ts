@@ -517,6 +517,35 @@ const _netMiddlewareClosure = (): Middleware => {
                 break;
             }
 
+            case transactionActions.claimAirdrop.type: {
+                const platformContractAddress = PLATFORM_ADDRESS;
+                if (!client || !platformContractAddress) return;
+
+                client.tx.compute
+                    .executeContract(
+                        {
+                            contractAddress: PLATFORM_ADDRESS as string,
+                            sender: client.address,
+                            msg: {
+                                claim_redeemed: {
+                                },
+                            },
+                        },
+                        {
+                            gasLimit: 300_000,
+                        }
+                    )
+                    .then((results) => {
+                        console.log(results);
+                        next({ ...action, payload: { ...action.payload, results } });
+                    })
+                    .catch((err) => {
+                        console.error(err);
+                    });
+
+                break;
+            }
+
             default:
                 next(action);
                 break;

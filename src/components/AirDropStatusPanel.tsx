@@ -6,6 +6,7 @@ import { useAppDispatch, useAppSelector } from "../app/hooks";
 import { setStatus } from "../features/airdrop/airdropSlice";
 import CheckIcon from "./icons/CheckIcon";
 import Input from "./commons/Input";
+import { transactionActions } from "../features/transaction/transactionSlice";
 
 type Props = {
     onCloseBtnClicked?: React.MouseEventHandler<HTMLElement>;
@@ -23,6 +24,9 @@ export default function AirDropStatusPanel({ onCloseBtnClicked }: Props): React.
     const [walletAddress, setWalletAddress] = useState<string>("");
     const [twitterProfile, setTwitterProfile] = useState<string>("");
     const [discordUserId, setDiscordUserId] = useState<string>("");
+
+    const networkState = useAppSelector((state) => state.network);
+    const transactionState = useAppSelector((state) => state.transaction);
 
     const [walletAddressErrorMsg, setWalletAddressErrorMsg] = useState<string | undefined>(
         undefined
@@ -105,6 +109,12 @@ export default function AirDropStatusPanel({ onCloseBtnClicked }: Props): React.
         }
         dispatch(setStatus("eligible"));
     }, [dispatch]);
+
+    const handleOnClaimAirdropBtnClicked = useCallback(() => {
+        if (!networkState.bIsConnected) return;
+        if (transactionState.bIsPending) return;
+        dispatch(transactionActions.claimAirdrop());
+    }, [dispatch, networkState.bIsConnected, transactionState.bIsPending]);
 
     const renderCheckStatusForm = useCallback(() => {
         return (
@@ -249,7 +259,11 @@ export default function AirDropStatusPanel({ onCloseBtnClicked }: Props): React.
                     </div>
 
                     <div className="mb-6 last:mb-0 flex flex-col flex-nowrap">
-                        <Button className="font-bold" bigness="xl">
+                        <Button
+                            className="font-bold"
+                            bigness="xl"
+                            onClick={handleOnClaimAirdropBtnClicked}
+                        >
                             Claim Your AirDrop
                         </Button>
                     </div>
