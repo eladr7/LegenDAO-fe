@@ -183,22 +183,20 @@ const _netMiddlewareClosure = (): Middleware => {
                 const nftContractAddress: string = NFT_ADDRESS || "";
                 if (!client || !platformContractAddress || !nftContractAddress) return;
 
-                const { sendAmount, mintAmount, forAddress } = action.payload;
-                console.log({ sendAmount, mintAmount, forAddress });
-                if (!sendAmount || !mintAmount) {
+                const { sendAmount, amountToMint, forAddress, mintingContractAddress } = action.payload;
+                console.log({ sendAmount, amountToMint, forAddress, mintingContractAddress });
+                if (!sendAmount || !amountToMint) {
                     return next({ ...action, payload: { ...action.payload, tx: undefined } });
                 }
 
                 const wantedMsg = Buffer.from(
                     JSON.stringify({
                         mint: {
-                            amount_to_mint: mintAmount,
+                            amount_to_mint: amountToMint,
                             mint_for: forAddress || client.address,
                         },
                     })
                 ).toString("base64");
-
-                console.log(wantedMsg);
 
                 client.tx.compute
                     .executeContract(
@@ -207,7 +205,7 @@ const _netMiddlewareClosure = (): Middleware => {
                             contractAddress: platformContractAddress,
                             msg: {
                                 send_from_platform: {
-                                    contract_addr: nftContractAddress,
+                                    contract_addr: mintingContractAddress,
                                     amount: sendAmount,
                                     msg: wantedMsg,
                                 },
