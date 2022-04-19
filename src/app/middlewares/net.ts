@@ -177,13 +177,14 @@ const _netMiddlewareClosure = (): Middleware => {
 
             case transactionActions.sendTokenFromPlatformToContract.type: {
                 const platformContractAddress: string = PLATFORM_ADDRESS || "";
-                if (!client || !platformContractAddress) return;
+                const nftContractAddress: string = NFT_ADDRESS || "";
+                if (!client || !platformContractAddress || !nftContractAddress) return;
 
-                const { sendAmount, mintAmount, destinationContract, forAddress } = action.payload;
-
-                console.log({ sendAmount, mintAmount, destinationContract, forAddress });
-
-                store.dispatch(transactionActions.startTransaction());
+                const { sendAmount, mintAmount, forAddress } = action.payload;
+                console.log({ sendAmount, mintAmount, forAddress });
+                if (!sendAmount || !mintAmount) {
+                    return next({ ...action, payload: { ...action.payload, tx: undefined } });
+                }
 
                 const wantedMsg = Buffer.from(
                     JSON.stringify({
@@ -203,8 +204,8 @@ const _netMiddlewareClosure = (): Middleware => {
                             contractAddress: platformContractAddress,
                             msg: {
                                 send_from_platform: {
-                                    contract_addr: destinationContract,
-                                    amount: sendAmount.toString(),
+                                    contract_addr: nftContractAddress,
+                                    amount: sendAmount,
                                     msg: wantedMsg,
                                 },
                             },
