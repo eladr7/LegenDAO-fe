@@ -43,7 +43,7 @@ export default function DepositPanel({ onCloseBtnClicked }: Props): React.ReactE
     );
 
     const handleOnMaxBtnClicked = useCallback(() => {
-        setInputAmount(walletState.balance.amount);
+        setInputAmount(formatBalance(walletState.balance.amount));
     }, [walletState.balance.amount]);
 
     return (
