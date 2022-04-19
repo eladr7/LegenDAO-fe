@@ -9,7 +9,6 @@ import { networkActions } from "../../features/network/networkSlice";
 import { walletActions } from "../../features/wallet/walletSlice";
 import { LGND_ADDRESS, NFT_ADDRESS, PLATFORM_ADDRESS } from "../../constants/contractAddress";
 import { transactionActions } from "../../features/transaction/transactionSlice";
-import { DF_DENOM } from "../../constants/defaults";
 
 const _connect = (): Promise<{ client: SecretNetworkClient; account: AccountData }> => {
     return new Promise((resolve, reject: (reason?: TNetError) => void) => {
@@ -88,29 +87,73 @@ const _netMiddlewareClosure = (): Middleware => {
             }
 
             case walletActions.getAllBalances.type: {
-                if (!client || !primaryAccount) return;
-                client.query.bank
-                    .allBalances({
-                        address: primaryAccount.address,
-                    })
-                    .then((result) => {
-                        next({ ...action, payload: { balances: result.balances } });
-                    })
-                    .catch((err) => {
-                        console.warn(err);
-                    });
                 break;
             }
 
             case walletActions.getBalance.type: {
                 if (!client || !primaryAccount) return;
-                client.query.bank
-                    .balance({
-                        address: primaryAccount.address,
-                        denom: action.payload.denom || DF_DENOM,
-                    })
-                    .then((result) => {
-                        next({ ...action, payload: { balance: result.balance } });
+                const chainId = process.env.REACT_APP_NET_CHAIN_ID;
+                const lgndToken = process.env.REACT_APP_ADDRESS_LGND;
+                const contractAddress = process.env.REACT_APP_ADDRESS_PLATFORM;
+                if (!client || !primaryAccount || !window.keplr) return;
+                if (!chainId || !lgndToken || !contractAddress) return;
+
+                window.keplr
+                    .signAmino(
+                        chainId,
+                        client.address,
+                        {
+                            chain_id: chainId,
+                            account_number: "0", // Must be 0
+                            sequence: "0", // Must be 0
+                            fee: {
+                                amount: [{ denom: "uscrt", amount: "0" }], // Must be 0 uscrt
+                                gas: "1", // Must be 1
+                            },
+                            msgs: [
+                                {
+                                    type: "query_permit", // Must be "query_permit"
+                                    value: {
+                                        permit_name: "LegenDAO Sotatek Test",
+                                        allowed_tokens: [lgndToken],
+                                        permissions: ["balance"],
+                                    },
+                                },
+                            ],
+                            memo: "", // Must be empty
+                        },
+                        {
+                            preferNoSetFee: true, // Fee must be 0, so hide it from the user
+                            preferNoSetMemo: true, // Memo must be empty, so hide it from the user
+                        }
+                    )
+                    .then((signature) => {
+                        console.log(signature);
+                        if (!client) return;
+                        client.query.compute
+                            .queryContract({
+                                contractAddress: contractAddress,
+                                query: {
+                                    with_permit: {
+                                        query: { balance: {} },
+                                        permit: {
+                                            params: {
+                                                permit_name: "LegenDAO Sotatek Test",
+                                                allowed_tokens: [lgndToken],
+                                                chain_id: chainId,
+                                                permissions: ["balance"],
+                                            },
+                                            signature,
+                                        },
+                                    },
+                                },
+                            })
+                            .then((result) => {
+                                console.log(result);
+                            })
+                            .catch((err) => {
+                                console.error(err);
+                            });
                     })
                     .catch((err) => {
                         console.warn(err);
