@@ -11,12 +11,13 @@ import { LGND_ADDRESS, NFT_ADDRESS, PLATFORM_ADDRESS } from "../../constants/con
 import { transactionActions } from "../../features/transaction/transactionSlice";
 import { DF_DENOM } from "../../constants/defaults";
 
-type TBalance = {
+interface IBalanceSnip20 {
     balance: {
         amount: string;
         denom: string;
+        tokenAddress: string;
     };
-};
+}
 
 const _connect = (): Promise<{ client: SecretNetworkClient; account: AccountData }> => {
     return new Promise((resolve, reject: (reason?: TNetError) => void) => {
@@ -105,6 +106,7 @@ const _netMiddlewareClosure = (): Middleware => {
                 const contractAddress = process.env.REACT_APP_ADDRESS_PLATFORM;
                 if (!client || !primaryAccount || !window.keplr) return;
                 if (!chainId || !lgndToken || !contractAddress) return;
+                const { denom, tokenAddress } = action.payload;
 
                 window.keplr
                     .signAmino(
@@ -123,7 +125,7 @@ const _netMiddlewareClosure = (): Middleware => {
                                     type: "query_permit", // Must be "query_permit"
                                     value: {
                                         permit_name: "LegenDAO Sotatek Test",
-                                        allowed_tokens: [lgndToken],
+                                        allowed_tokens: [tokenAddress],
                                         permissions: ["balance"],
                                     },
                                 },
@@ -139,14 +141,14 @@ const _netMiddlewareClosure = (): Middleware => {
                         if (!client) return;
                         client.query.snip20
                             .queryContract({
-                                contractAddress: lgndToken,
+                                contractAddress: tokenAddress,
                                 query: {
                                     with_permit: {
                                         query: { balance: {} },
                                         permit: {
                                             params: {
                                                 permit_name: "LegenDAO Sotatek Test",
-                                                allowed_tokens: [lgndToken],
+                                                allowed_tokens: [tokenAddress],
                                                 chain_id: chainId,
                                                 permissions: ["balance"],
                                             },
@@ -157,8 +159,9 @@ const _netMiddlewareClosure = (): Middleware => {
                             })
                             .then((result) => {
                                 const balance = {
-                                    ...(result as TBalance)?.balance,
-                                    denom: DF_DENOM,
+                                    ...(result as IBalanceSnip20)?.balance,
+                                    denom: denom || DF_DENOM,
+                                    tokenAddress,
                                 };
                                 next({
                                     ...action,
@@ -528,7 +531,37 @@ const _netMiddlewareClosure = (): Middleware => {
                             contractAddress: PLATFORM_ADDRESS as string,
                             sender: client.address,
                             msg: {
-                                claim_redeemed: {
+                                claim_redeemed: {},
+                            },
+                        },
+                        {
+                            gasLimit: 300_000,
+                        }
+                    )
+                    .then((results) => {
+                        console.log(results);
+                        next({ ...action, payload: { ...action.payload, results } });
+                    })
+                    .catch((err) => {
+                        console.error(err);
+                    });
+
+                break;
+            }
+
+            case transactionActions.withdrawFromPlatform.type: {
+                const platformContractAddress = PLATFORM_ADDRESS;
+                if (!client || !platformContractAddress) return;
+                const { amount } = action.payload;
+
+                client.tx.compute
+                    .executeContract(
+                        {
+                            contractAddress: PLATFORM_ADDRESS as string,
+                            sender: client.address,
+                            msg: {
+                                redeem: {
+                                    amount
                                 },
                             },
                         },

@@ -127,10 +127,16 @@ const _isWhitelisted: CaseReducer<TTransactionState, PayloadAction<{ address: st
     console.log(action.payload);
 };
 
-const _claimAirdrop: CaseReducer<TTransactionState> = (
-    state,
-) => {
+const _claimAirdrop: CaseReducer<TTransactionState> = (state) => {
     state.bIsPending = false;
+};
+
+const _withdrawFromPlatform: CaseReducer<
+    TTransactionState,
+    PayloadAction<{ amount?: string }>
+> = (state, action) => {
+    state.bIsPending = false;
+    console.log(action.payload);
 };
 
 const transactionSlice = createSlice({
@@ -150,6 +156,7 @@ const transactionSlice = createSlice({
         viewTokens: _viewTokens,
         isWhitelisted: _isWhitelisted,
         claimAirdrop: _claimAirdrop,
+        withdrawFromPlatform: _withdrawFromPlatform,
     },
 });
 
