@@ -6,6 +6,7 @@ import Button from "./commons/Button";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
 import { transactionActions } from "../features/transaction/transactionSlice";
 import validator from "../helpers/validator";
+import { formatBalance, parseBalance } from "../helpers/format";
 
 type Props = {
     onCloseBtnClicked?: React.MouseEventHandler<HTMLElement>;
@@ -23,7 +24,7 @@ export default function DepositPanel({ onCloseBtnClicked }: Props): React.ReactE
         if (transactionState.bIsPending) return;
         dispatch(
             transactionActions.depositToPlatform({
-                amount: parseFloat(inputAmount) || 0,
+                amount: parseBalance(inputAmount) || "0",
             })
         );
     }, [dispatch, inputAmount, networkState.bIsConnected, transactionState.bIsPending]);
@@ -65,7 +66,7 @@ export default function DepositPanel({ onCloseBtnClicked }: Props): React.ReactE
                     <div className="mb-2 last:mb-0 flex flex-row justify-between items-center">
                         <label className="opacity-75">Amount to Deposit</label>
                         <label className="opacity-75">
-                            Balance: {walletState.balance.amount}{" "}
+                            Balance: {formatBalance(walletState.balance.amount)}{" "}
                             {walletState.balance.denom.toUpperCase()}
                         </label>
                     </div>

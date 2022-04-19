@@ -9,6 +9,14 @@ import { networkActions } from "../../features/network/networkSlice";
 import { walletActions } from "../../features/wallet/walletSlice";
 import { LGND_ADDRESS, NFT_ADDRESS, PLATFORM_ADDRESS } from "../../constants/contractAddress";
 import { transactionActions } from "../../features/transaction/transactionSlice";
+import { DF_DENOM } from "../../constants/defaults";
+
+type TBalance = {
+    balance: {
+        amount: string;
+        denom: string;
+    };
+};
 
 const _connect = (): Promise<{ client: SecretNetworkClient; account: AccountData }> => {
     return new Promise((resolve, reject: (reason?: TNetError) => void) => {
@@ -127,12 +135,11 @@ const _netMiddlewareClosure = (): Middleware => {
                             preferNoSetMemo: true, // Memo must be empty, so hide it from the user
                         }
                     )
-                    .then((signature) => {
-                        console.log(signature);
+                    .then(({ signature }) => {
                         if (!client) return;
-                        client.query.compute
+                        client.query.snip20
                             .queryContract({
-                                contractAddress: contractAddress,
+                                contractAddress: lgndToken,
                                 query: {
                                     with_permit: {
                                         query: { balance: {} },
@@ -149,7 +156,14 @@ const _netMiddlewareClosure = (): Middleware => {
                                 },
                             })
                             .then((result) => {
-                                console.log(result);
+                                const balance = {
+                                    ...(result as TBalance)?.balance,
+                                    denom: DF_DENOM,
+                                };
+                                next({
+                                    ...action,
+                                    payload: { balance },
+                                });
                             })
                             .catch((err) => {
                                 console.error(err);
@@ -228,7 +242,7 @@ const _netMiddlewareClosure = (): Middleware => {
                             msg: {
                                 send: {
                                     recipient: platformContractAddress,
-                                    amount: amount.toString(),
+                                    amount: amount,
                                     msg,
                                 },
                             },
