@@ -32,8 +32,9 @@ const _sendTokenFromPlatformToContract: CaseReducer<
     TTransactionState,
     PayloadAction<{
         sendAmount?: string;
-        mintAmount?: string;
+        amountToMint?: number;
         forAddress?: string;
+        mintingContractAddress?: string;
         tx?: Tx;
     }>
 > = (state, action) => {

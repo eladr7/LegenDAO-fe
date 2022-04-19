@@ -11,6 +11,7 @@ import {
 } from "../features/accessibility/accessibilitySlice";
 import { transactionActions } from "../features/transaction/transactionSlice";
 import { parseBalance } from "../helpers/format";
+import BigNumber from "bignumber.js";
 
 type Props = {
     priceInLGND: number;
@@ -36,13 +37,16 @@ export default function MintConfirmPurchasePanel({
 
     const handleOnMintNowBtnClicked = useCallback(() => {
         if (!networkState.bIsConnected) return;
+        const amountToMint = 1;
+        const tokenPrice = process.env.REACT_APP_TOKEN_PRICE || "1000000";
         dispatch(
             transactionActions.startTransaction()
         );
         dispatch(
             transactionActions.sendTokenFromPlatformToContract({
-                sendAmount: parseBalance("1"),
-                mintAmount: parseBalance("1.5"),
+                amountToMint,
+                sendAmount: new BigNumber(amountToMint).times(tokenPrice).toFixed(),
+                mintingContractAddress: process.env.REACT_APP_ADDRESS_NFT_MINTING,
             })
         );
     }, [dispatch, networkState.bIsConnected]);
