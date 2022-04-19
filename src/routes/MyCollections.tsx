@@ -25,6 +25,7 @@ import { setSuccessMessage } from "../features/mint/mintSlice";
 import MintAgentDetailPanel from "../components/MintAgentDetailPanel";
 import { SOCIAL_NETWORK_URL } from "../constants/linkSocial";
 import { useNavigate } from "react-router-dom";
+import { transactionActions } from "../features/transaction/transactionSlice";
 
 export default function MyCollections(): React.ReactElement {
     const navigate = useNavigate();
@@ -35,6 +36,7 @@ export default function MyCollections(): React.ReactElement {
     const dispatch = useAppDispatch();
 
     const handleOnMintAgainBtnClicked = useCallback(() => {
+        dispatch(transactionActions.sendTokenFromPlatformToContract({}));
         dispatch(setSuccessMessage(undefined));
         dispatch(turnOffAllPanel());
         dispatch(toggleMintConfirmPurchasePanel(true));

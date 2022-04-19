@@ -1,12 +1,14 @@
 import { CaseReducer, createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { Tx } from "secretjs";
+import { JsonLog, Tx } from "secretjs";
 
 export type TTransactionState = {
     bIsPending: boolean;
+    txStatus?: JsonLog;
 };
 
 const initialState: TTransactionState = {
     bIsPending: false,
+    txStatus: undefined,
 };
 
 export interface IAttributes {
@@ -29,14 +31,14 @@ const _startTransaction: CaseReducer<TTransactionState> = (state) => {
 const _sendTokenFromPlatformToContract: CaseReducer<
     TTransactionState,
     PayloadAction<{
-        sendAmount?: number;
-        mintAmount?: number;
-        destinationContract: string;
-        forAddres?: string;
+        sendAmount?: string;
+        mintAmount?: string;
+        forAddress?: string;
         tx?: Tx;
     }>
 > = (state, action) => {
     state.bIsPending = false;
+    state.txStatus = action.payload.tx?.jsonLog;
     console.log(action.payload.tx);
 };
 

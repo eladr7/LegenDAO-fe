@@ -1,4 +1,4 @@
-import React, { useCallback } from "react";
+import React, { useCallback, useEffect } from "react";
 import cn from "classnames";
 import Panel from "./commons/Panel";
 import CheckBox from "./commons/CheckBox";
@@ -9,6 +9,8 @@ import {
     toggleMintSuccessfulPanelOn,
     turnOffAllPanel,
 } from "../features/accessibility/accessibilitySlice";
+import { transactionActions } from "../features/transaction/transactionSlice";
+import { parseBalance } from "../helpers/format";
 
 type Props = {
     priceInLGND: number;
@@ -24,6 +26,8 @@ export default function MintConfirmPurchasePanel({
     onCloseBtnClicked,
 }: Props): React.ReactElement {
     const mintState = useAppSelector((state) => state.mint);
+    const transactionState = useAppSelector((state) => state.transaction);
+    const networkState = useAppSelector((state) => state.network);
     const dispatch = useAppDispatch();
 
     const handleOnAgreeTermOfServiceBtnClicked = useCallback(() => {
@@ -31,20 +35,35 @@ export default function MintConfirmPurchasePanel({
     }, [dispatch]);
 
     const handleOnMintNowBtnClicked = useCallback(() => {
-        dispatch(turnOffAllPanel());
-        dispatch(toggleMintSuccessfulPanelOn(true));
+        if (!networkState.bIsConnected) return;
         dispatch(
-            setAgent({
-                name: "Agent #4322",
-                description: "Agent #4322",
-                publicAttributes: ["Head", "Skin", "Eyes", "Bear", "Hair", "Shape"],
-                privateAttributes: ["High Res"],
-                token: "secret12hakz7t8z5ks4fucwzn92rg24muxcs4uvzyz2w",
-                royalties: 5,
+            transactionActions.startTransaction()
+        );
+        dispatch(
+            transactionActions.sendTokenFromPlatformToContract({
+                sendAmount: parseBalance("1"),
+                mintAmount: parseBalance("1.5"),
             })
         );
-        dispatch(setSuccessMessage("Congratulations, you've successfully minted an NFT!"));
-    }, [dispatch]);
+    }, [dispatch, networkState.bIsConnected]);
+
+    useEffect(() => {
+        if (transactionState.txStatus && !transactionState.bIsPending) {
+            dispatch(turnOffAllPanel());
+            dispatch(toggleMintSuccessfulPanelOn(true));
+            dispatch(
+                setAgent({
+                    name: "Agent #4322",
+                    description: "Agent #4322",
+                    publicAttributes: ["Head", "Skin", "Eyes", "Bear", "Hair", "Shape"],
+                    privateAttributes: ["High Res"],
+                    token: "secret12hakz7t8z5ks4fucwzn92rg24muxcs4uvzyz2w",
+                    royalties: 5,
+                })
+            );
+            dispatch(setSuccessMessage("Congratulations, you've successfully minted an NFT!"));
+        }
+    }, [dispatch, transactionState.txStatus, transactionState.bIsPending]);
 
     return (
         <Panel onCloseBtnClicked={onCloseBtnClicked}>
