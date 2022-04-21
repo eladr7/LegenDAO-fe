@@ -1,4 +1,4 @@
-import React, { useCallback } from "react";
+import React, { useCallback, useEffect, useRef } from "react";
 import cn from "classnames";
 import CloseIcon from "../icons/CloseIcon";
 
@@ -16,6 +16,7 @@ export default function Panel({
     color,
     bBordered = true,
 }: Props): React.ReactElement {
+    const rfLightElement = useRef<HTMLDivElement>(null);
     const renderCloseBtn = useCallback(() => {
         if (!onCloseBtnClicked) return null;
         return (
@@ -48,8 +49,13 @@ export default function Panel({
                             )}
                         >
                             <div
+                                ref={rfLightElement}
                                 className={cn(
-                                    "absolute -translate-x-1/2 w-1/4 left-1/2 -top-1/3 -bottom-1/3 rotate-[38deg] ",
+<<<<<<< HEAD
+                                    "absolute -translate-x-1/2 -translate-y-1/2 w-1/4 left-1/2 right-1/2 top-1/2 bottom-1/2",
+=======
+                                    "absolute -translate-x-1/2 w-1/4 left-1/2 -top-1/3 -bottom-1/3 ",
+>>>>>>> 110b350 (Fix LD50)
                                     // "bg-gradient-to-br from-white/100 to-white/50 mix-blend-overlay",
                                     "rounded-xl ",
                                     "blur-xl"
@@ -93,8 +99,13 @@ export default function Panel({
                         )}
                     >
                         <div
+                            ref={rfLightElement}
                             className={cn(
-                                "absolute -translate-x-1/2 w-1/4 left-1/2 -top-1/3 -bottom-1/3 rotate-[38deg] ",
+<<<<<<< HEAD
+                                "absolute -translate-x-1/2 -translate-y-1/2 w-1/4 left-1/2 right-1/2 top-1/2 bottom-1/2",
+=======
+                                "absolute -translate-x-1/2 w-1/4 left-1/2 -top-1/3 -bottom-1/3  ",
+>>>>>>> 110b350 (Fix LD50)
                                 "bg-gradient-to-br from-white/50 to-white/0 mix-blend-overlay ",
                                 "rounded-xl blur-2xl"
                             )}
@@ -118,5 +129,32 @@ export default function Panel({
         return renderPanel();
     }, [renderPanel]);
 
+    useEffect(() => {
+        const panelContainer = rfLightElement.current?.parentElement;
+        const lightElement = rfLightElement.current;
+<<<<<<< HEAD
+
+        if (!panelContainer || !lightElement) return;
+        //Set height
+        const lightElementHeight: number = Math.sqrt(
+            panelContainer.offsetHeight ** 2 + panelContainer.offsetWidth ** 2
+        );
+        lightElement.style.height = `${lightElementHeight}px`;
+        const ratio = Number((panelContainer.offsetWidth / panelContainer.offsetHeight).toFixed(1));
+        //Set rotation
+=======
+        if (!panelContainer) return;
+        const ratio = Number((panelContainer.offsetWidth / panelContainer.offsetHeight).toFixed(1));
+>>>>>>> 110b350 (Fix LD50)
+        if (ratio <= 0.9) {
+            lightElement?.classList.add("rotate-[30deg]");
+        }
+        if (ratio >= 1.1) {
+            lightElement?.classList.add("rotate-[60deg]");
+        }
+        if (ratio > 0.9 && ratio < 1.1) {
+            lightElement?.classList.add("rotate-[45deg]");
+        }
+    }, []);
     return renderContent();
 }
