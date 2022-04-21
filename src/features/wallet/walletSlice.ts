@@ -21,8 +21,8 @@ interface IBalance {
         staked?: string;
         pending_redeem?: {
             claimable?: string;
-            unbondings?: []
-        }
+            unbondings?: [];
+        };
     };
 }
 
@@ -105,12 +105,21 @@ const _getBalance: CaseReducer<
     };
 };
 
+const _getAllCodeHash: CaseReducer<
+    TWalletState,
+    PayloadAction<{ contractAddress?: string[] } | undefined>
+> = (state, action) => {
+    console.log({state, action});
+    return;
+};
+
 const walletSlice = createSlice({
     name: "wallet",
     initialState,
     reducers: {
         getAllBalances: _getAllBalances,
         getBalance: _getBalance,
+        getAllCodeHash: _getAllCodeHash,
     },
     extraReducers: (builder) => {
         builder.addCase(connect.pending, (state) => {
