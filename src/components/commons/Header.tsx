@@ -14,7 +14,7 @@ import {
     toggleCreationFormPanel,
     toggleSidebar,
 } from "../../features/accessibility/accessibilitySlice";
-import { walletAsyncActions } from "../../features/wallet/walletSlice";
+import { walletActions, walletAsyncActions } from "../../features/wallet/walletSlice";
 import BalancesPanel from "../BalancesPanel";
 import { SOCIAL_NETWORK_URL } from "../../constants/linkSocial";
 import { shortenAddress } from "../../helpers/format";
@@ -53,6 +53,7 @@ export function Header({
 
     const handleOnConnectWalletBtnClicked = useCallback(() => {
         dispatch(walletAsyncActions.connect({ delay: 200 }));
+        dispatch(walletActions.getAllCodeHash());
     }, [dispatch]);
 
     const handleOnGetLGNDBtnClicked = useCallback(() => {
