@@ -1,11 +1,13 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { Provider } from "react-redux";
 import { Route, Routes } from "react-router-dom";
-import { useAppDispatch, useAppSelector } from "./app/hooks";
+import { useActivePopups, useAppDispatch, useAppSelector } from "./app/hooks";
 import store from "./app/store";
+import "./bootstrap";
+import ToastMessage from "./components/commons/ToastMessage";
 import AppContext, { TAppContext } from "./contexts/AppContext";
 import { networkActions } from "./features/network/networkSlice";
-import { walletAsyncActions } from "./features/wallet/walletSlice";
+import { walletActions, walletAsyncActions } from "./features/wallet/walletSlice";
 import AirDrop from "./routes/AirDrop";
 import { Asset } from "./routes/Asset";
 import FormCreation from "./routes/FormCreation";
@@ -23,6 +25,9 @@ function App(): React.ReactElement {
     const [bodyElement, setBodyElement] = useState<HTMLBodyElement>();
     const walletState = useAppSelector((state) => state.wallet);
     const dispatch = useAppDispatch();
+    const networkState = useAppSelector((state) => state.network);
+    const transactionState = useAppSelector((state) => state.transaction);
+    const activePopups = useActivePopups();
 
     const appContextValue: TAppContext = {
         state: {
@@ -47,30 +52,60 @@ function App(): React.ReactElement {
         }
     }, [dispatch, walletState.bSuggested]);
 
+    useEffect(() => {
+        if (networkState.bIsConnected && !walletState.signature) {
+            dispatch(walletActions.getAllCodeHash());
+            dispatch(walletActions.getSigner());
+        }
+    }, [dispatch, walletState.signature, networkState.bIsConnected]);
+
+    useEffect(() => {
+        if (walletState.signature) {
+            dispatch(walletActions.getBalance());
+        }
+    }, [dispatch, transactionState.txStatus, walletState.signature]);
+
+    const renderPopups = useCallback(() => {
+        return activePopups.map((item, index) => {
+            return (
+                <ToastMessage
+                    key={item.key}
+                    removeAfterMs={item.removeAfterMs}
+                    popKey={item.key}
+                    content={item.content}
+                    idPreItem={index ? activePopups[index - 1].key : undefined}
+                />
+            );
+        });
+    }, [activePopups]);
+
     return (
-        <AppContext.Provider value={appContextValue}>
-            <div className="App">
-                <Routes>
-                    <Route path="/" element={<Home />} />
-                    {/* <Route path="/about" element={<About />} />
-                    <Route path="/docs" element={<Docs />} />
-                    <Route path="/faq" element={<Faq />} />
-                    <Route path="/governance" element={<Governance />} />
-                    <Route path="/community" element={<Community />} /> */}
-                    <Route path="/ui" element={<UI />} />
-                    <Route path="/asset" element={<Asset />} />
-                    <Route path="/mint-lab" element={<MintLabLanding />} />
-                    <Route path="/profile" element={<Profile />} />
-                    <Route path="/profile/collected" element={<Profile />} />
-                    <Route path="/airdrop" element={<AirDrop />} />
-                    <Route path="/collections" element={<MyCollections />} />
-                    <Route path="/collections/o" element={<OldCollections />} />
-                    <Route path="/form-creation" element={<FormCreation />} />
-                    <Route path="/stake" element={<Stake />} />
-                    <Route path="*" element={<NotFound />} />
-                </Routes>
-            </div>
-        </AppContext.Provider>
+        <>
+            <AppContext.Provider value={appContextValue}>
+                <div className="App">
+                    <Routes>
+                        <Route path="/" element={<Home />} />
+                        {/* <Route path="/about" element={<About />} />
+                        <Route path="/docs" element={<Docs />} />
+                        <Route path="/faq" element={<Faq />} />
+                        <Route path="/governance" element={<Governance />} />
+                        <Route path="/community" element={<Community />} /> */}
+                        <Route path="/ui" element={<UI />} />
+                        <Route path="/asset" element={<Asset />} />
+                        <Route path="/mint-lab" element={<MintLabLanding />} />
+                        <Route path="/profile" element={<Profile />} />
+                        <Route path="/profile/collected" element={<Profile />} />
+                        <Route path="/airdrop" element={<AirDrop />} />
+                        <Route path="/collections" element={<MyCollections />} />
+                        <Route path="/collections/o" element={<OldCollections />} />
+                        <Route path="/form-creation" element={<FormCreation />} />
+                        <Route path="/stake" element={<Stake />} />
+                        <Route path="*" element={<NotFound />} />
+                    </Routes>
+                </div>
+            </AppContext.Provider>
+            {renderPopups()}
+        </>
     );
 }
 

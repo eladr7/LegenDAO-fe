@@ -1,17 +1,17 @@
-import React, { useCallback, useEffect } from "react";
+import BigNumber from "bignumber.js";
 import cn from "classnames";
-import Panel from "./commons/Panel";
-import CheckBox from "./commons/CheckBox";
+import React, { useCallback, useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
-import { setAgent, setSuccessMessage, toggleAgreeTermOfService } from "../features/mint/mintSlice";
-import Button from "./commons/Button";
+import { TRANSACTION_KEY } from "../constants/constant";
 import {
     toggleMintSuccessfulPanelOn,
-    turnOffAllPanel,
+    turnOffAllPanel
 } from "../features/accessibility/accessibilitySlice";
+import { setAgent, setSuccessMessage, toggleAgreeTermOfService } from "../features/mint/mintSlice";
 import { transactionActions } from "../features/transaction/transactionSlice";
-import { parseBalance } from "../helpers/format";
-import BigNumber from "bignumber.js";
+import Button from "./commons/Button";
+import CheckBox from "./commons/CheckBox";
+import Panel from "./commons/Panel";
 
 type Props = {
     priceInLGND: number;
@@ -39,9 +39,7 @@ export default function MintConfirmPurchasePanel({
         if (!networkState.bIsConnected) return;
         const amountToMint = 1;
         const tokenPrice = process.env.REACT_APP_TOKEN_PRICE || "1000000";
-        dispatch(
-            transactionActions.startTransaction()
-        );
+        dispatch(transactionActions.startTransaction());
         dispatch(
             transactionActions.sendTokenFromPlatformToContract({
                 amountToMint,
@@ -52,7 +50,11 @@ export default function MintConfirmPurchasePanel({
     }, [dispatch, networkState.bIsConnected]);
 
     useEffect(() => {
-        if (transactionState.txStatus && !transactionState.bIsPending) {
+        if (
+            transactionState.txStatus &&
+            !transactionState.bIsPending &&
+            transactionState.txName === TRANSACTION_KEY.MINT_NFT
+        ) {
             dispatch(turnOffAllPanel());
             dispatch(toggleMintSuccessfulPanelOn(true));
             dispatch(
@@ -67,7 +69,7 @@ export default function MintConfirmPurchasePanel({
             );
             dispatch(setSuccessMessage("Congratulations, you've successfully minted an NFT!"));
         }
-    }, [dispatch, transactionState.txStatus, transactionState.bIsPending]);
+    }, [dispatch, transactionState.txStatus, transactionState.bIsPending, transactionState.txName]);
 
     return (
         <Panel onCloseBtnClicked={onCloseBtnClicked}>
