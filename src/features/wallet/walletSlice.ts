@@ -1,5 +1,5 @@
 /* eslint-disable no-console */
-import { SecretNetworkClient, Coin } from "secretjs";
+import { SecretNetworkClient, Coin, StdSignature } from "secretjs";
 import { CaseReducer, createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { TActionStage } from "../../app/commons/api";
 import { TWallet } from "../../classes/Wallet";
@@ -49,6 +49,7 @@ export type TWalletState = {
     bSuggested: boolean;
     suggestStage?: TActionStage;
     connectStage?: TActionStage;
+    signature?: StdSignature;
 };
 
 const initialState: TWalletState = {
@@ -72,6 +73,7 @@ const initialState: TWalletState = {
     },
     fiatUnclaim: { amount: 0 },
     bSuggested: false,
+    signature: undefined,
 };
 
 const suggestChain = createAsyncThunk(
@@ -96,7 +98,16 @@ const _getAllBalances: CaseReducer<
 
 const _getBalance: CaseReducer<
     TWalletState,
-    PayloadAction<{ denom: TDenomination; balance?: TBalance; tokenAddress: string } | undefined>
+    PayloadAction<
+        | {
+              tokens?: {
+                  denom: TDenomination;
+                  tokenAddress: string;
+              }[];
+              balance?: TBalance;
+          }
+        | undefined
+    >
 > = (state, action) => {
     if (!action.payload?.balance) return;
     const key = action.payload.balance?.tokenAddress;
@@ -108,8 +119,15 @@ const _getBalance: CaseReducer<
 const _getAllCodeHash: CaseReducer<
     TWalletState,
     PayloadAction<{ contractAddress?: string[] } | undefined>
+> = () => {
+    return;
+};
+
+const _getSigner: CaseReducer<
+    TWalletState,
+    PayloadAction<{ signature?: StdSignature } | undefined>
 > = (state, action) => {
-    console.log({state, action});
+    state.signature = action.payload?.signature;
     return;
 };
 
@@ -120,6 +138,7 @@ const walletSlice = createSlice({
         getAllBalances: _getAllBalances,
         getBalance: _getBalance,
         getAllCodeHash: _getAllCodeHash,
+        getSigner: _getSigner,
     },
     extraReducers: (builder) => {
         builder.addCase(connect.pending, (state) => {

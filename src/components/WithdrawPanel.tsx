@@ -1,15 +1,14 @@
-import React, { useCallback, useEffect, useState } from "react";
 import cn from "classnames";
-import Panel from "./commons/Panel";
-import Input from "./commons/Input";
-import Button from "./commons/Button";
+import React, { useCallback, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
-import { walletActions } from "../features/wallet/walletSlice";
 import { PLATFORM_ADDRESS } from "../constants/contractAddress";
-import { formatBalance, parseBalance } from "../helpers/format";
 import { DF_DENOM } from "../constants/defaults";
 import { transactionActions } from "../features/transaction/transactionSlice";
+import { formatBalance, parseBalance } from "../helpers/format";
 import validator from "../helpers/validator";
+import Button from "./commons/Button";
+import Input from "./commons/Input";
+import Panel from "./commons/Panel";
 
 type Props = {
     onCloseBtnClicked?: React.MouseEventHandler<HTMLElement>;
@@ -46,15 +45,10 @@ export default function WithdrawPanel({ onCloseBtnClicked }: Props): React.React
     );
 
     const handleOnMaxBtnClicked = useCallback(() => {
-        setInputAmount(formatBalance(walletState.balances[PLATFORM_ADDRESS as string]?.staked || "0"));
-    }, [walletState.balances]);
-
-    useEffect(() => {
-        if (!networkState.bIsConnected) return;
-        dispatch(
-            walletActions.getBalance({ denom: "lgnd", tokenAddress: PLATFORM_ADDRESS as string })
+        setInputAmount(
+            formatBalance(walletState.balances[PLATFORM_ADDRESS as string]?.staked || "0")
         );
-    }, [dispatch, networkState.bIsConnected]);
+    }, [walletState.balances]);
 
     return (
         <Panel onCloseBtnClicked={onCloseBtnClicked}>
@@ -80,7 +74,9 @@ export default function WithdrawPanel({ onCloseBtnClicked }: Props): React.React
                             {formatBalance(
                                 walletState.balances[PLATFORM_ADDRESS as string]?.staked || "0"
                             ) || "--"}{" "}
-                            {walletState.balances[PLATFORM_ADDRESS as string]?.denom?.toUpperCase() || DF_DENOM?.toUpperCase()}
+                            {walletState.balances[
+                                PLATFORM_ADDRESS as string
+                            ]?.denom?.toUpperCase() || DF_DENOM?.toUpperCase()}
                         </label>
                     </div>
                     <Input

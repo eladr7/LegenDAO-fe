@@ -4,7 +4,8 @@
         "semi": ["warn", "always"],
         "quotes": ["warn", "double"],
         "no-console": ["warn"],
-        "valid-typeof": ["error"]
+        "valid-typeof": ["error"],
+        "@typescript-eslint/no-explicit-any": "off"
     },
     "extends": [
         "eslint:recommended",

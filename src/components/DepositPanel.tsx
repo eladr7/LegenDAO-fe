@@ -67,8 +67,8 @@ export default function DepositPanel({ onCloseBtnClicked }: Props): React.ReactE
                     <div className="mb-2 last:mb-0 flex flex-row justify-between items-center">
                         <label className="opacity-75">Amount to Deposit</label>
                         <label className="opacity-75">
-                            Balance: {formatBalance(walletState.balances[LGND_ADDRESS as string].amount)}{" "}
-                            {walletState.balances[LGND_ADDRESS as string].denom.toUpperCase()}
+                            Balance:{" "}
+                            {formatBalance(walletState.balances[LGND_ADDRESS as string].amount)}{" "}
                         </label>
                     </div>
                     <Input

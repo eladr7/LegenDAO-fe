@@ -52,8 +52,8 @@ export function Header({
     }, [dispatch]);
 
     const handleOnConnectWalletBtnClicked = useCallback(() => {
-        dispatch(walletAsyncActions.connect({ delay: 200 }));
         dispatch(walletActions.getAllCodeHash());
+        dispatch(walletActions.getSigner());
     }, [dispatch]);
 
     const handleOnGetLGNDBtnClicked = useCallback(() => {

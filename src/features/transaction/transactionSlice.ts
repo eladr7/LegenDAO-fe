@@ -1,13 +1,16 @@
 import { CaseReducer, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { JsonLog, Tx } from "secretjs";
+import { TRANSACTION_KEY } from "../../constants/constant";
 
 export type TTransactionState = {
     bIsPending: boolean;
+    txName?: string;
     txStatus?: JsonLog;
 };
 
 const initialState: TTransactionState = {
     bIsPending: false,
+    txName: undefined,
     txStatus: undefined,
 };
 
@@ -39,15 +42,18 @@ const _sendTokenFromPlatformToContract: CaseReducer<
     }>
 > = (state, action) => {
     state.bIsPending = false;
+    state.txName = TRANSACTION_KEY.MINT_NFT;
     state.txStatus = action.payload.tx?.jsonLog;
     console.log(action.payload.tx);
 };
 
 const _depositToPlatform: CaseReducer<
     TTransactionState,
-    PayloadAction<{ snipContractAddress?: string; amount: string; toAddress?: string }>
+    PayloadAction<{ snipContractAddress?: string; amount: string; toAddress?: string; tx?: Tx }>
 > = (state, action) => {
     state.bIsPending = false;
+    state.txName = TRANSACTION_KEY.DEPOSIT;
+    state.txStatus = action.payload.tx?.jsonLog;
     console.log(action.payload);
 };
 
@@ -128,15 +134,18 @@ const _isWhitelisted: CaseReducer<TTransactionState, PayloadAction<{ address: st
     console.log(action.payload);
 };
 
-const _claimAirdrop: CaseReducer<TTransactionState> = (state) => {
+const _claimPlatform: CaseReducer<TTransactionState> = (state) => {
     state.bIsPending = false;
+    state.txName = TRANSACTION_KEY.CLAIM_REDEEMED;
 };
 
 const _withdrawFromPlatform: CaseReducer<
     TTransactionState,
-    PayloadAction<{ amount?: string }>
+    PayloadAction<{ amount?: string, tx?: Tx }>
 > = (state, action) => {
     state.bIsPending = false;
+    state.txName = TRANSACTION_KEY.WITHDRAW;
+    state.txStatus = action.payload.tx?.jsonLog;
     console.log(action.payload);
 };
 
@@ -156,7 +165,7 @@ const transactionSlice = createSlice({
         addToWhitelist: _addToWhitelist,
         viewTokens: _viewTokens,
         isWhitelisted: _isWhitelisted,
-        claimAirdrop: _claimAirdrop,
+        claimPlatform: _claimPlatform,
         withdrawFromPlatform: _withdrawFromPlatform,
     },
 });
