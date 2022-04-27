@@ -5,6 +5,8 @@ import Button from "./commons/Button";
 import Input from "./commons/Input";
 import Textarea from "./commons/Textarea";
 import { useForm } from "react-hook-form";
+import validator from "../helpers/validator";
+import { legenServices } from "../app/commons/legendServices";
 
 type Props = {
     onCloseBtnClicked?: React.MouseEventHandler<HTMLElement>;
@@ -13,8 +15,8 @@ type Props = {
 interface ICreationForms {
     name: string;
     email: string;
-    createQuestion: string;
-    shareQuestion: string;
+    title: string;
+    details: string;
 }
 
 export default function CreationFormPanel({ onCloseBtnClicked }: Props): React.ReactElement {
@@ -28,13 +30,22 @@ export default function CreationFormPanel({ onCloseBtnClicked }: Props): React.R
         defaultValues: {
             name: "",
             email: "",
-            createQuestion: "",
-            shareQuestion: "",
+            title: "",
+            details: "",
         },
     });
 
-    const onSubmit = (data: ICreationForms) => {
-        return Boolean(data);
+    const onSubmit = async (data: ICreationForms) => {
+        try {
+            const res = await legenServices.creationForm(data);
+            if (res.status === 200) {
+                // eslint-disable-next-line no-console
+                console.log("success");
+            }
+        } catch (error) {
+            // eslint-disable-next-line no-console
+            console.error(error);
+        }
     };
 
     return (
@@ -50,9 +61,9 @@ export default function CreationFormPanel({ onCloseBtnClicked }: Props): React.R
                 </p>
                 <form onSubmit={handleSubmit(onSubmit)}>
                     <div className="mb-4 last:mb-0 flex flex-col flex-nowrap">
-                        {errors?.name?.type === "required" && (
+                        {errors?.name && (
                             <label className="mb-2 last:mb-0 pl-4 opacity-75 text-red-500">
-                                This field is required
+                                {errors?.name.message}
                             </label>
                         )}
                         <Input
@@ -60,18 +71,20 @@ export default function CreationFormPanel({ onCloseBtnClicked }: Props): React.R
                             bigness="md"
                             placeholder="Name"
                             {...register("name", {
-                                required: true,
                                 onChange: (e) => {
                                     setValue("name", e.target.value);
+                                },
+                                validate: {
+                                    ...validator.validateForm.requireField,
                                 },
                             })}
                         />
                     </div>
 
                     <div className="mb-4 last:mb-0 flex flex-col flex-nowrap">
-                        {errors?.email?.type === "required" && (
+                        {errors?.email && (
                             <label className="mb-2 last:mb-0 pl-4 opacity-75 text-red-500">
-                                This field is required
+                                {errors.email.message}
                             </label>
                         )}
                         <Input
@@ -79,35 +92,50 @@ export default function CreationFormPanel({ onCloseBtnClicked }: Props): React.R
                             bigness="md"
                             placeholder="Email"
                             {...register("email", {
-                                required: true,
                                 onChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => {
                                     setValue("email", e.target.value);
+                                },
+                                validate: {
+                                    ...validator.validateForm.email,
+                                    ...validator.validateForm.requireField,
                                 },
                             })}
                         />
                     </div>
 
                     <div className="mb-4 last:mb-0 flex flex-col flex-nowrap">
+                        {errors?.title && (
+                            <label className="mb-2 last:mb-0 pl-4 opacity-75 text-red-500">
+                                {errors.title.message}
+                            </label>
+                        )}
                         <Input
                             type="text"
                             bigness="md"
                             placeholder="What do you create?"
-                            {...register("createQuestion", {
+                            {...register("title", {
                                 onChange: (e) => {
-                                    setValue("createQuestion", e.target.value);
+                                    setValue("title", e.target.value);
                                 },
+                                validate: validator.validateForm.requireField,
                             })}
                         />
                     </div>
 
                     <div className="mb-4 last:mb-0 flex flex-col flex-nowrap">
+                        {errors?.details && (
+                            <label className="mb-2 last:mb-0 pl-4 opacity-75 text-red-500">
+                                {errors.details.message}
+                            </label>
+                        )}
                         <Textarea
                             rows={5}
                             placeholder="Anything else you'd like to share?"
-                            {...register("createQuestion", {
+                            {...register("details", {
                                 onChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-                                    setValue("createQuestion", e.target.value);
+                                    setValue("details", e.target.value);
                                 },
+                                validate: validator.validateForm.requireField,
                             })}
                         />
                     </div>

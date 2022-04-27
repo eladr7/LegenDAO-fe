@@ -17,6 +17,8 @@ import { transactionActions } from "../../features/transaction/transactionSlice"
 import { DF_DENOM } from "../../constants/defaults";
 import { KEY } from "../../constants/constant";
 import { collectionAtions } from "../../features/collection/collectionSlice";
+import { addPopup } from "../../features/application/applicationSlice";
+import { formatBalance } from "../../helpers/format";
 
 interface IBalanceSnip20 {
     balance: {
@@ -345,6 +347,19 @@ const _netMiddlewareClosure = (): Middleware => {
                         { gasLimit: 500_000 }
                     )
                     .then((tx) => {
+                        store.dispatch(
+                            addPopup({
+                                content: {
+                                    txn: {
+                                        success: Boolean(tx?.data.length),
+                                        summary: `Mint ${amountToMint} NFT with ${formatBalance(
+                                            sendAmount
+                                        )} ${DF_DENOM.toUpperCase()}`,
+                                    },
+                                },
+                                key: tx.transactionHash,
+                            })
+                        );
                         next({ ...action, payload: { ...action.payload, tx } });
                     })
                     .catch((err) => {
@@ -384,6 +399,19 @@ const _netMiddlewareClosure = (): Middleware => {
                         { gasLimit: 500_000 }
                     )
                     .then((tx) => {
+                        store.dispatch(
+                            addPopup({
+                                content: {
+                                    txn: {
+                                        success: Boolean(tx?.data.length),
+                                        summary: `Deposit ${formatBalance(
+                                            amount
+                                        )} ${DF_DENOM.toUpperCase()}`,
+                                    },
+                                },
+                                key: tx.transactionHash,
+                            })
+                        );
                         next({ ...action, payload: { ...action.payload, tx } });
                     })
                     .catch((err) => {
@@ -669,9 +697,19 @@ const _netMiddlewareClosure = (): Middleware => {
                             gasLimit: 300_000,
                         }
                     )
-                    .then((results) => {
-                        console.log(results);
-                        next({ ...action, payload: { ...action.payload, results } });
+                    .then((tx) => {
+                        store.dispatch(
+                            addPopup({
+                                content: {
+                                    txn: {
+                                        success: Boolean(tx?.data.length),
+                                        summary: "Claim",
+                                    },
+                                },
+                                key: tx.transactionHash,
+                            })
+                        );
+                        next({ ...action, payload: { ...action.payload, tx } });
                     })
                     .catch((err) => {
                         console.error(err);
@@ -702,7 +740,19 @@ const _netMiddlewareClosure = (): Middleware => {
                         }
                     )
                     .then((tx) => {
-                        console.log(tx);
+                        store.dispatch(
+                            addPopup({
+                                content: {
+                                    txn: {
+                                        success: Boolean(tx?.data.length),
+                                        summary: `Withdraw ${formatBalance(
+                                            amount
+                                        )} ${DF_DENOM.toUpperCase()}`,
+                                    },
+                                },
+                                key: tx.transactionHash,
+                            })
+                        );
                         next({ ...action, payload: { ...action.payload, tx } });
                     })
                     .catch((err) => {

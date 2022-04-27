@@ -12,6 +12,7 @@ const inputingFloat = (e: React.KeyboardEvent<HTMLInputElement>, pre: string) =>
 const REGEXP_TWITTER_PROFILE = /http(?:s)?:\/\/(?:www\.)?twitter\.com\/([a-zA-Z0-9_]+)/;
 const REGEXP_DISCORD_USER_ID = /^.{3,32}#[0-9]{4}$/;
 const SUPPORT_CHAIN = ["secret", "cosmos", "terra"];
+const REGEXP_EMAIL = /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/;
 
 const validateForm = {
     walletAddress: {
@@ -29,7 +30,7 @@ const validateForm = {
         },
     },
     twitterProfile: {
-        validator: (val: string) => {
+        validate: (val: string) => {
             if (!REGEXP_TWITTER_PROFILE.test(val)) {
                 return "Twitter profile is not valid, please enter a valid profile";
             }
@@ -39,7 +40,7 @@ const validateForm = {
         }
     },
     discordUserId: {
-        validator: (val: string) => {
+        validate: (val: string) => {
             if (!REGEXP_DISCORD_USER_ID.test(val)) {
                 return "Twitter profile is not valid, please enter a valid profile";
             }
@@ -48,6 +49,20 @@ const validateForm = {
             }
         }
     },
+    email: {
+        validate: (val: string) => {
+            if (!REGEXP_EMAIL.test(val) && val) {
+                return "Invalid email address.";
+            }
+        }
+    },
+    requireField: {
+        required: (val: string) => {
+            if (!val) {
+                return "This field is required";
+            }
+        }
+    }
 };
 
 const validator = {
