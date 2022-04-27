@@ -5,7 +5,7 @@ import { useAppDispatch, useAppSelector } from "./app/hooks";
 import store from "./app/store";
 import AppContext, { TAppContext } from "./contexts/AppContext";
 import { networkActions } from "./features/network/networkSlice";
-import { walletAsyncActions } from "./features/wallet/walletSlice";
+import { walletActions, walletAsyncActions } from "./features/wallet/walletSlice";
 import AirDrop from "./routes/AirDrop";
 import { Asset } from "./routes/Asset";
 import FormCreation from "./routes/FormCreation";
@@ -17,12 +17,15 @@ import OldCollections from "./routes/OldCollections";
 import Profile from "./routes/Profile";
 import Stake from "./routes/Stake";
 import UI from "./routes/UI";
+import "./bootstrap";
 
 function App(): React.ReactElement {
     // App context (for stuffs that should not use redux by performance)
     const [bodyElement, setBodyElement] = useState<HTMLBodyElement>();
     const walletState = useAppSelector((state) => state.wallet);
     const dispatch = useAppDispatch();
+    const networkState = useAppSelector((state) => state.network);
+    const transactionState = useAppSelector((state) => state.transaction);
 
     const appContextValue: TAppContext = {
         state: {
@@ -46,6 +49,19 @@ function App(): React.ReactElement {
             dispatch(networkActions.tryConnecting());
         }
     }, [dispatch, walletState.bSuggested]);
+
+    useEffect(() => {
+        if (networkState.bIsConnected && !walletState.signature) {
+            dispatch(walletActions.getAllCodeHash());
+            dispatch(walletActions.getSigner());
+        }
+    }, [dispatch, walletState.signature, networkState.bIsConnected]);
+
+    useEffect(() => {
+        if (walletState.signature) {
+            dispatch(walletActions.getBalance());
+        }
+    }, [dispatch, transactionState.txStatus, walletState.signature]);
 
     return (
         <AppContext.Provider value={appContextValue}>

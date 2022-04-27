@@ -1,210 +1,145 @@
-import React, { useCallback, useRef, useState } from "react";
 import cn from "classnames";
-import Panel from "./commons/Panel";
-import Button from "./commons/Button";
+import React, { useCallback } from "react";
+import { useForm } from "react-hook-form";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
 import { setStatus } from "../features/airdrop/airdropSlice";
-import CheckIcon from "./icons/CheckIcon";
+import validator from "../helpers/validator";
+import Button from "./commons/Button";
 import Input from "./commons/Input";
-import { transactionActions } from "../features/transaction/transactionSlice";
+import Panel from "./commons/Panel";
+import CheckIcon from "./icons/CheckIcon";
 
 type Props = {
     onCloseBtnClicked?: React.MouseEventHandler<HTMLElement>;
 };
 
-const REGEXP_TWITTER_PROFILE = "http(?:s)?://(?:www.)?twitter.com/([a-zA-Z0-9_]+)";
-const REGEXP_DISCORD_USER_ID = "^.{3,32}#[0-9]{4}$";
+interface IForm {
+    walletAddress: string;
+    twitterProfile: string;
+    discordUserId: string;
+}
 
 export default function AirDropStatusPanel({ onCloseBtnClicked }: Props): React.ReactElement {
-    const rfForm = useRef<HTMLFormElement>(null);
-    const rfWalletAddressInput = useRef<HTMLInputElement>(null);
-    const rfTwitterProfileInput = useRef<HTMLInputElement>(null);
-    const rfDiscordUserIdInput = useRef<HTMLInputElement>(null);
-
-    const [walletAddress, setWalletAddress] = useState<string>("");
-    const [twitterProfile, setTwitterProfile] = useState<string>("");
-    const [discordUserId, setDiscordUserId] = useState<string>("");
-
     const networkState = useAppSelector((state) => state.network);
     const transactionState = useAppSelector((state) => state.transaction);
-
-    const [walletAddressErrorMsg, setWalletAddressErrorMsg] = useState<string | undefined>(
-        undefined
-    );
-    const [twitterProfileErrorMsg, setTwitterProfileErrorMsg] = useState<string | undefined>(
-        undefined
-    );
-    const [discordUserIdErrorMsg, setDiscordUserIdErrorMsg] = useState<string | undefined>(
-        undefined
-    );
 
     const airdropState = useAppSelector((state) => state.airdrop);
     const dispatch = useAppDispatch();
 
-    const validateWalletAddress = useCallback(() => {
-        return Boolean(walletAddress);
-    }, [walletAddress]);
-
-    const validateTwitterProfile = useCallback(() => {
-        const regexp = new RegExp(REGEXP_TWITTER_PROFILE);
-        return regexp.test(twitterProfile);
-    }, [twitterProfile]);
-
-    const validateDiscordUserId = useCallback(() => {
-        const regexp = new RegExp(REGEXP_DISCORD_USER_ID);
-        return regexp.test(discordUserId);
-    }, [discordUserId]);
-
-    const handleOnWalletAddressChanged = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-        if (!rfWalletAddressInput.current) return;
-        if (rfWalletAddressInput.current.checkValidity()) {
-            setWalletAddressErrorMsg(undefined);
-        }
-        const value = e.target.value;
-        setWalletAddress(value);
-    }, []);
-
-    const handleOnTwitterProfileChanged = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-        if (!rfTwitterProfileInput.current) return;
-        if (rfTwitterProfileInput.current.checkValidity()) {
-            setTwitterProfileErrorMsg(undefined);
-        }
-        const value = e.target.value;
-        setTwitterProfile(value);
-    }, []);
-
-    const handleOnDiscordUserIdChanged = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-        if (!rfDiscordUserIdInput.current) return;
-        if (rfDiscordUserIdInput.current.checkValidity()) {
-            setDiscordUserIdErrorMsg(undefined);
-        }
-        const value = e.target.value;
-        setDiscordUserId(value);
-    }, []);
-
-    const handleOnCheckBtnClicked = useCallback(() => {
-        if (!rfForm.current) return;
-        if (!rfForm.current.checkValidity()) {
-            if (!rfWalletAddressInput.current?.reportValidity()) {
-                setWalletAddressErrorMsg("Address not valid, please enter a valid address");
-            } else {
-                setWalletAddressErrorMsg(undefined);
-            }
-
-            if (!rfTwitterProfileInput.current?.reportValidity()) {
-                setTwitterProfileErrorMsg(
-                    "Twitter profile is not valid, please enter a valid profile"
-                );
-            } else {
-                setTwitterProfileErrorMsg(undefined);
-            }
-
-            if (!rfDiscordUserIdInput.current?.reportValidity()) {
-                setDiscordUserIdErrorMsg("Discord user ID is not valid, please enter a valid ID");
-            } else {
-                setDiscordUserIdErrorMsg(undefined);
-            }
-
-            return;
-        }
-        dispatch(setStatus("eligible"));
-    }, [dispatch]);
-
     const handleOnClaimAirdropBtnClicked = useCallback(() => {
         if (!networkState.bIsConnected) return;
         if (transactionState.bIsPending) return;
-        dispatch(transactionActions.claimAirdrop());
-    }, [dispatch, networkState.bIsConnected, transactionState.bIsPending]);
+    }, [networkState.bIsConnected, transactionState.bIsPending]);
+
+    const {
+        handleSubmit,
+        register,
+        setValue,
+        formState: { errors, dirtyFields },
+    } = useForm<IForm>({
+        mode: "onChange",
+        defaultValues: {
+            walletAddress: "",
+            twitterProfile: "",
+            discordUserId: "",
+        },
+    });
+
+    const onSubmit = useCallback(
+        (data: IForm) => {
+            if (data) {
+                dispatch(setStatus("eligible"));
+            }
+        },
+        [dispatch]
+    );
 
     const renderCheckStatusForm = useCallback(() => {
         return (
             <Panel onCloseBtnClicked={onCloseBtnClicked}>
                 <form
-                    ref={rfForm}
                     className={cn(
                         "w-[500px] text-white",
                         "flex flex-col items-stretch justify-start"
                     )}
-                    onSubmit={(e: React.FormEvent) => {
-                        e.preventDefault();
-                    }}
+                    onSubmit={handleSubmit(onSubmit)}
                 >
                     <h1 className="mb-6 last:mb-0 text-2xl font-bold">LGND Airdrop Status</h1>
 
                     <div className="mb-4 last:mb-0">
-                        {walletAddressErrorMsg && (
+                        {errors?.walletAddress && (
                             <div className="mb-2 last:mb-0 text-red-500">
-                                {walletAddressErrorMsg}
+                                {errors?.walletAddress.message}
                             </div>
                         )}
                         <Input
-                            refV={rfWalletAddressInput}
                             bigness="xl"
                             className="w-full"
                             rightIconNode={
-                                validateWalletAddress() ? (
+                                !errors?.walletAddress && dirtyFields?.walletAddress ? (
                                     <CheckIcon className="fill-green-500" />
                                 ) : null
                             }
                             placeholder="Wallet Address: Secret | Cosmos | Terra"
-                            value={walletAddress}
-                            onChange={handleOnWalletAddressChanged}
-                            required
+                            {...register("walletAddress", {
+                                validate: validator.validateForm.walletAddress,
+                                onChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+                                    setValue("walletAddress", e.target.value);
+                                },
+                            })}
                         />
                     </div>
 
                     <div className="mb-4 last:mb-0">
-                        {twitterProfileErrorMsg && (
+                        {errors?.twitterProfile && (
                             <div className="mb-2 last:mb-0 text-red-500">
-                                {twitterProfileErrorMsg}
+                                {errors?.twitterProfile.message}
                             </div>
                         )}
                         <Input
-                            refV={rfTwitterProfileInput}
                             bigness="xl"
                             className="w-full"
                             rightIconNode={
-                                validateTwitterProfile() ? (
+                                !errors?.twitterProfile && dirtyFields?.twitterProfile ? (
                                     <CheckIcon className="fill-green-500" />
                                 ) : null
                             }
                             placeholder="Twitter Profile"
-                            pattern={REGEXP_TWITTER_PROFILE}
-                            value={twitterProfile}
-                            onChange={handleOnTwitterProfileChanged}
-                            required
+                            {...register("twitterProfile", {
+                                validate: validator.validateForm.twitterProfile,
+                                onChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+                                    setValue("twitterProfile", e.target.value);
+                                },
+                            })}
                         />
                     </div>
 
                     <div className="mb-4 last:mb-0">
-                        {discordUserIdErrorMsg && (
+                        {errors?.discordUserId && (
                             <div className="mb-2 last:mb-0 text-red-500">
-                                {discordUserIdErrorMsg}
+                                {errors?.discordUserId.message}
                             </div>
                         )}
                         <Input
-                            refV={rfDiscordUserIdInput}
                             bigness="xl"
                             className="w-full"
                             rightIconNode={
-                                validateDiscordUserId() ? (
+                                !errors?.discordUserId && dirtyFields?.discordUserId ? (
                                     <CheckIcon className="fill-green-500" />
                                 ) : null
                             }
                             placeholder="Discord User ID"
-                            value={discordUserId}
-                            onChange={handleOnDiscordUserIdChanged}
-                            pattern={REGEXP_DISCORD_USER_ID}
-                            required
+                            {...register("discordUserId", {
+                                validate: validator.validateForm.discordUserId,
+                                onChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+                                    setValue("discordUserId", e.target.value);
+                                },
+                            })}
                         />
                     </div>
 
                     <div className="mb-6 last:mb-0 flex flex-col flex-nowrap">
-                        <Button
-                            className="font-bold"
-                            bigness="xl"
-                            onClick={handleOnCheckBtnClicked}
-                        >
+                        <Button className="font-bold" bigness="xl" type="submit">
                             Check Airdrop
                         </Button>
                     </div>
@@ -212,20 +147,15 @@ export default function AirDropStatusPanel({ onCloseBtnClicked }: Props): React.
             </Panel>
         );
     }, [
-        discordUserId,
-        discordUserIdErrorMsg,
-        handleOnCheckBtnClicked,
-        handleOnDiscordUserIdChanged,
-        handleOnTwitterProfileChanged,
-        handleOnWalletAddressChanged,
+        errors?.discordUserId,
+        errors?.twitterProfile,
+        errors?.walletAddress,
+        handleSubmit,
         onCloseBtnClicked,
-        twitterProfile,
-        twitterProfileErrorMsg,
-        validateDiscordUserId,
-        validateTwitterProfile,
-        validateWalletAddress,
-        walletAddress,
-        walletAddressErrorMsg,
+        onSubmit,
+        register,
+        setValue,
+        dirtyFields,
     ]);
 
     const renderEligibleForm = useCallback(() => {
@@ -279,7 +209,7 @@ export default function AirDropStatusPanel({ onCloseBtnClicked }: Props): React.
                 </div>
             </Panel>
         );
-    }, [onCloseBtnClicked]);
+    }, [handleOnClaimAirdropBtnClicked, onCloseBtnClicked]);
 
     const renderNotEligibleForm = useCallback(() => {
         return (

@@ -1,17 +1,16 @@
-import React, { useCallback, useEffect } from "react";
+import BigNumber from "bignumber.js";
 import cn from "classnames";
-import Panel from "./commons/Panel";
-import CheckBox from "./commons/CheckBox";
+import React, { useCallback, useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
-import { setAgent, setSuccessMessage, toggleAgreeTermOfService } from "../features/mint/mintSlice";
-import Button from "./commons/Button";
 import {
     toggleMintSuccessfulPanelOn,
-    turnOffAllPanel,
+    turnOffAllPanel
 } from "../features/accessibility/accessibilitySlice";
+import { setAgent, setSuccessMessage, toggleAgreeTermOfService } from "../features/mint/mintSlice";
 import { transactionActions } from "../features/transaction/transactionSlice";
-import { parseBalance } from "../helpers/format";
-import BigNumber from "bignumber.js";
+import Button from "./commons/Button";
+import CheckBox from "./commons/CheckBox";
+import Panel from "./commons/Panel";
 
 type Props = {
     priceInLGND: number;

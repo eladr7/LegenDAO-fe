@@ -1,12 +1,12 @@
 /* eslint-disable no-console */
 import { Buffer } from "buffer";
-import { SecretNetworkClient } from "secretjs";
+import { SecretNetworkClient, StdSignature } from "secretjs";
 import { AccountData } from "secretjs/dist/wallet_amino";
 import { Middleware, MiddlewareAPI } from "redux";
 import { TAppDispatch, TRootState } from "../store";
 import { TNetError } from "../commons/types";
 import { networkActions } from "../../features/network/networkSlice";
-import { walletActions } from "../../features/wallet/walletSlice";
+import { walletActions, walletAsyncActions } from "../../features/wallet/walletSlice";
 import {
     LGND_ADDRESS,
     NFT_ADDRESS,
@@ -15,6 +15,8 @@ import {
 } from "../../constants/contractAddress";
 import { transactionActions } from "../../features/transaction/transactionSlice";
 import { DF_DENOM } from "../../constants/defaults";
+import { KEY } from "../../constants/key";
+import { collectionAtions } from "../../features/collection/collectionSlice";
 
 interface IBalanceSnip20 {
     balance: {
@@ -29,6 +31,16 @@ interface ICodeHash {
         codeHash?: string;
         address?: string;
     };
+}
+
+interface ISigner {
+    msg?: {
+        permit_name: string;
+        allowed_tokens?: string[];
+        permissions: string[];
+    };
+    signature?: StdSignature;
+    account?: string;
 }
 
 const _connect = (): Promise<{ client: SecretNetworkClient; account: AccountData }> => {
@@ -81,8 +93,19 @@ const _connect = (): Promise<{ client: SecretNetworkClient; account: AccountData
 
 const _netMiddlewareClosure = (): Middleware => {
     let client: SecretNetworkClient | null = null;
-    let primaryAccount: AccountData | null = null;
-    const codeHashs: ICodeHash = {};
+    let codeHashes: ICodeHash = {};
+    let signerPermit: ISigner = {
+        msg: {
+            permit_name: KEY.PERMIT_NAME,
+            allowed_tokens: [],
+            permissions: ["balance", "owner"],
+        },
+        signature: undefined,
+        account: "",
+    };
+
+    const initAddressArray = [LGND_ADDRESS, PLATFORM_ADDRESS, NFT_ADDRESS, NFT_MINTING_ADDRESS];
+
     return (store: MiddlewareAPI<TAppDispatch, TRootState>) => (next) => (action) => {
         switch (action.type) {
             case networkActions.tryConnecting.type: {
@@ -97,7 +120,6 @@ const _netMiddlewareClosure = (): Middleware => {
                 _connect()
                     .then((result) => {
                         client = result.client;
-                        primaryAccount = result.account;
                         store.dispatch(networkActions.finishConnecting());
                     })
                     .catch((err) => {
@@ -108,115 +130,181 @@ const _netMiddlewareClosure = (): Middleware => {
                 break;
             }
 
-            case walletActions.getAllBalances.type: {
+            case walletActions.getAllCodeHash.type: {
+                const codeHashLocal = JSON.parse(localStorage.getItem(KEY.CODE_HASHES) as string);
+                const contractAddress = action.payload?.contractAddress;
+                const addressArray = contractAddress
+                    ? codeHashes.length
+                        ? [...Object.keys(codeHashes), ...contractAddress]
+                        : [...initAddressArray, ...contractAddress]
+                    : [...initAddressArray];
+
+                const matchArray = codeHashLocal && Object.keys(codeHashLocal).equals(addressArray);
+
+                if (codeHashLocal && matchArray) {
+                    codeHashes = codeHashLocal;
+                } else {
+                    const getCodeHash = async (address: string) => {
+                        return {
+                            codeHash: await client?.query.compute.contractCodeHash(address),
+                            address: address,
+                        };
+                    };
+
+                    const codeHashArr = addressArray.map((address) => {
+                        return getCodeHash(address as string);
+                    });
+                    Promise.all(codeHashArr).then((res) => {
+                        for (let index = 0; index < addressArray.length; index++) {
+                            codeHashes[addressArray[index] as string] = { ...res[index] };
+                        }
+                        localStorage.setItem(KEY.CODE_HASHES, JSON.stringify(codeHashes));
+                    });
+                }
+
                 break;
             }
 
-            case walletActions.getAllCodeHash.type: {
-                const getCoshHash = async (contractAddress: string) => {
-                    return {
-                        codeHash: await client?.query.compute.contractCodeHash(contractAddress),
-                        address: contractAddress,
-                    };
+            case walletActions.getSigner.type: {
+                const getSigner = async () => {
+                    const signer = JSON.parse(localStorage.getItem(KEY.SIGNER) as string);
+                    const allowedTokensMsg = signer?.msg.allowed_tokens;
+
+                    const matchArray = initAddressArray.equals(allowedTokensMsg);
+
+                    if (signer && signer.account === client?.address && matchArray) {
+                        signerPermit = signer;
+                        store.dispatch(walletAsyncActions.connect({ delay: 200 }));
+                        next({ ...action, payload: { signature: signer.signature } });
+                    } else {
+                        const chainId = process.env.REACT_APP_NET_CHAIN_ID;
+
+                        const msg = {
+                            permit_name: "LegenDAO Sotatek Test",
+                            permissions: ["balance", "owner"],
+                            allowed_tokens: initAddressArray.map((address) => {
+                                return address as string;
+                            }),
+                        };
+
+                        try {
+                            if (window.keplr) {
+                                const { signature } = await window.keplr.signAmino(
+                                    chainId as string,
+                                    client?.address as string,
+                                    {
+                                        chain_id: chainId as string,
+                                        account_number: "0", // Must be 0
+                                        sequence: "0", // Must be 0
+                                        fee: {
+                                            amount: [{ denom: "uscrt", amount: "0" }], // Must be 0 uscrt
+                                            gas: "1", // Must be 1
+                                        },
+                                        msgs: [
+                                            {
+                                                type: "query_permit", // Must be "query_permit"
+                                                value: {
+                                                    ...msg,
+                                                },
+                                            },
+                                        ],
+                                        memo: "", // Must be empty
+                                    },
+                                    {
+                                        preferNoSetFee: true, // Fee must be 0, so hide it from the user
+                                        preferNoSetMemo: true, // Memo must be empty, so hide it from the user
+                                    }
+                                );
+                                signerPermit = {
+                                    signature,
+                                    msg,
+                                    account: client?.address,
+                                };
+                                localStorage.setItem(KEY.SIGNER, JSON.stringify(signerPermit));
+                                store.dispatch(walletAsyncActions.connect({ delay: 200 }));
+                                next({ ...action, payload: { signature } });
+                            }
+                        } catch (error) {
+                            console.warn(error);
+                        }
+                    }
                 };
 
-                const contractAddress = action.payload?.contractAddress;
-
-                const initAddressArray = [LGND_ADDRESS, PLATFORM_ADDRESS, NFT_MINTING_ADDRESS];
-
-                const addressArray = contractAddress ? codeHashs.length
-                    ? [...Object.keys(codeHashs), ...contractAddress]
-                    : [...initAddressArray, ...contractAddress]
-                    : [...initAddressArray];
-                const codeHashArr = addressArray.map((address) => {
-                    return getCoshHash(address as string);
-                });
-                Promise.all(codeHashArr).then((res) => {
-                    for (let index = 0; index < addressArray.length; index++) {
-                        codeHashs[addressArray[index] as string] = { ...res[index] };
-                    }
-                });
-
+                getSigner();
                 break;
             }
 
             case walletActions.getBalance.type: {
-                if (!client || !primaryAccount) return;
                 const chainId = process.env.REACT_APP_NET_CHAIN_ID;
                 const lgndToken = process.env.REACT_APP_ADDRESS_LGND;
                 const contractAddress = process.env.REACT_APP_ADDRESS_PLATFORM;
-                if (!client || !primaryAccount || !window.keplr) return;
-                if (!chainId || !lgndToken || !contractAddress) return;
-                const { denom, tokenAddress } = action.payload;
 
-                window.keplr
-                    .signAmino(
-                        chainId,
-                        client.address,
-                        {
-                            chain_id: chainId,
-                            account_number: "0", // Must be 0
-                            sequence: "0", // Must be 0
-                            fee: {
-                                amount: [{ denom: "uscrt", amount: "0" }], // Must be 0 uscrt
-                                gas: "1", // Must be 1
-                            },
-                            msgs: [
-                                {
-                                    type: "query_permit", // Must be "query_permit"
-                                    value: {
-                                        permit_name: "LegenDAO Sotatek Test",
-                                        allowed_tokens: [tokenAddress],
-                                        permissions: ["balance"],
-                                    },
-                                },
-                            ],
-                            memo: "", // Must be empty
-                        },
-                        {
-                            preferNoSetFee: true, // Fee must be 0, so hide it from the user
-                            preferNoSetMemo: true, // Memo must be empty, so hide it from the user
-                        }
-                    )
-                    .then(({ signature }) => {
-                        if (!client) return;
-                        client.query.snip20
-                            .queryContract({
-                                contractAddress: tokenAddress,
-                                codeHash: codeHashs[tokenAddress]?.codeHash || "",
-                                query: {
-                                    with_permit: {
-                                        query: { balance: {} },
-                                        permit: {
-                                            params: {
-                                                permit_name: "LegenDAO Sotatek Test",
-                                                allowed_tokens: [tokenAddress],
-                                                chain_id: chainId,
-                                                permissions: ["balance"],
-                                            },
-                                            signature,
+                if (!client || !window.keplr) return;
+                if (!chainId || !lgndToken || !contractAddress || !signerPermit) return;
+                const initTokens = [
+                    {
+                        denom: DF_DENOM,
+                        tokenAddress: LGND_ADDRESS as string,
+                    },
+                    {
+                        denom: DF_DENOM,
+                        tokenAddress: PLATFORM_ADDRESS as string,
+                    },
+                ];
+                const tokens = action.payload?.tokens;
+
+                const getBalance = async (
+                    tokenAddress: string,
+                    denom: string,
+                    signature: StdSignature
+                ) => {
+                    try {
+                        const result = await (
+                            client as SecretNetworkClient
+                        )?.query.snip20.queryContract({
+                            contractAddress: tokenAddress,
+                            codeHash: codeHashes[tokenAddress]?.codeHash || "",
+                            query: {
+                                with_permit: {
+                                    query: { balance: {} },
+                                    permit: {
+                                        params: {
+                                            ...signerPermit?.msg,
+                                            chain_id: chainId,
                                         },
+                                        signature,
                                     },
                                 },
-                            })
-                            .then((result) => {
-                                const balance = {
-                                    ...(result as IBalanceSnip20)?.balance,
-                                    denom: denom || DF_DENOM,
-                                    tokenAddress,
-                                };
-                                next({
-                                    ...action,
-                                    payload: { balance },
-                                });
-                            })
-                            .catch((err) => {
-                                console.error(err);
-                            });
-                    })
-                    .catch((err) => {
-                        console.warn(err);
-                    });
+                            },
+                        });
+                        console.log(result);
+                        const balance = {
+                            ...(result as IBalanceSnip20)?.balance,
+                            denom: denom || DF_DENOM,
+                            tokenAddress,
+                        };
+                        next({
+                            ...action,
+                            payload: { balance },
+                        });
+                    } catch (error) {
+                        console.warn(error);
+                    }
+                };
+
+                if (signerPermit.signature) {
+                    const fetchData = (tokens ? [...initTokens, ...tokens] : initTokens).map(
+                        (item: { tokenAddress: string; denom: string }) => {
+                            return getBalance(
+                                item.tokenAddress,
+                                item.denom,
+                                signerPermit?.signature as StdSignature
+                            );
+                        }
+                    );
+                    Promise.all(fetchData);
+                }
+
                 break;
             }
 
@@ -245,7 +333,7 @@ const _netMiddlewareClosure = (): Middleware => {
                         {
                             sender: client.address,
                             contractAddress: platformContractAddress,
-                            codeHash: codeHashs[platformContractAddress].codeHash || "",
+                            codeHash: codeHashes[platformContractAddress].codeHash || "",
                             msg: {
                                 send_from_platform: {
                                     contract_addr: mintingContractAddress,
@@ -284,7 +372,7 @@ const _netMiddlewareClosure = (): Middleware => {
                         {
                             sender: client.address,
                             contractAddress: targetContractAddress,
-                            codeHash: codeHashs[targetContractAddress]?.codeHash || "",
+                            codeHash: codeHashes[targetContractAddress]?.codeHash || "",
                             msg: {
                                 send: {
                                     recipient: platformContractAddress,
@@ -563,7 +651,7 @@ const _netMiddlewareClosure = (): Middleware => {
                 break;
             }
 
-            case transactionActions.claimAirdrop.type: {
+            case transactionActions.claimPlatform.type: {
                 const platformContractAddress = PLATFORM_ADDRESS;
                 if (!client || !platformContractAddress) return;
 
@@ -571,7 +659,7 @@ const _netMiddlewareClosure = (): Middleware => {
                     .executeContract(
                         {
                             contractAddress: PLATFORM_ADDRESS as string,
-                            codeHash: codeHashs[platformContractAddress].codeHash || "",
+                            codeHash: codeHashes[platformContractAddress].codeHash || "",
                             sender: client.address,
                             msg: {
                                 claim_redeemed: {},
@@ -601,7 +689,7 @@ const _netMiddlewareClosure = (): Middleware => {
                     .executeContract(
                         {
                             contractAddress: PLATFORM_ADDRESS as string,
-                            codeHash: codeHashs[platformContractAddress].codeHash || "",
+                            codeHash: codeHashes[platformContractAddress].codeHash || "",
                             sender: client.address,
                             msg: {
                                 redeem: {
@@ -613,13 +701,78 @@ const _netMiddlewareClosure = (): Middleware => {
                             gasLimit: 300_000,
                         }
                     )
-                    .then((results) => {
-                        console.log(results);
-                        next({ ...action, payload: { ...action.payload, results } });
+                    .then((tx) => {
+                        console.log(tx);
+                        next({ ...action, payload: { ...action.payload, tx } });
                     })
                     .catch((err) => {
                         console.error(err);
                     });
+
+                break;
+            }
+
+            case collectionAtions.getCollection.type: {
+                const getTokens = async () => {
+                    const chainId = process.env.REACT_APP_NET_CHAIN_ID;
+                    if (!client || !NFT_ADDRESS || !chainId || !signerPermit) return;
+                    const tokens = await client.query.compute.queryContract({
+                        contractAddress: NFT_ADDRESS,
+                        codeHash: codeHashes[NFT_ADDRESS]?.codeHash || "",
+                        query: {
+                            with_permit: {
+                                query: {
+                                    tokens: {
+                                        owner: client.address,
+                                        limit: 4444,
+                                    },
+                                },
+                                permit: {
+                                    params: {
+                                        ...signerPermit.msg,
+                                        chain_id: chainId,
+                                    },
+                                    signature: signerPermit.signature,
+                                },
+                            },
+                        },
+                    });
+
+                    const allTokens = (tokens as any).token_list.tokens;
+
+                    const collectionsDetails = allTokens?.map((token: string) => {
+                        if (!signerPermit) return;
+                        const msg = {
+                            with_permit: {
+                                query: {
+                                    nft_dossier: {
+                                        token_id: token,
+                                    },
+                                },
+                                permit: {
+                                    params: {
+                                        ...signerPermit.msg,
+                                        chain_id: chainId,
+                                    },
+                                    signature: signerPermit.signature,
+                                },
+                            },
+                        };
+
+                        return (client as SecretNetworkClient).query.compute.queryContract({
+                            contractAddress: NFT_ADDRESS as string,
+                            codeHash: codeHashes[NFT_ADDRESS as string]?.codeHash || "",
+                            query: {
+                                ...msg,
+                            },
+                        });
+                    });
+
+                    const listMyCollection = await Promise.all(collectionsDetails);
+                    next({ ...action, payload: { listMyCollection } });
+                };
+
+                getTokens();
 
                 break;
             }

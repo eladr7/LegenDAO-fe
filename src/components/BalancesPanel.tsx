@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import cn from "classnames";
 import Panel from "./commons/Panel";
 import Button from "./commons/Button";
@@ -10,9 +10,11 @@ import {
     turnOffAllPanel,
 } from "../features/accessibility/accessibilitySlice";
 import { useNavigate } from "react-router-dom";
-import { walletActions } from "../features/wallet/walletSlice";
 import { formatBalance } from "../helpers/format";
-import { LGND_ADDRESS } from "../constants/contractAddress";
+import { LGND_ADDRESS, PLATFORM_ADDRESS } from "../constants/contractAddress";
+import { transactionActions } from "../features/transaction/transactionSlice";
+import BigNumber from "bignumber.js";
+import { DF_DENOM } from "../constants/defaults";
 
 type Props = {
     onCloseBtnClicked?: React.MouseEventHandler<HTMLElement>;
@@ -38,6 +40,8 @@ export default function BalancesPanel({
     const dispatch = useAppDispatch();
     const walletState = useAppSelector((state) => state.wallet);
     const networkState = useAppSelector((state) => state.network);
+    const transactionState = useAppSelector((state) => state.transaction);
+    const [undelegate, setUndelegate] = useState<string>("0");
 
     const handleOnProfileBtnClicked = useCallback(
         (e: React.MouseEvent<HTMLElement>) => {
@@ -111,10 +115,31 @@ export default function BalancesPanel({
         [dispatch, onWithdrawBtnClicked]
     );
 
+    const handleOnClaimBtnClicked = useCallback(() => {
+        if (!networkState.bIsConnected || transactionState.bIsPending) return;
+        dispatch(transactionActions.claimPlatform());
+    }, [dispatch, networkState.bIsConnected, transactionState.bIsPending]);
+
     useEffect(() => {
-        if (!networkState.bIsConnected) return;
-        dispatch(walletActions.getBalance({ denom: "lgnd", tokenAddress: LGND_ADDRESS as string }));
-    }, [dispatch, networkState.bIsConnected]);
+        const unbondings =
+            walletState.balances[PLATFORM_ADDRESS as string]?.pending_redeem?.unbondings;
+        if (unbondings) {
+            const results = unbondings.reduce(
+                (
+                    preVal: string,
+                    curVal: {
+                        end_ts: string;
+                        amount: string;
+                    }
+                ) => {
+                    return new BigNumber(preVal).plus(curVal?.amount).toString();
+                },
+                "0"
+            );
+
+            setUndelegate(formatBalance(results));
+        }
+    }, [walletState.balances]);
 
     return (
         <Panel onCloseBtnClicked={onCloseBtnClicked}>
@@ -127,9 +152,12 @@ export default function BalancesPanel({
                     </div>
                     <div className="flex flex-row flex-nowrap items-end">
                         <div className="font-semibold text-2xl leading-none uppercase">
-                            {formatBalance(walletState.balances[LGND_ADDRESS as string].amount) ||
-                                "--"}{" "}
-                            {walletState.balances[LGND_ADDRESS as string].denom}
+                            {formatBalance(
+                                walletState.balances[PLATFORM_ADDRESS as string]?.staked || "0"
+                            ) || "--"}{" "}
+                            {walletState.balances[
+                                PLATFORM_ADDRESS as string
+                            ]?.denom?.toUpperCase() || DF_DENOM?.toUpperCase()}
                         </div>
                         <span className="ml-2 first:ml-0 opacity-50 font-light leading-none">
                             (${walletState.fiatBalance.amount.toFixed(2)})
@@ -143,20 +171,30 @@ export default function BalancesPanel({
                     </div>
                     <div className="flex flex-row flex-nowrap items-center">
                         <div className="font-semibold text-2xl leading-none uppercase">
-                            {walletState.undelegate.amount || "--"} {walletState.undelegate.denom}
+                            {undelegate || "--"}{" "}
+                            {walletState.balances[
+                                PLATFORM_ADDRESS as string
+                            ]?.denom?.toUpperCase() || DF_DENOM?.toUpperCase()}
                         </div>
                         <span className="ml-2 first:ml-0 opacity-50 font-light leading-none">
                             (${walletState.fiatUndelegate.amount.toFixed(2)})
                         </span>
-
-                        <div
+                        <Button
                             className={cn(
-                                "ml-4 first:ml-0 py-1 px-4 leading-none text-sm",
-                                "border rounded-lg opacity-30"
+                                "!h-auto",
+                                "!ml-4 first:ml-0 !py-1 !px-4 leading-none text-sm",
+                                "disabled:bg-transparent disabled:border disabled:rounded-lg disabled:opacity-30 disabled:border-white/70"
                             )}
+                            bTransparent
+                            bActivated={false}
+                            disabled={new BigNumber(
+                                walletState.balances[PLATFORM_ADDRESS as string]?.pending_redeem
+                                    ?.claimable || "0"
+                            ).isZero()}
+                            onClick={handleOnClaimBtnClicked}
                         >
                             Claim
-                        </div>
+                        </Button>
                     </div>
                 </div>
 
@@ -166,7 +204,9 @@ export default function BalancesPanel({
                     </div>
                     <div className="flex flex-row flex-nowrap items-end">
                         <div className="font-semibold text-2xl leading-none uppercase">
-                            {walletState.unclaim.amount || "--"} {walletState.unclaim.denom}
+                            {formatBalance(walletState.balances[LGND_ADDRESS as string].amount) ||
+                                "--"}{" "}
+                            {walletState.balances[LGND_ADDRESS as string].denom}
                         </div>
                         <span className="ml-2 first:ml-0 opacity-50 font-light leading-none">
                             (${walletState.fiatUnclaim.amount.toFixed(2)})
