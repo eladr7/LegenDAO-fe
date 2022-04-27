@@ -7,6 +7,8 @@ import Textarea from "./commons/Textarea";
 import { useForm } from "react-hook-form";
 import validator from "../helpers/validator";
 import { legenServices } from "../app/commons/legendServices";
+import { useDispatch } from "react-redux";
+import { addPopup } from "../features/application/applicationSlice";
 
 type Props = {
     onCloseBtnClicked?: React.MouseEventHandler<HTMLElement>;
@@ -20,6 +22,7 @@ interface ICreationForms {
 }
 
 export default function CreationFormPanel({ onCloseBtnClicked }: Props): React.ReactElement {
+    const dispatch = useDispatch();
     const {
         handleSubmit,
         register,
@@ -39,12 +42,24 @@ export default function CreationFormPanel({ onCloseBtnClicked }: Props): React.R
         try {
             const res = await legenServices.creationForm(data);
             if (res.status === 200) {
-                // eslint-disable-next-line no-console
-                console.log("success");
+                dispatch(addPopup({
+                    content: {
+                        txn: {
+                            success: true,
+                            summary: "You have submitted this form"
+                        }
+                    }
+                }));
             }
         } catch (error) {
-            // eslint-disable-next-line no-console
-            console.error(error);
+            dispatch(addPopup({
+                content: {
+                    txn: {
+                        success: false,
+                        summary: "You have submitted this form "
+                    }
+                }
+            }));
         }
     };
 
