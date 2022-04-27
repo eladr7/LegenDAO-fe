@@ -1,6 +1,6 @@
 import { CaseReducer, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { JsonLog, Tx } from "secretjs";
-import { KEY } from "../../constants/key";
+import { TRANSACTION_KEY } from "../../constants/constant";
 
 export type TTransactionState = {
     bIsPending: boolean;
@@ -42,7 +42,7 @@ const _sendTokenFromPlatformToContract: CaseReducer<
     }>
 > = (state, action) => {
     state.bIsPending = false;
-    state.txName = KEY.MINT_NFT;
+    state.txName = TRANSACTION_KEY.MINT_NFT;
     state.txStatus = action.payload.tx?.jsonLog;
     console.log(action.payload.tx);
 };
@@ -52,6 +52,7 @@ const _depositToPlatform: CaseReducer<
     PayloadAction<{ snipContractAddress?: string; amount: string; toAddress?: string; tx?: Tx }>
 > = (state, action) => {
     state.bIsPending = false;
+    state.txName = TRANSACTION_KEY.DEPOSIT;
     state.txStatus = action.payload.tx?.jsonLog;
     console.log(action.payload);
 };
@@ -135,6 +136,7 @@ const _isWhitelisted: CaseReducer<TTransactionState, PayloadAction<{ address: st
 
 const _claimPlatform: CaseReducer<TTransactionState> = (state) => {
     state.bIsPending = false;
+    state.txName = TRANSACTION_KEY.CLAIM_REDEEMED;
 };
 
 const _withdrawFromPlatform: CaseReducer<
@@ -142,6 +144,7 @@ const _withdrawFromPlatform: CaseReducer<
     PayloadAction<{ amount?: string, tx?: Tx }>
 > = (state, action) => {
     state.bIsPending = false;
+    state.txName = TRANSACTION_KEY.WITHDRAW;
     state.txStatus = action.payload.tx?.jsonLog;
     console.log(action.payload);
 };

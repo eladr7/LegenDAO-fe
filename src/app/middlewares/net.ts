@@ -15,7 +15,7 @@ import {
 } from "../../constants/contractAddress";
 import { transactionActions } from "../../features/transaction/transactionSlice";
 import { DF_DENOM } from "../../constants/defaults";
-import { KEY } from "../../constants/key";
+import { KEY } from "../../constants/constant";
 import { collectionAtions } from "../../features/collection/collectionSlice";
 
 interface IBalanceSnip20 {
