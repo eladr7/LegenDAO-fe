@@ -14,7 +14,7 @@ import {
     toggleCreationFormPanel,
     toggleSidebar,
 } from "../../features/accessibility/accessibilitySlice";
-import { walletActions, walletAsyncActions } from "../../features/wallet/walletSlice";
+import { walletActions } from "../../features/wallet/walletSlice";
 import BalancesPanel from "../BalancesPanel";
 import { SOCIAL_NETWORK_URL } from "../../constants/linkSocial";
 import { shortenAddress } from "../../helpers/format";

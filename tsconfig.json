@@ -16,5 +16,5 @@
         "noEmit": true,
         "jsx": "react-jsx"
     },
-    "include": ["src", "addition-env.d.ts", "**/*.ts", "**/*.tsx"]
+    "include": ["src", "**/*.ts", "**/*.tsx"]
 }

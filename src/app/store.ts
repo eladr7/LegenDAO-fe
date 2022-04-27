@@ -1,6 +1,7 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { combineReducers } from "redux";
 import accessibilityReducer from "../features/accessibility/accessibilitySlice";
+import applicationReducer from "../features/application/applicationSlice";
 import walletReducer, { walletAsyncActions } from "../features/wallet/walletSlice";
 import collectionReducer from "../features/collection/collectionSlice";
 import airdropReducer from "../features/airdrop/airdropSlice";
@@ -17,6 +18,7 @@ const rootReducer = combineReducers({
     airdrop: airdropReducer,
     collection: collectionReducer,
     mint: mintReducer,
+    application: applicationReducer,
 });
 
 const store = configureStore({

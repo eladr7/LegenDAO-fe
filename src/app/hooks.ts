@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef } from "react";
+import { useCallback, useEffect, useMemo, useRef } from "react";
 import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
 import type { TRootState, TAppDispatch } from "./store";
 
@@ -89,4 +89,9 @@ export const usePressKey = (keys: string[], callback: (event: KeyboardEvent) => 
             document.removeEventListener("keydown", handleKeyPress);
         };
     }, [handleKeyPress]);
+};
+
+export const useActivePopups = () => {
+    const list = useAppSelector((state) => state.application.popupList);
+    return useMemo(() => list.filter((item) => item.show), [list]);
 };
