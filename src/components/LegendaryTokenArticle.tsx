@@ -37,11 +37,15 @@ export default function LegendaryTokenArticle(): React.ReactElement {
                 <div className="flex flex-col flex-nowrap justify-center items-start">
                     <h1 className="mb-8 last:mb-0 font-bold text-5xl">Legendary Tokens</h1>
                     <div className="mb-8 last:mb-0 max-w-xl">
-                        <p className="mb-4 last:mb-0 opacity-75 text-lg text-justify">
-                            The legendary token (LGND) is the native token of the Legendary
-                            universe. The LGND token is used to purchase NFT collections, NFT
-                            avatars, and loot boxes. The APY earned by staking is connected to the
-                            avatar rank - the higher the avatar&apos;s rank, the higher the APY.
+                        <p className="mb-4 last:mb-0 opacity-75 text-paragraph text-justify">
+                            A central element of Legendao’s universe is the $LGND (pronounced
+                            Legend) native token. This token serves as a fundamental in-universe
+                            currency, used to purchase avatars, loot boxes and NFTs. We’ll disclose
+                            full tokenomics soon, but $LGND and the DAO more generally innovate on
+                            top of existing mechanisms in several ways. Furthermore, to reach a wide
+                            distribution and the entire Cosmos ecosystem, initially, most
+                            circulating tokens would originate in an airdrop to $SCRT holders
+                            (primarily), $OSMO and $LUNA holders.
                         </p>
                     </div>
                 </div>

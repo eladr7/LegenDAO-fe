@@ -64,13 +64,15 @@ export default function LegendaryUniverseArticle(): React.ReactElement {
             </div>
             <div
                 className={cn(
-                    "w-1/2 z-10 bg-primary-mint-lab px-16",
+                    "w-1/2 z-10 bg-primary-mint-lab px-12",
                     "text-white flex flex-col flex-nowrap justify-center items-stretch"
                 )}
             >
-                <h1 className="mb-8 last:mb-0 font-bold text-5xl">The Legendary Universe</h1>
-                <div className="mb-8 last:mb-0 max-w-xl">
-                    <p className="opacity-75 text-lg">
+                <h1 className="mb-8 last:mb-0 font-bold text-7xl">
+                    The Legendary <p>Universe</p>
+                </h1>
+                <div className="mb-8 last:mb-0 max-w-[600px]">
+                    <p className="opacity-75 text-paragraph">
                         Bringing all legendary creators into the Cosmos. The immersive mintlab for
                         all significant NFT projects. Focused on Cosmos, powered by Secret Network
                         and Secret NFTs. Legendao is a play-to-mint NFT platform. The platform is
@@ -84,7 +86,7 @@ export default function LegendaryUniverseArticle(): React.ReactElement {
                     <Button bTransparent onClick={handleOnContactUsBtnClicked}>
                         Creator? Contact Us
                     </Button>
-                    <div 
+                    <div
                         className="ml-8 first:ml-0 w-icon h-icon grow-0 shrink-0"
                         onClick={() => {
                             window.open(SOCIAL_NETWORK_URL.discord, "_blank");
@@ -92,7 +94,7 @@ export default function LegendaryUniverseArticle(): React.ReactElement {
                     >
                         <DiscordIcon />
                     </div>
-                    <div 
+                    <div
                         className="ml-8 first:ml-0 w-icon h-icon grow-0 shrink-0"
                         onClick={() => {
                             window.open(SOCIAL_NETWORK_URL.twitter, "_blank");

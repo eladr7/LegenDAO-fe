@@ -9,41 +9,62 @@ export default function LegendaryPlatformArticle(): React.ReactElement {
     return (
         <>
             <Article
-                className="min-h-[1000px] bg-right-top bg-primary-mint-lab "
+                className="min-h-[1000px] bg-right-top bg-primary-mint-lab pt-[80px]"
                 style={{ backgroundImage: `url(${imgArticlePlatform01Background})` }}
             >
-                <div
-                    className={cn(
-                        "w-1/2 z-20 px-16",
-                        "text-white flex flex-col flex-nowrap justify-center items-end"
-                    )}
-                >
-                    <div className="flex flex-col flex-nowrap justify-center items-start">
+                <div className={cn("w-1/2 z-20 px-36", "text-white flex flex-col justify-center")}>
+                    <div
+                        className={cn(
+                            "flex flex-col flex-nowrap justify-center items-start",
+                            "mb-20 last:mb-0"
+                        )}
+                    >
                         <h1 className="mb-8 last:mb-0 font-bold text-5xl">
-                            The Legendary Platform
+                            The Legendary <p>Platform</p>
                         </h1>
-                        <div className="mb-8 last:mb-0 max-w-xl">
-                            <p className="mb-4 last:mb-0 opacity-75 text-lg text-justify">
-                                The Legendary universe is a home for artists and their art. Through
-                                the Legendary platform, artists and creators can distribute their
-                                art.
+                        <div className="mb-8 last:mb-0 max-w-[650px]">
+                            <p className="mb-4 last:mb-0 opacity-75 text-paragraph text-justify">
+                                Legendao is a first of its kind NFT platform, designed to be a Mint
+                                Lab for top creators, and a unique kind of immersive experience for
+                                collectors, all of it governed by an underlying DAO.
                             </p>
 
-                            <p className="mb-4 last:mb-0 opacity-75 text-lg text-justify">
-                                Legendary is a mixed-in and out-of-universe experience with its own
-                                backstory, in which users start with a unique character (a baseline
-                                NFT). This character can grow stronger by interacting with loot
-                                boxes, that distribute in-universe items alongside partner drops.
-                                Growing stronger allows users to earn more of the in-universe
-                                currency, which they use to buy more loot.
+                            <p className="mb-4 last:mb-0 opacity-75 text-paragraph text-justify">
+                                It’s a mixed-in and out-of-universe experience with its own
+                                backstory, where users start with a unique avatar (a baseline NFT).
+                                Avatars grow stronger over time and obtain loot boxes in their
+                                journey (either by direct purchase or by earning them). Loot boxes
+                                contain $LGND tokens, the in-universe currency, item-NFTs that help
+                                your avatar grow, whitelist spots for major upcoming drops, or
+                                unique NFTs from current or prior partner collections.
                             </p>
-                            <p className="mb-4 last:mb-0 opacity-75 text-lg text-justify">
-                                As a creator, Secret NFTs will provide you with a unique value for
-                                your work. As a collector, you will have access to unique
-                                collections that contain art and secret content only available to
-                                the owner. As an investor, the Legendary platform gives you the
-                                chance to participate in a new project and purchase tokens at a low
-                                cost.
+                        </div>
+                    </div>
+                    <div
+                        className={cn(
+                            "flex flex-col flex-nowrap justify-center items-start",
+                            "mb-20 last:mb-0"
+                        )}
+                    >
+                        <h1 className="mb-8 last:mb-0 font-bold text-5xl">Platform Mechanics</h1>
+                        <div className="mb-8 last:mb-0 max-w-[650px]">
+                            <p className="mb-4 last:mb-0 opacity-75 text-paragraph text-justify">
+                                Loot-boxes allow you to mint NFTs from the best artists on our
+                                platform (all curated and hand-picked by us), as well as develop
+                                your avatar. Developing your avatar has far-reaching implications,
+                                increasing the amount of $LGND and new loot boxes your avatar earns
+                                and increasing your chances of obtaining good loot, NFTs, and
+                                whitelist spots.
+                            </p>
+
+                            <p className="mb-4 last:mb-0 opacity-75 text-paragraph text-justify">
+                                Our goal is to bring the best and most interesting NFT projects into
+                                Legendao. We achieve this through two mechanisms. First, Secret NFT
+                                technology, which is only available on Secret Network, allows us to
+                                create NFTs with exclusive and unlockable content. Second, Legendao
+                                maintains a strong balance-sheet through Protocol-Owned-Liquidity
+                                (POL), ensuring that the platform can onboard the best artists,
+                                brands and creators.
                             </p>
                         </div>
                     </div>
