@@ -25,6 +25,9 @@ export default function Sidebar({ bodyElement, activatingTab }: Props): React.Re
     const accessibilityState = useAppSelector((state) => state.accessibility);
     const dispatch = useAppDispatch();
 
+    const handleOnClickOutside = useCallback(() => {
+        dispatch(toggleSidebar(false));
+    }, [dispatch]);
     const handleOnCloseBtnClicked = useCallback(() => {
         dispatch(toggleSidebar(false));
     }, [dispatch]);
@@ -65,7 +68,15 @@ export default function Sidebar({ bodyElement, activatingTab }: Props): React.Re
                 "text-white bg-[#001B47]"
             )}
         >
-            <div className="flex flex-row justify-center items-center">
+            <div
+                onClick={handleOnClickOutside}
+                className={cn(
+                    "fixed top-0 left-0 right-0 bottom-0 w-full h-[200vh]",
+                    "select-none cursor-pointer",
+                    "bg-slate-900/50"
+                )}
+            ></div>
+            <div className="flex flex-row justify-center items-center relative">
                 <div
                     className="mr-6 last:mr-0 p-2 cursor-pointer"
                     onClick={handleOnCloseBtnClicked}
@@ -76,7 +87,11 @@ export default function Sidebar({ bodyElement, activatingTab }: Props): React.Re
                 </div>
                 <Branding />
             </div>
-            <div className={cn("grow flex flex-col flex-nowrap justify-center items-stretch")}>
+            <div
+                className={cn(
+                    "grow flex flex-col flex-nowrap justify-center items-stretch relative"
+                )}
+            >
                 <div
                     className={cn(
                         "px-12 flex flex-row justify-center items-center select-none cursor-pointer hover:text-purple-400"
