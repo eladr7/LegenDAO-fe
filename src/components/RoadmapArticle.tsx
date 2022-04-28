@@ -10,12 +10,14 @@ export default function RoadmapArticle(): React.ReactElement {
         () => [
             {
                 stage: "Stage 0:",
+                type: "light",
                 title: "The Journey Begins",
                 desc: `We are launching the first NFT launchpad in the Cosmos universe!
           This marks the beginning of a new generation of NFT collections.`,
             },
             {
                 stage: "Stage 1:",
+                type: "light",
                 title: "Presale - New Token is Born & the First Drops",
                 desc: `A new token is created! You will be able to purchase NFT collections, stake and upgrade
           your avatar using the LGND token.
@@ -60,7 +62,7 @@ export default function RoadmapArticle(): React.ReactElement {
           metaverse!`,
             },
             {
-                stage: "",
+                stage: "Stage 7:",
                 title: "Beyond the Mountains: The Lost Kingdom",
                 desc: `These creatures live peacefully in the high mountains, in the
           snowy peaks. Each one is unique and rare. These creatures
@@ -92,7 +94,12 @@ export default function RoadmapArticle(): React.ReactElement {
                                 <div className="mt-3 text-2xl font-bold text-sky-300">
                                     {item.title}
                                 </div>
-                                <div className="mt-3 text-white text-base font-medium">
+                                <div
+                                    className={cn(
+                                        "mt-3  text-base font-medium",
+                                        item.type ? "text-white" : " text-[#AFB7C6] "
+                                    )}
+                                >
                                     {item.desc}
                                 </div>
                             </div>
@@ -116,7 +123,12 @@ export default function RoadmapArticle(): React.ReactElement {
                                 <div className="mt-3 text-2xl font-bold text-orange-300">
                                     {item.title}
                                 </div>
-                                <div className="mt-3 text-white text-base font-medium">
+                                <div
+                                    className={cn(
+                                        "mt-3  text-base font-medium",
+                                        item.type ? "text-white" : " text-[#AFB7C6] "
+                                    )}
+                                >
                                     {item.desc}
                                 </div>
                             </div>

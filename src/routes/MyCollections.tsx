@@ -222,7 +222,7 @@ export default function MyCollections(): React.ReactElement {
                 <div className="flex flex-col flex-nowrap">
                     <h1 className="mb-8 last:mb-0 font-bold text-5xl">Top Secret Collection</h1>
                     <div className="mb-8 last:mb-0 max-w-xl">
-                        <p className="opacity-75 text-lg">
+                        <p className=" text-xl text-[#AFB7C6]">
                             The top secret collection contains things that should be kept secret.
                             5555 pieces of ancient Egyptian mythology symbols. The top secret
                             collection contains things that should be kept secret. 5555 pieces of
@@ -313,10 +313,12 @@ export default function MyCollections(): React.ReactElement {
 
     const renderWiki = useCallback(() => {
         return (
-            <div className="mt-8 grid grid-cols-2 gap-0">
+            <div className="mt-28 grid grid-cols-2 gap-0">
                 <div className="px-8 flex flex-col flex-nowrap">
-                    <div className="mb-2 last:mb-0 font-bold text-lg">About the Collection</div>
-                    <p className="max-w-[700px]">
+                    <div className="mb-2 last:mb-0 font-semibold text-2xl text-[#B3BBC9]">
+                        About the Collection
+                    </div>
+                    <p className="max-w-[700px] text-paragraph">
                         Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
                         tempor incididunt ut labore et dolore magna aliqua. Suscipit tellus mauris a
                         diam maecenas sed enim ut sem. Pharetra diam sit amet nisl. Cras ornare arcu
@@ -325,8 +327,10 @@ export default function MyCollections(): React.ReactElement {
                     </p>
                 </div>
                 <div className="pr-8 flex flex-col flex-nowrap">
-                    <div className="mb-2 last:mb-0 font-bold text-lg">About the Artist</div>
-                    <p className="max-w-[700px]">
+                    <div className="mb-2 last:mb-0 font-semibold text-2xl text-[#B3BBC9]">
+                        About the Artist
+                    </div>
+                    <p className="max-w-[700px] text-paragraph">
                         Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
                         tempor incididunt ut labore et dolore magna aliqua. Suscipit tellus mauris a
                         diam maecenas sed enim ut sem. Pharetra diam sit amet nisl. Cras ornare arcu

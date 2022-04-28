@@ -12,13 +12,13 @@ export default function MountainsOfSodArticle(): React.ReactElement {
         >
             <div
                 className={cn(
-                    "w-1/2 z-20  px-16 ml-[50%] ",
+                    "w-1/2 z-20  px-16 ml-[45%] ",
                     "text-white flex flex-col flex-nowrap justify-center items-start"
                 )}
             >
                 <h1 className="mb-8 last:mb-0 font-bold text-5xl">The Hidden Ridge</h1>
-                <div className="mb-8 last:mb-0 max-w-2xl">
-                    <p className="mb-4 last:mb-0 opacity-75 text-lg">
+                <div className="mb-8 last:mb-0 max-w-[840px]">
+                    <p className="mb-10 last:mb-0 opacity-75 text-paragraph">
                         Hidden in the secret mountain ridge of Sod, hide the true creators of
                         Secret. These mythical apes, known colloquially as Sasquatch, Bigfoot and
                         Yeti, have long eluded humanity&apos;s grasp. They are a friendly bunch,
@@ -28,7 +28,7 @@ export default function MountainsOfSodArticle(): React.ReactElement {
                         its violent tendencies and into a fair, sustainable society.
                     </p>
 
-                    <p className="mb-4 last:mb-0 opacity-75 text-lg">
+                    <p className="mb-10 last:mb-0 opacity-75 text-paragraph">
                         They&apos;ve seen our species fail before, as has happened with the ancient
                         Atlantean and Egyptian civilizations, now lost to the great sea and sands of
                         time. But the rise of information-technology has, for the first time ever,
@@ -36,7 +36,7 @@ export default function MountainsOfSodArticle(): React.ReactElement {
                         web connecting the farthest reaches of Earth together, allowing information
                         to travel in sub-second speeds from pole to pole.
                     </p>
-                    <p className="mb-4 last:mb-0 opacity-75 text-lg">
+                    <p className="mb-10 last:mb-0 opacity-75 text-paragraph">
                         Alas, things have again not turned out the way they&apos;d hoped. The
                         internet as we know it today has turned from a decentralized, open-access
                         system that was meant to lower the barriers of entry and avoid

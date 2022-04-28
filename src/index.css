@@ -6,4 +6,8 @@
     .transition300ms {
         @apply transition duration-300;
     }
+
+    .text-paragraph {
+        @apply text-xl text-greywhite;
+    }
 }

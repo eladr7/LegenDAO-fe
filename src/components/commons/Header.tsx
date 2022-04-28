@@ -182,20 +182,31 @@ export function Header({
                     <Branding />
                 </div>
                 <div className="flex flex-row flex-nowrap justify-end items-center">
-                    <nav className={cn("flex flex-row flex-nowrap mr-12 last:mr-0")}>
-                        <Link className="mr-8 last:mr-0" to="/about">
+                    <nav
+                        className={cn(
+                            "flex flex-row flex-nowrap mr-12 last:mr-0",
+                            "font-emphasis text-xl"
+                        )}
+                    >
+                        <Link className="mr-8 last:mr-0 opacity-80 hover:opacity-100" to="/about">
                             About
                         </Link>
-                        <Link className="mr-8 last:mr-0" to="/docs">
+                        <Link className="mr-8 last:mr-0 opacity-80 hover:opacity-100" to="/docs">
                             Docs
                         </Link>
-                        <Link className="mr-8 last:mr-0" to="/faq">
+                        <Link className="mr-8 last:mr-0 opacity-80 hover:opacity-100" to="/faq">
                             FAQ
                         </Link>
-                        <Link className="mr-8 last:mr-0" to="/governance">
+                        <Link
+                            className="mr-8 last:mr-0 opacity-80 hover:opacity-100"
+                            to="/governance"
+                        >
                             Governance
                         </Link>
-                        <Link className="mr-8 last:mr-0" to="/community">
+                        <Link
+                            className="mr-8 last:mr-0 opacity-80 hover:opacity-100"
+                            to="/community"
+                        >
                             Community
                         </Link>
                     </nav>

@@ -11,6 +11,7 @@ module.exports = {
                 "primary-mint-lab": "#001b47",
                 "btn-from": "#985dd5",
                 "btn-to": "#4e4acf",
+                greywhite: "#AFB7C6",
             },
             fontFamily: {
                 body: [
