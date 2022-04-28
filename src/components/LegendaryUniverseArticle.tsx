@@ -35,7 +35,7 @@ export default function LegendaryUniverseArticle(): React.ReactElement {
 
             <div
                 className={cn(
-                    "absolute bottom-0 left-0 right-0 h-[200px] z-20",
+                    "absolute bottom-0 left-0 right-0 h-[150px] z-20",
                     "bg-gradient-to-t from-primary-mint-lab via-primary-mint-lab-900/75 to-slate-900/0"
                 )}
             ></div>
