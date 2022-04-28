@@ -57,12 +57,12 @@ export default function Sidebar({ bodyElement, activatingTab }: Props): React.Re
     return ReactDOM.createPortal(
         <div
             className={cn(
-                "transition-transform",
+                "transition-transform font-body",
                 { "-translate-x-full": !accessibilityState.bSidebarOn },
                 "fixed top-0 left-0 py-8 z-[100]",
                 "w-sidebar min-h-screen",
                 "flex flex-col flex-nowrap justify-between items-stretch",
-                "text-white bg-gradient-to-br from-slate-900 to-slate-800"
+                "text-white bg-[#001B47]"
             )}
         >
             <div className="flex flex-row justify-center items-center">
@@ -86,7 +86,7 @@ export default function Sidebar({ bodyElement, activatingTab }: Props): React.Re
                     <div
                         className={cn(
                             "py-4 grow text-center",
-                            "border-t border-b border-slate-800",
+                            "border-t border-b border-slate-800 text-lg",
                             { "text-purple-400": activatingTab === "tab/home" }
                         )}
                     >
@@ -100,9 +100,14 @@ export default function Sidebar({ bodyElement, activatingTab }: Props): React.Re
                     onClick={handleOnStakeTabClicked}
                 >
                     <div
-                        className={cn("py-4 grow text-center", "border-b border-slate-800", {
-                            "text-purple-400": activatingTab === "tab/stake",
-                        })}
+                        className={cn(
+                            "py-4 grow text-center",
+                            "border-b border-slate-800",
+                            "text-lg",
+                            {
+                                "text-purple-400": activatingTab === "tab/stake",
+                            }
+                        )}
                     >
                         Stake
                     </div>
@@ -114,9 +119,14 @@ export default function Sidebar({ bodyElement, activatingTab }: Props): React.Re
                     onClick={handleOnCollectionsTabClicked}
                 >
                     <div
-                        className={cn("py-4 grow text-center", "border-b border-slate-800", {
-                            "text-purple-400": activatingTab === "tab/collections",
-                        })}
+                        className={cn(
+                            "py-4 grow text-center",
+                            "border-b border-slate-800",
+                            "text-lg",
+                            {
+                                "text-purple-400": activatingTab === "tab/collections",
+                            }
+                        )}
                     >
                         Collections
                     </div>
@@ -129,9 +139,14 @@ export default function Sidebar({ bodyElement, activatingTab }: Props): React.Re
                     onClick={handleOnAirdropTabClicked}
                 >
                     <div
-                        className={cn("py-4 grow text-center", "border-b border-slate-800", {
-                            "text-purple-400": activatingTab === "tab/airdrop",
-                        })}
+                        className={cn(
+                            "py-4 grow text-center",
+                            "border-b border-slate-800",
+                            "text-lg",
+                            {
+                                "text-purple-400": activatingTab === "tab/airdrop",
+                            }
+                        )}
                     >
                         Airdrop
                     </div>
@@ -143,9 +158,14 @@ export default function Sidebar({ bodyElement, activatingTab }: Props): React.Re
                     onClick={handleOnDocsTabClicked}
                 >
                     <div
-                        className={cn("py-4 grow text-center", "border-b border-slate-800", {
-                            "text-purple-400": activatingTab === "tab/docs",
-                        })}
+                        className={cn(
+                            "py-4 grow text-center",
+                            "border-b border-slate-800",
+                            "text-lg",
+                            {
+                                "text-purple-400": activatingTab === "tab/docs",
+                            }
+                        )}
                     >
                         Docs
                     </div>
