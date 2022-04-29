@@ -11,15 +11,12 @@ import imgMountain01 from "./../assets/images/mountain-01.png";
 import imgLab01 from "./../assets/images/lab-01.png";
 import Button from "../components/commons/Button";
 import { useCallback } from "react";
-import { useNavigate } from "react-router-dom";
 import MintLabStatusPanel from "../components/MintLabStatusPanel";
 
 function Home(): React.ReactElement {
-    const navigate = useNavigate();
-
     const handleOnMintLabLaunchBtnClicked = useCallback(() => {
-        navigate("/mint-lab");
-    }, [navigate]);
+        window.open("/mint-lab", "_blank");
+    }, []);
 
     return (
         <DefaultLayout headerType="intro" sidebarTab="tab/home">

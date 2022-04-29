@@ -8,7 +8,7 @@ import {
     accessibilityActions,
     toggleDepositPanel,
     toggleWithdrawPanel,
-    turnOffAllPanel
+    turnOffAllPanel,
 } from "../features/accessibility/accessibilitySlice";
 import { formatBalance, formatIntBalance } from "../helpers/format";
 import Button from "./commons/Button";
