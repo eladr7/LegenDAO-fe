@@ -34,16 +34,16 @@ export default function StakeFormPanel({
                 >
                     <div className="flex flex-row flex-nowrap justify-around">
                         <div className="flex flex-col flex-nowrap">
-                            <div className="text-blue-300 text-xl">APR</div>
-                            <div className="font-bold text-2xl">{apr.toLocaleString()}%</div>
+                            <div className="text-blue-300 text-lg">APR</div>
+                            <div className="font-bold text-lg">{apr.toLocaleString()}%</div>
                         </div>
                         <div className="flex flex-col flex-nowrap">
-                            <div className="text-blue-300 text-xl">Value</div>
-                            <div className="font-bold text-2xl">${value.toLocaleString()}</div>
+                            <div className="text-blue-300 text-lg">Value</div>
+                            <div className="font-bold text-lg">${value.toLocaleString()}</div>
                         </div>
                         <div className="flex flex-col flex-nowrap">
-                            <div className="text-blue-300 text-xl">TVL</div>
-                            <div className="font-bold text-2xl">${tvl.toLocaleString()}</div>
+                            <div className="text-blue-300 text-lg">TVL</div>
+                            <div className="font-bold text-lg">${tvl.toLocaleString()}</div>
                         </div>
                     </div>
                 </div>
@@ -56,7 +56,7 @@ export default function StakeFormPanel({
                 >
                     <label className="mb-2 last:mb-0 opacity-75">Total Staked Balance</label>
                     <div className="flex flex-row flex-nowrap items-end">
-                        <div className="mr-2 last:m-0 leading-none font-bold text-2xl">
+                        <div className="mr-2 last:m-0 leading-none font-bold text-lg">
                             {totalLGNDBalance.toLocaleString()}
                         </div>
                         <div className="mr-2 last:m-0 leading-none font-semibold">LGND</div>
