@@ -32,7 +32,11 @@ export default function WithdrawPanel({ onCloseBtnClicked }: Props): React.React
     }, [dispatch, inputAmount, networkState.bIsConnected, transactionState.bIsPending]);
 
     const handleOnWithdrawAmountChanged = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-        setInputAmount(e.target.value);
+        let value = e.target.value;
+        if (value.length > 1 && value[0] === "0" && value[1] !== ".") {
+            value = value.substring(1, value.length);
+        }
+        setInputAmount(value);
     }, []);
 
     const handleOnWithdrawAmountKeyDown = useCallback(
@@ -52,9 +56,7 @@ export default function WithdrawPanel({ onCloseBtnClicked }: Props): React.React
 
     return (
         <Panel onCloseBtnClicked={onCloseBtnClicked} className="grow">
-            <div
-                className={cn("w-full text-white", "flex flex-col items-stretch justify-start")}
-            >
+            <div className={cn("w-full text-white", "flex flex-col items-stretch justify-start")}>
                 <h1 className="mb-6 last:mb-0 text-2xl font-bold">Withdraw LGND</h1>
                 <div className="mb-6 last:mb-0 flex flex-col flex-nowrap">
                     <label className="mb-2 last:mb-0 opacity-75">To</label>
@@ -83,7 +85,7 @@ export default function WithdrawPanel({ onCloseBtnClicked }: Props): React.React
                         rightButtonText="Max"
                         className="text-2xl"
                         bigness="xl"
-                        value={inputAmount}
+                        value={inputAmount || "0"}
                         onChange={handleOnWithdrawAmountChanged}
                         onKeyDown={handleOnWithdrawAmountKeyDown}
                         rightButtonOnClick={handleOnMaxBtnClicked}

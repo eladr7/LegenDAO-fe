@@ -31,7 +31,11 @@ export default function DepositPanel({ onCloseBtnClicked }: Props): React.ReactE
     }, [dispatch, inputAmount, networkState.bIsConnected, transactionState.bIsPending]);
 
     const handleOnDepositAmountChanged = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-        setInputAmount(e.target.value);
+        let value = e.target.value;
+        if (value.length > 1 && value[0] === "0" && value[1] !== ".") {
+            value = value.substring(1, value.length);
+        }
+        setInputAmount(value);
     }, []);
 
     const handleOnDepositAmountKeyDown = useCallback(
@@ -54,7 +58,7 @@ export default function DepositPanel({ onCloseBtnClicked }: Props): React.ReactE
             >
                 <h1 className="mb-6 last:mb-0 text-2xl font-bold">Deposit LGND</h1>
                 <div className="mb-6 last:mb-0 flex flex-col flex-nowrap">
-                    <label className="mb-2 last:mb-0 opacity-75">To</label>
+                    <label className="mb-2 last:mb-0 opacity-75">From</label>
                     <Input
                         bTransparent
                         bigness="xl"
@@ -76,7 +80,7 @@ export default function DepositPanel({ onCloseBtnClicked }: Props): React.ReactE
                         rightButtonText="Max"
                         className="text-2xl"
                         bigness="xl"
-                        value={inputAmount}
+                        value={inputAmount || "0"}
                         onChange={handleOnDepositAmountChanged}
                         onKeyDown={handleOnDepositAmountKeyDown}
                         rightButtonOnClick={handleOnMaxBtnClicked}
