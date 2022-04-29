@@ -70,7 +70,7 @@ export default function MyCollections(): React.ReactElement {
 
     const renderFollowingCollections = useCallback(() => {
         return (
-            <div className="mt-8 px-16 flex flex-col flex-nowrap">
+            <div className="mt-36 px-16 flex flex-col flex-nowrap">
                 <div className="mb-4 last:mb-0 font-semibold text-2xl text-[#B3BBC9]">
                     Following Collections
                 </div>
@@ -369,7 +369,7 @@ export default function MyCollections(): React.ReactElement {
                         <div
                             className={cn(
                                 "w-1/2 z-10 mt-36 pr-16",
-                                "flex flex-col justify-start items-start"
+                                "flex flex-col justify-start items-end"
                             )}
                         >
                             {renderDomainPanel()}
