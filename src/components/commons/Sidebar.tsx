@@ -6,6 +6,7 @@ import CloseIcon from "../icons/CloseIcon";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { toggleSidebar } from "../../features/accessibility/accessibilitySlice";
 import { useNavigate } from "react-router-dom";
+import { collectionAtions } from "../../features/collection/collectionSlice";
 
 export type TSidebarTab =
     | "tab/home"
@@ -44,6 +45,7 @@ export default function Sidebar({ bodyElement, activatingTab }: Props): React.Re
 
     const handleOnCollectionsTabClicked = useCallback(() => {
         dispatch(toggleSidebar(false));
+        dispatch(collectionAtions.toggleEnter(false));
         navigate("/collections");
     }, [dispatch, navigate]);
 
