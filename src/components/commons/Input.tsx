@@ -73,6 +73,7 @@ export default function Input({
                     className
                 )}
                 {...props}
+                autoComplete="off"
             />
         );
     }, [
