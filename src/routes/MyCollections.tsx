@@ -70,7 +70,7 @@ export default function MyCollections(): React.ReactElement {
 
     const renderFollowingCollections = useCallback(() => {
         return (
-            <div className="mt-8 px-8 flex flex-col flex-nowrap">
+            <div className="mt-8 px-16 flex flex-col flex-nowrap">
                 <div className="mb-4 last:mb-0 font-bold">Following Collections</div>
                 <div className="grid grid-cols-[repeat(auto-fill,_minmax(380px,_1fr))] gap-10">
                     <CollectionItem
@@ -199,7 +199,7 @@ export default function MyCollections(): React.ReactElement {
             return (
                 <div
                     className={cn(
-                        "w-1/2 px-8 mt-28",
+                        "w-1/2 px-8 pl-16 mt-28",
                         "flex flex-col flex-nowrap justify-start items-start"
                     )}
                 >
@@ -215,7 +215,7 @@ export default function MyCollections(): React.ReactElement {
         return (
             <div
                 className={cn(
-                    "w-1/2 px-8 mt-28",
+                    "w-1/2 px-8 pl-16 mt-28",
                     "flex flex-col flex-nowrap justify-start items-start"
                 )}
             >
@@ -361,8 +361,8 @@ export default function MyCollections(): React.ReactElement {
                         {renderInfo()}
                         <div
                             className={cn(
-                                "w-1/2 z-10 mt-28",
-                                "flex flex-col justify-start items-start"
+                                "w-1/2 z-10 mt-28 pr-16",
+                                "flex flex-col justify-start items-end"
                             )}
                         >
                             {renderDomainPanel()}

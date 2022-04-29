@@ -23,7 +23,7 @@ export default function OldCollections(): React.ReactElement {
                 <div className="absolute top-0 left-0 bottom-0 right-0 bg-slate-900/75"></div>
 
                 <div className="absolute w-full flex flex-col flex-nowrap items-stretch left-0 top-28">
-                    <div className="flex flex-row justify-between items-start px-8">
+                    <div className="flex flex-row justify-between items-start px-16">
                         <div></div>
                         <div
                             className={cn("w-1/2 z-10", "flex flex-col justify-start items-start")}
@@ -40,7 +40,7 @@ export default function OldCollections(): React.ReactElement {
                 </div>
 
                 <div className="grow flex flex-col flex-nowrap items-stretch z-10 mt-28">
-                    <div className="flex px-8 mb-12 last:mb-0">
+                    <div className="flex px-16 mb-12 last:mb-0">
                         <Input
                             id="input-search/collections"
                             rightIconNode={
@@ -51,11 +51,11 @@ export default function OldCollections(): React.ReactElement {
                             placeholder="Search collections"
                         />
                     </div>
-                    <div className="px-8 mb-8 last:mb-0">
+                    <div className="px-16 mb-8 last:mb-0">
                         <h2 className="font-semibold text-lg opacity-75">Legendao Collections</h2>
                     </div>
 
-                    <div className="px-8 mb-12 last:mb-0">
+                    <div className="px-16 mb-12 last:mb-0">
                         <div className="grid grid-cols-[repeat(auto-fill,_minmax(380px,_1fr))] gap-10">
                             <CollectionItem
                                 coverImgUrl={imgTopSecretColBg01}

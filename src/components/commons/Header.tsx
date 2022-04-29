@@ -172,7 +172,7 @@ export function Header({
         return (
             <header
                 className={cn(
-                    "absolute top-0 left-0 right-0 p-8",
+                    "absolute top-0 left-0 right-0 p-8 px-16",
                     bAlwaysOnTop ? "z-[100]" : "z-50",
                     "flex flex-row flex-nowrap justify-between items-center",
                     "text-white"
@@ -220,7 +220,7 @@ export function Header({
         return (
             <header
                 className={cn(
-                    "absolute top-0 left-0 right-0 p-8",
+                    "absolute top-0 left-0 right-0 p-8 px-16",
                     bAlwaysOnTop ? "z-[100]" : "z-50",
                     "flex flex-row flex-nowrap justify-between items-center",
                     "text-white"
@@ -271,7 +271,7 @@ export function Header({
         return (
             <header
                 className={cn(
-                    "absolute top-0 left-0 right-0 p-8",
+                    "absolute top-0 left-0 right-0 p-8 px-16",
                     bAlwaysOnTop ? "z-[100]" : "z-50",
                     "flex flex-row flex-nowrap justify-between items-center",
                     "text-white"
