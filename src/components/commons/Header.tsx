@@ -302,6 +302,7 @@ export function Header({
                                             "fixed w-full h-screen left-0 top-0",
                                             "bg-slate-900/70"
                                         )}
+                                        onClick={handleOnBalancesPanelOuterClicked}
                                     ></div>
                                     <BalancesPanel />
                                 </div>
@@ -314,6 +315,7 @@ export function Header({
     }, [
         accessibilityState.bBalanceMenuOn,
         bAlwaysOnTop,
+        handleOnBalancesPanelOuterClicked,
         handleOnCollectionsBtnClicked,
         handleOnCreateBtnClicked,
         handleOnGetLGNDBtnClicked,
