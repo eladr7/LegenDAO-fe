@@ -6,6 +6,7 @@ export const shortenAddress = (string?: string, start?: number, end?: number): s
 };
 
 export const formatBalance = (str: string | number, decimals = 6): string => {
+    if (!str) return "0";
     const balance = new BigNumber(str).div(new BigNumber(10).pow(decimals));
     return balance.isNaN() ? "0" : balance.toFixed();
 };

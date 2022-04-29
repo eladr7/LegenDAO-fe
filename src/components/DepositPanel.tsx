@@ -13,8 +13,16 @@ type Props = {
     onCloseBtnClicked?: React.MouseEventHandler<HTMLElement>;
 };
 
+export interface IAmount {
+    amount: string;
+    error: string;
+}
+
 export default function DepositPanel({ onCloseBtnClicked }: Props): React.ReactElement {
-    const [inputAmount, setInputAmount] = useState<string>("");
+    const [inputAmount, setInputAmount] = useState<IAmount>({
+        amount: "0",
+        error: "",
+    });
     const networkState = useAppSelector((state) => state.network);
     const walletState = useAppSelector((state) => state.wallet);
     const transactionState = useAppSelector((state) => state.transaction);
@@ -25,22 +33,31 @@ export default function DepositPanel({ onCloseBtnClicked }: Props): React.ReactE
         if (transactionState.bIsPending) return;
         dispatch(
             transactionActions.depositToPlatform({
-                amount: parseBalance(inputAmount) || "0",
+                amount: parseBalance(inputAmount.amount) || "0",
             })
         );
     }, [dispatch, inputAmount, networkState.bIsConnected, transactionState.bIsPending]);
 
-    const handleOnDepositAmountChanged = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-        let value = e.target.value;
-        if (value.length > 1 && value[0] === "0" && value[1] !== ".") {
-            value = value.substring(1, value.length);
-        }
-        setInputAmount(value);
-    }, []);
+    const handleOnDepositAmountChanged = useCallback(
+        (e: React.ChangeEvent<HTMLInputElement>) => {
+            let value = e.target.value;
+            if (value.length > 1 && value[0] === "0" && value[1] !== ".") {
+                value = value.substring(1, value.length);
+            }
+            const balance = formatBalance(walletState.balances[LGND_ADDRESS as string].amount);
+            const error = validator.inputAmount(value, balance);
+
+            setInputAmount({
+                amount: value,
+                error,
+            });
+        },
+        [walletState.balances]
+    );
 
     const handleOnDepositAmountKeyDown = useCallback(
         (e: React.KeyboardEvent<HTMLInputElement>) => {
-            if (!validator.inputingFloat(e, inputAmount)) {
+            if (!validator.inputingFloat(e, inputAmount.amount)) {
                 e.preventDefault();
             }
         },
@@ -48,14 +65,15 @@ export default function DepositPanel({ onCloseBtnClicked }: Props): React.ReactE
     );
 
     const handleOnMaxBtnClicked = useCallback(() => {
-        setInputAmount(formatBalance(walletState.balances[LGND_ADDRESS as string].amount));
+        setInputAmount({
+            amount: formatBalance(walletState.balances[LGND_ADDRESS as string].amount),
+            error: "",
+        });
     }, [walletState.balances]);
 
     return (
         <Panel onCloseBtnClicked={onCloseBtnClicked} className="grow">
-            <div
-                className={cn("w-full text-white", "flex flex-col items-stretch justify-start")}
-            >
+            <div className={cn("w-full text-white", "flex flex-col items-stretch justify-start")}>
                 <h1 className="mb-6 last:mb-0 text-2xl font-bold">Deposit LGND</h1>
                 <div className="mb-6 last:mb-0 flex flex-col flex-nowrap">
                     <label className="mb-2 last:mb-0 opacity-75">From</label>
@@ -72,7 +90,9 @@ export default function DepositPanel({ onCloseBtnClicked }: Props): React.ReactE
                         <label className="opacity-75">Amount to Deposit</label>
                         <label className="opacity-75">
                             Balance:{" "}
-                            {formatIntBalance(formatBalance(walletState.balances[LGND_ADDRESS as string].amount))}{" "}
+                            {formatIntBalance(
+                                formatBalance(walletState.balances[LGND_ADDRESS as string].amount)
+                            )}{" "}
                             {walletState.balances[LGND_ADDRESS as string].denom.toUpperCase()}
                         </label>
                     </div>
@@ -80,16 +100,24 @@ export default function DepositPanel({ onCloseBtnClicked }: Props): React.ReactE
                         rightButtonText="Max"
                         className="text-2xl"
                         bigness="xl"
-                        value={inputAmount}
+                        value={inputAmount.amount}
                         onChange={handleOnDepositAmountChanged}
                         onKeyDown={handleOnDepositAmountKeyDown}
                         rightButtonOnClick={handleOnMaxBtnClicked}
                         placeholder="0.00"
                         autoFocus
                     />
+                    {inputAmount.error && (
+                        <label className="text-red-500/75 mt-2">{inputAmount.error}</label>
+                    )}
                 </div>
                 <div className="mb-6 last:mb-0 flex flex-col flex-nowrap">
-                    <Button className="font-bold" bigness="xl" onClick={handleOnDepositBtnClicked}>
+                    <Button
+                        className="font-bold"
+                        bigness="xl"
+                        onClick={handleOnDepositBtnClicked}
+                        disabled={!!inputAmount.error || !inputAmount.amount}
+                    >
                         Deposit
                     </Button>
                 </div>
