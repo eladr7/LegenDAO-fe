@@ -1,12 +1,55 @@
-import React from "react";
+import React, { useCallback } from "react";
 import imgYetiHead01 from "../../assets/images/yeti-head-01.png";
 import DiscordIcon from "../icons/DiscordIcon";
 import TwitterIcon from "../icons/TwitterIcon";
 import Input from "./Input";
 import { SOCIAL_NETWORK_URL } from "../../constants/linkSocial";
 import Button from "./Button";
+import { useForm } from "react-hook-form";
+import validator from "../../helpers/validator";
+import { useDispatch } from "react-redux";
+import { addPopup } from "../../features/application/applicationSlice";
+
+interface IFormEmail {
+    email: string;
+}
 
 export function Footer(): React.ReactElement {
+    const dispatch = useDispatch();
+    const {
+        handleSubmit,
+        register,
+        setValue,
+        reset,
+        watch,
+        formState: { errors },
+    } = useForm<IFormEmail>({
+        mode: "onChange",
+        defaultValues: {
+            email: "",
+        },
+    });
+
+    const handleSubmitEmail = useCallback(
+        (data: IFormEmail) => {
+            if (data?.email) {
+                dispatch(
+                    addPopup({
+                        content: {
+                            txn: {
+                                success: true,
+                                summary:
+                                    "Thanks for contacting us! We will be in touch with you shortly.",
+                            },
+                        },
+                    })
+                );
+                reset();
+            }
+        },
+        [dispatch, reset]
+    );
+
     return (
         <div className="text-white flex flex-col justify-between items-stretch">
             <div className="h-footer bg-[#08152a] flex flex-row justify-around items-center">
@@ -64,20 +107,34 @@ export function Footer(): React.ReactElement {
                         <span className="whitespace-nowrap">new collection</span>, feature releases
                         tips and tricks.
                     </div>
-                    <div className="flex justify-between items-center">
-                        <div className="grow flex flex-col items-stretch">
-                            <Input
-                                className="text-slate-700 bg-white"
-                                type="email"
-                                placeholder="Your email"
-                            />
+                    <form onSubmit={handleSubmit(handleSubmitEmail)}>
+                        <div className="flex justify-between items-center">
+                            <div className="grow flex flex-col items-stretch">
+                                <Input
+                                    className="text-slate-700 bg-white"
+                                    type="email"
+                                    placeholder="Your email"
+                                    value={watch("email")}
+                                    {...register("email", {
+                                        validate: validator.validateForm.email,
+                                        onChange: (e: React.ChangeEvent<HTMLInputElement>) => {
+                                            setValue("email", e.target.value);
+                                        },
+                                    })}
+                                />
+                            </div>
+                            <div className="ml-2 first:mr-0">
+                                <Button type="submit">
+                                    <span className="px-4">Submit</span>
+                                </Button>
+                            </div>
                         </div>
-                        <div className="ml-2 first:mr-0">
-                            <Button>
-                                <span className="px-4">Submit</span>
-                            </Button>
-                        </div>
-                    </div>
+                        {errors?.email && (
+                            <label className="leading-8 text-red-500">
+                                {errors?.email.message}
+                            </label>
+                        )}
+                    </form>
                 </div>
             </div>
 

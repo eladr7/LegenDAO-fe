@@ -5,6 +5,7 @@ import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { Window as KeplrWindow } from "@keplr-wallet/types";
+import { additionPrototype } from "./bootstrap";
 
 /**
  * To future if Legend-DAO need a routing:
@@ -16,6 +17,7 @@ declare global {
     // eslint-disable-next-line @typescript-eslint/no-empty-interface
     interface Window extends KeplrWindow {}
 }
+additionPrototype();
 
 ReactDOM.render(
     <React.StrictMode>

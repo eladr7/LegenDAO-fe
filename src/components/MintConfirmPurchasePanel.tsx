@@ -5,7 +5,7 @@ import { useAppDispatch, useAppSelector } from "../app/hooks";
 import { TRANSACTION_KEY } from "../constants/constant";
 import {
     toggleMintSuccessfulPanelOn,
-    turnOffAllPanel
+    turnOffAllPanel,
 } from "../features/accessibility/accessibilitySlice";
 import { setAgent, setSuccessMessage, toggleAgreeTermOfService } from "../features/mint/mintSlice";
 import { transactionActions } from "../features/transaction/transactionSlice";
@@ -51,7 +51,7 @@ export default function MintConfirmPurchasePanel({
 
     useEffect(() => {
         if (
-            transactionState.txStatus &&
+            transactionState.txData?.length &&
             !transactionState.bIsPending &&
             transactionState.txName === TRANSACTION_KEY.MINT_NFT
         ) {
@@ -69,7 +69,12 @@ export default function MintConfirmPurchasePanel({
             );
             dispatch(setSuccessMessage("Congratulations, you've successfully minted an NFT!"));
         }
-    }, [dispatch, transactionState.txStatus, transactionState.bIsPending, transactionState.txName]);
+    }, [
+        dispatch,
+        transactionState.txData?.length,
+        transactionState.bIsPending,
+        transactionState.txName,
+    ]);
 
     return (
         <Panel onCloseBtnClicked={onCloseBtnClicked}>

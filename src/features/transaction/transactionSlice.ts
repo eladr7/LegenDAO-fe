@@ -1,17 +1,17 @@
 import { CaseReducer, createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { JsonLog, Tx } from "secretjs";
+import { Tx } from "secretjs";
 import { TRANSACTION_KEY } from "../../constants/constant";
 
 export type TTransactionState = {
     bIsPending: boolean;
     txName?: string;
-    txStatus?: JsonLog;
+    txData?: Uint8Array[];
 };
 
 const initialState: TTransactionState = {
     bIsPending: false,
     txName: undefined,
-    txStatus: undefined,
+    txData: undefined,
 };
 
 export interface IAttributes {
@@ -43,8 +43,7 @@ const _sendTokenFromPlatformToContract: CaseReducer<
 > = (state, action) => {
     state.bIsPending = false;
     state.txName = TRANSACTION_KEY.MINT_NFT;
-    state.txStatus = action.payload.tx?.jsonLog;
-    console.log(action.payload.tx);
+    state.txData = action.payload.tx?.data;
 };
 
 const _depositToPlatform: CaseReducer<
@@ -53,24 +52,18 @@ const _depositToPlatform: CaseReducer<
 > = (state, action) => {
     state.bIsPending = false;
     state.txName = TRANSACTION_KEY.DEPOSIT;
-    state.txStatus = action.payload.tx?.jsonLog;
-    console.log(action.payload);
+    state.txData = action.payload.tx?.data;
 };
 
 const _addMinters: CaseReducer<
     TTransactionState,
     PayloadAction<{ minters: string; codeHash?: string }>
-> = (state, action) => {
+> = (state) => {
     state.bIsPending = false;
-    console.log(action.payload);
 };
 
-const _mintNfts: CaseReducer<TTransactionState, PayloadAction<{ amount: string }>> = (
-    state,
-    action
-) => {
+const _mintNfts: CaseReducer<TTransactionState, PayloadAction<{ amount: string }>> = (state) => {
     state.bIsPending = false;
-    console.log(action.payload);
 };
 
 const _mintNftsWithSnip: CaseReducer<
@@ -81,72 +74,62 @@ const _mintNftsWithSnip: CaseReducer<
         amountToBuy: string;
         buyFor?: string;
     }>
-> = (state, action) => {
+> = (state) => {
     state.bIsPending = false;
-    console.log(action.payload);
 };
 
 const _mintAdminNfts: CaseReducer<TTransactionState, PayloadAction<{ amount: string }>> = (
-    state,
-    action
+    state
 ) => {
     state.bIsPending = false;
-    console.log(action.payload);
 };
 
 const _setTokenAttributes: CaseReducer<
     TTransactionState,
     PayloadAction<{ attributes: IAttributes; codeHash: string }>
-> = (state, action) => {
+> = (state) => {
     state.bIsPending = false;
-    console.log(action.payload);
 };
 
 const _changeWhitelistLevel: CaseReducer<
     TTransactionState,
     PayloadAction<{ newLevel: string; codeHash: string }>
-> = (state, action) => {
+> = (state) => {
     state.bIsPending = false;
-    console.log(action.payload);
 };
 
 const _addToWhitelist: CaseReducer<
     TTransactionState,
     PayloadAction<{ address: string; codeHash: string }>
-> = (state, action) => {
+> = (state) => {
     state.bIsPending = false;
-    console.log(action.payload);
 };
 
 const _viewTokens: CaseReducer<
     TTransactionState,
     PayloadAction<{ codeHash: string; address: string; key: string }>
-> = (state, action) => {
+> = (state) => {
     state.bIsPending = false;
-    console.log(action.payload);
 };
 
 const _isWhitelisted: CaseReducer<TTransactionState, PayloadAction<{ address: string }>> = (
-    state,
-    action
+    state
 ) => {
     state.bIsPending = false;
-    console.log(action.payload);
 };
 
-const _claimPlatform: CaseReducer<TTransactionState> = (state) => {
+const _claimPlatform: CaseReducer<TTransactionState, PayloadAction<{ amountClaim?: string }>> = (state) => {
     state.bIsPending = false;
     state.txName = TRANSACTION_KEY.CLAIM_REDEEMED;
 };
 
 const _withdrawFromPlatform: CaseReducer<
     TTransactionState,
-    PayloadAction<{ amount?: string, tx?: Tx }>
+    PayloadAction<{ amount?: string; tx?: Tx }>
 > = (state, action) => {
     state.bIsPending = false;
     state.txName = TRANSACTION_KEY.WITHDRAW;
-    state.txStatus = action.payload.tx?.jsonLog;
-    console.log(action.payload);
+    state.txData = action.payload.tx?.data;
 };
 
 const transactionSlice = createSlice({

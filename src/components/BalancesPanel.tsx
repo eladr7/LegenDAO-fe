@@ -1,20 +1,18 @@
-import React, { useCallback, useEffect, useState } from "react";
 import cn from "classnames";
-import Panel from "./commons/Panel";
-import Button from "./commons/Button";
+import React, { useCallback } from "react";
+import { useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
+import { PLATFORM_ADDRESS } from "../constants/contractAddress";
+import { DF_DENOM } from "../constants/defaults";
 import {
     accessibilityActions,
     toggleDepositPanel,
     toggleWithdrawPanel,
-    turnOffAllPanel,
+    turnOffAllPanel
 } from "../features/accessibility/accessibilitySlice";
-import { useNavigate } from "react-router-dom";
-import { formatBalance } from "../helpers/format";
-import { LGND_ADDRESS, PLATFORM_ADDRESS } from "../constants/contractAddress";
-import { transactionActions } from "../features/transaction/transactionSlice";
-import BigNumber from "bignumber.js";
-import { DF_DENOM } from "../constants/defaults";
+import { formatBalance, formatIntBalance } from "../helpers/format";
+import Button from "./commons/Button";
+import Panel from "./commons/Panel";
 
 type Props = {
     onCloseBtnClicked?: React.MouseEventHandler<HTMLElement>;
@@ -39,9 +37,6 @@ export default function BalancesPanel({
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
     const walletState = useAppSelector((state) => state.wallet);
-    const networkState = useAppSelector((state) => state.network);
-    const transactionState = useAppSelector((state) => state.transaction);
-    const [undelegate, setUndelegate] = useState<string>("0");
 
     const handleOnProfileBtnClicked = useCallback(
         (e: React.MouseEvent<HTMLElement>) => {
@@ -115,32 +110,6 @@ export default function BalancesPanel({
         [dispatch, onWithdrawBtnClicked]
     );
 
-    const handleOnClaimBtnClicked = useCallback(() => {
-        if (!networkState.bIsConnected || transactionState.bIsPending) return;
-        dispatch(transactionActions.claimPlatform());
-    }, [dispatch, networkState.bIsConnected, transactionState.bIsPending]);
-
-    useEffect(() => {
-        const unbondings =
-            walletState.balances[PLATFORM_ADDRESS as string]?.pending_redeem?.unbondings;
-        if (unbondings) {
-            const results = unbondings.reduce(
-                (
-                    preVal: string,
-                    curVal: {
-                        end_ts: string;
-                        amount: string;
-                    }
-                ) => {
-                    return new BigNumber(preVal).plus(curVal?.amount).toString();
-                },
-                "0"
-            );
-
-            setUndelegate(formatBalance(results));
-        }
-    }, [walletState.balances]);
-
     return (
         <Panel onCloseBtnClicked={onCloseBtnClicked}>
             <div
@@ -152,68 +121,20 @@ export default function BalancesPanel({
                     </div>
                     <div className="flex flex-row flex-nowrap items-end">
                         <div className="font-semibold text-2xl leading-none uppercase">
-                            {formatBalance(
-                                walletState.balances[PLATFORM_ADDRESS as string]?.staked || "0"
-                            ) || "--"}{" "}
-                            {walletState.balances[
-                                PLATFORM_ADDRESS as string
-                            ]?.denom?.toUpperCase() || DF_DENOM?.toUpperCase()}
+                            {formatIntBalance(
+                                formatBalance(
+                                    walletState.balances[PLATFORM_ADDRESS as string]?.staked || "0"
+                                )
+                            )}{" "}
+                            {(
+                                walletState.balances[PLATFORM_ADDRESS as string]?.denom || DF_DENOM
+                            ).toUpperCase()}
                         </div>
                         <span className="ml-2 first:ml-0 opacity-50 font-light leading-none">
                             (${walletState.fiatBalance.amount.toFixed(2)})
                         </span>
                     </div>
                 </div>
-
-                <div className="mb-6 last:mb-0 flex flex-col flex-nowrap">
-                    <div className="mb-2 last:mb-0 text-lg font-light text-white text-opacity-70">
-                        Undelegate
-                    </div>
-                    <div className="flex flex-row flex-nowrap items-center">
-                        <div className="font-semibold text-2xl leading-none uppercase">
-                            {undelegate || "--"}{" "}
-                            {walletState.balances[
-                                PLATFORM_ADDRESS as string
-                            ]?.denom?.toUpperCase() || DF_DENOM?.toUpperCase()}
-                        </div>
-                        <span className="ml-2 first:ml-0 opacity-50 font-light leading-none">
-                            (${walletState.fiatUndelegate.amount.toFixed(2)})
-                        </span>
-                        <Button
-                            className={cn(
-                                "!h-auto",
-                                "!ml-4 first:ml-0 !py-1 !px-4 leading-none text-sm",
-                                "disabled:bg-transparent disabled:border disabled:rounded-lg disabled:opacity-30 disabled:border-white/70"
-                            )}
-                            bTransparent
-                            bActivated={false}
-                            disabled={new BigNumber(
-                                walletState.balances[PLATFORM_ADDRESS as string]?.pending_redeem
-                                    ?.claimable || "0"
-                            ).isZero()}
-                            onClick={handleOnClaimBtnClicked}
-                        >
-                            Claim
-                        </Button>
-                    </div>
-                </div>
-
-                <div className="mb-6 last:mb-0 flex flex-col flex-nowrap">
-                    <div className="mb-2 last:mb-0 text-lg font-light text-white text-opacity-70">
-                        Unclaimed
-                    </div>
-                    <div className="flex flex-row flex-nowrap items-end">
-                        <div className="font-semibold text-2xl leading-none uppercase">
-                            {formatBalance(walletState.balances[LGND_ADDRESS as string].amount) ||
-                                "--"}{" "}
-                            {walletState.balances[LGND_ADDRESS as string].denom}
-                        </div>
-                        <span className="ml-2 first:ml-0 opacity-50 font-light leading-none">
-                            (${walletState.fiatUnclaim.amount.toFixed(2)})
-                        </span>
-                    </div>
-                </div>
-
                 <div className="mb-6 last:mb-0 grid grid-cols-2 gap-4 justify-items-stretch">
                     <div className="grow flex">
                         <Button

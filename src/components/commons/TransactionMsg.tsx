@@ -2,16 +2,18 @@
 const TransactionMsg = ({
   success,
   summary,
+  errSummary,
 }: {
   success?: boolean;
   summary?: string;
+  errSummary?: string
 }) => {
   return (
     <div className="flex-nowrap">
       <div className={
         success ? "text-green-500" : "text-red-500"
       }>
-        {`${summary} ${success ? "successfully" : "failed"}`}
+        {success ? summary : errSummary}
       </div>
     </div>
   );
