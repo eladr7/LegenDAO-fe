@@ -251,7 +251,7 @@ export default function MyCollections(): React.ReactElement {
                     </div>
 
                     <div className="mb-8 last:mb-0 flex flex-row flex-nowrap">
-                        <Panel>
+                        <Panel className="py-4">
                             <div className="flex flex-row flex-nowrap items-center">
                                 <div className="ml-20 first:ml-0 flex flex-col">
                                     <div className="text-blue-300">Starting Date</div>
