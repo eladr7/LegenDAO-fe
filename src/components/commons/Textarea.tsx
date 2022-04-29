@@ -19,7 +19,7 @@ export default function Textarea({
         <textarea
             ref={ref}
             className={cn(
-                "disabled:opacity-50",
+                "disabled:opacity-50 focus:outline-none",
                 "grow shrink px-4 py-2 scrollbar-thin resize-none rounded-lg",
                 bTransparent ? "bg-slate-900/25 text-white/90" : "bg-slate-900 text-white",
                 className

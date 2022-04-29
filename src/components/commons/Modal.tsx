@@ -16,7 +16,7 @@ export default function Modal({
         () =>
             children
                 ? ReactDOM.createPortal(
-                      <div className="w-full h-full fixed top-0 left-0 z-50 flex flex-row items-center justify-center select-none overflow-visible">
+                      <div className="w-full h-full py-8 fixed top-0 left-0 z-50 flex flex-row items-center justify-center select-none overflow-hidden">
                           <div
                               onClick={onOuterClick}
                               className={cn(
@@ -28,8 +28,8 @@ export default function Modal({
                           ></div>
                           <div
                               className={cn(
-                                  "w-full max-w-[600px]",
-                                  "z-10 relative max-h-screen flex justify-center items-center"
+                                  "w-full max-w-[600px] max-h-full overflow-hidden overflow-y-auto",
+                                  "z-10 relative max-h-screen flex justify-center items-start"
                               )}
                           >
                               {children}
