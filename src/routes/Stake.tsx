@@ -12,7 +12,7 @@ export default function Stake(): React.ReactElement {
     const { state } = useContext(AppContext);
 
     return (
-        <DefaultLayout headerType="general" bHeaderAlwaysOnTop bFooterOn sidebarTab="tab/stake">
+        <DefaultLayout headerType="general" bHeaderAlwaysOnTop sidebarTab="tab/stake">
             <Article className="grow">
                 <div
                     className={cn(
