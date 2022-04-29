@@ -1,3 +1,4 @@
+import BigNumber from "bignumber.js";
 import { addressToBytes } from "secretjs";
 
 const inputingFloat = (
@@ -69,12 +70,17 @@ const validateForm = {
     },
 };
 
-const validator = {
-    inputingFloat,
-    validateForm,
+const inputAmount = (amount: string, balance: string): string => {
+    if (!amount) {
+        return "This field is required.";
+    } else if (new BigNumber(amount).isZero()) {
+        return "Invalid input.";
+    } else if (new BigNumber(amount).gt(balance)) {
+        return "Insufficient balance.";
+    } else {
+        return "";
+    }
 };
-
-export default validator;
 
 const isAddress = (address: string) => {
     try {
@@ -84,3 +90,11 @@ const isAddress = (address: string) => {
         return false;
     }
 };
+
+const validator = {
+    inputingFloat,
+    validateForm,
+    inputAmount,
+};
+
+export default validator;
