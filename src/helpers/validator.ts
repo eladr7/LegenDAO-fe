@@ -1,11 +1,16 @@
 import { addressToBytes } from "secretjs";
 
-const inputingFloat = (e: React.KeyboardEvent<HTMLInputElement>, pre: string) => {
+const inputingFloat = (
+    e: React.KeyboardEvent<HTMLInputElement>,
+    pre: string,
+    decimals?: number
+) => {
     if (e.ctrlKey && /[aA]/.test(e.key)) return true;
     if (e.key === "ArrowLeft" || e.key === "ArrowRight") return true;
     if (e.key === "End" || e.key === "Home") return true;
     if (e.key === "Backspace" || e.key === "Delete") return true;
     if (!/[0-9.]/.test(e.key) || (e.key === "." && pre.includes("."))) return false;
+    if (pre.includes(".") && pre.split(".")[1].length === (decimals || 6)) return false;
     return true;
 };
 
@@ -17,52 +22,51 @@ const REGEXP_EMAIL = /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/;
 const validateForm = {
     walletAddress: {
         validate: (val: string) => {
-            const index = SUPPORT_CHAIN.findIndex(key => {
+            const index = SUPPORT_CHAIN.findIndex((key) => {
                 return val.indexOf(key) === 0;
             });
-
-            if (!isAddress(val) || index === -1) {
-                return "Address not valid. Please enter a valid address.";
-            }
             if (!val) {
                 return "This field is required.";
+            }
+            if (!isAddress(val) || index === -1) {
+                return "Invalid wallet address. Please try again.";
             }
         },
     },
     twitterProfile: {
         validate: (val: string) => {
-            if (!REGEXP_TWITTER_PROFILE.test(val)) {
-                return "Twitter profile is not valid, please enter a valid profile";
-            }
             if (!val) {
                 return "This field is required.";
             }
-        }
+            if (!REGEXP_TWITTER_PROFILE.test(val)) {
+                return "Invalid profile. Please try again.";
+            }
+        },
     },
     discordUserId: {
         validate: (val: string) => {
-            if (!REGEXP_DISCORD_USER_ID.test(val)) {
-                return "Twitter profile is not valid, please enter a valid profile";
-            }
             if (!val) {
                 return "This field is required.";
             }
-        }
+            if (!REGEXP_DISCORD_USER_ID.test(val)) {
+                return "Invalid ID. Please try again.";
+            }
+        },
     },
     email: {
         validate: (val: string) => {
             if (!REGEXP_EMAIL.test(val) && val) {
                 return "Invalid email address.";
             }
-        }
+        },
     },
     requireField: {
         required: (val: string) => {
             if (!val) {
-                return "This field is required";
+                return "This field is required.";
             }
-        }
-    }
+        },
+    },
 };
 
 const validator = {

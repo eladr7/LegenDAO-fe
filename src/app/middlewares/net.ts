@@ -15,9 +15,9 @@ import {
 } from "../../constants/contractAddress";
 import { transactionActions } from "../../features/transaction/transactionSlice";
 import { DF_DENOM } from "../../constants/defaults";
-import { KEY } from "../../constants/constant";
+import { KEY, MESSAGE_ERROR } from "../../constants/constant";
 import { collectionAtions } from "../../features/collection/collectionSlice";
-import { addPopup } from "../../features/application/applicationSlice";
+import { addPopup, applicationActions } from "../../features/application/applicationSlice";
 import { formatBalance } from "../../helpers/format";
 
 interface IBalanceSnip20 {
@@ -182,7 +182,7 @@ const _netMiddlewareClosure = (): Middleware => {
                         const chainId = process.env.REACT_APP_NET_CHAIN_ID;
 
                         const msg = {
-                            permit_name: "LegenDAO Sotatek Test",
+                            permit_name: KEY.PERMIT_NAME,
                             permissions: ["balance", "owner"],
                             allowed_tokens: initAddressArray.map((address) => {
                                 return address as string;
@@ -227,7 +227,11 @@ const _netMiddlewareClosure = (): Middleware => {
                                 next({ ...action, payload: { signature } });
                             }
                         } catch (error) {
-                            console.warn(error);
+                            store.dispatch(
+                                applicationActions.toastRequestRejected({
+                                    errorMsg: (error as any)?.message as string,
+                                })
+                            );
                         }
                     }
                 };
@@ -279,7 +283,7 @@ const _netMiddlewareClosure = (): Middleware => {
                                 },
                             },
                         });
-                        console.log(result);
+
                         const balance = {
                             ...(result as IBalanceSnip20)?.balance,
                             denom: denom || DF_DENOM,
@@ -290,7 +294,11 @@ const _netMiddlewareClosure = (): Middleware => {
                             payload: { balance },
                         });
                     } catch (error) {
-                        console.warn(error);
+                        store.dispatch(
+                            applicationActions.toastRequestRejected({
+                                errorMsg: (error as any)?.message as string,
+                            })
+                        );
                     }
                 };
 
@@ -316,7 +324,7 @@ const _netMiddlewareClosure = (): Middleware => {
 
                 const { sendAmount, amountToMint, forAddress, mintingContractAddress } =
                     action.payload;
-                console.log({ sendAmount, amountToMint, forAddress, mintingContractAddress });
+
                 if (!sendAmount || !amountToMint) {
                     return next({ ...action, payload: { ...action.payload, tx: undefined } });
                 }
@@ -352,9 +360,7 @@ const _netMiddlewareClosure = (): Middleware => {
                                 content: {
                                     txn: {
                                         success: Boolean(tx?.data.length),
-                                        summary: `Mint ${amountToMint} NFT with ${formatBalance(
-                                            sendAmount
-                                        )} ${DF_DENOM.toUpperCase()}`,
+                                        errSummary: "Mint NFT failed",
                                     },
                                 },
                                 key: tx.transactionHash,
@@ -362,8 +368,12 @@ const _netMiddlewareClosure = (): Middleware => {
                         );
                         next({ ...action, payload: { ...action.payload, tx } });
                     })
-                    .catch((err) => {
-                        console.error(err);
+                    .catch((error) => {
+                        store.dispatch(
+                            applicationActions.toastRequestRejected({
+                                errorMsg: (error as any)?.message as string,
+                            })
+                        );
                     });
 
                 break;
@@ -375,8 +385,6 @@ const _netMiddlewareClosure = (): Middleware => {
                 const targetContractAddress: string | undefined =
                     snipContractAddress || LGND_ADDRESS;
                 if (!client || !platformContractAddress || !targetContractAddress) return;
-
-                console.log({ amount, toAddress });
 
                 const msg = Buffer.from(
                     JSON.stringify({ deposit: { to: toAddress || client.address } })
@@ -406,7 +414,8 @@ const _netMiddlewareClosure = (): Middleware => {
                                         success: Boolean(tx?.data.length),
                                         summary: `Deposit ${formatBalance(
                                             amount
-                                        )} ${DF_DENOM.toUpperCase()}`,
+                                        )} $${DF_DENOM.toUpperCase()} successfully.`,
+                                        errSummary: "Deposit unsuccessfully. Please try again.",
                                     },
                                 },
                                 key: tx.transactionHash,
@@ -414,8 +423,12 @@ const _netMiddlewareClosure = (): Middleware => {
                         );
                         next({ ...action, payload: { ...action.payload, tx } });
                     })
-                    .catch((err) => {
-                        console.error(err);
+                    .catch((error) => {
+                        store.dispatch(
+                            applicationActions.toastRequestRejected({
+                                errorMsg: error?.message as string,
+                            })
+                        );
                     });
 
                 break;
@@ -442,8 +455,12 @@ const _netMiddlewareClosure = (): Middleware => {
                     .then((tx) => {
                         next({ ...action, payload: { ...action.payload, tx } });
                     })
-                    .catch((err) => {
-                        console.error(err);
+                    .catch((error) => {
+                        store.dispatch(
+                            applicationActions.toastRequestRejected({
+                                errorMsg: (error as any)?.message as string,
+                            })
+                        );
                     });
 
                 break;
@@ -471,8 +488,12 @@ const _netMiddlewareClosure = (): Middleware => {
                     .then((tx) => {
                         next({ ...action, payload: { ...action.payload, tx } });
                     })
-                    .catch((err) => {
-                        console.error(err);
+                    .catch((error) => {
+                        store.dispatch(
+                            applicationActions.toastRequestRejected({
+                                errorMsg: (error as any)?.message as string,
+                            })
+                        );
                     });
 
                 break;
@@ -512,8 +533,12 @@ const _netMiddlewareClosure = (): Middleware => {
                     .then((tx) => {
                         next({ ...action, payload: { ...action.payload, tx } });
                     })
-                    .catch((err) => {
-                        console.error(err);
+                    .catch((error) => {
+                        store.dispatch(
+                            applicationActions.toastRequestRejected({
+                                errorMsg: (error as any)?.message as string,
+                            })
+                        );
                     });
 
                 break;
@@ -539,8 +564,12 @@ const _netMiddlewareClosure = (): Middleware => {
                     .then((tx) => {
                         next({ ...action, payload: { ...action.payload, tx } });
                     })
-                    .catch((err) => {
-                        console.error(err);
+                    .catch((error) => {
+                        store.dispatch(
+                            applicationActions.toastRequestRejected({
+                                errorMsg: (error as any)?.message as string,
+                            })
+                        );
                     });
 
                 break;
@@ -567,8 +596,12 @@ const _netMiddlewareClosure = (): Middleware => {
                     .then((tx) => {
                         next({ ...action, payload: { ...action.payload, tx } });
                     })
-                    .catch((err) => {
-                        console.error(err);
+                    .catch((error) => {
+                        store.dispatch(
+                            applicationActions.toastRequestRejected({
+                                errorMsg: (error as any)?.message as string,
+                            })
+                        );
                     });
 
                 break;
@@ -595,8 +628,12 @@ const _netMiddlewareClosure = (): Middleware => {
                     .then((tx) => {
                         next({ ...action, payload: { ...action.payload, tx } });
                     })
-                    .catch((err) => {
-                        console.error(err);
+                    .catch((error) => {
+                        store.dispatch(
+                            applicationActions.toastRequestRejected({
+                                errorMsg: (error as any)?.message as string,
+                            })
+                        );
                     });
 
                 break;
@@ -623,8 +660,12 @@ const _netMiddlewareClosure = (): Middleware => {
                     .then((tx) => {
                         next({ ...action, payload: { ...action.payload, tx } });
                     })
-                    .catch((err) => {
-                        console.error(err);
+                    .catch((error) => {
+                        store.dispatch(
+                            applicationActions.toastRequestRejected({
+                                errorMsg: (error as any)?.message as string,
+                            })
+                        );
                     });
 
                 break;
@@ -652,8 +693,12 @@ const _netMiddlewareClosure = (): Middleware => {
                     .then((results) => {
                         next({ ...action, payload: { ...action.payload, results } });
                     })
-                    .catch((err) => {
-                        console.error(err);
+                    .catch((error) => {
+                        store.dispatch(
+                            applicationActions.toastRequestRejected({
+                                errorMsg: (error as any)?.message as string,
+                            })
+                        );
                     });
 
                 break;
@@ -672,8 +717,12 @@ const _netMiddlewareClosure = (): Middleware => {
                     .then((results) => {
                         next({ ...action, payload: { ...action.payload, results } });
                     })
-                    .catch((err) => {
-                        console.error(err);
+                    .catch((error) => {
+                        store.dispatch(
+                            applicationActions.toastRequestRejected({
+                                errorMsg: (error as any)?.message as string,
+                            })
+                        );
                     });
 
                 break;
@@ -682,7 +731,7 @@ const _netMiddlewareClosure = (): Middleware => {
             case transactionActions.claimPlatform.type: {
                 const platformContractAddress = PLATFORM_ADDRESS;
                 if (!client || !platformContractAddress) return;
-
+                const { amountClaim } = action.payload;
                 client.tx.compute
                     .executeContract(
                         {
@@ -703,7 +752,8 @@ const _netMiddlewareClosure = (): Middleware => {
                                 content: {
                                     txn: {
                                         success: Boolean(tx?.data.length),
-                                        summary: "Claim",
+                                        summary: `Claim ${amountClaim} $LGND successfully`,
+                                        errSummary: `Claim ${amountClaim} $LGND unsuccessfully`,
                                     },
                                 },
                                 key: tx.transactionHash,
@@ -711,8 +761,12 @@ const _netMiddlewareClosure = (): Middleware => {
                         );
                         next({ ...action, payload: { ...action.payload, tx } });
                     })
-                    .catch((err) => {
-                        console.error(err);
+                    .catch((error) => {
+                        store.dispatch(
+                            applicationActions.toastRequestRejected({
+                                errorMsg: (error as any)?.message as string,
+                            })
+                        );
                     });
 
                 break;
@@ -747,7 +801,8 @@ const _netMiddlewareClosure = (): Middleware => {
                                         success: Boolean(tx?.data.length),
                                         summary: `Withdraw ${formatBalance(
                                             amount
-                                        )} ${DF_DENOM.toUpperCase()}`,
+                                        )} $${DF_DENOM.toUpperCase()}`,
+                                        errSummary: "Withdraw unsuccessfully. Please try again.",
                                     },
                                 },
                                 key: tx.transactionHash,
@@ -755,8 +810,12 @@ const _netMiddlewareClosure = (): Middleware => {
                         );
                         next({ ...action, payload: { ...action.payload, tx } });
                     })
-                    .catch((err) => {
-                        console.error(err);
+                    .catch((error) => {
+                        store.dispatch(
+                            applicationActions.toastRequestRejected({
+                                errorMsg: error?.message as string,
+                            })
+                        );
                     });
 
                 break;
@@ -824,6 +883,29 @@ const _netMiddlewareClosure = (): Middleware => {
 
                 getTokens();
 
+                break;
+            }
+
+            case applicationActions.toastRequestRejected.type: {
+                const message = action.payload?.errorMsg;
+                switch (message) {
+                    case MESSAGE_ERROR.REQUEST_REJECTED:
+                        store.dispatch(
+                            addPopup({
+                                content: {
+                                    txn: {
+                                        success: false,
+                                        errSummary: "Request rejected. Please try again.",
+                                    },
+                                },
+                            })
+                        );
+                        break;
+
+                    default:
+                        console.error(message);
+                        break;
+                }
                 break;
             }
 

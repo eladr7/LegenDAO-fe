@@ -18,7 +18,10 @@ const ToastMessage = ({
     idPreItem?: string;
 }) => {
     const dispatch = useDispatch();
-    const removeThisPopup = useCallback(() => dispatch(removePopup({ key: popKey })), [dispatch, popKey]);
+    const removeThisPopup = useCallback(
+        () => dispatch(removePopup({ key: popKey })),
+        [dispatch, popKey]
+    );
 
     useEffect(() => {
         if (removeAfterMs === null) return undefined;
@@ -46,9 +49,9 @@ const ToastMessage = ({
     const renderTransactionMsg = useCallback(() => {
         if (content.txn) {
             const {
-                txn: { success, summary },
+                txn: { success, summary, errSummary },
             } = content;
-            return <TransactionMsg success={success} summary={summary} />;
+            return <TransactionMsg success={success} summary={summary} errSummary={errSummary} />;
         }
     }, [content]);
 
@@ -66,7 +69,7 @@ const ToastMessage = ({
         <div
             className={cn(
                 "fixed right-4 max-w-sm w-full z-[9999] rounded-xl",
-                "bg-gradient-to-br from-white/40 via-white/5 to-white/0",
+                "bg-gradient-to-br from-white/40 via-white/5 to-white/0"
             )}
             style={{
                 bottom: renderBottom,
@@ -89,7 +92,10 @@ const ToastMessage = ({
                     <div className="bg-[#4771A1]/50 w-full h-full"></div>
                 </div>
                 <div
-                    className={cn("absolute top-0 left-0 bottom-0 right-0 rounded-xl", "bg-[#341D65]/50")}
+                    className={cn(
+                        "absolute top-0 left-0 bottom-0 right-0 rounded-xl",
+                        "bg-[#341D65]/50"
+                    )}
                 ></div>
                 <div className={cn("inline-block w-full", "relative p-5 pr-9 overflow-hidden")}>
                     {renderCloseBtn()}

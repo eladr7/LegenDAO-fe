@@ -6,7 +6,7 @@ import Button from "./commons/Button";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
 import { transactionActions } from "../features/transaction/transactionSlice";
 import validator from "../helpers/validator";
-import { formatBalance, parseBalance } from "../helpers/format";
+import { formatBalance, formatIntBalance, parseBalance } from "../helpers/format";
 import { LGND_ADDRESS } from "../constants/contractAddress";
 
 type Props = {
@@ -68,7 +68,8 @@ export default function DepositPanel({ onCloseBtnClicked }: Props): React.ReactE
                         <label className="opacity-75">Amount to Deposit</label>
                         <label className="opacity-75">
                             Balance:{" "}
-                            {formatBalance(walletState.balances[LGND_ADDRESS as string].amount)}{" "}
+                            {formatIntBalance(formatBalance(walletState.balances[LGND_ADDRESS as string].amount))}{" "}
+                            {walletState.balances[LGND_ADDRESS as string].denom.toUpperCase()}
                         </label>
                     </div>
                     <Input

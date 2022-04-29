@@ -6,15 +6,16 @@ import Input from "./commons/Input";
 import Textarea from "./commons/Textarea";
 import { useForm } from "react-hook-form";
 import validator from "../helpers/validator";
-import { legenServices } from "../app/commons/legendServices";
+import { legendServices } from "../app/commons/legendServices";
 import { useDispatch } from "react-redux";
 import { addPopup } from "../features/application/applicationSlice";
+import { toggleCreationFormPanel } from "../features/accessibility/accessibilitySlice";
 
 type Props = {
     onCloseBtnClicked?: React.MouseEventHandler<HTMLElement>;
 };
 
-interface ICreationForms {
+export interface ICreationForms {
     name: string;
     email: string;
     title: string;
@@ -40,8 +41,9 @@ export default function CreationFormPanel({ onCloseBtnClicked }: Props): React.R
 
     const onSubmit = async (data: ICreationForms) => {
         try {
-            const res = await legenServices.creationForm(data);
+            const res = await legendServices.creationForm(data);
             if (res.status === 200) {
+                dispatch(toggleCreationFormPanel(false));
                 dispatch(addPopup({
                     content: {
                         txn: {
@@ -56,7 +58,7 @@ export default function CreationFormPanel({ onCloseBtnClicked }: Props): React.R
                 content: {
                     txn: {
                         success: false,
-                        summary: "You have submitted this form "
+                        summary: "You have submitted this form"
                     }
                 }
             }));

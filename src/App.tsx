@@ -3,7 +3,6 @@ import { Provider } from "react-redux";
 import { Route, Routes } from "react-router-dom";
 import { useActivePopups, useAppDispatch, useAppSelector } from "./app/hooks";
 import store from "./app/store";
-import "./bootstrap";
 import ToastMessage from "./components/commons/ToastMessage";
 import AppContext, { TAppContext } from "./contexts/AppContext";
 import { networkActions } from "./features/network/networkSlice";
@@ -63,7 +62,7 @@ function App(): React.ReactElement {
         if (walletState.signature) {
             dispatch(walletActions.getBalance());
         }
-    }, [dispatch, transactionState.txStatus, walletState.signature]);
+    }, [dispatch, transactionState.txData, walletState.signature]);
 
     const renderPopups = useCallback(() => {
         return activePopups.map((item, index) => {

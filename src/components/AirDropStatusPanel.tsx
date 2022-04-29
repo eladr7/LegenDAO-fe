@@ -1,13 +1,22 @@
+/* eslint-disable no-console */
 import cn from "classnames";
-import React, { useCallback } from "react";
+import React, { useCallback, useState } from "react";
 import { useForm } from "react-hook-form";
-import { useAppDispatch, useAppSelector } from "../app/hooks";
-import { setStatus } from "../features/airdrop/airdropSlice";
+import { Permission, Permit } from "secretjs";
+import { StdSignature } from "secretjs/dist/wallet_amino";
+import { getSigner } from "../app/client";
+import { legendServices } from "../app/commons/legendServices";
+import { useAppSelector } from "../app/hooks";
+import { TAirDropStatus } from "../classes/AirDrop";
+import { CHAIN_ID } from "../constants/chainId";
+import { AIRDROP_BTN_NAME, CLAIM_STATUS, KEY } from "../constants/constant";
+import { LGND_ADDRESS } from "../constants/contractAddress";
 import validator from "../helpers/validator";
 import Button from "./commons/Button";
 import Input from "./commons/Input";
 import Panel from "./commons/Panel";
 import CheckIcon from "./icons/CheckIcon";
+import LoadingIcon from "./icons/LoadingIcon";
 
 type Props = {
     onCloseBtnClicked?: React.MouseEventHandler<HTMLElement>;
@@ -19,23 +28,33 @@ interface IForm {
     discordUserId: string;
 }
 
+interface IDataAirdrop {
+    amountClaim: string;
+    buttonName: string;
+    status?: TAirDropStatus;
+}
+
+const initialDataAirdrop = {
+    amountClaim: "0",
+    buttonName: AIRDROP_BTN_NAME.CLAIM_YOUR_AIRDROP,
+    status: undefined,
+};
+
 export default function AirDropStatusPanel({ onCloseBtnClicked }: Props): React.ReactElement {
     const networkState = useAppSelector((state) => state.network);
+    const walletState = useAppSelector((state) => state.wallet);
     const transactionState = useAppSelector((state) => state.transaction);
 
-    const airdropState = useAppSelector((state) => state.airdrop);
-    const dispatch = useAppDispatch();
-
-    const handleOnClaimAirdropBtnClicked = useCallback(() => {
-        if (!networkState.bIsConnected) return;
-        if (transactionState.bIsPending) return;
-    }, [networkState.bIsConnected, transactionState.bIsPending]);
+    const [dataAirdrop, setDataAirdrop] = useState<IDataAirdrop>(initialDataAirdrop);
+    const [isChecking, setChecking] = useState<boolean>(false);
 
     const {
         handleSubmit,
+        watch,
         register,
         setValue,
-        formState: { errors, dirtyFields },
+        reset,
+        formState: { errors },
     } = useForm<IForm>({
         mode: "onChange",
         defaultValues: {
@@ -45,14 +64,106 @@ export default function AirDropStatusPanel({ onCloseBtnClicked }: Props): React.
         },
     });
 
-    const onSubmit = useCallback(
-        (data: IForm) => {
-            if (data) {
-                dispatch(setStatus("eligible"));
+    const handleCheckAirdropStatus = useCallback(async (data: IForm) => {
+        try {
+            setChecking(true);
+            const res = await legendServices.checkStatus(data.walletAddress);
+            if (res.status === 200) {
+                const claimStatus = res.data.status[data.walletAddress];
+                switch (claimStatus.status) {
+                    case CLAIM_STATUS.NOT_CLAIMED:
+                        setDataAirdrop({
+                            amountClaim: claimStatus.amount.toString(),
+                            buttonName: AIRDROP_BTN_NAME.CLAIM_YOUR_AIRDROP,
+                            status: "eligible",
+                        });
+                        break;
+
+                    case CLAIM_STATUS.NOT_WHITE_LISTED:
+                        setDataAirdrop({
+                            amountClaim: "0",
+                            buttonName: AIRDROP_BTN_NAME.CLAIM_YOUR_AIRDROP,
+                            status: "not/eligible",
+                        });
+                        break;
+
+                    case CLAIM_STATUS.SUBMITTED:
+                    case CLAIM_STATUS.CLAIMED:
+                        setDataAirdrop({
+                            amountClaim: claimStatus.amount.toString(),
+                            buttonName: AIRDROP_BTN_NAME.CLAIMED,
+                            status: "eligible",
+                        });
+                        break;
+
+                    default:
+                        setDataAirdrop(initialDataAirdrop);
+                        break;
+                }
             }
-        },
-        [dispatch]
-    );
+            setChecking(false);
+        } catch (error) {
+            setChecking(false);
+            console.error(error);
+        }
+    }, []);
+
+    const handleOnClaimAirdropBtnClicked = useCallback(async () => {
+        if (!networkState.bIsConnected || !walletState.primary?.address) return;
+        if (transactionState.bIsPending) return;
+        try {
+            const address = watch("walletAddress");
+            const chain = Object.entries(CHAIN_ID).find((item) => {
+                return address.indexOf(item[0]) === 0;
+            });
+
+            const chainId = (chain as string[])[1];
+            const msg = {
+                permit_name: KEY.PERMIT_NAME,
+                allowed_tokens: [LGND_ADDRESS as string],
+                permissions: ["owner"] as Permission[],
+            };
+
+            const signature = await getSigner(chainId, address, msg);
+
+            if (signature) {
+                const permit: Permit = {
+                    params: {
+                        ...msg,
+                        chain_id: chainId,
+                    },
+                    signature: signature as StdSignature,
+                };
+                const address = watch("walletAddress");
+                const res = await legendServices.submitClaim({
+                    claims: [
+                        {
+                            address,
+                            permit,
+                        },
+                    ],
+                });
+                if (res.status === 200) {
+                    setDataAirdrop({
+                        amountClaim: "0",
+                        buttonName: AIRDROP_BTN_NAME.CLAIMED,
+                    });
+                }
+            }
+        } catch (error) {
+            console.error(error);
+        }
+    }, [
+        networkState.bIsConnected,
+        transactionState.bIsPending,
+        walletState.primary?.address,
+        watch,
+    ]);
+
+    const handleCheckAnotherAddress = useCallback(() => {
+        reset();
+        setDataAirdrop(initialDataAirdrop);
+    }, [reset]);
 
     const renderCheckStatusForm = useCallback(() => {
         return (
@@ -62,7 +173,7 @@ export default function AirDropStatusPanel({ onCloseBtnClicked }: Props): React.
                         "w-[500px] text-white",
                         "flex flex-col items-stretch justify-start"
                     )}
-                    onSubmit={handleSubmit(onSubmit)}
+                    onSubmit={handleSubmit(handleCheckAirdropStatus)}
                 >
                     <h1 className="mb-6 last:mb-0 text-2xl font-bold">LGND Airdrop Status</h1>
 
@@ -76,7 +187,7 @@ export default function AirDropStatusPanel({ onCloseBtnClicked }: Props): React.
                             bigness="xl"
                             className="w-full"
                             rightIconNode={
-                                !errors?.walletAddress && dirtyFields?.walletAddress ? (
+                                !errors?.walletAddress && watch("walletAddress") ? (
                                     <CheckIcon className="fill-green-500" />
                                 ) : null
                             }
@@ -100,7 +211,7 @@ export default function AirDropStatusPanel({ onCloseBtnClicked }: Props): React.
                             bigness="xl"
                             className="w-full"
                             rightIconNode={
-                                !errors?.twitterProfile && dirtyFields?.twitterProfile ? (
+                                !errors?.twitterProfile && watch("twitterProfile") ? (
                                     <CheckIcon className="fill-green-500" />
                                 ) : null
                             }
@@ -124,7 +235,7 @@ export default function AirDropStatusPanel({ onCloseBtnClicked }: Props): React.
                             bigness="xl"
                             className="w-full"
                             rightIconNode={
-                                !errors?.discordUserId && dirtyFields?.discordUserId ? (
+                                !errors?.discordUserId && watch("discordUserId") ? (
                                     <CheckIcon className="fill-green-500" />
                                 ) : null
                             }
@@ -137,25 +248,30 @@ export default function AirDropStatusPanel({ onCloseBtnClicked }: Props): React.
                             })}
                         />
                     </div>
-
                     <div className="mb-6 last:mb-0 flex flex-col flex-nowrap">
                         <Button className="font-bold" bigness="xl" type="submit">
                             Check Airdrop
                         </Button>
                     </div>
+                    <div className="mb-6 last:mb-0 flex flex-row flex-nowrap justify-center">
+                        <div className="w-icon h-icon grow-0 shrink-0 animate-spin">
+                            {isChecking && <LoadingIcon />}
+                        </div>
+                    </div>
                 </form>
             </Panel>
         );
     }, [
-        errors?.discordUserId,
-        errors?.twitterProfile,
-        errors?.walletAddress,
-        handleSubmit,
         onCloseBtnClicked,
-        onSubmit,
+        handleSubmit,
+        handleCheckAirdropStatus,
+        errors?.walletAddress,
+        errors?.twitterProfile,
+        errors?.discordUserId,
+        watch,
         register,
+        isChecking,
         setValue,
-        dirtyFields,
     ]);
 
     const renderEligibleForm = useCallback(() => {
@@ -176,7 +292,7 @@ export default function AirDropStatusPanel({ onCloseBtnClicked }: Props): React.
                         )}
                     >
                         <div className="font-bold text-center">Eligible!</div>
-                        <div className="font-light text-center">You won 5,000 $LNGD</div>
+                        <div className="font-light text-center">{`You won ${dataAirdrop.amountClaim} $LNGD`}</div>
                     </div>
 
                     <div className="mb-6 last:mb-0 flex flex-col flex-nowrap">
@@ -193,8 +309,9 @@ export default function AirDropStatusPanel({ onCloseBtnClicked }: Props): React.
                             className="font-bold"
                             bigness="xl"
                             onClick={handleOnClaimAirdropBtnClicked}
+                            disabled={dataAirdrop.buttonName === AIRDROP_BTN_NAME.CLAIMED}
                         >
-                            Claim Your AirDrop
+                            {dataAirdrop.buttonName}
                         </Button>
                     </div>
 
@@ -209,7 +326,12 @@ export default function AirDropStatusPanel({ onCloseBtnClicked }: Props): React.
                 </div>
             </Panel>
         );
-    }, [handleOnClaimAirdropBtnClicked, onCloseBtnClicked]);
+    }, [
+        dataAirdrop.amountClaim,
+        dataAirdrop.buttonName,
+        handleOnClaimAirdropBtnClicked,
+        onCloseBtnClicked,
+    ]);
 
     const renderNotEligibleForm = useCallback(() => {
         return (
@@ -241,26 +363,21 @@ export default function AirDropStatusPanel({ onCloseBtnClicked }: Props): React.
                     </div>
 
                     <div className="mb-6 last:mb-0 flex flex-col flex-nowrap">
-                        <Button className="font-bold" bigness="xl">
+                        <Button
+                            className="font-bold"
+                            bigness="xl"
+                            onClick={handleCheckAnotherAddress}
+                        >
                             Check Another Address
                         </Button>
-                    </div>
-
-                    <div className="mb-6 last:mb-0 flex flex-col flex-nowrap items-stretch">
-                        <div className="text-center opacity-75 font-light">
-                            Airdrop snapshot date: 04/12/2022
-                        </div>
-                        <div className="text-center opacity-75 font-light">
-                            SCRT Staker (15 SCRT min): 1,500 LGND
-                        </div>
                     </div>
                 </div>
             </Panel>
         );
-    }, [onCloseBtnClicked]);
+    }, [handleCheckAnotherAddress, onCloseBtnClicked]);
 
     const renderContent = useCallback(() => {
-        switch (airdropState.status) {
+        switch (dataAirdrop.status) {
             case "eligible":
                 return renderEligibleForm();
 
@@ -270,7 +387,7 @@ export default function AirDropStatusPanel({ onCloseBtnClicked }: Props): React.
             default:
                 return renderCheckStatusForm();
         }
-    }, [airdropState.status, renderCheckStatusForm, renderEligibleForm, renderNotEligibleForm]);
+    }, [dataAirdrop.status, renderCheckStatusForm, renderEligibleForm, renderNotEligibleForm]);
 
     return renderContent();
 }
