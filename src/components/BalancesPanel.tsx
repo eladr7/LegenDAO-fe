@@ -83,7 +83,7 @@ export default function BalancesPanel({
                 return;
             }
             dispatch(accessibilityActions.toggleBalanceMenu(false));
-            navigate("/collections");
+            navigate("/profile/collected");
         },
         [dispatch, navigate, onMyCollectionBtnClicked]
     );
