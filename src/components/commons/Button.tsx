@@ -24,14 +24,14 @@ export default function Button({
             case "sm":
                 return "h-input-sm rounded-lg px-4";
             case "md":
-                return "h-input-md rounded-lg px-4";
+                return "text-xl h-input-md rounded-lg px-4";
             case "lg":
-                return "h-input-lg rounded-lg px-4";
+                return "text-xl h-input-lg rounded-lg px-4";
             case "xl":
-                return "h-input-xl rounded-xl px-8";
+                return "text-xl h-input-xl rounded-xl px-8";
 
             default:
-                return "h-input rounded-lg px-4";
+                return "text-xl h-input rounded-lg px-4";
         }
     }, [bigness]);
 
@@ -56,7 +56,7 @@ export default function Button({
             ref={ref}
             className={cn(
                 getBignessClassNames(),
-                "relative group ml-8 first:ml-0",
+                "relative group ml-8 first:ml-0 font-emphasis",
                 "flex flex-row flex-nowrap justify-center items-center shrink-0",
                 "text-white whitespace-nowrap select-none transition-colors",
                 !bTransparent
