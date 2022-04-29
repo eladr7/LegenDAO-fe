@@ -75,12 +75,12 @@ export default function WithdrawPanel({ onCloseBtnClicked }: Props): React.React
             <div className={cn("w-full text-white", "flex flex-col items-stretch justify-start")}>
                 <h1 className="mb-6 last:mb-0 text-2xl font-bold">Withdraw LGND</h1>
                 <div className="mb-6 last:mb-0 flex flex-col flex-nowrap">
-                    <label className="mb-2 last:mb-0 opacity-75">To</label>
+                    <label className="mb-2 last:mb-0 opacity-75">From</label>
                     <Input
                         bTransparent
                         bigness="xl"
                         placeholder="Address"
-                        value={walletState.primary?.address || ""}
+                        value={PLATFORM_ADDRESS || ""}
                         disabled
                     />
                 </div>

@@ -62,7 +62,7 @@ function App(): React.ReactElement {
         if (walletState.signature) {
             dispatch(walletActions.getBalance());
         }
-    }, [dispatch, transactionState.txData, walletState.signature]);
+    }, [dispatch, transactionState.tx?.txHash, walletState.signature]);
 
     const renderPopups = useCallback(() => {
         return activePopups.map((item, index) => {

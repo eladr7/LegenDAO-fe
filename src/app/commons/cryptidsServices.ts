@@ -1,10 +1,10 @@
-import { HTTPBaseService, IAttributeStaticsData } from "./HTTPBaseRequest";
+import { HTTPBaseService, IAttributeStaticsData, IIsWhitelisted } from "./HTTPBaseRequest";
 
 class CryptidsServices extends HTTPBaseService {
     protected baseURL: string | undefined = process.env.REACT_APP_CRYPTIDS_API_URL;
 
     public async isWhiteListed(address: string) {
-        return await this.instance.get<any>("/api/IsWhitelisted", {
+        return await this.instance.get<IIsWhitelisted>("/api/IsWhitelisted", {
             baseURL: this.baseURL,
             params: {
                 address,

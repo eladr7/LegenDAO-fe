@@ -70,3 +70,7 @@ export interface IAttributeStaticsData {
     wear?: string;
     horns?: string;
 }
+
+export interface IIsWhitelisted {
+    whitelist: boolean;
+}

@@ -7,7 +7,7 @@ import { useAppDispatch, useAppSelector } from "../app/hooks";
 import { transactionActions } from "../features/transaction/transactionSlice";
 import validator from "../helpers/validator";
 import { formatBalance, formatIntBalance, parseBalance } from "../helpers/format";
-import { LGND_ADDRESS } from "../constants/contractAddress";
+import { LGND_ADDRESS, PLATFORM_ADDRESS } from "../constants/contractAddress";
 
 type Props = {
     onCloseBtnClicked?: React.MouseEventHandler<HTMLElement>;
@@ -20,7 +20,7 @@ export interface IAmount {
 
 export default function DepositPanel({ onCloseBtnClicked }: Props): React.ReactElement {
     const [inputAmount, setInputAmount] = useState<IAmount>({
-        amount: "0",
+        amount: "",
         error: "",
     });
     const networkState = useAppSelector((state) => state.network);
@@ -76,12 +76,12 @@ export default function DepositPanel({ onCloseBtnClicked }: Props): React.ReactE
             <div className={cn("w-full text-white", "flex flex-col items-stretch justify-start")}>
                 <h1 className="mb-6 last:mb-0 text-2xl font-bold">Deposit LGND</h1>
                 <div className="mb-6 last:mb-0 flex flex-col flex-nowrap">
-                    <label className="mb-2 last:mb-0 opacity-75">From</label>
+                    <label className="mb-2 last:mb-0 opacity-75">To</label>
                     <Input
                         bTransparent
                         bigness="xl"
                         placeholder="Address"
-                        value={walletState.primary?.address || ""}
+                        value={PLATFORM_ADDRESS || ""}
                         disabled
                     />
                 </div>

@@ -4,14 +4,18 @@ import { TRANSACTION_KEY } from "../../constants/constant";
 
 export type TTransactionState = {
     bIsPending: boolean;
-    txName?: string;
-    txData?: Uint8Array[];
+    tx?: ITx;
 };
+
+export interface ITx {
+    txName?: string;
+    txHash?: string;
+    txStatus?: boolean;
+}
 
 const initialState: TTransactionState = {
     bIsPending: false,
-    txName: undefined,
-    txData: undefined,
+    tx: undefined,
 };
 
 export interface IAttributes {
@@ -42,8 +46,11 @@ const _sendTokenFromPlatformToContract: CaseReducer<
     }>
 > = (state, action) => {
     state.bIsPending = false;
-    state.txName = TRANSACTION_KEY.MINT_NFT;
-    state.txData = action.payload.tx?.data;
+    state.tx = {
+        txHash: action.payload.tx?.transactionHash,
+        txName: TRANSACTION_KEY.MINT_NFT,
+        txStatus: Boolean(action.payload.tx?.data.length),
+    };
 };
 
 const _depositToPlatform: CaseReducer<
@@ -51,8 +58,11 @@ const _depositToPlatform: CaseReducer<
     PayloadAction<{ snipContractAddress?: string; amount: string; toAddress?: string; tx?: Tx }>
 > = (state, action) => {
     state.bIsPending = false;
-    state.txName = TRANSACTION_KEY.DEPOSIT;
-    state.txData = action.payload.tx?.data;
+    state.tx = {
+        txHash: action.payload.tx?.transactionHash,
+        txName: TRANSACTION_KEY.DEPOSIT,
+        txStatus: Boolean(action.payload.tx?.data.length),
+    };
 };
 
 const _addMinters: CaseReducer<
@@ -118,9 +128,16 @@ const _isWhitelisted: CaseReducer<TTransactionState, PayloadAction<{ address: st
     state.bIsPending = false;
 };
 
-const _claimPlatform: CaseReducer<TTransactionState, PayloadAction<{ amountClaim?: string }>> = (state) => {
+const _claimPlatform: CaseReducer<
+    TTransactionState,
+    PayloadAction<{ amountClaim?: string; tx?: Tx }>
+> = (state, action) => {
     state.bIsPending = false;
-    state.txName = TRANSACTION_KEY.CLAIM_REDEEMED;
+    state.tx = {
+        txHash: action.payload.tx?.transactionHash,
+        txName: TRANSACTION_KEY.CLAIM_REDEEMED,
+        txStatus: Boolean(action.payload.tx?.data.length),
+    };
 };
 
 const _withdrawFromPlatform: CaseReducer<
@@ -128,8 +145,11 @@ const _withdrawFromPlatform: CaseReducer<
     PayloadAction<{ amount?: string; tx?: Tx }>
 > = (state, action) => {
     state.bIsPending = false;
-    state.txName = TRANSACTION_KEY.WITHDRAW;
-    state.txData = action.payload.tx?.data;
+    state.tx = {
+        txHash: action.payload.tx?.transactionHash,
+        txName: TRANSACTION_KEY.WITHDRAW,
+        txStatus: Boolean(action.payload.tx?.data.length),
+    };
 };
 
 const transactionSlice = createSlice({
