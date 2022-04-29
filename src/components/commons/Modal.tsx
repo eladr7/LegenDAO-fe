@@ -28,7 +28,7 @@ export default function Modal({
                           ></div>
                           <div
                               className={cn(
-                                  "w-full max-w-[480px]",
+                                  "w-full max-w-[600px]",
                                   "z-10 relative max-h-screen flex justify-center items-center"
                               )}
                           >

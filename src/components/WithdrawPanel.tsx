@@ -51,9 +51,9 @@ export default function WithdrawPanel({ onCloseBtnClicked }: Props): React.React
     }, [walletState.balances]);
 
     return (
-        <Panel onCloseBtnClicked={onCloseBtnClicked}>
+        <Panel onCloseBtnClicked={onCloseBtnClicked} className="grow">
             <div
-                className={cn("w-[655px] text-white", "flex flex-col items-stretch justify-start")}
+                className={cn("w-full text-white", "flex flex-col items-stretch justify-start")}
             >
                 <h1 className="mb-6 last:mb-0 text-2xl font-bold">Withdraw LGND</h1>
                 <div className="mb-6 last:mb-0 flex flex-col flex-nowrap">
