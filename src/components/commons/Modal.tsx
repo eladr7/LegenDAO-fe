@@ -28,7 +28,7 @@ export default function Modal({
                           ></div>
                           <div
                               className={cn(
-                                  "w-full max-w-[600px] max-h-full overflow-hidden overflow-y-auto",
+                                  "w-full max-w-[600px] max-h-full overflow-hidden overflow-y-auto scrollbar-thin",
                                   "z-10 relative max-h-screen flex justify-center items-start"
                               )}
                           >

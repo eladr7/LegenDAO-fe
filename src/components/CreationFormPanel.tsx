@@ -68,7 +68,7 @@ export default function CreationFormPanel({ onCloseBtnClicked }: Props): React.R
     return (
         <Panel onCloseBtnClicked={onCloseBtnClicked}>
             <div
-                className={cn("w-full text-white","h-full max-h-full overflow-y-auto", "flex flex-col items-stretch justify-start")}
+                className={cn("w-full text-white","h-full max-h-full overflow-y-hidden", "flex flex-col items-stretch justify-start")}
             >
                 <h1 className="mb-6 last:mb-0 text-2xl font-bold">Creation Form</h1>
                 <p className="mb-6 last:mb-0 opacity-100">

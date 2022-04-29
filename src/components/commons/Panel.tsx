@@ -78,7 +78,7 @@ export default function Panel({
             );
         }
         return (
-            <div className={cn("relative p-8 z-10 h-full max-h-full overflow-y-hidden", className)}>
+            <div className={cn("relative p-8 z-10 ", className)}>
                 {renderCloseBtn()}
                 <div
                     className={cn(
