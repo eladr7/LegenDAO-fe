@@ -101,8 +101,8 @@ export function Footer(): React.ReactElement {
                     </div>
                 </div>
                 <div className="flex flex-col flex-nowrap items-stretch">
-                    <div className="font-bold mb-2 last:mb-0">Stay in the loop</div>
-                    <div className="opacity-50 max-w-[450px] font-light mb-2 last:mb-0">
+                    <div className="font-bold mb-1 last:mb-0">Stay in the loop</div>
+                    <div className="opacity-50 max-w-[450px] font-light mb-3 last:mb-0 text-sm">
                         Join our mailing list to be the first one to hear about{" "}
                         <span className="whitespace-nowrap">new collection</span>, feature releases
                         tips and tricks.
