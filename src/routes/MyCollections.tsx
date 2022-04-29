@@ -71,7 +71,9 @@ export default function MyCollections(): React.ReactElement {
     const renderFollowingCollections = useCallback(() => {
         return (
             <div className="mt-8 px-16 flex flex-col flex-nowrap">
-                <div className="mb-4 last:mb-0 font-bold">Following Collections</div>
+                <div className="mb-4 last:mb-0 font-semibold text-2xl text-[#B3BBC9]">
+                    Following Collections
+                </div>
                 <div className="grid grid-cols-[repeat(auto-fill,_minmax(380px,_1fr))] gap-10">
                     <CollectionItem
                         coverImgUrl={imgTopSecretColBg01}
@@ -219,9 +221,9 @@ export default function MyCollections(): React.ReactElement {
                     "flex flex-col flex-nowrap justify-start items-start"
                 )}
             >
-                <div className="flex flex-col flex-nowrap">
+                <div className="flex flex-col flex-nowrap items-stretch max-w-[627px]">
                     <h1 className="mb-8 last:mb-0 font-bold text-5xl">Top Secret Collection</h1>
-                    <div className="mb-8 last:mb-0 max-w-xl">
+                    <div className="mb-8 last:mb-0 ">
                         <p className=" text-xl text-[#AFB7C6]">
                             The top secret collection contains things that should be kept secret.
                             5555 pieces of ancient Egyptian mythology symbols. The top secret
@@ -230,7 +232,12 @@ export default function MyCollections(): React.ReactElement {
                         </p>
                     </div>
 
-                    <div className="mb-8 last:mb-0 flex flex-row flex-nowrap justify-start items-center">
+                    <div
+                        className={cn(
+                            "mb-8 last:mb-0 flex flex-row flex-nowrap justify-start items-center shrink-0 self-stretch ",
+                            "text-[#B3BBC9]"
+                        )}
+                    >
                         <div className="ml-8 first:ml-0 font-bold">Creators: XXXX XXXXX XXXX</div>
                         <div
                             className="ml-8 first:ml-0 w-icon h-icon grow-0 shrink-0"
@@ -238,7 +245,7 @@ export default function MyCollections(): React.ReactElement {
                                 window.open(SOCIAL_NETWORK_URL.discord, "_blank");
                             }}
                         >
-                            <DiscordIcon />
+                            <DiscordIcon className="fill-[#B3BBC9]" />
                         </div>
                         <div
                             className="ml-8 first:ml-0 w-icon h-icon grow-0 shrink-0"
@@ -246,11 +253,11 @@ export default function MyCollections(): React.ReactElement {
                                 window.open(SOCIAL_NETWORK_URL.twitter, "_blank");
                             }}
                         >
-                            <TwitterIcon />
+                            <TwitterIcon className="fill-[#B3BBC9]" />
                         </div>
                     </div>
 
-                    <div className="mb-8 last:mb-0 flex flex-row flex-nowrap">
+                    <div className="mb-8 last:mb-0 flex flex-col flex-nowrap ">
                         <Panel className="py-4">
                             <div className="flex flex-row flex-nowrap items-center">
                                 <div className="ml-20 first:ml-0 flex flex-col">
@@ -361,8 +368,8 @@ export default function MyCollections(): React.ReactElement {
                         {renderInfo()}
                         <div
                             className={cn(
-                                "w-1/2 z-10 mt-28 pr-16",
-                                "flex flex-col justify-start items-end"
+                                "w-1/2 z-10 mt-36 pr-16",
+                                "flex flex-col justify-start items-start"
                             )}
                         >
                             {renderDomainPanel()}
