@@ -70,7 +70,7 @@ export default function MyCollections(): React.ReactElement {
 
     const renderFollowingCollections = useCallback(() => {
         return (
-            <div className="mt-36 px-16 flex flex-col flex-nowrap">
+            <div className="mt-24 px-16 flex flex-col flex-nowrap">
                 <div className="mb-4 last:mb-0 font-semibold text-xl text-[#B3BBC9]">
                     Following Collections
                 </div>
@@ -257,7 +257,7 @@ export default function MyCollections(): React.ReactElement {
                         </div>
                     </div>
 
-                    <div className="mb-8 last:mb-0 flex flex-col flex-nowrap ">
+                    <div className="mb-14 last:mb-0 flex flex-col flex-nowrap ">
                         <Panel className="py-4">
                             <div className="flex flex-row flex-nowrap items-center">
                                 <div className="ml-20 first:ml-0 flex flex-col">
