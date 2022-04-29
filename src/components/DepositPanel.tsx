@@ -80,11 +80,12 @@ export default function DepositPanel({ onCloseBtnClicked }: Props): React.ReactE
                         rightButtonText="Max"
                         className="text-2xl"
                         bigness="xl"
-                        value={inputAmount || "0"}
+                        value={inputAmount}
                         onChange={handleOnDepositAmountChanged}
                         onKeyDown={handleOnDepositAmountKeyDown}
                         rightButtonOnClick={handleOnMaxBtnClicked}
-                        placeholder="Enter amount"
+                        placeholder="0.00"
+                        autoFocus
                     />
                 </div>
                 <div className="mb-6 last:mb-0 flex flex-col flex-nowrap">
