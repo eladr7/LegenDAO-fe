@@ -1,4 +1,4 @@
-import React, { useCallback, useContext } from "react";
+import React, { useCallback, useContext, useEffect } from "react";
 import cn from "classnames";
 import Article from "../components/commons/Article";
 import { DefaultLayout } from "../components/layouts/DefaultLayout";
@@ -26,11 +26,13 @@ import MintAgentDetailPanel from "../components/MintAgentDetailPanel";
 import { SOCIAL_NETWORK_URL } from "../constants/linkSocial";
 import { useNavigate } from "react-router-dom";
 import { transactionActions } from "../features/transaction/transactionSlice";
+import { cryptidsServices } from "../app/commons/cryptidsServices";
 
 export default function MyCollections(): React.ReactElement {
     const navigate = useNavigate();
     const { state } = useContext(AppContext);
     const collectionState = useAppSelector((state) => state.collection);
+    const walletState = useAppSelector((state) => state.wallet);
     const accessibilityState = useAppSelector((state) => state.accessibility);
     const mintState = useAppSelector((state) => state.mint);
     const dispatch = useAppDispatch();
@@ -49,8 +51,7 @@ export default function MyCollections(): React.ReactElement {
 
     const handleOnGetWhitelistSpotBtnClicked = useCallback(() => {
         window.open("https://discord.com/invite/nRFUkj3sxZ", "_blank");
-        dispatch(setWhitelistSpot(true));
-    }, [dispatch]);
+    }, []);
 
     const handleOnMyCollectionBtnClicked = useCallback(() => {
         navigate("/profile/collected");
@@ -67,6 +68,21 @@ export default function MyCollections(): React.ReactElement {
     const handleOnMintCloseBtnClicked = useCallback(() => {
         dispatch(toggleMintConfirmPurchasePanel(false));
     }, [dispatch]);
+
+    useEffect(() => {
+        (async () => {
+            try {
+                if (!walletState?.primary?.address) return;
+                const res = await cryptidsServices.isWhiteListed(walletState?.primary?.address);
+                if (res.status === 200) {
+                    dispatch(setWhitelistSpot(res.data.whitelist));
+                }
+            } catch (error) {
+                dispatch(setWhitelistSpot(false));
+            }
+        })();
+    }, [dispatch, walletState?.primary?.address]);
+    
 
     const renderFollowingCollections = useCallback(() => {
         return (

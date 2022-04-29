@@ -51,9 +51,9 @@ export default function MintConfirmPurchasePanel({
 
     useEffect(() => {
         if (
-            transactionState.txData?.length &&
+            transactionState.tx?.txStatus &&
             !transactionState.bIsPending &&
-            transactionState.txName === TRANSACTION_KEY.MINT_NFT
+            transactionState.tx?.txName === TRANSACTION_KEY.MINT_NFT
         ) {
             dispatch(turnOffAllPanel());
             dispatch(toggleMintSuccessfulPanelOn(true));
@@ -71,9 +71,9 @@ export default function MintConfirmPurchasePanel({
         }
     }, [
         dispatch,
-        transactionState.txData?.length,
+        transactionState.tx?.txStatus,
         transactionState.bIsPending,
-        transactionState.txName,
+        transactionState.tx?.txName,
     ]);
 
     return (

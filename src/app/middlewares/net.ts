@@ -801,7 +801,7 @@ const _netMiddlewareClosure = (): Middleware => {
                                         success: Boolean(tx?.data.length),
                                         summary: `Withdraw ${formatBalance(
                                             amount
-                                        )} $${DF_DENOM.toUpperCase()}`,
+                                        )} $${DF_DENOM.toUpperCase()} successfully`,
                                         errSummary: "Withdraw unsuccessfully. Please try again.",
                                     },
                                 },
