@@ -5,7 +5,7 @@ import Panel from "./Panel";
 
 export default function SecretCollectionCard(): React.ReactElement {
     return (
-        <div className={cn("w-[230px] h-[320px]", "opacity-75")}>
+        <div className={cn("w-[260px] h-[320px]", "opacity-75")}>
             <Panel color="darker">
                 <div className="flex flex-col flex-nowrap justify-between items-center">
                     <div className="w-[150px] h-[200px] grow-0 shrink-0 opacity-75">

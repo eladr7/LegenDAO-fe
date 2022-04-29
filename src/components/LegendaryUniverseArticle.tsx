@@ -68,7 +68,7 @@ export default function LegendaryUniverseArticle(): React.ReactElement {
                     "text-white flex flex-col flex-nowrap justify-center items-stretch"
                 )}
             >
-                <h1 className="mb-8 last:mb-0 font-bold text-7xl">
+                <h1 className="mb-8 last:mb-0 font-bold text-5xl">
                     The Legendary <p>Universe</p>
                 </h1>
                 <div className="mb-8 last:mb-0 max-w-[600px]">

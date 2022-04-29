@@ -20,12 +20,14 @@ export default function SecretCollectionsArticle(): React.ReactElement {
                 )}
             >
                 <h1 className="mb-8 last:mb-0 font-bold text-5xl">Collections</h1>
-                <div className="mb-8 last:mb-0 max-w-2xl">
-                    <p className="mb-4 last:mb-0 opacity-75 text-lg text-center font-light">
-                        The legendary collections are about to be released. Athletes, chefs, and
-                        artists are bringing their art to the next generation. By utilizing the
-                        unique features of secret NFTs, the collections are able to reveal unique
-                        content to their owners.
+                <div className="mb-8 last:mb-0 max-w-[70%]">
+                    <p className="mb-4 last:mb-0 opacity-75 text-paragraph text-center font-light">
+                        Through a highly selective process, our goal is to bring the most legendary
+                        NFT collections into Legendao.
+                        <br />
+                        We welcome all kinds of creators into the platform: brands, celebrities,
+                        athletes, artists and forward-thinking creators, all of whom will create
+                        better and more innovative collections through the use of Secret NFTs.
                     </p>
                 </div>
 

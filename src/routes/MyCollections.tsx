@@ -71,7 +71,7 @@ export default function MyCollections(): React.ReactElement {
     const renderFollowingCollections = useCallback(() => {
         return (
             <div className="mt-36 px-16 flex flex-col flex-nowrap">
-                <div className="mb-4 last:mb-0 font-semibold text-2xl text-[#B3BBC9]">
+                <div className="mb-4 last:mb-0 font-semibold text-xl text-[#B3BBC9]">
                     Following Collections
                 </div>
                 <div className="grid grid-cols-[repeat(auto-fill,_minmax(380px,_1fr))] gap-10">
@@ -172,7 +172,7 @@ export default function MyCollections(): React.ReactElement {
                         onCloseBtnClicked={handleOnMintSuccessfulModalOuterClicked}
                     >
                         <div className={cn("flex flex-col items-stretch justify-start")}>
-                            <h1 className="mb-6 last:mb-0 text-2xl font-bold">Mint Successful!</h1>
+                            <h1 className="mb-6 last:mb-0 text-xl font-bold">Mint Successful!</h1>
                             <div className="mb-6 last:mb-0 whitespace-nowrap">
                                 {mintState.successMessage}
                             </div>
@@ -224,7 +224,7 @@ export default function MyCollections(): React.ReactElement {
                 <div className="flex flex-col flex-nowrap items-stretch max-w-[627px]">
                     <h1 className="mb-8 last:mb-0 font-bold text-5xl">Top Secret Collection</h1>
                     <div className="mb-8 last:mb-0 ">
-                        <p className=" text-xl text-[#AFB7C6]">
+                        <p className="  text-[#AFB7C6]">
                             The top secret collection contains things that should be kept secret.
                             5555 pieces of ancient Egyptian mythology symbols. The top secret
                             collection contains things that should be kept secret. 5555 pieces of
@@ -322,7 +322,7 @@ export default function MyCollections(): React.ReactElement {
         return (
             <div className="mt-28 grid grid-cols-2 gap-0">
                 <div className="px-8 flex flex-col flex-nowrap">
-                    <div className="mb-2 last:mb-0 font-semibold text-2xl text-[#B3BBC9]">
+                    <div className="mb-2 last:mb-0 font-semibold text-xl text-[#B3BBC9]">
                         About the Collection
                     </div>
                     <p className="max-w-[700px] text-paragraph">
@@ -334,7 +334,7 @@ export default function MyCollections(): React.ReactElement {
                     </p>
                 </div>
                 <div className="pr-8 flex flex-col flex-nowrap">
-                    <div className="mb-2 last:mb-0 font-semibold text-2xl text-[#B3BBC9]">
+                    <div className="mb-2 last:mb-0 font-semibold text-xl text-[#B3BBC9]">
                         About the Artist
                     </div>
                     <p className="max-w-[700px] text-paragraph">
