@@ -12,7 +12,12 @@ export default function LegendaryPlatformArticle(): React.ReactElement {
                 className="min-h-[1000px] bg-right-top bg-primary-mint-lab pt-[80px]"
                 style={{ backgroundImage: `url(${imgArticlePlatform01Background})` }}
             >
-                <div className={cn("w-1/2 z-20 px-36", "text-white flex flex-col justify-center")}>
+                <div
+                    className={cn(
+                        "w-1/2 z-20 px-36",
+                        "text-white flex flex-col justify-center items-end"
+                    )}
+                >
                     <div
                         className={cn(
                             "flex flex-col flex-nowrap justify-center items-start",
