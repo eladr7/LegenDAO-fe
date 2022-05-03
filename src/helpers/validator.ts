@@ -18,7 +18,7 @@ const inputingFloat = (
 const REGEXP_TWITTER_PROFILE = /http(?:s)?:\/\/(?:www\.)?twitter\.com\/([a-zA-Z0-9_]+)/;
 const REGEXP_DISCORD_USER_ID = /^.{3,32}#[0-9]{4}$/;
 const SUPPORT_CHAIN = ["secret", "cosmos", "terra"];
-const REGEXP_EMAIL = /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/;
+const REGEXP_EMAIL = /^\w+([\\.-]?\w+)*@\w+([\\.-]?\w+)*(\.\w{2,3})+$/;
 
 const validateForm = {
     walletAddress: {

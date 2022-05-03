@@ -12,6 +12,7 @@ import {
     NFT_ADDRESS,
     NFT_MINTING_ADDRESS,
     PLATFORM_ADDRESS,
+    STAKING_ADDRESS,
 } from "../../constants/contractAddress";
 import { transactionActions } from "../../features/transaction/transactionSlice";
 import { DF_DENOM } from "../../constants/defaults";
@@ -19,6 +20,10 @@ import { KEY, MESSAGE_ERROR } from "../../constants/constant";
 import { collectionAtions } from "../../features/collection/collectionSlice";
 import { addPopup, applicationActions } from "../../features/application/applicationSlice";
 import { formatBalance } from "../../helpers/format";
+import {
+    toggleDepositPanel,
+    toggleWithdrawPanel,
+} from "../../features/accessibility/accessibilitySlice";
 
 interface IBalanceSnip20 {
     balance: {
@@ -106,7 +111,13 @@ const _netMiddlewareClosure = (): Middleware => {
         account: "",
     };
 
-    const initAddressArray = [LGND_ADDRESS, PLATFORM_ADDRESS, NFT_ADDRESS, NFT_MINTING_ADDRESS];
+    const initAddressArray = [
+        LGND_ADDRESS,
+        PLATFORM_ADDRESS,
+        NFT_ADDRESS,
+        NFT_MINTING_ADDRESS,
+        STAKING_ADDRESS,
+    ];
 
     return (store: MiddlewareAPI<TAppDispatch, TRootState>) => (next) => (action) => {
         switch (action.type) {
@@ -421,6 +432,7 @@ const _netMiddlewareClosure = (): Middleware => {
                                 key: tx.transactionHash,
                             })
                         );
+                        store.dispatch(toggleDepositPanel());
                         next({ ...action, payload: { ...action.payload, tx } });
                     })
                     .catch((error) => {
@@ -808,6 +820,7 @@ const _netMiddlewareClosure = (): Middleware => {
                                 key: tx.transactionHash,
                             })
                         );
+                        store.dispatch(toggleWithdrawPanel());
                         next({ ...action, payload: { ...action.payload, tx } });
                     })
                     .catch((error) => {

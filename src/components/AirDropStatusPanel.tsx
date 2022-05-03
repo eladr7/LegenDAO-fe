@@ -2,6 +2,7 @@
 import cn from "classnames";
 import React, { useCallback, useState } from "react";
 import { useForm } from "react-hook-form";
+import { useDispatch } from "react-redux";
 import { Permission, Permit } from "secretjs";
 import { StdSignature } from "secretjs/dist/wallet_amino";
 import { getSigner } from "../app/client";
@@ -11,6 +12,7 @@ import { TAirDropStatus } from "../classes/AirDrop";
 import { CHAIN_ID } from "../constants/chainId";
 import { AIRDROP_BTN_NAME, CLAIM_STATUS, KEY } from "../constants/constant";
 import { LGND_ADDRESS } from "../constants/contractAddress";
+import { addPopup } from "../features/application/applicationSlice";
 import validator from "../helpers/validator";
 import Button from "./commons/Button";
 import Input from "./commons/Input";
@@ -47,6 +49,8 @@ export default function AirDropStatusPanel({ onCloseBtnClicked }: Props): React.
 
     const [dataAirdrop, setDataAirdrop] = useState<IDataAirdrop>(initialDataAirdrop);
     const [isChecking, setChecking] = useState<boolean>(false);
+
+    const dispatch = useDispatch();
 
     const {
         handleSubmit,
@@ -148,12 +152,33 @@ export default function AirDropStatusPanel({ onCloseBtnClicked }: Props): React.
                         amountClaim: "0",
                         buttonName: AIRDROP_BTN_NAME.CLAIMED,
                     });
+                    dispatch(
+                        addPopup({
+                            content: {
+                                txn: {
+                                    success: true,
+                                    summary: "Claim your airdrop successfully",
+                                },
+                            },
+                        })
+                    );
                 }
             }
         } catch (error) {
             console.error(error);
+            dispatch(
+                addPopup({
+                    content: {
+                        txn: {
+                            success: false,
+                            summary: "Claim your airdrop unsuccessfully",
+                        },
+                    },
+                })
+            );
         }
     }, [
+        dispatch,
         networkState.bIsConnected,
         transactionState.bIsPending,
         walletState.primary?.address,
