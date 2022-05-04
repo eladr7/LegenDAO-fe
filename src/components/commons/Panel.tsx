@@ -31,11 +31,7 @@ export default function Panel({
     const renderPanel = useCallback(() => {
         if (color === "darker") {
             return (
-<<<<<<< HEAD
                 <div className={cn("relative p-6 z-10 tablet:p-8", "group", className)}>
-=======
-                <div className={cn("relative p-4 lg:p-8 z-40 h-full", "group", className)}>
->>>>>>> 6946ab7 (chore: Draft mint-lab UI mobile 01)
                     {renderCloseBtn()}
                     <div
                         className={cn(
