@@ -30,6 +30,8 @@ export default function Stake(): React.ReactElement {
                             tvl={15839485}
                             totalLGNDBalance={40.2839}
                             totalFiatBalance={80.37}
+                            rewardLGND={20}
+                            rewardFiat={600}
                         />
                     </Modal>
                 )}
