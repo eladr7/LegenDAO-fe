@@ -119,10 +119,10 @@ export default function LegendaryUniverseArticle(): React.ReactElement {
                         DAO&apos;s treasury.
                     </p>
                 </div>
-                <div className="mb-8 last:mb-0 flex flex-col flex-wrap lg:flex-row lg:flex-nowrap items-center justify-between lg:justify-start h-[200px] lg:h-auto">
+                <div className="mb-8 last:mb-0 flex flex-col flex-wrap lg:flex-row lg:flex-nowrap items-stretch lg:items-center justify-between lg:justify-start h-[200px] lg:h-auto">
                     <Button onClick={handleOnGetLGNDBtnClicked}>Get $LGND</Button>
                     <Button
-                        className="ml-0 lg:ml-8"
+                        className="!ml-0 lg:!ml-8"
                         bTransparent
                         onClick={handleOnContactUsBtnClicked}
                     >
