@@ -119,7 +119,10 @@ export function Header({
                     bTransparent
                     onClick={handleOnWalletBtnClicked}
                     bActivated={accessibilityState.bBalanceMenuOn}
-                    className={`${accessibilityState.bBalanceMenuOn && "z-10"}`}
+                    className={cn(
+                        { "z-10": accessibilityState.bBalanceMenuOn },
+                        "!text-sm !h-8 !px-2 tablet-2:!h-input-sm tablet-2:!px-4 tablet-2:!text-base"
+                    )}
                 >
                     <div className="flex flex-row flex-nowrap justify-center items-center">
                         <div className="w-icon h-icon grow-0 shrink-0 mr-2 last:mr-0">
@@ -133,15 +136,21 @@ export function Header({
                             />
                         </div>
                         <span
-                            className="truncate max-w-[200px]"
+                            className={cn("truncate max-w-[200px]", {
+                                "hidden tablet-2:inline-block": !accessibilityState.bBalanceMenuOn,
+                            })}
                             title={walletState.primary?.address}
                         >
                             {shortenAddress(walletState.primary?.address)}
                         </span>
+                        {!accessibilityState.bBalanceMenuOn && (
+                            <span className="tablet-2:hidden">Wallet</span>
+                        )}
                     </div>
                 </Button>
             );
         }
+
         return (
             <Button
                 disabled={!walletState.bSuggested}
@@ -155,7 +164,12 @@ export function Header({
                         <WalletIcon className="fill-white group-hover:fill-purple-700 transition-[fill]" />
                     </div>
 
-                    <span>{walletState.bSuggested ? "Connect Wallet" : "Suggesting Chain..."}</span>
+                    <span className="hidden tablet-2:inline-block">
+                        {walletState.bSuggested ? "Connect Wallet" : "Suggesting Chain..."}
+                    </span>
+                    <span className="tablet-2:hidden">
+                        {walletState.bSuggested ? "Wallet" : "..."}
+                    </span>
                 </div>
             </Button>
         );
@@ -168,20 +182,61 @@ export function Header({
         walletState.primary?.address,
     ]);
 
+    const renderWalletZone = useCallback(() => {
+        return (
+            <div
+                className={cn(
+                    "static flex items-center tablet-2:block",
+                    "tablet-2:relative tablet-2:ml-8 tablet-2:first:ml-0"
+                )}
+            >
+                {renderWalletBtn()}
+                {!accessibilityState.bBalanceMenuOn && (
+                    <div className="ml-4 first:mr-0 tablet-2:hidden">{renderMenuBtn()}</div>
+                )}
+                {accessibilityState.bBalanceMenuOn && (
+                    <div
+                        className={cn(
+                            "absolute top-header left-0 right-0 p-4",
+                            "tablet-2:p-0 tablet:left-auto tablet-2:top-input-lg"
+                        )}
+                    >
+                        <div
+                            className={cn("fixed w-full h-screen left-0 top-0", "bg-slate-900/70")}
+                            onClick={handleOnBalancesPanelOuterClicked}
+                        ></div>
+                        <BalancesPanel />
+                    </div>
+                )}
+            </div>
+        );
+    }, [
+        accessibilityState.bBalanceMenuOn,
+        handleOnBalancesPanelOuterClicked,
+        renderMenuBtn,
+        renderWalletBtn,
+    ]);
+
     const renderIntroHeader = useCallback(() => {
         return (
             <header
                 className={cn(
-                    "absolute top-0 left-0 right-0 p-8 px-16",
+                    "absolute top-0 left-0 right-0 p-8 px-4",
                     bAlwaysOnTop ? "z-[100]" : "z-50",
-                    "flex flex-row flex-nowrap justify-between items-center",
-                    "text-white"
+                    "flex flex-col flex-nowrap justify-start items-start",
+                    "text-white",
+                    "tablet-2:px-16 tablet-2:flex-row tablet-2:justify-between tablet-2:items-center"
                 )}
             >
                 <div className="flex flex-row flex-nowrap items-center">
                     <Branding />
                 </div>
-                <div className="flex flex-row flex-nowrap justify-end items-center">
+                <div
+                    className={cn(
+                        "hidden flex-row flex-nowrap justify-end items-center",
+                        "tablet-2:flex"
+                    )}
+                >
                     <nav
                         className={cn(
                             "flex flex-row flex-nowrap mr-12 last:mr-0",
@@ -220,108 +275,97 @@ export function Header({
         return (
             <header
                 className={cn(
-                    "absolute top-0 left-0 right-0 p-8 px-16",
+                    "absolute top-0 left-0 right-0 p-8 px-4",
                     bAlwaysOnTop ? "z-[100]" : "z-50",
                     "flex flex-row flex-nowrap justify-between items-center",
-                    "text-white"
+                    "text-white",
+                    "tablet-2:px-16"
                 )}
             >
                 <div className="flex flex-row flex-nowrap items-center">
-                    {renderMenuBtn()}
+                    <div className="mr-8 last:mr-0 hidden tablet-2:block">{renderMenuBtn()}</div>
                     <Branding />
                 </div>
-                {renderDomain()}
+                <div className="hidden desktop-2:block">{renderDomain()}</div>
                 <div className="flex flex-row flex-nowrap justify-end items-center">
-                    {renderActions()}
-                    <div className="ml-8 first:ml-0 flex flex-row flex-nowrap">
-                        <Button bigness="sm" onClick={handleOnGetLGNDBtnClicked}>
+                    <div className="hidden tablet-2:block">{renderActions()}</div>
+                    <div className="ml-2 tablet-2:ml-8 first:ml-0 flex flex-row flex-nowrap">
+                        <Button
+                            className="hidden tablet-2:flex"
+                            bigness="sm"
+                            onClick={handleOnGetLGNDBtnClicked}
+                        >
                             Get $LGND
                         </Button>
-                        <div className="relative ml-4 first:ml-0">
-                            {renderWalletBtn()}
-                            {accessibilityState.bBalanceMenuOn && (
-                                <div className="absolute top-input-lg right-0">
-                                    <div
-                                        className={cn(
-                                            "fixed w-full h-screen left-0 top-0",
-                                            "bg-slate-900/70"
-                                        )}
-                                        onClick={handleOnBalancesPanelOuterClicked}
-                                    ></div>
-                                    <BalancesPanel />
-                                </div>
-                            )}
-                        </div>
+                        {renderWalletZone()}
                     </div>
                 </div>
             </header>
         );
     }, [
-        accessibilityState.bBalanceMenuOn,
         bAlwaysOnTop,
-        handleOnBalancesPanelOuterClicked,
         handleOnGetLGNDBtnClicked,
         renderActions,
         renderDomain,
         renderMenuBtn,
-        renderWalletBtn,
+        renderWalletZone,
     ]);
 
     const renderCollectionHeader = useCallback((): React.ReactElement => {
         return (
             <header
                 className={cn(
-                    "absolute top-0 left-0 right-0 p-8 px-16",
+                    "absolute top-0 left-0 right-0 p-8 px-4",
                     bAlwaysOnTop ? "z-[100]" : "z-50",
                     "flex flex-row flex-nowrap justify-between items-center",
-                    "text-white"
+                    "text-white",
+                    "tablet:px-16"
                 )}
             >
                 <div className="flex flex-row flex-nowrap items-center">
-                    {renderMenuBtn()}
+                    <div className="mr-8 last:mr-0 hidden tablet-2:block">{renderMenuBtn()}</div>
                     <Branding />
                 </div>
-                <div className="ml-8 first:ml-0 grow flex flex-row flex-nowrap justify-between items-center">
-                    {renderActions()}
-                    <div className="ml-8 first:ml-0 flex flex-row flex-nowrap">
-                        <Button bigness="sm" bTransparent onClick={handleOnGetLGNDBtnClicked}>
+                <div className="ml-2 tablet:ml-8 first:ml-0 grow flex flex-row flex-nowrap justify-end tablet:justify-between items-center">
+                    <div className="hidden tablet:block">{renderActions()}</div>
+                    <div className="ml-0 tablet:ml-8 first:ml-0 flex flex-row flex-nowrap">
+                        <Button
+                            className="hidden desktop:flex"
+                            bigness="sm"
+                            bTransparent
+                            onClick={handleOnGetLGNDBtnClicked}
+                        >
                             Get $LGND
                         </Button>
-                        <Button bigness="sm" bTransparent onClick={handleOnCollectionsBtnClicked}>
+                        <Button
+                            className="hidden desktop:flex"
+                            bigness="sm"
+                            bTransparent
+                            onClick={handleOnCollectionsBtnClicked}
+                        >
                             Collections
                         </Button>
-                        <Button bigness="sm" bTransparent onClick={handleOnCreateBtnClicked}>
+                        <Button
+                            className="hidden desktop:flex"
+                            bigness="sm"
+                            bTransparent
+                            onClick={handleOnCreateBtnClicked}
+                        >
                             Create
                         </Button>
-                        <div className="relative ml-4 first:ml-0">
-                            {renderWalletBtn()}
-                            {accessibilityState.bBalanceMenuOn && (
-                                <div className="absolute top-input-lg right-0">
-                                    <div
-                                        className={cn(
-                                            "fixed w-full h-screen left-0 top-0",
-                                            "bg-slate-900/70"
-                                        )}
-                                        onClick={handleOnBalancesPanelOuterClicked}
-                                    ></div>
-                                    <BalancesPanel />
-                                </div>
-                            )}
-                        </div>
+                        {renderWalletZone()}
                     </div>
                 </div>
             </header>
         );
     }, [
-        accessibilityState.bBalanceMenuOn,
         bAlwaysOnTop,
-        handleOnBalancesPanelOuterClicked,
         handleOnCollectionsBtnClicked,
         handleOnCreateBtnClicked,
         handleOnGetLGNDBtnClicked,
         renderActions,
         renderMenuBtn,
-        renderWalletBtn,
+        renderWalletZone,
     ]);
 
     const renderContent = useCallback((): React.ReactElement => {

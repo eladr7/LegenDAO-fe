@@ -31,7 +31,7 @@ export default function Panel({
     const renderPanel = useCallback(() => {
         if (color === "darker") {
             return (
-                <div className={cn("relative p-8 z-10", "group", className)}>
+                <div className={cn("relative p-6 z-10 tablet:p-8", "group", className)}>
                     {renderCloseBtn()}
                     <div
                         className={cn(
@@ -78,7 +78,7 @@ export default function Panel({
             );
         }
         return (
-            <div className={cn("relative p-8 z-10 ", className)}>
+            <div className={cn("relative p-6 z-10 tablet:p-8", className)}>
                 {renderCloseBtn()}
                 <div
                     className={cn(

@@ -97,7 +97,7 @@ export function DefaultLayout({
     return (
         <div
             className={cn(
-                "relative mx-auto w-full max-w-screen-desktop-4 min-h-screen",
+                "relative mx-auto w-full min-h-screen",
                 "flex flex-col justify-start items-stretch",
                 "font-body text-slate-700",
                 "bg-primary-mint-lab"
