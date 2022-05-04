@@ -44,31 +44,39 @@ export default function CreationFormPanel({ onCloseBtnClicked }: Props): React.R
             const res = await legendServices.creationForm(data);
             if (res.status === 200) {
                 dispatch(toggleCreationFormPanel(false));
-                dispatch(addPopup({
-                    content: {
-                        txn: {
-                            success: true,
-                            summary: "Your form was successfully submitted!"
-                        }
-                    }
-                }));
+                dispatch(
+                    addPopup({
+                        content: {
+                            txn: {
+                                success: true,
+                                summary: "Your form was successfully submitted!",
+                            },
+                        },
+                    })
+                );
             }
         } catch (error) {
-            dispatch(addPopup({
-                content: {
-                    txn: {
-                        success: false,
-                        errSummary: "Failed to submit your form. Please try again!"
-                    }
-                }
-            }));
+            dispatch(
+                addPopup({
+                    content: {
+                        txn: {
+                            success: false,
+                            errSummary: "Failed to submit your form. Please try again!",
+                        },
+                    },
+                })
+            );
         }
     };
 
     return (
         <Panel onCloseBtnClicked={onCloseBtnClicked}>
             <div
-                className={cn("w-full text-white","h-full max-h-full overflow-y-hidden", "flex flex-col items-stretch justify-start")}
+                className={cn(
+                    "w-full text-white",
+                    "h-full max-h-full overflow-y-hidden",
+                    "flex flex-col items-stretch justify-start"
+                )}
             >
                 <h1 className="mb-6 last:mb-0 text-2xl font-bold">Creation Form</h1>
                 <p className="mb-6 last:mb-0 opacity-100">
