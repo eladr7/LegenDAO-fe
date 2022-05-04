@@ -6,6 +6,26 @@ const plugin = require("tailwindcss/plugin");
 module.exports = {
     content: ["./src/**/*.{js,jsx,ts,tsx}"],
     theme: {
+        screens: {
+            xs: "360px",
+            sm: "640px",
+            md: "760px",
+            lg: "1020px",
+            xl: "1280px",
+            "2xl": "1360px",
+            "3xl": "1400px",
+            "4xl": "1590px",
+            "5xl": "1900px",
+            phone: "360px",
+            "phone-2": "640px",
+            tablet: "760px",
+            "tablet-2": "1020px",
+            desktop: "1280px",
+            "desktop-2": "1360px",
+            "desktop-3": "1400px",
+            "desktop-4": "1590px",
+            "desktop-5": "1800px",
+        },
         extend: {
             colors: {
                 "primary-mint-lab": "#001b47",
