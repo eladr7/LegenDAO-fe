@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useCallback } from "react";
 import cn from "classnames";
 import Article from "../components/commons/Article";
 import { DefaultLayout } from "../components/layouts/DefaultLayout";
@@ -6,9 +6,28 @@ import imgTopSecretColBg01 from "./../assets/images/top-secret-col-background-01
 import imgTopSecretCol01 from "./../assets/images/top-secret-col-01.png";
 import Input from "../components/commons/Input";
 import SearchIcon from "../components/icons/SearchIcon";
-import CollectionItem from "../components/CollectionItem";
+// import CollectionItem from "../components/CollectionItem";
+import { useAppDispatch, useAppSelector } from "../app/hooks";
+import { collectionAtions, collectionAsyncActions } from "../features/collection/collectionSlice";
 
 export default function OldCollections(): React.ReactElement {
+    const dispatch = useAppDispatch();
+    const collectionState = useAppSelector((state) => state.collection);
+    const handleOnCollectionSearchInputChange = useCallback(
+        (e: React.ChangeEvent<HTMLInputElement>) => {
+            // Press enter to search
+            dispatch(collectionAtions.setSearchString(e.target.value));
+        },
+        [dispatch]
+    );
+
+    const handleOnSearchIconClick = useCallback(() => {
+        // Check validate
+        if (collectionState.searchString.trim() === "") return;
+        // Press enter to search
+        dispatch(collectionAsyncActions.searchOld(collectionState.searchString));
+    }, [collectionState.searchString, dispatch]);
+
     return (
         <DefaultLayout headerType="collection">
             <Article className="grow text-white pb-20">
@@ -43,9 +62,13 @@ export default function OldCollections(): React.ReactElement {
                     <div className="flex px-16 mb-12 last:mb-0">
                         <Input
                             id="input-search/collections"
-                            disabled
+                            onChange={handleOnCollectionSearchInputChange}
+                            value={collectionState.searchString}
                             rightIconNode={
-                                <label htmlFor="input-search/collections">
+                                <label
+                                    onClick={handleOnSearchIconClick}
+                                    htmlFor="input-search/collections"
+                                >
                                     <SearchIcon />
                                 </label>
                             }
@@ -55,38 +78,12 @@ export default function OldCollections(): React.ReactElement {
                     <div className="px-16 mb-8 last:mb-0">
                         <h2 className="font-semibold text-lg opacity-75">Legendao Collections</h2>
                     </div>
-
-                    <div className="px-16 mb-12 last:mb-0">
-                        <div className="grid grid-cols-[repeat(auto-fill,_minmax(380px,_1fr))] gap-10">
-                            <CollectionItem
-                                coverImgUrl={imgTopSecretColBg01}
-                                name="Hall of Legend"
-                                description="There is a hall, full of legends that being kept by
-                mysteries creatures"
-                                startingDate={new Date(2022, 3, 18)}
-                                totalItemNum={5555}
-                                mintPrice={25}
-                            />
-                            <CollectionItem
-                                coverImgUrl={imgTopSecretColBg01}
-                                name="Hall of Legend"
-                                description="There is a hall, full of legends that being kept by
-                mysteries creatures"
-                                startingDate={new Date(2022, 3, 18)}
-                                totalItemNum={5555}
-                                mintPrice={25}
-                            />
-                            <CollectionItem
-                                coverImgUrl={imgTopSecretColBg01}
-                                name="Hall of Legend"
-                                description="There is a hall, full of legends that being kept by
-                mysteries creatures"
-                                startingDate={new Date(2022, 3, 18)}
-                                totalItemNum={5555}
-                                mintPrice={25}
-                            />
-                        </div>
-                    </div>
+                    {!collectionState.searchResult?.length &&
+                        collectionState.searchStage == ("fulfilled" || "rejected") && (
+                            <div className="flex justify-center">
+                                No collection matches your search
+                            </div>
+                        )}
                 </div>
             </Article>
         </DefaultLayout>
