@@ -15,11 +15,13 @@ export default function TeamArticle(): React.ReactElement {
 
             <div
                 className={cn(
-                    "grow z-20 bg-primary-mint-lab px-16",
+                    "grow z-20 bg-primary-mint-lab px-5 lg:px-16",
                     "text-white flex flex-col flex-nowrap justify-center items-center"
                 )}
             >
-                <h1 className="mb-8 last:mb-0 font-bold text-5xl">The Legendary Team</h1>
+                <h1 className="mb-8 last:mb-0 font-bold text-3xl lg:text-5xl">
+                    The Legendary Team
+                </h1>
                 <div className="w-full grid grid-cols-4 gap-8 justify-items-center items-center">
                     <TeamMemberCard name="Guy" position="CEO" />
                     <TeamMemberCard name="Itzik" position="CTO" />

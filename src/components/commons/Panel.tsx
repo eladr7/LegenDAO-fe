@@ -20,7 +20,7 @@ export default function Panel({
     const renderCloseBtn = useCallback(() => {
         if (!onCloseBtnClicked) return null;
         return (
-            <div className="p-2 absolute top-8 right-8 z-40">
+            <div className="p-2 absolute top-8 right-8 z-40 h-full">
                 <div className="w-icon-sm h-icon-sm grow-0 shrink-0" onClick={onCloseBtnClicked}>
                     <CloseIcon />
                 </div>
@@ -31,7 +31,11 @@ export default function Panel({
     const renderPanel = useCallback(() => {
         if (color === "darker") {
             return (
+<<<<<<< HEAD
                 <div className={cn("relative p-6 z-10 tablet:p-8", "group", className)}>
+=======
+                <div className={cn("relative p-4 lg:p-8 z-40 h-full", "group", className)}>
+>>>>>>> 6946ab7 (chore: Draft mint-lab UI mobile 01)
                     {renderCloseBtn()}
                     <div
                         className={cn(

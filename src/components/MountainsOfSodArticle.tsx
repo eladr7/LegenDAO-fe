@@ -3,20 +3,27 @@ import cn from "classnames";
 import Article from "./commons/Article";
 
 import imgArticlePlatform02Background from "./../assets/images/article-platform-02-background.png";
+import { useMediaQuery } from "../app/hooks";
 
 export default function MountainsOfSodArticle(): React.ReactElement {
+    const mediaQuery = useMediaQuery();
+
     return (
         <Article
-            style={{ backgroundImage: `url(${imgArticlePlatform02Background})` }}
+            style={{
+                backgroundImage: mediaQuery.checkMatchMinWidth(1024)
+                    ? `url(${imgArticlePlatform02Background})`
+                    : "",
+            }}
             className="min-h-[1300px] "
         >
             <div
                 className={cn(
-                    "w-1/2 z-20  px-16 ml-[45%] ",
+                    "lg:w-1/2 z-20 px-5 lg:px-16 lg:ml-[45%] ",
                     "text-white flex flex-col flex-nowrap justify-center items-start"
                 )}
             >
-                <h1 className="mb-8 last:mb-0 font-bold text-5xl">The Hidden Ridge</h1>
+                <h1 className="mb-8 last:mb-0 font-bold text-2xl lg:text-5xl">The Hidden Ridge</h1>
                 <div className="mb-8 last:mb-0 max-w-[840px]">
                     <p className="mb-10 last:mb-0 opacity-75 text-paragraph">
                         Hidden in the secret mountain ridge of Sod, hide the true creators of

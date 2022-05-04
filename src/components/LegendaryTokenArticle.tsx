@@ -6,7 +6,7 @@ import imgTokens01 from "./../assets/images/tokens-01.png";
 
 export default function LegendaryTokenArticle(): React.ReactElement {
     return (
-        <Article>
+        <Article className="flex-col flex-wrap lg:flex-row lg:flex-nowrap lg:min-h-[700px]">
             <div
                 className={cn(
                     "absolute top-0 bottom-0 right-0 left-0",
@@ -30,13 +30,15 @@ export default function LegendaryTokenArticle(): React.ReactElement {
 
             <div
                 className={cn(
-                    "w-1/2 z-20 bg-primary-mint-lab px-16",
-                    "text-white flex flex-col flex-nowrap justify-center items-end"
+                    "lg:w-1/2 z-20 bg-primary-mint-lab px-5 lg:px-16",
+                    "text-white flex flex-col flex-nowrap justify-center  lg:items-end"
                 )}
             >
                 <div className="flex flex-col flex-nowrap justify-center items-start">
-                    <h1 className="mb-8 last:mb-0 font-bold text-5xl">Legendary Tokens</h1>
-                    <div className="mb-8 last:mb-0 max-w-xl">
+                    <h1 className="mb-8 last:mb-0 font-bold text-3xl lg:text-5xl">
+                        Legendary Tokens
+                    </h1>
+                    <div className="mb-8 last:mb-0 lg:max-w-xl">
                         <p className="mb-4 last:mb-0 opacity-75 text-paragraph text-justify">
                             A central element of Legendao’s universe is the $LGND (pronounced
                             Legend) native token. This token serves as a fundamental in-universe
@@ -51,17 +53,19 @@ export default function LegendaryTokenArticle(): React.ReactElement {
                 </div>
             </div>
 
-            <div className="relative w-1/2 z-10">
+            <div className="relative lg:w-1/2 z-10 ">
                 <div
                     className={cn(
+                        "hidden lg:block",
                         "absolute top-0 bottom-0 left-0 w-1/2",
                         "bg-gradient-to-r from-primary-mint-lab to-slate-900/0"
                     )}
                 ></div>
                 <div
                     className={cn(
-                        "absolute top-0 bottom-0 left-0 right-0",
-                        "bg-no-repeat bg-center"
+                        "min-h-[300px] lg:h-auto ",
+                        "lg:absolute lg:top-0 lg:bottom-0 lg:left-0 lg:right-0",
+                        "bg-no-repeat bg-center bg-contain"
                     )}
                     style={{ backgroundImage: `url(${imgTokens01})` }}
                 ></div>
