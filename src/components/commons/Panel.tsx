@@ -20,7 +20,7 @@ export default function Panel({
     const renderCloseBtn = useCallback(() => {
         if (!onCloseBtnClicked) return null;
         return (
-            <div className="p-2 absolute top-8 right-8 z-40 h-full">
+            <div className="p-2 absolute top-8 right-8 z-40">
                 <div className="w-icon-sm h-icon-sm grow-0 shrink-0" onClick={onCloseBtnClicked}>
                     <CloseIcon />
                 </div>
@@ -31,7 +31,7 @@ export default function Panel({
     const renderPanel = useCallback(() => {
         if (color === "darker") {
             return (
-                <div className={cn("relative p-6 z-10 tablet:p-8", "group", className)}>
+                <div className={cn("relative p-6 z-10 tablet:p-8 w-full", "group", className)}>
                     {renderCloseBtn()}
                     <div
                         className={cn(
@@ -78,7 +78,7 @@ export default function Panel({
             );
         }
         return (
-            <div className={cn("relative p-6 z-10 tablet:p-8", className)}>
+            <div className={cn("relative p-6 z-10 tablet:p-8 w-full", className)}>
                 {renderCloseBtn()}
                 <div
                     className={cn(

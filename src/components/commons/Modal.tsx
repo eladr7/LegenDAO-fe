@@ -22,13 +22,13 @@ export default function Modal({
                               className={cn(
                                   "absolute top-0 left-0 w-full h-[200vh]",
                                   "select-none cursor-pointer",
-                                //   "backdrop-filter backdrop-blur-sm bg-slate-900/50"
+                                  //   "backdrop-filter backdrop-blur-sm bg-slate-900/50"
                                   "bg-slate-900/50"
                               )}
                           ></div>
                           <div
                               className={cn(
-                                  "w-full max-w-[600px] max-h-full overflow-hidden overflow-y-auto scrollbar-thin",
+                                  "px-4 tablet-2:px-0 w-full max-w-[600px] max-h-full overflow-hidden overflow-y-auto scrollbar-thin",
                                   "z-10 relative max-h-screen flex justify-center items-start"
                               )}
                           >
