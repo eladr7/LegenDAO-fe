@@ -52,16 +52,19 @@ export function Footer(): React.ReactElement {
 
     return (
         <div className="text-white flex flex-col justify-between items-stretch">
-            <div className="h-footer bg-[#08152a] flex flex-row justify-around items-center">
-                <div className="flex flex-row flex-nowrap justify-start items-center">
+            <div className="p-8 tablet-2:p-0 tablet-2:h-footer bg-[#08152a] flex flex-col tablet-2:flex-row justify-around items-center">
+                <div className="mb-8 tablet-2:mb-0 flex flex-row flex-nowrap justify-start items-center">
                     <div
-                        className="bg-cover bg-center bg-no-repeat w-[150px] h-[120px] mr-8 last:mr-0"
+                        className="bg-cover bg-center bg-no-repeat w-[120px] h-[100px] tablet-2:w-[150px] tablet-2:h-[120px] mr-4 tablet-2:mr-8 last:mr-0"
                         style={{ backgroundImage: `url(${imgYetiHead01})` }}
                     ></div>
                     <div className="flex flex-col flex-nowrap">
-                        <div className="font-semibold text-2xl">The Legendao</div>
-                        <div className="font-bold text-4xl leading-none">Universe</div>
+                        <div className="font-semibold text-sm tablet-2:text-2xl whitespace-nowrap">The Legendao</div>
+                        <div className="font-bold text-2xl tablet-2:text-4xl leading-none">Universe</div>
                     </div>
+                </div>
+                <div className="tablet-2:hidden mb-8 w-full">
+                    <Button className="!w-full" bigness="sm" bTransparent>Contact Us</Button>
                 </div>
                 <div className="flex flex-col flex-nowrap items-center">
                     <div className="font-bold mb-4 last:mb-0">Join our community</div>
@@ -100,7 +103,7 @@ export function Footer(): React.ReactElement {
                         </div> */}
                     </div>
                 </div>
-                <div className="flex flex-col flex-nowrap items-stretch">
+                <div className="hidden tablet-2:flex flex-col flex-nowrap items-stretch">
                     <div className="font-bold mb-1 last:mb-0">Stay in the loop</div>
                     <div className="opacity-50 max-w-[450px] font-light mb-3 last:mb-0 text-sm">
                         Join our mailing list to be the first one to hear about{" "}
