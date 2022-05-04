@@ -837,7 +837,7 @@ const _netMiddlewareClosure = (): Middleware => {
             case collectionAtions.getCollection.type: {
                 const getTokens = async () => {
                     const chainId = process.env.REACT_APP_NET_CHAIN_ID;
-                    if (!client || !NFT_ADDRESS || !chainId || !signerPermit) return;
+                    if (!client || !NFT_ADDRESS || !chainId || !signerPermit.signature) return;
                     const tokens = await client.query.compute.queryContract({
                         contractAddress: NFT_ADDRESS,
                         codeHash: codeHashes[NFT_ADDRESS]?.codeHash || "",

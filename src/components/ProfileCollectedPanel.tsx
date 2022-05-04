@@ -10,11 +10,12 @@ export default function ProfileCollectedPanel(): React.ReactElement {
     const dispatch = useDispatch();
     const networkState = useAppSelector((state) => state.network);
     const collectionState = useAppSelector((state) => state.collection);
+    const walletState = useAppSelector((state) => state.wallet);
 
     useEffect(() => {
-        if (!networkState.bIsConnected) return;
+        if (!networkState.bIsConnected || !walletState.signature) return;
         dispatch(collectionAtions.getCollection({}));
-    }, [dispatch, networkState.bIsConnected]);
+    }, [dispatch, networkState.bIsConnected, walletState.signature]);
 
     const renderListItem = useCallback(() => {
         const listItems = collectionState.listMyCollection;

@@ -43,6 +43,7 @@ export default function OldCollections(): React.ReactElement {
                     <div className="flex px-16 mb-12 last:mb-0">
                         <Input
                             id="input-search/collections"
+                            disabled
                             rightIconNode={
                                 <label htmlFor="input-search/collections">
                                     <SearchIcon />

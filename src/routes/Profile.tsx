@@ -126,7 +126,7 @@ export default function Profile(): React.ReactElement {
                                     onBlur={() => {
                                         setIsDisableInput(true);
                                     }}
-                                    disabled={isDisableInput}
+                                    disabled={isDisableInput || true}
                                     bigness="lg"
                                     id="input-profile/general/my-name"
                                     placeholder="Enter your name"
