@@ -4,30 +4,36 @@ import Article from "./commons/Article";
 
 import imgArticlePlatform01Background from "./../assets/images/article-platform-01-background.png";
 import imgPlatform01 from "./../assets/images/platform-01.png";
+import { useMediaQuery } from "../app/hooks";
 
 export default function LegendaryPlatformArticle(): React.ReactElement {
+    const mediaQuery = useMediaQuery();
     return (
         <>
             <Article
-                className="min-h-[1000px] bg-right-top bg-primary-mint-lab pt-[80px]"
-                style={{ backgroundImage: `url(${imgArticlePlatform01Background})` }}
+                className="min-h-[1000px] bg-right-top bg-primary-mint-lab pt-10 lg:pt-20"
+                style={{
+                    backgroundImage: mediaQuery.checkMatchMinWidth(1024)
+                        ? `url(${imgArticlePlatform01Background})`
+                        : "",
+                }}
             >
                 <div
                     className={cn(
-                        "w-1/2 z-20 px-36",
-                        "text-white flex flex-col justify-center items-end"
+                        "lg:w-1/2 z-20 px-5 lg:px-36",
+                        "text-white flex flex-col justify-center items-center lg:items-end"
                     )}
                 >
                     <div
                         className={cn(
-                            "flex flex-col flex-nowrap justify-center items-start",
+                            "flex flex-col flex-nowrap justify-center  lg:items-start",
                             "mb-20 last:mb-0"
                         )}
                     >
-                        <h1 className="mb-8 last:mb-0 font-bold text-5xl">
-                            The Legendary <p>Platform</p>
+                        <h1 className="mb-8 last:mb-0 font-bold text-2xl lg:text-5xl">
+                            The Legendary <p className="inline-block lg:block">Platform</p>
                         </h1>
-                        <div className="mb-8 last:mb-0 max-w-[650px]">
+                        <div className="mb-8 last:mb-0 lg:max-w-[650px]">
                             <p className="mb-4 last:mb-0 opacity-75 text-paragraph text-justify">
                                 Legendao is a first of its kind NFT platform, designed to be a Mint
                                 Lab for top creators, and a unique kind of immersive experience for
@@ -51,8 +57,10 @@ export default function LegendaryPlatformArticle(): React.ReactElement {
                             "mb-20 last:mb-0"
                         )}
                     >
-                        <h1 className="mb-8 last:mb-0 font-bold text-5xl">Platform Mechanics</h1>
-                        <div className="mb-8 last:mb-0 max-w-[650px]">
+                        <h1 className="mb-8 last:mb-0 font-bold text-2xl lg:text-5xl">
+                            Platform Mechanics
+                        </h1>
+                        <div className="mb-8 last:mb-0 lg:max-w-[650px]">
                             <p className="mb-4 last:mb-0 opacity-75 text-paragraph text-justify">
                                 Loot-boxes allow you to mint NFTs from the best artists on our
                                 platform (all curated and hand-picked by us), as well as develop
@@ -75,10 +83,10 @@ export default function LegendaryPlatformArticle(): React.ReactElement {
                     </div>
                 </div>
             </Article>
-            <Article className="min-h-[1000px] bg-primary-mint-lab">
+            <Article className="min-h-[220px] lg:min-h-[1000px] bg-primary-mint-lab">
                 <div
                     className={cn(
-                        "absolute top-0 bottom-[100px] right-0 left-0",
+                        "absolute top-0 bottom-0 lg:bottom-[100px] right-0 left-0",
                         "bg-no-repeat bg-contain bg-bottom"
                     )}
                     style={{ backgroundImage: `url(${imgPlatform01})` }}

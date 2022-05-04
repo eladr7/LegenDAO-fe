@@ -60,17 +60,13 @@ export function ArticleBox({
             ref={ref}
             {...props}
         >
-            {childElement
-                .filter((item) => {
-                    return item;
-                })
-                .map((colume, index) => {
-                    return (
-                        <div key={index} className="w-1/3">
-                            {colume}
-                        </div>
-                    );
-                })}
+            {childElement.map((colume, index) => {
+                return (
+                    <div key={index} className="w-1/3">
+                        {colume}
+                    </div>
+                );
+            })}
         </div>
     );
 }
