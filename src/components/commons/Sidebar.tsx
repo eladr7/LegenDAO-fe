@@ -88,9 +88,14 @@ export default function Sidebar({ bodyElement, activatingTab }: Props): React.Re
                     "bg-slate-900/50"
                 )}
             ></div>
-            <div className="flex flex-row justify-center items-center relative">
+            <div
+                className={cn(
+                    "px-8 flex flex-row-reverse justify-between items-center relative",
+                    "tablet:px-0 tablet:flex-row tablet:justify-center"
+                )}
+            >
                 <div
-                    className="mr-6 last:mr-0 p-2 cursor-pointer"
+                    className="mr-0 tablet:mr-6 p-2 cursor-pointer"
                     onClick={handleOnCloseBtnClicked}
                 >
                     <div className={cn("w-icon-sm h-icon-sm grow-0 shrink-0")}>
