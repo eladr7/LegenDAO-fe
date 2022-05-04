@@ -4,9 +4,14 @@ import ReactDOM from "react-dom";
 import { Branding } from "./Branding";
 import CloseIcon from "../icons/CloseIcon";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
-import { toggleSidebar } from "../../features/accessibility/accessibilitySlice";
+import {
+    accessibilityActions,
+    toggleSidebar,
+} from "../../features/accessibility/accessibilitySlice";
 import { useNavigate } from "react-router-dom";
 import { collectionAtions } from "../../features/collection/collectionSlice";
+import Button from "./Button";
+import WalletIcon from "../icons/WalletIcon";
 
 export type TSidebarTab =
     | "tab/home"
@@ -59,13 +64,18 @@ export default function Sidebar({ bodyElement, activatingTab }: Props): React.Re
         navigate("/docs");
     }, [dispatch, navigate]);
 
+    const handleOnWalletBtnClicked = useCallback(() => {
+        dispatch(accessibilityActions.toggleSidebar(false));
+        dispatch(accessibilityActions.toggleBalanceMenu(true));
+    }, [dispatch]);
+
     return ReactDOM.createPortal(
         <div
             className={cn(
                 "transition-transform font-body",
                 { "-translate-x-full": !accessibilityState.bSidebarOn },
                 "fixed top-0 left-0 py-8 z-[100]",
-                "w-sidebar min-h-screen",
+                "w-full tablet:w-sidebar min-h-screen",
                 "flex flex-col flex-nowrap justify-between items-stretch",
                 "text-white bg-[#001B47]"
             )}
@@ -91,9 +101,32 @@ export default function Sidebar({ bodyElement, activatingTab }: Props): React.Re
             </div>
             <div
                 className={cn(
-                    "grow flex flex-col flex-nowrap justify-center items-stretch relative"
+                    "grow flex flex-col flex-nowrap justify-start tablet:justify-center items-stretch relative"
                 )}
             >
+                <div className="tablet:hidden flex flex-row justify-center my-8">
+                    <Button
+                        bigness="lg"
+                        bTransparent
+                        onClick={handleOnWalletBtnClicked}
+                        className="px-20"
+                    >
+                        <div className="flex flex-row flex-nowrap justify-center items-center">
+                            <div className="w-icon h-icon grow-0 shrink-0 mr-2 last:mr-0">
+                                <WalletIcon
+                                    className={cn(
+                                        accessibilityState.bBalanceMenuOn
+                                            ? "fill-purple-700"
+                                            : "fill-white",
+                                        "group-hover:fill-purple-700 transition-[fill]"
+                                    )}
+                                />
+                            </div>
+                            <span>Wallet</span>
+                        </div>
+                    </Button>
+                </div>
+
                 <div
                     className={cn(
                         "px-12 flex flex-row justify-center items-center select-none cursor-pointer hover:text-purple-400"
