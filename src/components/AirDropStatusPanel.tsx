@@ -195,7 +195,7 @@ export default function AirDropStatusPanel({ onCloseBtnClicked }: Props): React.
             <Panel onCloseBtnClicked={onCloseBtnClicked}>
                 <form
                     className={cn(
-                        "w-[500px] text-white",
+                        "w-full text-white",
                         "flex flex-col items-stretch justify-start"
                     )}
                     onSubmit={handleSubmit(handleCheckAirdropStatus)}
@@ -304,7 +304,7 @@ export default function AirDropStatusPanel({ onCloseBtnClicked }: Props): React.
             <Panel onCloseBtnClicked={onCloseBtnClicked}>
                 <div
                     className={cn(
-                        "w-[500px] text-white",
+                        "w-full text-white",
                         "flex flex-col items-stretch justify-start"
                     )}
                 >
@@ -363,7 +363,7 @@ export default function AirDropStatusPanel({ onCloseBtnClicked }: Props): React.
             <Panel onCloseBtnClicked={onCloseBtnClicked}>
                 <div
                     className={cn(
-                        "w-[500px] text-white",
+                        "w-full text-white",
                         "flex flex-col items-stretch justify-start"
                     )}
                 >
