@@ -48,7 +48,7 @@ export default function CreationFormPanel({ onCloseBtnClicked }: Props): React.R
                     content: {
                         txn: {
                             success: true,
-                            summary: "You have submitted this form"
+                            summary: "Your form was successfully submitted!"
                         }
                     }
                 }));
@@ -58,7 +58,7 @@ export default function CreationFormPanel({ onCloseBtnClicked }: Props): React.R
                 content: {
                     txn: {
                         success: false,
-                        summary: "You have submitted this form"
+                        errSummary: "Failed to submit your form. Please try again!"
                     }
                 }
             }));
