@@ -37,15 +37,15 @@ export default function StakeFormPanel({
                 >
                     <div className="flex flex-col tablet:flex-row flex-nowrap justify-around items-center">
                         <div className="flex flex-col flex-nowrap items-center tablet:items-start">
-                            <div className="text-blue-300 text-lg">APR</div>
+                            <div className="text-blue-300 text-lg font-emphasis">APR</div>
                             <div className="font-bold text-lg">{apr.toLocaleString()}%</div>
                         </div>
                         <div className="flex flex-col flex-nowrap items-center tablet:items-start">
-                            <div className="text-blue-300 text-lg">Value</div>
+                            <div className="text-blue-300 text-lg font-emphasis">Value</div>
                             <div className="font-bold text-lg">${value.toLocaleString()}</div>
                         </div>
                         <div className="flex flex-col flex-nowrap items-center tablet:items-start">
-                            <div className="text-blue-300 text-lg">TVL</div>
+                            <div className="text-blue-300 text-lg font-emphasis">TVL</div>
                             <div className="font-bold text-lg">${tvl.toLocaleString()}</div>
                         </div>
                     </div>
