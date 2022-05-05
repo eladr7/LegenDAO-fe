@@ -101,7 +101,12 @@ export default function Profile(): React.ReactElement {
         switch (tab) {
             case "/profile/general": {
                 return (
-                    <div className="w-full grid grid-cols-3 z-10 text-white justify-items-center items-start">
+                    <div
+                        className={cn(
+                            "w-full z-10 text-white flex flex-col items-center",
+                            "lg:grid lg:grid-cols-3 lg:justify-items-center lg:items-start"
+                        )}
+                    >
                         <form
                             className="flex flex-row flex-nowrap items-center justify-self-start"
                             onSubmit={(e: React.FormEvent) => {
