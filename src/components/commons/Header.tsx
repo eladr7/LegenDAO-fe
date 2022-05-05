@@ -207,7 +207,7 @@ export function Header({
                         )}
                     >
                         <div
-                            className={cn("fixed w-full h-screen left-0 top-0", "bg-slate-900/70")}
+                            className={cn("fixed w-full h-screen left-0 top-0", "bg-slate-900/80")}
                             onClick={handleOnBalancesPanelOuterClicked}
                         ></div>
                         <BalancesPanel />

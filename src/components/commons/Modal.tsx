@@ -23,7 +23,7 @@ export default function Modal({
                                   "absolute top-0 left-0 w-full h-[200vh]",
                                   "select-none cursor-pointer",
                                   //   "backdrop-filter backdrop-blur-sm bg-slate-900/50"
-                                  "bg-slate-900/50"
+                                  "bg-slate-900/95 tablet-2:bg-slate-900/50"
                               )}
                           ></div>
                           <div
