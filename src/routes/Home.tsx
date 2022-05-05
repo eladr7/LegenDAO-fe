@@ -80,9 +80,8 @@ function Home(): React.ReactElement {
                             <h1 className="mb-8 tablet-2:mb-0 text-4xl tablet-2:text-5xl">
                                 Mint Lab
                             </h1>
-                            <div>
+                            <div className="tablet-2:hidden">
                                 <Button
-                                    className="tablet-2:hidden"
                                     bigness="lg"
                                     onClick={handleOnMintLabLaunchBtnClicked}
                                 >
@@ -149,7 +148,7 @@ function Home(): React.ReactElement {
                             <h1 className="mb-8 tablet-2:mb-0 text-center text-4xl tablet-2:text-5xl">
                                 Legend Universe
                             </h1>
-                            <div>
+                            <div className="tablet-2:hidden">
                                 <Button bigness="lg" bTransparent bPlaceholder disabled>
                                     <span className="px-4 text-lg">Coming Soon</span>
                                 </Button>
