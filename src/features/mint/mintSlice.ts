@@ -13,7 +13,10 @@ const initialState: TMintState = {
     bAgreeTermOfService: false,
 };
 
-const _setAgent: CaseReducer<TMintState, PayloadAction<TMintAgent | undefined>> = (state, action) => {
+const _setAgent: CaseReducer<TMintState, PayloadAction<TMintAgent | undefined>> = (
+    state,
+    action
+) => {
     state.agent = action.payload;
 };
 

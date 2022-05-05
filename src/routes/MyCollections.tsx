@@ -27,6 +27,7 @@ import { SOCIAL_NETWORK_URL } from "../constants/linkSocial";
 import { useNavigate } from "react-router-dom";
 import { transactionActions } from "../features/transaction/transactionSlice";
 import { cryptidsServices } from "../app/commons/cryptidsServices";
+import { Footer } from "../components/commons/Footer";
 
 export default function MyCollections(): React.ReactElement {
     const navigate = useNavigate();
@@ -82,15 +83,19 @@ export default function MyCollections(): React.ReactElement {
             }
         })();
     }, [dispatch, walletState?.primary?.address]);
-    
 
     const renderFollowingCollections = useCallback(() => {
         return (
-            <div className="mt-24 px-16 flex flex-col flex-nowrap">
+            <div className="mt-8 tablet-2:mt-24 px-4 tablet-2:px-16 flex flex-col flex-nowrap">
                 <div className="mb-4 last:mb-0 font-semibold text-xl text-[#B3BBC9]">
                     Following Collections
                 </div>
-                <div className="grid grid-cols-[repeat(auto-fill,_minmax(380px,_1fr))] gap-10">
+                <div
+                    className={cn(
+                        "flex grid-cols-[repeat(auto-fill,_minmax(320px,_1fr))] gap-6 overflow-x-auto",
+                        "tablet-2:grid tablet-2:grid-cols-[repeat(auto-fill,_minmax(380px,_1fr))] tablet-2:gap-10 tablet-2:overflow-x-hidden"
+                    )}
+                >
                     <CollectionItem
                         coverImgUrl={imgTopSecretColBg01}
                         name="Hall of Legend"
@@ -119,7 +124,7 @@ export default function MyCollections(): React.ReactElement {
         if (!collectionState.bEntered) {
             return (
                 <div
-                    className="relative w-full max-w-[700px] h-[500px] bg-no-repeat container bg-center flex justify-center items-center"
+                    className="relative w-full max-w-[700px] h-[300px] tablet-2:h-[500px] bg-no-repeat bg-cover container bg-center flex justify-center items-center"
                     style={{ backgroundImage: `url(${imgTopSecretCol01})` }}
                 >
                     <div className="absolute top-0 left-0 right-0 bottom-0 bg-slate-900/75"></div>
@@ -135,7 +140,7 @@ export default function MyCollections(): React.ReactElement {
             <div
                 className={cn(
                     "relative flex justify-center items-center",
-                    "w-full max-w-[700px] h-[500px] bg-no-repeat container bg-center"
+                    "w-full max-w-[700px] h-[300px] tablet-2:h-[500px] bg-no-repeat container bg-cover bg-center"
                 )}
                 style={{ backgroundImage: `url(${imgTopSecretColMintBg01})` }}
             >
@@ -149,7 +154,7 @@ export default function MyCollections(): React.ReactElement {
                         bTransparent={!collectionState.whitelistSpot}
                         disabled={!collectionState.whitelistSpot}
                     >
-                        <span className="px-12 font-bold">Mint</span>
+                        <span className="px-12">Mint</span>
                     </Button>
                 )}
             </div>
@@ -189,13 +194,19 @@ export default function MyCollections(): React.ReactElement {
                     >
                         <div className={cn("flex flex-col items-stretch justify-start")}>
                             <h1 className="mb-6 last:mb-0 text-xl font-bold">Mint Successful!</h1>
-                            <div className="mb-6 last:mb-0 whitespace-nowrap">
-                                {mintState.successMessage}
-                            </div>
+                            <div className="mb-6 last:mb-0">{mintState.successMessage}</div>
+                            <div
+                                className={cn(
+                                    "mb-6 w-full h-[200px] bg-no-repeat bg-cover bg-center",
+                                    "tablet-2:hidden tablet-2:w-[150px] tablet-2:h-[100px] tablet-2:mb-0"
+                                )}
+                                style={{ backgroundImage: `url(${imgTopSecretColMintBg01})` }}
+                            ></div>
                             <div className="flex flex-col items-stretch">
-                                <Button className="font-bold" onClick={handleOnMintAgainBtnClicked}>
-                                    Mint Again
-                                </Button>
+                                <Button onClick={handleOnMintAgainBtnClicked}>Mint Again</Button>
+                            </div>
+                            <div className="mt-4 w-full text-center opacity-75 tablet-2:hidden">
+                                <span onClick={handleOnMintSuccessfulModalOuterClicked}>Back</span>
                             </div>
                         </div>
                     </Panel>
@@ -217,14 +228,30 @@ export default function MyCollections(): React.ReactElement {
             return (
                 <div
                     className={cn(
-                        "w-1/2 px-8 pl-16 mt-28",
+                        "w-full tablet-2:w-1/2 px-4 tablet-2:px-8 pl-4 tablet-2:pl-16 mt-28",
                         "flex flex-col flex-nowrap justify-start items-start"
                     )}
                 >
                     <div className="flex flex-col flex-nowrap">
-                        <h1 className="mb-8 last:mb-0 font-bold text-5xl">Top Secret Collection</h1>
+                        <h1 className="mb-8 last:mb-0 font-bold text-3xl tablet-2:text-5xl">
+                            Top Secret <span className="tablet-2:hidden">Mobile</span> Collection
+                        </h1>
                         <div className="mb-8 last:mb-0">{mintState.agent.name}</div>
+
+                        <div
+                            className={cn(
+                                "mb-6 w-full h-[200px] bg-no-repeat bg-cover bg-center rounded-lg overflow-hidden",
+                                "tablet-2:hidden tablet-2:w-[150px] tablet-2:h-[100px] tablet-2:mb-0"
+                            )}
+                            style={{ backgroundImage: `url(${imgTopSecretColMintBg01})` }}
+                        ></div>
+
                         <MintAgentDetailPanel mintAgent={mintState.agent} />
+                        <div className="mt-8 tablet-2:hidden">
+                            <Button className="w-full" onClick={handleOnMintBtnClicked}>
+                                Mint
+                            </Button>
+                        </div>
                     </div>
                 </div>
             );
@@ -233,13 +260,33 @@ export default function MyCollections(): React.ReactElement {
         return (
             <div
                 className={cn(
-                    "w-1/2 px-8 pl-16 mt-28",
+                    "w-full tablet-2:w-1/2 px-4 tablet-2:px-8 pl-4 tablet-2:pl-16 mt-28",
                     "flex flex-col flex-nowrap justify-start items-start"
                 )}
             >
-                <div className="flex flex-col flex-nowrap items-stretch max-w-[627px]">
-                    <h1 className="mb-8 last:mb-0 font-bold text-5xl">Top Secret Collection</h1>
-                    <div className="mb-8 last:mb-0 ">
+                <div className="flex flex-col flex-nowrap items-stretch w-full max-w-[627px]">
+                    <h1 className="mb-4 tablet-2:mb-8 last:mb-0 font-bold text-3xl tablet-2:text-5xl">
+                        Top Secret <span className="tablet-2:hidden">Mobile</span> Collection
+                    </h1>
+                    <div className="mb-4 flex flex-row tablet-2:hidden">
+                        <div
+                            className="ml-8 first:ml-0 w-icon h-icon grow-0 shrink-0"
+                            onClick={() => {
+                                window.open(SOCIAL_NETWORK_URL.discord, "_blank");
+                            }}
+                        >
+                            <DiscordIcon />
+                        </div>
+                        <div
+                            className="ml-8 first:ml-0 w-icon h-icon grow-0 shrink-0"
+                            onClick={() => {
+                                window.open(SOCIAL_NETWORK_URL.twitter, "_blank");
+                            }}
+                        >
+                            <TwitterIcon />
+                        </div>
+                    </div>
+                    <div className="mb-4 tablet-2:mb-8 last:mb-0 ">
                         <p className="  text-[#AFB7C6]">
                             The top secret collection contains things that should be kept secret.
                             5555 pieces of ancient Egyptian mythology symbols. The top secret
@@ -250,13 +297,13 @@ export default function MyCollections(): React.ReactElement {
 
                     <div
                         className={cn(
-                            "mb-8 last:mb-0 flex flex-row flex-nowrap justify-start items-center shrink-0 self-stretch ",
+                            "mb-4 tablet-2:mb-8 last:mb-0 flex flex-row flex-nowrap justify-start items-center shrink-0 self-stretch ",
                             "text-[#B3BBC9]"
                         )}
                     >
                         <div className="ml-8 first:ml-0 font-bold">Creators: XXXX XXXXX XXXX</div>
                         <div
-                            className="ml-8 first:ml-0 w-icon h-icon grow-0 shrink-0"
+                            className="ml-8 first:ml-0 w-icon h-icon grow-0 shrink-0 hidden tablet-2:block"
                             onClick={() => {
                                 window.open(SOCIAL_NETWORK_URL.discord, "_blank");
                             }}
@@ -264,7 +311,7 @@ export default function MyCollections(): React.ReactElement {
                             <DiscordIcon className="fill-[#B3BBC9]" />
                         </div>
                         <div
-                            className="ml-8 first:ml-0 w-icon h-icon grow-0 shrink-0"
+                            className="ml-8 first:ml-0 w-icon h-icon grow-0 shrink-0 hidden tablet-2:block"
                             onClick={() => {
                                 window.open(SOCIAL_NETWORK_URL.twitter, "_blank");
                             }}
@@ -273,18 +320,20 @@ export default function MyCollections(): React.ReactElement {
                         </div>
                     </div>
 
-                    <div className="mb-14 last:mb-0 flex flex-col flex-nowrap ">
+                    <div className="mb-8 tablet-2:hidden">{renderDomainPanel()}</div>
+
+                    <div className="mb-8 tablet-2:mb-14 last:mb-0 flex flex-col flex-nowrap w-full">
                         <Panel className="py-4">
-                            <div className="flex flex-row flex-nowrap items-center">
-                                <div className="ml-20 first:ml-0 flex flex-col">
+                            <div className="flex flex-col tablet:flex-row flex-nowrap justify-between items-center">
+                                <div className="mb-8 last:mb-0 tablet:mb-0 desktop:ml-20 first:ml-0 flex flex-col items-center tablet:items-start">
                                     <div className="text-blue-300">Starting Date</div>
                                     <div className="font-bold">4/18/2022</div>
                                 </div>
-                                <div className="ml-20 first:ml-0 flex flex-col">
+                                <div className="mb-8 last:mb-0 tablet:mb-0 desktop:ml-20 first:ml-0 flex flex-col items-center tablet:items-start">
                                     <div className="text-blue-300">Total Items</div>
                                     <div className="font-bold">5,555</div>
                                 </div>
-                                <div className="ml-20 first:ml-0 flex flex-col">
+                                <div className="mb-8 last:mb-0 tablet:mb-0 desktop:ml-20 first:ml-0 flex flex-col items-center tablet:items-start">
                                     <div className="text-blue-300">Mint Price</div>
                                     <div className="font-bold">25 $LGND</div>
                                 </div>
@@ -292,8 +341,9 @@ export default function MyCollections(): React.ReactElement {
                         </Panel>
                     </div>
 
-                    <div className="mb-8 last:mb-0 flex flex-row flex-nowrap">
+                    <div className="mb-4 tablet:mb-8 last:mb-0 flex flex-col tablet:flex-row flex-nowrap">
                         <Button
+                            className="w-full tablet:w-auto"
                             bTransparent={Boolean(collectionState.whitelistSpot)}
                             bActivated={Boolean(collectionState.whitelistSpot)}
                             onClick={handleOnGetWhitelistSpotBtnClicked}
@@ -318,9 +368,15 @@ export default function MyCollections(): React.ReactElement {
                             </div>
                         </Button>
                         {collectionState.bEntered && (
-                            <Button bTransparent onClick={handleOnMyCollectionBtnClicked}>
-                                <span className="w-44">My Collection</span>
-                            </Button>
+                            <div className="mt-4 tablet-2:mt-0 tablet-2:ml-8 w-full">
+                                <Button
+                                    className="w-full tablet:w-auto"
+                                    bTransparent
+                                    onClick={handleOnMyCollectionBtnClicked}
+                                >
+                                    <span className="w-44">My Collection</span>
+                                </Button>
+                            </div>
                         )}
                     </div>
                 </div>
@@ -330,14 +386,21 @@ export default function MyCollections(): React.ReactElement {
         collectionState.bEntered,
         collectionState.whitelistSpot,
         handleOnGetWhitelistSpotBtnClicked,
+        handleOnMintBtnClicked,
         handleOnMyCollectionBtnClicked,
         mintState.agent,
+        renderDomainPanel,
     ]);
 
     const renderWiki = useCallback(() => {
         return (
-            <div className="mt-28 grid grid-cols-2 gap-0">
-                <div className="px-8 flex flex-col flex-nowrap">
+            <div
+                className={cn(
+                    "mt-12 grid grid-cols-1 gap-8 px-4 ",
+                    "tablet-2:px-16 tablet-2:mt-28 tablet-2:grid-cols-2 tablet-2:gap-16"
+                )}
+            >
+                <div className="flex flex-col flex-nowrap">
                     <div className="mb-2 last:mb-0 font-semibold text-xl text-[#B3BBC9]">
                         About the Collection
                     </div>
@@ -349,7 +412,7 @@ export default function MyCollections(): React.ReactElement {
                         lacus viverra vitae. Duis ut diam quam nulla porttitor massa id neque.
                     </p>
                 </div>
-                <div className="pr-8 flex flex-col flex-nowrap">
+                <div className="flex flex-col flex-nowrap">
                     <div className="mb-2 last:mb-0 font-semibold text-xl text-[#B3BBC9]">
                         About the Artist
                     </div>
@@ -385,7 +448,8 @@ export default function MyCollections(): React.ReactElement {
                         <div
                             className={cn(
                                 "w-1/2 z-10 mt-36 pr-16",
-                                "flex flex-col justify-start items-end"
+                                "hidden flex-col justify-start items-end",
+                                "tablet-2:flex"
                             )}
                         >
                             {renderDomainPanel()}
@@ -396,6 +460,9 @@ export default function MyCollections(): React.ReactElement {
                 </div>
             </Article>
             {renderModal()}
+            <div className="tablet-2:hidden w-full">
+                <Footer />
+            </div>
         </DefaultLayout>
     );
 }

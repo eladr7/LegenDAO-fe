@@ -51,9 +51,16 @@ export default function MintAgentDetailPanel({
                 </div>
                 <div className="py-4 border-b last:border-b-0 border-white/10 flex flex-col flex-nowrap">
                     <div className="mb-2 last:mb-0 text-blue-300">Royalties</div>
-                    <div className="mb-2 last:mb-0 flex flex-row flex-nowrap justify-between items-center overflow-hidden">
-                        <div className="grow truncate">{mintAgent.token}</div>
-                        <div className="ml-4 first:ml-0 bg-slate-900 px-8 h-input rounded-lg flex justify-center items-center">
+                    <div
+                        className={cn(
+                            "mb-2 last:mb-0 flex flex-col flex-nowrap justify-between items-start overflow-hidden",
+                            "tablet-2:flex-row tablet-2:items-center"
+                        )}
+                    >
+                        <div className="grow break-all text-sm tablet-2:text-base">
+                            {mintAgent.token}
+                        </div>
+                        <div className="mt-4 tablet-2:mt-0 tablet-2:ml-4 first:ml-0 bg-slate-900 px-8 h-input rounded-lg flex justify-center items-center">
                             {mintAgent.royalties}
                         </div>
                     </div>
