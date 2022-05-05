@@ -20,7 +20,7 @@ export default function Modal({
                 ? ReactDOM.createPortal(
                       <div
                           className={cn(
-                              "w-full h-full py-8 fixed top-0 left-0 flex flex-row items-center justify-center select-none overflow-hidden",
+                              "font-body w-full h-full py-8 fixed top-0 left-0 flex flex-row items-center justify-center select-none overflow-hidden",
                               zIndex ? zIndex : "z-50"
                           )}
                       >
