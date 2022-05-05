@@ -3,12 +3,14 @@ import ReactDOM from "react-dom";
 import cn from "classnames";
 
 type Props = React.BaseHTMLAttributes<HTMLDivElement> & {
+    zIndex?: string;
     bodyElement: HTMLBodyElement;
     onOuterClick?: React.MouseEventHandler<HTMLElement>;
 };
 
 export default function Modal({
     children,
+    zIndex,
     bodyElement,
     onOuterClick,
 }: Props): React.ReactElement | null {
@@ -16,7 +18,12 @@ export default function Modal({
         () =>
             children
                 ? ReactDOM.createPortal(
-                      <div className="w-full h-full py-8 fixed top-0 left-0 z-50 flex flex-row items-center justify-center select-none overflow-hidden">
+                      <div
+                          className={cn(
+                              "w-full h-full py-8 fixed top-0 left-0 flex flex-row items-center justify-center select-none overflow-hidden",
+                              zIndex ? zIndex : "z-50"
+                          )}
+                      >
                           <div
                               onClick={onOuterClick}
                               className={cn(

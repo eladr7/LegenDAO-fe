@@ -73,7 +73,11 @@ export function DefaultLayout({
 
         if (accessibilityState.bDepositPanelOn) {
             return (
-                <Modal bodyElement={state.bodyElement} onOuterClick={handleOnModalOuterClicked}>
+                <Modal
+                    zIndex="z-[100]"
+                    bodyElement={state.bodyElement}
+                    onOuterClick={handleOnModalOuterClicked}
+                >
                     <DepositPanel onCloseBtnClicked={handleOnModalOuterClicked} />
                 </Modal>
             );
@@ -81,7 +85,11 @@ export function DefaultLayout({
 
         if (accessibilityState.bWithdrawPanelOn) {
             return (
-                <Modal bodyElement={state.bodyElement} onOuterClick={handleOnModalOuterClicked}>
+                <Modal
+                    zIndex="z-[100]"
+                    bodyElement={state.bodyElement}
+                    onOuterClick={handleOnModalOuterClicked}
+                >
                     <WithdrawPanel onCloseBtnClicked={handleOnModalOuterClicked} />
                 </Modal>
             );
