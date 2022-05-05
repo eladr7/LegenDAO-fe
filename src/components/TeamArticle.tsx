@@ -1,9 +1,38 @@
-import React from "react";
+import React, { useMemo } from "react";
 import cn from "classnames";
 import Article from "./commons/Article";
 import TeamMemberCard from "./TeamMemberCard";
+import Guy from "../assets/images/LGDTeam/Guy.png";
+import Itzik from "../assets/images/LGDTeam/Itzik.png";
+import Assaf from "../assets/images/LGDTeam/Assaf.png";
+import Tom from "../assets/images/LGDTeam/Tom.png";
+import Reuven from "../assets/images/LGDTeam/Reuven.png";
+import Yonatan from "../assets/images/LGDTeam/Yonatan.png";
+import Nir from "../assets/images/LGDTeam/Nir.png";
+import Shahar from "../assets/images/LGDTeam/Shahar.png";
+import Eshel from "../assets/images/LGDTeam/Eshel.png";
+import Elad from "../assets/images/LGDTeam/Elad.png";
+import Lior from "../assets/images/LGDTeam/Lior.png";
+import Tovi from "../assets/images/LGDTeam/Tovi.png";
 
 export default function TeamArticle(): React.ReactElement {
+    const teamMemberArr = useMemo(
+        () => [
+            { name: "Guy", position: "CEO", img: Guy },
+            { name: "Itzik", position: "CTO", img: Itzik },
+            { name: "Assaf", position: "Developer", img: Assaf },
+            { name: "Tom", position: "Developer", img: Tom },
+            { name: "Reuven", position: "Developer", img: Reuven },
+            { name: "Yonatan", position: "Head of Product", img: Yonatan },
+            { name: "Nir", position: "Head of Business Development", img: Nir },
+            { name: "Shahar", position: "Head of Marketing", img: Shahar },
+            { name: "Eshel", position: "Developer", img: Eshel },
+            { name: "Elad", position: "Developer", img: Elad },
+            { name: "Lior", position: "Developer", img: Lior },
+            { name: "Tovi", position: "Developer", img: Tovi },
+        ],
+        []
+    );
     return (
         <Article>
             <div
@@ -16,21 +45,30 @@ export default function TeamArticle(): React.ReactElement {
             <div
                 className={cn(
                     "grow z-20 bg-primary-mint-lab px-5 lg:px-16",
-                    "text-white flex flex-col flex-nowrap justify-center items-center"
+                    "text-white flex flex-col flex-nowrap justify-center items-center overflow-hidden "
                 )}
             >
                 <h1 className="mb-8 last:mb-0 font-bold text-3xl lg:text-5xl">
                     The Legendary Team
                 </h1>
-                <div className="w-full grid grid-cols-4 gap-8 justify-items-center items-center">
-                    <TeamMemberCard name="Guy" position="CEO" />
-                    <TeamMemberCard name="Itzik" position="CTO" />
-                    <TeamMemberCard name="Assaf" position="Developer" />
-                    <TeamMemberCard name="Tom" position="Developer" />
-                    <TeamMemberCard name="Reuven" position="Developer" />
-                    <TeamMemberCard name="Yonatan" position="Product Manager" />
-                    <TeamMemberCard name="Nir" position="Head of Business Development" />
-                    <TeamMemberCard name="Shahar" position="Head of Marketing" />
+                <div
+                    className={cn(
+                        "w-full flex flex-row flex-nowrap ",
+                        "overflow-x-scroll snap-x scrollbar-none",
+                        " lg:grid lg:grid-cols-4 lg:gap-8 lg:justify-items-center lg:items-center"
+                    )}
+                >
+                    {teamMemberArr.map((item, i) => {
+                        return (
+                            <TeamMemberCard
+                                classname="snap-start flex-none"
+                                key={i}
+                                name={item.name}
+                                position={item.position}
+                                img={item.img}
+                            />
+                        );
+                    })}
                 </div>
             </div>
         </Article>
