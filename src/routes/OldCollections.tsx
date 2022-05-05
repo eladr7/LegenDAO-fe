@@ -59,9 +59,10 @@ export default function OldCollections(): React.ReactElement {
                 </div>
 
                 <div className="grow flex flex-col flex-nowrap items-stretch z-10 mt-28">
-                    <div className="flex px-16 mb-12 last:mb-0">
+                    <div className="flex flex-col items-stretch tablet-2:items-start px-4 tablet-2:px-16 mb-8 tablet-2:mb-12 last:mb-0">
                         <Input
                             id="input-search/collections"
+                            className="w-full tablet-2:w-auto"
                             onChange={handleOnCollectionSearchInputChange}
                             value={collectionState.searchString}
                             rightIconNode={
@@ -75,7 +76,7 @@ export default function OldCollections(): React.ReactElement {
                             placeholder="Search collections"
                         />
                     </div>
-                    <div className="px-16 mb-8 last:mb-0">
+                    <div className="px-4 tablet-2:px-16 mb-8 last:mb-0">
                         <h2 className="font-semibold text-lg opacity-75">Legendao Collections</h2>
                     </div>
                     {!collectionState.searchResult?.length &&

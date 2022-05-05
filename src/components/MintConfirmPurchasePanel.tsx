@@ -80,16 +80,19 @@ export default function MintConfirmPurchasePanel({
         <Panel onCloseBtnClicked={onCloseBtnClicked}>
             <div className={cn("text-white", "flex flex-col items-stretch justify-start")}>
                 <h1 className="mb-6 last:mb-0 text-2xl font-bold">Confirm Purchase</h1>
-                <div className="mb-6 last:mb-0 flex flex-row flex-nowrap items-start">
+                <div className="mb-4 tablet-2:mb-6 last:mb-0 flex flex-col tablet-2:flex-row flex-nowrap items-start">
                     <div
-                        className="w-[150px] h-[100px] bg-no-repeat bg-cover bg-center"
+                        className={cn(
+                            "mb-6 w-full h-[200px] bg-no-repeat bg-cover bg-center",
+                            "tablet-2:w-[150px] tablet-2:h-[100px] tablet-2:mb-0"
+                        )}
                         style={{ backgroundImage: `url(${itemCoverUrl})` }}
                     ></div>
-                    <div className="ml-8 first:ml-0 flex flex-col flex-nowrap">
+                    <div className="w-full tablet-2:ml-8 first:ml-0 flex flex-col flex-nowrap items-center tablet-2:items-start">
                         <div className="text-blue-300">Item Price</div>
                         <div className="">
                             <span className="font-bold text-lg">{priceInLGND} $LGND</span>
-                            <span className="ml-4 opacity-75">(${priceInFiat})</span>
+                            <span className="ml-4 opacity-75 hidden tablet-2:inline">(${priceInFiat})</span>
                         </div>
                     </div>
                 </div>
@@ -98,7 +101,7 @@ export default function MintConfirmPurchasePanel({
                     onClick={handleOnAgreeTermOfServiceBtnClicked}
                 >
                     <CheckBox bChecked={mintState.bAgreeTermOfService} />
-                    <span className="ml-2 whitespace-nowrap">
+                    <span className="ml-2 text-sm tablet-2:text-base">
                         By checking this box, I agree to{" "}
                         <span className="text-blue-300 cursor-pointer">
                             Legendao&apos;s Terms of Service
@@ -108,14 +111,19 @@ export default function MintConfirmPurchasePanel({
 
                 <div className="flex flex-row">
                     <Button
-                        bigness="xl"
+                        bigness="lg"
                         onClick={handleOnMintNowBtnClicked}
                         bTransparent={!mintState.bAgreeTermOfService}
                         disabled={!mintState.bAgreeTermOfService}
-                        className="grow font-bold"
+                        className="grow"
                     >
-                        Mint Now
+                        <span className="hidden tablet-2:inline">Mint Now</span>
+                        <span className="tablet-2:hidden">Buy Now</span>
                     </Button>
+                </div>
+
+                <div className="mt-6 w-full text-center">
+                    <span className="opacity-75" onClick={onCloseBtnClicked}>Back</span>
                 </div>
             </div>
         </Panel>

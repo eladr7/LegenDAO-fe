@@ -20,7 +20,7 @@ export default function CollectionItem({
     mintPrice,
 }: Props): React.ReactElement {
     return (
-        <div className={cn("max-w-lg flex flex-col flex-nowrap rounded-xl overflow-hidden ")}>
+        <div className={cn("max-w-[320px] tablet-2:max-w-lg flex flex-col flex-nowrap rounded-xl overflow-hidden shrink-0")}>
             <div
                 className={cn("h-[200px]  bg-cover bg-no-repeat bg-center")}
                 style={{ backgroundImage: `url(${coverImgUrl})` }}
@@ -29,8 +29,8 @@ export default function CollectionItem({
                 <div className={cn("flex flex-col flex-none items-stretch")}>
                     <div className="mb-2 last:mb-0 font-semibold text-xl opacity-80">{name}</div>
                     <div className="mb-4 last:mb-0 text-sm text-[#AFB7C6]">{description}</div>
-                    <div className="mb-2 last:mb-0 flex flex-row flex-nowrap justify-between items-center text-sm">
-                        <div className="flex flex-col">
+                    <div className="mb-2 last:mb-0 flex flex-col tablet-2:flex-row flex-nowrap justify-between items-start tablet-2:items-center text-sm">
+                        <div className="mb-4 tablet-2:mb-0 flex flex-col">
                             <div className="text-blue-300">Starting Date</div>
                             <div className="font-bold">
                                 {startingDate.toLocaleDateString("en-EN", {
@@ -40,11 +40,11 @@ export default function CollectionItem({
                                 })}
                             </div>
                         </div>
-                        <div className="flex flex-col">
+                        <div className="mb-4 tablet-2:mb-0 flex flex-col">
                             <div className="text-blue-300">Total Items</div>
                             <div className="font-bold">{totalItemNum.toLocaleString()}</div>
                         </div>
-                        <div className="flex flex-col">
+                        <div className="mb-4 tablet-2:mb-0 flex flex-col">
                             <div className="text-blue-300">Mint Price</div>
                             <div className="font-bold">{mintPrice.toLocaleString()} $LGND</div>
                         </div>

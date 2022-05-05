@@ -20,7 +20,7 @@ export default function Panel({
     const renderCloseBtn = useCallback(() => {
         if (!onCloseBtnClicked) return null;
         return (
-            <div className="p-2 absolute top-8 right-8 z-40">
+            <div className="p-2 absolute top-6 tablet-2:top-8 right-4 tablet-2:right-8 z-40">
                 <div className="w-icon-sm h-icon-sm grow-0 shrink-0" onClick={onCloseBtnClicked}>
                     <CloseIcon />
                 </div>
