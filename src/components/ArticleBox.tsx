@@ -62,7 +62,7 @@ export function ArticleBox({
         >
             {childElement.map((colume, index) => {
                 return (
-                    <div key={index} className="w-1/3">
+                    <div key={index} className="w-[35%]">
                         {colume}
                     </div>
                 );

@@ -26,9 +26,7 @@ export default function LegendaryUniverseArticle(): React.ReactElement {
 
     return (
         <Article
-            className={cn(
-                "flex-col-reverse flex-wrap lg:flex-row lg:flex-nowrap  lg:min-h-[700px]"
-            )}
+            className={cn("flex-col-reverse flex-wrap lg:flex-row lg:flex-nowrap lg:min-h-[700px]")}
         >
             <div
                 className={cn(
@@ -66,10 +64,13 @@ export default function LegendaryUniverseArticle(): React.ReactElement {
                 ></div>
                 <div
                     className={cn(
-                        "absolute left-0 -bottom-24 w-3/4 h-full",
-                        "bg-no-repeat bg-contain bg-bottom"
+                        "absolute left-[20px] lg:left-0 -bottom-24  w-3/4 h-full",
+                        "bg-no-repeat bg-bottom "
                     )}
-                    style={{ backgroundImage: `url(${imgYetiHoodie01})` }}
+                    style={{
+                        backgroundImage: `url(${imgYetiHoodie01})`,
+                        backgroundSize: "auto 100%",
+                    }}
                 ></div>
                 <div
                     className={cn(
@@ -81,7 +82,7 @@ export default function LegendaryUniverseArticle(): React.ReactElement {
             </div>
             <div
                 className={cn(
-                    "h-screen lg:h-auto",
+                    "h-screen lg:h-auto pt-[80px]",
                     "lg:w-1/2 z-20 lg:bg-primary-mint-lab lg:px-12",
                     "text-white flex flex-col flex-nowrap justify-center items-stretch px-8",
                     "bg-no-repeat "
@@ -94,7 +95,7 @@ export default function LegendaryUniverseArticle(): React.ReactElement {
             >
                 <div
                     className={cn(
-                        "lg:hidden",
+                        "lg:hidden ",
                         "absolute top-0 bottom-0 left-0 right-0 h-screen -z-[1]",
                         "bg-gradient-to-t from-primary-mint-lab via-primary-mint-lab-900/75 to-slate-900/5"
                     )}
@@ -106,8 +107,8 @@ export default function LegendaryUniverseArticle(): React.ReactElement {
                         "bg-gradient-to-b from-primary-mint-lab via-primary-mint-lab-900/75 to-slate-900/5"
                     )}
                 ></div>
-                <h1 className="mb-8 last:mb-0 font-bold text-3xl lg:text-5xl">
-                    The Legendary <p>Universe</p>
+                <h1 className="mb-4 md:mb-8 last:mb-0 font-bold xs:text-xl text-3xl lg:text-5xl">
+                    The Legendary <p className="inline-block lg:block">Universe</p>
                 </h1>
                 <div className="mb-8 last:mb-0 lg:max-w-[600px]">
                     <p className="lg:opacity-75 text-paragraph ">
@@ -120,9 +121,15 @@ export default function LegendaryUniverseArticle(): React.ReactElement {
                     </p>
                 </div>
                 <div className="mb-8 last:mb-0 flex flex-col flex-wrap lg:flex-row lg:flex-nowrap items-stretch lg:items-center justify-between lg:justify-start h-[200px] lg:h-auto">
-                    <Button onClick={handleOnGetLGNDBtnClicked}>Get $LGND</Button>
                     <Button
-                        className="!ml-0 lg:!ml-8"
+                        bigness={mediaQuery.checkMatchMinWidth(1020) ? "lg" : "sm"}
+                        onClick={handleOnGetLGNDBtnClicked}
+                    >
+                        Get $LGND
+                    </Button>
+                    <Button
+                        bigness={mediaQuery.checkMatchMinWidth(1020) ? "lg" : "sm"}
+                        className="!ml-0 lg:!ml-8 "
                         bTransparent
                         onClick={handleOnContactUsBtnClicked}
                     >
