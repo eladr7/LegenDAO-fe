@@ -324,18 +324,18 @@ export default function MyCollections(): React.ReactElement {
                     <div className="mb-8 tablet-2:hidden">{renderDomainPanel()}</div>
 
                     <div className="mb-8 tablet-2:mb-14 last:mb-0 flex flex-col flex-nowrap w-full">
-                        <Panel className="py-4 font-emphasis">
+                        <Panel className="py-4">
                             <div className="flex flex-col tablet:flex-row flex-nowrap justify-between items-center">
                                 <div className="mb-8 last:mb-0 tablet:mb-0 desktop:ml-20 first:ml-0 flex flex-col items-center tablet:items-start">
-                                    <div className="text-blue-300">Starting Date</div>
+                                    <div className="text-blue-300 font-emphasis">Starting Date</div>
                                     <div className="font-bold">4/18/2022</div>
                                 </div>
                                 <div className="mb-8 last:mb-0 tablet:mb-0 desktop:ml-20 first:ml-0 flex flex-col items-center tablet:items-start">
-                                    <div className="text-blue-300">Total Items</div>
+                                    <div className="text-blue-300 font-emphasis">Total Items</div>
                                     <div className="font-bold">5,555</div>
                                 </div>
                                 <div className="mb-8 last:mb-0 tablet:mb-0 desktop:ml-20 first:ml-0 flex flex-col items-center tablet:items-start">
-                                    <div className="text-blue-300">Mint Price</div>
+                                    <div className="text-blue-300 font-emphasis">Mint Price</div>
                                     <div className="font-bold">25 $LGND</div>
                                 </div>
                             </div>
