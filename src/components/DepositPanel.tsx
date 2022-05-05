@@ -116,7 +116,11 @@ export default function DepositPanel({ onCloseBtnClicked }: Props): React.ReactE
                         className="font-bold"
                         bigness="xl"
                         onClick={handleOnDepositBtnClicked}
-                        disabled={!!inputAmount.error || !inputAmount.amount}
+                        disabled={
+                            !!inputAmount.error ||
+                            !inputAmount.amount ||
+                            transactionState.bIsPending
+                        }
                     >
                         Deposit
                     </Button>

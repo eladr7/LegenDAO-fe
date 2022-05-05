@@ -339,6 +339,7 @@ const _netMiddlewareClosure = (): Middleware => {
                 if (!sendAmount || !amountToMint) {
                     return next({ ...action, payload: { ...action.payload, tx: undefined } });
                 }
+                store.dispatch(transactionActions.startTransaction());
 
                 const wantedMsg = Buffer.from(
                     JSON.stringify({
@@ -396,6 +397,7 @@ const _netMiddlewareClosure = (): Middleware => {
                 const targetContractAddress: string | undefined =
                     snipContractAddress || LGND_ADDRESS;
                 if (!client || !platformContractAddress || !targetContractAddress) return;
+                store.dispatch(transactionActions.startTransaction());
 
                 const msg = Buffer.from(
                     JSON.stringify({ deposit: { to: toAddress || client.address } })
@@ -418,20 +420,35 @@ const _netMiddlewareClosure = (): Middleware => {
                         { gasLimit: 500_000 }
                     )
                     .then((tx) => {
-                        store.dispatch(
-                            addPopup({
-                                content: {
-                                    txn: {
-                                        success: Boolean(tx?.data.length),
-                                        summary: `Deposit ${formatBalance(
-                                            amount
-                                        )} $${DF_DENOM.toUpperCase()} successfully.`,
-                                        errSummary: "Deposit unsuccessfully. Please try again.",
+                        if (!client || !tx.data.length || !PLATFORM_ADDRESS) return;
+
+                        if (!tx.data.length) {
+                            return tx;
+                        } else {
+                            const rawMsg = Buffer.from(
+                                JSON.stringify({
+                                    Deposit: {},
+                                })
+                            ).toString("base64");
+
+                            return client.tx.compute.executeContract(
+                                {
+                                    contractAddress: PLATFORM_ADDRESS,
+                                    codeHash: codeHashes[PLATFORM_ADDRESS]?.codeHash,
+                                    sender: client.address,
+                                    msg: {
+                                        send_from_platform: {
+                                            contract_addr: STAKING_ADDRESS,
+                                            amount: amount,
+                                            msg: rawMsg,
+                                        },
                                     },
                                 },
-                                key: tx.transactionHash,
-                            })
-                        );
+                                { gasLimit: 500_000 }
+                            );
+                        }
+                    })
+                    .then((tx) => {
                         store.dispatch(toggleDepositPanel());
                         next({ ...action, payload: { ...action.payload, tx } });
                     })
@@ -788,6 +805,7 @@ const _netMiddlewareClosure = (): Middleware => {
                 const platformContractAddress = PLATFORM_ADDRESS;
                 if (!client || !platformContractAddress) return;
                 const { amount } = action.payload;
+                store.dispatch(transactionActions.startTransaction());
 
                 client.tx.compute
                     .executeContract(
@@ -919,6 +937,8 @@ const _netMiddlewareClosure = (): Middleware => {
                         console.error(message);
                         break;
                 }
+
+                store.dispatch(transactionActions.endTransaction());
                 break;
             }
 
