@@ -6,27 +6,11 @@ import imgTokens01 from "./../assets/images/tokens-01.png";
 
 export default function LegendaryTokenArticle(): React.ReactElement {
     return (
-        <Article className="flex-col flex-wrap lg:flex-row lg:flex-nowrap lg:min-h-[700px]">
+        <Article className="flex-col lg:py-16 flex-wrap lg:flex-row lg:flex-nowrap lg:min-h-[700px]">
             <div
                 className={cn(
                     "absolute top-0 bottom-0 right-0 left-0",
                     "bg-no-repeat bg-cover bg-bottom"
-                )}
-            ></div>
-
-            <div
-                className={cn(
-                    "hidden lg:block",
-                    "absolute bottom-0 left-0 right-0 h-[200px] z-20",
-                    "bg-gradient-to-t from-primary-mint-lab to-slate-900/0"
-                )}
-            ></div>
-
-            <div
-                className={cn(
-                    "hidden lg:block",
-                    "absolute top-0 left-0 right-0 h-[200px] z-20",
-                    "bg-gradient-to-b from-primary-mint-lab to-slate-900/0"
                 )}
             ></div>
 
@@ -58,14 +42,7 @@ export default function LegendaryTokenArticle(): React.ReactElement {
             <div className="relative lg:w-1/2 z-10 ">
                 <div
                     className={cn(
-                        "hidden lg:block",
-                        "absolute top-0 bottom-0 left-0 w-1/2",
-                        "bg-gradient-to-r from-primary-mint-lab to-slate-900/0"
-                    )}
-                ></div>
-                <div
-                    className={cn(
-                        "min-h-[300px] my-10 lg:h-auto ",
+                        "min-h-[300px] my-5 lg:h-auto ",
                         "lg:absolute lg:top-0 lg:bottom-0 lg:left-0 lg:right-0",
                         "bg-no-repeat bg-center bg-contain"
                     )}
