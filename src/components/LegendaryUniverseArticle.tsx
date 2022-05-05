@@ -58,13 +58,13 @@ export default function LegendaryUniverseArticle(): React.ReactElement {
                 <div
                     className={cn(
                         "lg:hidden",
-                        "absolute -bottom-10 left-0 right-0 h-1/2 z-10 ",
+                        "absolute -bottom-10 left-0 right-0 h-1/2 z-10",
                         "bg-gradient-to-t from-primary-mint-lab via-primary-mint-lab/75 to-slate-900/0"
                     )}
                 ></div>
                 <div
                     className={cn(
-                        "absolute left-[20px] lg:left-0 -bottom-24  w-3/4 h-full",
+                        "absolute left-[20px] lg:left-0 -bottom-24  w-3/4 h-[90%] ",
                         "bg-no-repeat bg-bottom "
                     )}
                     style={{
@@ -74,15 +74,18 @@ export default function LegendaryUniverseArticle(): React.ReactElement {
                 ></div>
                 <div
                     className={cn(
-                        "absolute right-0 -bottom-24 w-3/4 h-full",
-                        "bg-no-repeat bg-contain bg-bottom"
+                        "absolute right-0 -bottom-24 w-3/4 h-[80%]",
+                        "bg-no-repeat  bg-bottom"
                     )}
-                    style={{ backgroundImage: `url(${imgYetiGirl01})` }}
+                    style={{
+                        backgroundImage: `url(${imgYetiGirl01})`,
+                        backgroundSize: "auto 100%",
+                    }}
                 ></div>
             </div>
             <div
                 className={cn(
-                    "min-h-screen lg:h-auto pt-[120px]",
+                    "relative min-h-screen lg:h-auto pt-[120px]",
                     "lg:w-1/2 z-20 lg:bg-primary-mint-lab lg:px-12",
                     "text-white flex flex-col flex-nowrap justify-center items-stretch px-8",
                     "bg-no-repeat "
