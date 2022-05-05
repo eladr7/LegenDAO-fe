@@ -10,6 +10,7 @@ import Button from "./commons/Button";
 import Input from "./commons/Input";
 import Panel from "./commons/Panel";
 import { IAmount } from "./DepositPanel";
+import ArrowDownIcon from "./icons/ArrowDownIcon";
 
 type Props = {
     onCloseBtnClicked?: React.MouseEventHandler<HTMLElement>;
@@ -75,7 +76,7 @@ export default function WithdrawPanel({ onCloseBtnClicked }: Props): React.React
             <div className={cn("w-full text-white", "flex flex-col items-stretch justify-start")}>
                 <h1 className="mb-6 last:mb-0 text-2xl font-bold">Withdraw LGND</h1>
                 <div className="mb-6 last:mb-0 flex flex-col flex-nowrap">
-                    <label className="mb-2 last:mb-0 opacity-75">From</label>
+                    <label className="mb-2 last:mb-0 opacity-75 font-emphasis">From</label>
                     <Input
                         bTransparent
                         bigness="xl"
@@ -87,8 +88,8 @@ export default function WithdrawPanel({ onCloseBtnClicked }: Props): React.React
                 </div>
                 <div className="mb-6 last:mb-0 flex flex-col flex-nowrap">
                     <div className="mb-2 last:mb-0 flex flex-row justify-between items-center text-sm tablet-2:text-base">
-                        <label className="opacity-75">Amount to Withdraw</label>
-                        <label className="opacity-75">
+                        <label className="opacity-75 font-emphasis">Amount to Withdraw</label>
+                        <label className="opacity-75 font-emphasis">
                             Balance:{" "}
                             {formatBalance(
                                 walletState.balances[PLATFORM_ADDRESS as string]?.staked || "0"
@@ -110,7 +111,9 @@ export default function WithdrawPanel({ onCloseBtnClicked }: Props): React.React
                         autoFocus
                     />
                     {inputAmount.error && (
-                        <label className="text-red-500/75 mt-2">{inputAmount.error}</label>
+                        <label className="text-red-500/75 mt-2 font-emphasis">
+                            {inputAmount.error}
+                        </label>
                     )}
                 </div>
                 <div className="mb-6 last:mb-0 flex flex-col flex-nowrap">
@@ -126,6 +129,43 @@ export default function WithdrawPanel({ onCloseBtnClicked }: Props): React.React
                     >
                         Withdraw
                     </Button>
+                </div>
+
+                <div className="grid grid-cols-2 gap-4">
+                    <div className="mb-6 last:mb-0 flex flex-col flex-nowrap">
+                        <div className="mb-2 last:mb-0 flex flex-row justify-between items-center text-sm tablet-2:text-base">
+                            <label className="opacity-75 font-emphasis">Unbounding</label>
+                        </div>
+                        <Input
+                            bTransparent
+                            bigness="xl"
+                            placeholder="Address"
+                            value={`${15.1436} LGND`}
+                            disabled
+                            className="truncate"
+                        />
+                    </div>
+                    <div className="mb-6 last:mb-0 flex flex-col flex-nowrap">
+                        <div className="mb-2 last:mb-0 flex flex-row justify-between items-center text-sm tablet-2:text-base">
+                            <label className="opacity-75 font-emphasis">Unlocked</label>
+                        </div>
+                        <Input
+                            rightButtonText="Redeem"
+                            bTransparent
+                            bigness="xl"
+                            placeholder="Address"
+                            value={`${15.1436} LGND`}
+                            disabled
+                            className="truncate"
+                        />
+                    </div>
+                </div>
+
+                <div className="flex flex-col justify-center items-center cursor-pointer">
+                    <div className="w-icon h-icon grow-0 shrink-0 rotate-180">
+                        <ArrowDownIcon />
+                    </div>
+                    <span className="mt-2">Collapse</span>
                 </div>
             </div>
         </Panel>

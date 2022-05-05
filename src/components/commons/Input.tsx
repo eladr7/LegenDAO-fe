@@ -68,7 +68,7 @@ export default function Input({
                     "font-emphasis focus:outline-none disabled:opacity-75 min-w-0",
                     "grow shrink px-4",
                     { [getIconRightMargin()]: Boolean(rightIconNode) },
-                    { "pr-36": Boolean(rightButtonText) },
+                    { "pr-24": Boolean(rightButtonText) },
                     bTransparent ? "bg-slate-900/50 text-white/90" : "bg-slate-900 text-white",
                     className
                 )}
@@ -126,9 +126,9 @@ export default function Input({
                             bTransparent
                             onClick={rightButtonOnClick}
                             bigness="sm"
-                            className="px-6 opacity-50 hover:opacity-100"
+                            className="px-4 opacity-50 hover:opacity-100"
                         >
-                            {rightButtonText}
+                            <span className="text-sm">{rightButtonText}</span>
                         </Button>
                     </div>
                 </div>

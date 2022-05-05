@@ -52,7 +52,7 @@ export default function StakeFormPanel({
                 </div>
 
                 <div className={cn("mb-4 last:mb-0 flex flex-col flex-nowrap")}>
-                    <label className="mb-2 last:mb-0 opacity-75">Total Staked Balance</label>
+                    <label className="mb-2 last:mb-0 opacity-75 font-emphasis">Total Staked Balance</label>
                     <div
                         className={cn(
                             "flex flex-row flex-nowrap items-end",
@@ -70,7 +70,7 @@ export default function StakeFormPanel({
                 </div>
 
                 <div className={cn("mb-4 last:mb-0 flex flex-col flex-nowrap")}>
-                    <label className="mb-2 last:mb-0 opacity-75">Rewards</label>
+                    <label className="mb-2 last:mb-0 opacity-75 font-emphasis">Rewards</label>
                     <div
                         className={cn(
                             "flex flex-row flex-nowrap items-end",
