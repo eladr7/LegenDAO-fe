@@ -35,6 +35,10 @@ const _startTransaction: CaseReducer<TTransactionState> = (state) => {
     state.bIsPending = true;
 };
 
+const _endTransaction: CaseReducer<TTransactionState> = (state) => {
+    state.bIsPending = false;
+};
+
 const _sendTokenFromPlatformToContract: CaseReducer<
     TTransactionState,
     PayloadAction<{
@@ -157,6 +161,7 @@ const transactionSlice = createSlice({
     initialState,
     reducers: {
         startTransaction: _startTransaction,
+        endTransaction: _endTransaction,
         depositToPlatform: _depositToPlatform,
         sendTokenFromPlatformToContract: _sendTokenFromPlatformToContract,
         addMinters: _addMinters,

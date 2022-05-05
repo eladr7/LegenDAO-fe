@@ -117,7 +117,11 @@ export default function WithdrawPanel({ onCloseBtnClicked }: Props): React.React
                         className="font-bold"
                         bigness="xl"
                         onClick={handleOnWithdrawBtnClicked}
-                        disabled={!!inputAmount.error || !inputAmount.amount}
+                        disabled={
+                            !!inputAmount.error ||
+                            !inputAmount.amount ||
+                            transactionState.bIsPending
+                        }
                     >
                         Withdraw
                     </Button>
