@@ -2,6 +2,7 @@
 import React, { useCallback, useMemo } from "react";
 import cn from "classnames";
 import imgRoadmap01 from "../assets/images/roadmap-background-01.png";
+import imgRoadmapMobile from "../assets/images/roadmap-mobile-background.png";
 import Article from "./commons/Article";
 import { ArticleBox } from "./ArticleBox";
 import { useMediaQuery } from "../app/hooks";
@@ -282,10 +283,14 @@ export default function RoadmapArticle(): React.ReactElement {
                 </h1>
                 <div
                     className={cn(
-                        "absolute top-20 bottom-0 right-0 left-0",
+                        "absolute top-0 lg:top-20 bottom-0 right-0 left-0",
                         "bg-no-repeat bg-cover bg-top"
                     )}
-                    style={{ backgroundImage: `url(${imgRoadmap01})` }}
+                    style={{
+                        backgroundImage: mediaQuery.checkMatchMinWidth(760)
+                            ? `url(${imgRoadmap01})`
+                            : `url(${imgRoadmapMobile})`,
+                    }}
                 ></div>
 
                 <div
