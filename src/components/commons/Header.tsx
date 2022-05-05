@@ -121,7 +121,7 @@ export function Header({
                     bActivated={accessibilityState.bBalanceMenuOn}
                     className={cn(
                         { "z-10": accessibilityState.bBalanceMenuOn },
-                        "!text-sm !h-8 !px-2 tablet-2:!h-input-sm tablet-2:!px-4 tablet-2:!text-base"
+                        "!text-sm !h-8 !px-2 tablet-2:!h-input-sm tablet-2:!px-4 tablet-2:!text-base !border-[#B2BAC7] !opacity-80"
                     )}
                 >
                     <div className="flex flex-row flex-nowrap justify-center items-center">
@@ -337,7 +337,7 @@ export function Header({
                     <div className="hidden tablet:block">{renderActions()}</div>
                     <div className="ml-0 tablet:ml-8 first:ml-0 flex flex-row flex-nowrap">
                         <Button
-                            className="hidden desktop:flex"
+                            className="hidden desktop:flex !border-[#B2BAC7] !opacity-80"
                             bigness="sm"
                             bTransparent
                             onClick={handleOnGetLGNDBtnClicked}
@@ -345,7 +345,7 @@ export function Header({
                             Get $LGND
                         </Button>
                         <Button
-                            className="hidden desktop:flex"
+                            className="hidden desktop:flex !border-[#B2BAC7] !opacity-80"
                             bigness="sm"
                             bTransparent
                             onClick={handleOnCollectionsBtnClicked}
@@ -353,7 +353,7 @@ export function Header({
                             Collections
                         </Button>
                         <Button
-                            className="hidden desktop:flex"
+                            className="hidden desktop:flex !border-[#B2BAC7] !opacity-80"
                             bigness="sm"
                             bTransparent
                             onClick={handleOnCreateBtnClicked}
