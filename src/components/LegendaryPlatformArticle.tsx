@@ -34,13 +34,13 @@ export default function LegendaryPlatformArticle(): React.ReactElement {
                             The Legendary <p className="inline-block lg:block">Platform</p>
                         </h1>
                         <div className="mb-8 last:mb-0 lg:max-w-[650px]">
-                            <p className="mb-4 last:mb-0 opacity-75 text-paragraph text-justify">
+                            <p className="mb-4 last:mb-0 opacity-75 text-paragraph lg:text-justify">
                                 Legendao is a first of its kind NFT platform, designed to be a Mint
                                 Lab for top creators, and a unique kind of immersive experience for
                                 collectors, all of it governed by an underlying DAO.
                             </p>
 
-                            <p className="mb-4 last:mb-0 opacity-75 text-paragraph text-justify">
+                            <p className="mb-4 last:mb-0 opacity-75 text-paragraph lg:text-justify">
                                 It’s a mixed-in and out-of-universe experience with its own
                                 backstory, where users start with a unique avatar (a baseline NFT).
                                 Avatars grow stronger over time and obtain loot boxes in their
@@ -61,7 +61,7 @@ export default function LegendaryPlatformArticle(): React.ReactElement {
                             Platform Mechanics
                         </h1>
                         <div className="mb-8 last:mb-0 lg:max-w-[650px]">
-                            <p className="mb-4 last:mb-0 opacity-75 text-paragraph text-justify">
+                            <p className="mb-4 last:mb-0 opacity-75 text-paragraph lg:text-justify">
                                 Loot-boxes allow you to mint NFTs from the best artists on our
                                 platform (all curated and hand-picked by us), as well as develop
                                 your avatar. Developing your avatar has far-reaching implications,
@@ -70,7 +70,7 @@ export default function LegendaryPlatformArticle(): React.ReactElement {
                                 whitelist spots.
                             </p>
 
-                            <p className="mb-4 last:mb-0 opacity-75 text-paragraph text-justify">
+                            <p className="mb-4 last:mb-0 opacity-75 text-paragraph lg:text-justify">
                                 Our goal is to bring the best and most interesting NFT projects into
                                 Legendao. We achieve this through two mechanisms. First, Secret NFT
                                 technology, which is only available on Secret Network, allows us to
@@ -83,7 +83,7 @@ export default function LegendaryPlatformArticle(): React.ReactElement {
                     </div>
                 </div>
             </Article>
-            <Article className="min-h-[220px] lg:min-h-[1000px] bg-primary-mint-lab">
+            <Article className="min-h-[250px] lg:min-h-[1000px] bg-primary-mint-lab my-10">
                 <div
                     className={cn(
                         "absolute top-0 bottom-0 lg:bottom-[100px] right-0 left-0",
@@ -94,6 +94,7 @@ export default function LegendaryPlatformArticle(): React.ReactElement {
 
                 <div
                     className={cn(
+                        "hidden lg:block",
                         "absolute bottom-0 left-0 right-0 h-[100px] z-20",
                         "bg-gradient-to-t from-primary-mint-lab to-slate-900/0"
                     )}

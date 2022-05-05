@@ -232,7 +232,7 @@ export default function RoadmapArticle(): React.ReactElement {
                 {arrMobile.map((item, index) => {
                     return (
                         <div key={index}>
-                            <div className="mt-12 text-white text-md font-bold">{item.stage}</div>
+                            <div className="mt-12  text-md font-bold">{item.stage}</div>
                             <div
                                 className={cn(
                                     "mt-3 text-lg font-bold",
@@ -241,16 +241,11 @@ export default function RoadmapArticle(): React.ReactElement {
                             >
                                 {item.title}
                             </div>
-                            <div
-                                className={cn(
-                                    "mt-3  text-base font-medium"
-                                    // item.type ? "text-white" : " text-[#AFB7C6] "
-                                )}
-                            >
+                            <div className={cn("mt-3  text-base font-medium")}>
                                 <ul className="ml-8">
                                     {item.desc.map((item1, index1) => {
                                         return (
-                                            <li className="list-disc" key={index1}>
+                                            <li className="list-disc text-[#E3E3E3]" key={index1}>
                                                 {item1}
                                             </li>
                                         );
