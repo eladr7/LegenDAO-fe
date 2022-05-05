@@ -24,7 +24,16 @@ export default function WithdrawPanel({ onCloseBtnClicked }: Props): React.React
     const walletState = useAppSelector((state) => state.wallet);
     const networkState = useAppSelector((state) => state.network);
     const transactionState = useAppSelector((state) => state.transaction);
+    const [bIsExpanded, setIsExpanded] = useState<boolean>(false);
     const dispatch = useAppDispatch();
+
+    const handleOnExpandBtnClicked = useCallback(() => {
+        setIsExpanded(true);
+    }, []);
+
+    const handleOnCollapseBtnClicked = useCallback(() => {
+        setIsExpanded(false);
+    }, []);
 
     const handleOnWithdrawBtnClicked = useCallback(() => {
         if (!networkState.bIsConnected) return;
@@ -131,42 +140,58 @@ export default function WithdrawPanel({ onCloseBtnClicked }: Props): React.React
                     </Button>
                 </div>
 
-                <div className="grid grid-cols-2 gap-4">
-                    <div className="mb-6 last:mb-0 flex flex-col flex-nowrap">
-                        <div className="mb-2 last:mb-0 flex flex-row justify-between items-center text-sm tablet-2:text-base">
-                            <label className="opacity-75 font-emphasis">Unbounding</label>
+                {bIsExpanded ? (
+                    <>
+                        <div className="grid grid-cols-2 gap-4">
+                            <div className="mb-6 last:mb-0 flex flex-col flex-nowrap">
+                                <div className="mb-2 last:mb-0 flex flex-row justify-between items-center text-sm tablet-2:text-base">
+                                    <label className="opacity-75 font-emphasis">Unbounding</label>
+                                </div>
+                                <Input
+                                    bTransparent
+                                    bigness="xl"
+                                    placeholder="Address"
+                                    value={`${15.1436} LGND`}
+                                    disabled
+                                    className="truncate"
+                                />
+                            </div>
+                            <div className="mb-6 last:mb-0 flex flex-col flex-nowrap">
+                                <div className="mb-2 last:mb-0 flex flex-row justify-between items-center text-sm tablet-2:text-base">
+                                    <label className="opacity-75 font-emphasis">Unlocked</label>
+                                </div>
+                                <Input
+                                    rightButtonText="Redeem"
+                                    bTransparent
+                                    bigness="xl"
+                                    placeholder="Address"
+                                    value={`${15.1436} LGND`}
+                                    disabled
+                                    className="truncate"
+                                />
+                            </div>
                         </div>
-                        <Input
-                            bTransparent
-                            bigness="xl"
-                            placeholder="Address"
-                            value={`${15.1436} LGND`}
-                            disabled
-                            className="truncate"
-                        />
-                    </div>
-                    <div className="mb-6 last:mb-0 flex flex-col flex-nowrap">
-                        <div className="mb-2 last:mb-0 flex flex-row justify-between items-center text-sm tablet-2:text-base">
-                            <label className="opacity-75 font-emphasis">Unlocked</label>
+                        <div
+                            className="flex flex-col justify-center items-center cursor-pointer"
+                            onClick={handleOnCollapseBtnClicked}
+                        >
+                            <div className="w-icon h-icon grow-0 shrink-0 rotate-180">
+                                <ArrowDownIcon />
+                            </div>
+                            <span className="mt-2 text-sm">Collapse</span>
                         </div>
-                        <Input
-                            rightButtonText="Redeem"
-                            bTransparent
-                            bigness="xl"
-                            placeholder="Address"
-                            value={`${15.1436} LGND`}
-                            disabled
-                            className="truncate"
-                        />
+                    </>
+                ) : (
+                    <div
+                        className="flex flex-col justify-center items-center cursor-pointer"
+                        onClick={handleOnExpandBtnClicked}
+                    >
+                        <div className="w-icon h-icon grow-0 shrink-0">
+                            <ArrowDownIcon />
+                        </div>
+                        <span className="mt-2 text-sm">Expand</span>
                     </div>
-                </div>
-
-                <div className="flex flex-col justify-center items-center cursor-pointer">
-                    <div className="w-icon h-icon grow-0 shrink-0 rotate-180">
-                        <ArrowDownIcon />
-                    </div>
-                    <span className="mt-2">Collapse</span>
-                </div>
+                )}
             </div>
         </Panel>
     );
