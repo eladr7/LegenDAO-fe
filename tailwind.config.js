@@ -107,10 +107,10 @@ module.exports = {
                     "&::-webkit-scrollbar": {
                         width: "5px",
                         height: "8px",
-                        background: "#dddddd",
+                        background: "rgba(255,255,255,0.02)",
                     },
                     "&::-webkit-scrollbar-thumb": {
-                        background: "#777777",
+                        background: "rgba(255,255,255,0.1)",
                     },
                 },
             });

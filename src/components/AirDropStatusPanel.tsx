@@ -194,10 +194,7 @@ export default function AirDropStatusPanel({ onCloseBtnClicked }: Props): React.
         return (
             <Panel onCloseBtnClicked={onCloseBtnClicked}>
                 <form
-                    className={cn(
-                        "w-full text-white",
-                        "flex flex-col items-stretch justify-start"
-                    )}
+                    className={cn("w-full text-white", "flex flex-col items-stretch justify-start")}
                     onSubmit={handleSubmit(handleCheckAirdropStatus)}
                 >
                     <h1 className="mb-6 last:mb-0 text-2xl font-bold">LGND Airdrop Status</h1>
@@ -278,11 +275,13 @@ export default function AirDropStatusPanel({ onCloseBtnClicked }: Props): React.
                             Check Airdrop
                         </Button>
                     </div>
-                    <div className="mb-6 last:mb-0 flex flex-row flex-nowrap justify-center">
-                        <div className="w-icon h-icon grow-0 shrink-0 animate-spin">
-                            {isChecking && <LoadingIcon />}
+                    {isChecking && (
+                        <div className="mb-6 last:mb-0 flex flex-row flex-nowrap justify-center">
+                            <div className="w-icon h-icon grow-0 shrink-0 animate-spin">
+                                <LoadingIcon />
+                            </div>
                         </div>
-                    </div>
+                    )}
                 </form>
             </Panel>
         );
@@ -303,10 +302,7 @@ export default function AirDropStatusPanel({ onCloseBtnClicked }: Props): React.
         return (
             <Panel onCloseBtnClicked={onCloseBtnClicked}>
                 <div
-                    className={cn(
-                        "w-full text-white",
-                        "flex flex-col items-stretch justify-start"
-                    )}
+                    className={cn("w-full text-white", "flex flex-col items-stretch justify-start")}
                 >
                     <h1 className="mb-6 last:mb-0 text-2xl font-bold">LGND Airdrop Status</h1>
 
@@ -361,10 +357,7 @@ export default function AirDropStatusPanel({ onCloseBtnClicked }: Props): React.
         return (
             <Panel onCloseBtnClicked={onCloseBtnClicked}>
                 <div
-                    className={cn(
-                        "w-full text-white",
-                        "flex flex-col items-stretch justify-start"
-                    )}
+                    className={cn("w-full text-white", "flex flex-col items-stretch justify-start")}
                 >
                     <h1 className="mb-6 last:mb-0 text-2xl font-bold">LGND Airdrop Status</h1>
 
@@ -387,10 +380,7 @@ export default function AirDropStatusPanel({ onCloseBtnClicked }: Props): React.
                     </div>
 
                     <div className="mb-6 last:mb-0 flex flex-col flex-nowrap">
-                        <Button
-                            bigness="xl"
-                            onClick={handleCheckAnotherAddress}
-                        >
+                        <Button bigness="xl" onClick={handleCheckAnotherAddress}>
                             Check Another Address
                         </Button>
                     </div>
