@@ -9,7 +9,7 @@ const TransactionMsg = ({
   errSummary?: string
 }) => {
   return (
-    <div className="flex-nowrap">
+    <div className="flex-nowrap font-medium">
       <div className={
         success ? "text-green-500" : "text-red-500"
       }>

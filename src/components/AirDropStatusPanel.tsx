@@ -171,7 +171,7 @@ export default function AirDropStatusPanel({ onCloseBtnClicked }: Props): React.
                     content: {
                         txn: {
                             success: false,
-                            summary: "Claim your airdrop unsuccessfully",
+                            errSummary: "Claim your airdrop unsuccessfully",
                         },
                     },
                 })

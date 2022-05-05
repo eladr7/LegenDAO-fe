@@ -68,7 +68,8 @@ const ToastMessage = ({
     return (
         <div
             className={cn(
-                "fixed right-4 max-w-sm w-full z-[9999] rounded-xl",
+                "sm:fixed sm:right-4 s max-w-sm w-full z-[9999] rounded-xl",
+                "xs:sticky xs:m-auto",
                 "bg-gradient-to-br from-white/40 via-white/5 to-white/0"
             )}
             style={{
@@ -84,20 +85,11 @@ const ToastMessage = ({
             >
                 <div
                     className={cn(
-                        "absolute -translate-x-1/2 -translate-y-1/2 w-1/4 left-1/2 right-1/2 top-1/2 bottom-1/2",
-                        "bg-gradient-to-br from-white/50 to-white/0 mix-blend-overlay ",
-                        "rounded-xl blur-2xl"
-                    )}
-                >
-                    <div className="bg-[#4771A1]/50 w-full h-full"></div>
-                </div>
-                <div
-                    className={cn(
                         "absolute top-0 left-0 bottom-0 right-0 rounded-xl",
                         "bg-[#341D65]/50"
                     )}
                 ></div>
-                <div className={cn("inline-block w-full", "relative p-5 pr-9 overflow-hidden")}>
+                <div className={cn("inline-block w-full", "relative sm:p-5 sm:pr-9 xs:p-3 xs:pr-7 overflow-hidden")}>
                     {renderCloseBtn()}
                     {renderTransactionMsg()}
                 </div>
