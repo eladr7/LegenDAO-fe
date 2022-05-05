@@ -83,10 +83,11 @@ export default function DepositPanel({ onCloseBtnClicked }: Props): React.ReactE
                         placeholder="Address"
                         value={PLATFORM_ADDRESS || ""}
                         disabled
+                        className="truncate"
                     />
                 </div>
                 <div className="mb-6 last:mb-0 flex flex-col flex-nowrap">
-                    <div className="mb-2 last:mb-0 flex flex-row justify-between items-center">
+                    <div className="mb-2 last:mb-0 flex flex-row justify-between items-center text-sm tablet-2:text-base">
                         <label className="opacity-75">Amount to Deposit</label>
                         <label className="opacity-75">
                             Balance:{" "}
@@ -114,7 +115,7 @@ export default function DepositPanel({ onCloseBtnClicked }: Props): React.ReactE
                 <div className="mb-6 last:mb-0 flex flex-col flex-nowrap">
                     <Button
                         className="font-bold"
-                        bigness="xl"
+                        bigness="lg"
                         onClick={handleOnDepositBtnClicked}
                         disabled={
                             !!inputAmount.error ||

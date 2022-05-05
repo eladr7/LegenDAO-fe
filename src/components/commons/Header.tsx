@@ -198,7 +198,12 @@ export function Header({
                     <div
                         className={cn(
                             "absolute top-header left-0 right-0 p-4",
-                            "tablet-2:p-0 tablet:left-auto tablet-2:top-input-lg"
+                            "tablet-2:p-0 tablet:left-auto tablet-2:top-input-lg",
+                            {
+                                "hidden tablet-2:block":
+                                    accessibilityState.bDepositPanelOn ||
+                                    accessibilityState.bWithdrawPanelOn,
+                            }
                         )}
                     >
                         <div
@@ -212,6 +217,8 @@ export function Header({
         );
     }, [
         accessibilityState.bBalanceMenuOn,
+        accessibilityState.bDepositPanelOn,
+        accessibilityState.bWithdrawPanelOn,
         handleOnBalancesPanelOuterClicked,
         renderMenuBtn,
         renderWalletBtn,
