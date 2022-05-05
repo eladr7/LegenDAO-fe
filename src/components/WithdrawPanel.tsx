@@ -178,7 +178,7 @@ export default function WithdrawPanel({ onCloseBtnClicked }: Props): React.React
                             <div className="w-icon h-icon grow-0 shrink-0 rotate-180">
                                 <ArrowDownIcon />
                             </div>
-                            <span className="mt-2 text-sm">Collapse</span>
+                            <span className="mt-2 text-sm font-emphasis">Collapse</span>
                         </div>
                     </>
                 ) : (
@@ -189,7 +189,7 @@ export default function WithdrawPanel({ onCloseBtnClicked }: Props): React.React
                         <div className="w-icon h-icon grow-0 shrink-0">
                             <ArrowDownIcon />
                         </div>
-                        <span className="mt-2 text-sm">Expand</span>
+                        <span className="mt-2 text-sm font-emphasis">Expand</span>
                     </div>
                 )}
             </div>
