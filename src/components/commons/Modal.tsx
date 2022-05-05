@@ -45,7 +45,7 @@ export default function Modal({
                       bodyElement
                   )
                 : null,
-        [bodyElement, children, onOuterClick]
+        [bodyElement, children, onOuterClick, zIndex]
     );
 
     return renderContent();
