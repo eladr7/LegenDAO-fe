@@ -140,7 +140,7 @@ export default function LegendaryUniverseArticle(): React.ReactElement {
                     </Button>
                     <div className="flex justify-center lg:ml-8 ">
                         <div
-                            className="ml-8 first:ml-0 w-icon h-icon grow-0 shrink-0"
+                            className="ml-8 first:ml-0 w-icon h-icon grow-0 shrink-0 opacity-80"
                             onClick={() => {
                                 window.open(SOCIAL_NETWORK_URL.discord, "_blank");
                             }}
@@ -148,7 +148,7 @@ export default function LegendaryUniverseArticle(): React.ReactElement {
                             <DiscordIcon />
                         </div>
                         <div
-                            className="ml-8 first:ml-0 w-icon h-icon grow-0 shrink-0"
+                            className="ml-8 first:ml-0 w-icon h-icon grow-0 shrink-0 opacity-80"
                             onClick={() => {
                                 window.open(SOCIAL_NETWORK_URL.twitter, "_blank");
                             }}
