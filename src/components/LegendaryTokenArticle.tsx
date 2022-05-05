@@ -25,7 +25,7 @@ export default function LegendaryTokenArticle(): React.ReactElement {
                         Legendary Tokens
                     </h1>
                     <div className="mb-8 last:mb-0 lg:max-w-xl">
-                        <p className="mb-4 last:mb-0 opacity-75 text-paragraph text-justify">
+                        <p className="mb-4 last:mb-0 opacity-75 text-paragraph">
                             A central element of Legendao’s universe is the $LGND (pronounced
                             Legend) native token. This token serves as a fundamental in-universe
                             currency, used to purchase avatars, loot boxes and NFTs. We’ll disclose
