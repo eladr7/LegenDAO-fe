@@ -7,9 +7,12 @@ import imgArticleUniverse01Background from "./../assets/images/article-universe-
 import Modal from "../components/commons/Modal";
 import AppContext from "../contexts/AppContext";
 import StakeFormPanel from "../components/StakeFormPanel";
+import { useAppSelector } from "../app/hooks";
 
 export default function Stake(): React.ReactElement {
     const { state } = useContext(AppContext);
+    const depositPanel = useAppSelector((state) => state.accessibility.bDepositPanelOn);
+    const withdrawPanel = useAppSelector((state) => state.accessibility.bWithdrawPanelOn);
 
     return (
         <DefaultLayout headerType="general" bHeaderAlwaysOnTop sidebarTab="tab/stake">
@@ -22,7 +25,7 @@ export default function Stake(): React.ReactElement {
                     style={{ backgroundImage: `url(${imgArticleUniverse01Background})` }}
                 ></div>
                 <div className="absolute top-0 left-0 bottom-0 right-0 bg-slate-900/75"></div>
-                {state.bodyElement && (
+                {state.bodyElement && depositPanel === false && withdrawPanel === false && (
                     <Modal bodyElement={state.bodyElement}>
                         <StakeFormPanel
                             apr={55.27}
