@@ -31,7 +31,7 @@ export default function CollectionItem({
                     <div className="mb-4 last:mb-0 text-sm text-[#AFB7C6]">{description}</div>
                     <div className="mb-2 last:mb-0 flex flex-col tablet-2:flex-row flex-nowrap justify-between items-start tablet-2:items-center text-sm">
                         <div className="mb-4 tablet-2:mb-0 flex flex-col">
-                            <div className="text-blue-300">Starting Date</div>
+                            <div className="text-blue-300 font-emphasis">Starting Date</div>
                             <div className="font-bold">
                                 {startingDate.toLocaleDateString("en-EN", {
                                     year: "numeric",
@@ -41,11 +41,11 @@ export default function CollectionItem({
                             </div>
                         </div>
                         <div className="mb-4 tablet-2:mb-0 flex flex-col">
-                            <div className="text-blue-300">Total Items</div>
+                            <div className="text-blue-300 font-emphasis">Total Items</div>
                             <div className="font-bold">{totalItemNum.toLocaleString()}</div>
                         </div>
                         <div className="mb-4 tablet-2:mb-0 flex flex-col">
-                            <div className="text-blue-300">Mint Price</div>
+                            <div className="text-blue-300 font-emphasis">Mint Price</div>
                             <div className="font-bold">{mintPrice.toLocaleString()} $LGND</div>
                         </div>
                     </div>
