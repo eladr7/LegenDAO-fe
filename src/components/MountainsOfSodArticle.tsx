@@ -15,7 +15,7 @@ export default function MountainsOfSodArticle(): React.ReactElement {
                     ? `url(${imgArticlePlatform02Background})`
                     : "",
             }}
-            className="lg:min-h-[1300px] min-h-[700px] my-10"
+            className="lg:min-h-[1200px] min-h-[700px]  bg-cover"
         >
             <div
                 className={cn(

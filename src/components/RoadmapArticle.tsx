@@ -84,7 +84,7 @@ export default function RoadmapArticle(): React.ReactElement {
             },
             {
                 stage: "",
-                title: "The House of Creators",
+                title: "Beyond the Mountains: The lost Kingdom",
                 desc: [
                     "Legendao is a living, breathing universe.",
                     "Through expansions and seasonal events, the DAO will keep collectors engaged. Each expansion will introduce new in-universe content, such as new characters, new item types (Legenforge for transmuting objects, potions, etc..), and many, many more.",
@@ -167,7 +167,7 @@ export default function RoadmapArticle(): React.ReactElement {
             },
             {
                 stage: "",
-                title: "The House of Creators",
+                title: "Beyond the Mountains: The lost Kingdom",
                 desc: [
                     "Legendao is a living, breathing universe.",
                     "Through expansions and seasonal events, the DAO will keep collectors engaged. Each expansion will introduce new in-universe content, such as new characters, new item types (Legenforge for transmuting objects, potions, etc..), and many, many more.",

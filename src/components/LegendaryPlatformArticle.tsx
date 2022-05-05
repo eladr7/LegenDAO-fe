@@ -83,21 +83,13 @@ export default function LegendaryPlatformArticle(): React.ReactElement {
                     </div>
                 </div>
             </Article>
-            <Article className="min-h-[250px] lg:min-h-[1000px] bg-primary-mint-lab my-10">
+            <Article className="min-h-[250px] lg:min-h-[700px] bg-primary-mint-lab my-10">
                 <div
                     className={cn(
-                        "absolute top-0 bottom-0 lg:bottom-[100px] right-0 left-0",
+                        "absolute top-0 bottom-0  right-0 left-0",
                         "bg-no-repeat bg-contain bg-bottom"
                     )}
                     style={{ backgroundImage: `url(${imgPlatform01})` }}
-                ></div>
-
-                <div
-                    className={cn(
-                        "hidden lg:block",
-                        "absolute bottom-0 left-0 right-0 h-[100px] z-20",
-                        "bg-gradient-to-t from-primary-mint-lab to-slate-900/0"
-                    )}
                 ></div>
             </Article>
         </>

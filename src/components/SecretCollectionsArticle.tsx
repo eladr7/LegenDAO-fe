@@ -39,7 +39,7 @@ export default function SecretCollectionsArticle(): React.ReactElement {
         <Article>
             <div
                 className={cn(
-                    "absolute top-0 bottom-0 right-0 left-0",
+                    "absolute top-0 bottom-0 right-0 left-0 ",
                     "bg-no-repeat bg-cover bg-center bg-primary-mint-lab"
                 )}
             ></div>
@@ -50,17 +50,16 @@ export default function SecretCollectionsArticle(): React.ReactElement {
                     "text-white flex flex-col flex-nowrap justify-center items-start lg:items-center"
                 )}
             >
-                <h1 className="mb-8 last:mb-0 font-bold text-3xl lg:text-5xl">Collections</h1>
+                <h1 className="mb-8 last:mb-0 font-bold text-3xl lg:text-5xl mt-10">Collections</h1>
                 <div className="mb-8 last:mb-0 lg:max-w-[70%]">
+                    <p className=" last:mb-0 opacity-75 text-paragraph lg:text-center font-light">
+                        Through a highly selective process, our goal is to bring the most legendary
+                        NFT collections into Legendao.
+                    </p>
                     <p className="mb-4 last:mb-0 opacity-75 text-paragraph lg:text-center font-light">
-                        A central element of Legendao’s universe is the $LGND (pronounced Legend)
-                        native token. This token serves as a fundamental in-universe currency, used
-                        to purchase avatars, loot boxes and NFTs. We’ll disclose full tokenomics
-                        soon, but $LGND and the DAO more generally innovate on top of existing
-                        mechanisms in several ways. Furthermore, to reach a wide distribution and
-                        the entire Cosmos ecosystem, initially, most circulating tokens would
-                        originate in an airdrop to $SCRT holders (primarily), $OSMO and $LUNA
-                        holders.
+                        We welcome all kinds of creators into the platform: brands, celebrities,
+                        athletes, artists and forward-thinking creators, all of whom will create
+                        better and more innovative collections through the use of Secret NFTs.
                     </p>
                 </div>
                 {renderSecretCollectionCard()}
