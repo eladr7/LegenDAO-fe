@@ -80,7 +80,7 @@ export function Header({
         return (
             <div className="flex flex-row flex-nowrap justify-end items-center">
                 <div
-                    className="w-icon h-icon grow-0 shrink-0 mr-8 last:mr-0"
+                    className="w-icon h-icon grow-0 shrink-0 mr-8 last:mr-0 opacity-80"
                     onClick={() => {
                         window.open(SOCIAL_NETWORK_URL.discord, "_blank");
                     }}
@@ -88,7 +88,7 @@ export function Header({
                     <DiscordIcon />
                 </div>
                 <div
-                    className="w-icon h-icon grow-0 shrink-0 mr-8 last:mr-0"
+                    className="w-icon h-icon grow-0 shrink-0 mr-8 last:mr-0 opacity-80"
                     onClick={() => {
                         window.open(SOCIAL_NETWORK_URL.twitter, "_blank");
                     }}

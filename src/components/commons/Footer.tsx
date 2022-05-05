@@ -59,18 +59,24 @@ export function Footer(): React.ReactElement {
                         style={{ backgroundImage: `url(${imgYetiHead01})` }}
                     ></div>
                     <div className="flex flex-col flex-nowrap">
-                        <div className="font-semibold text-sm tablet-2:text-2xl whitespace-nowrap">The Legendao</div>
-                        <div className="font-bold text-2xl tablet-2:text-4xl leading-none">Universe</div>
+                        <div className="font-semibold text-sm tablet-2:text-2xl whitespace-nowrap">
+                            The Legendao
+                        </div>
+                        <div className="font-bold text-2xl tablet-2:text-4xl leading-none">
+                            Universe
+                        </div>
                     </div>
                 </div>
                 <div className="tablet-2:hidden mb-8 w-full">
-                    <Button className="!w-full" bigness="sm" bTransparent>Contact Us</Button>
+                    <Button className="!w-full" bigness="sm" bTransparent>
+                        Contact Us
+                    </Button>
                 </div>
                 <div className="flex flex-col flex-nowrap items-center">
                     <div className="font-bold mb-4 last:mb-0">Join our community</div>
                     <div className="flex flex-row flex-nowrap items-center">
                         <div
-                            className="w-icon-lg h-iconw-icon-lg grow-0 shrink-0 mr-10 last:mr-0"
+                            className="w-icon-lg h-iconw-icon-lg grow-0 shrink-0 mr-10 last:mr-0 opacity-80"
                             onClick={() => {
                                 window.open(SOCIAL_NETWORK_URL.discord, "_blank");
                             }}
@@ -78,7 +84,7 @@ export function Footer(): React.ReactElement {
                             <DiscordIcon className="fill-slate-300" />
                         </div>
                         <div
-                            className="w-icon-lg h-iconw-icon-lg grow-0 shrink-0 mr-10 last:mr-0"
+                            className="w-icon-lg h-iconw-icon-lg grow-0 shrink-0 mr-10 last:mr-0 opacity-80"
                             onClick={() => {
                                 window.open(SOCIAL_NETWORK_URL.twitter, "_blank");
                             }}
