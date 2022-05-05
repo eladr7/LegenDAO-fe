@@ -24,14 +24,14 @@ export default function Button({
             case "sm":
                 return "h-input-sm rounded-lg px-4";
             case "md":
-                return "text-xl h-input-md rounded-lg px-4";
+                return "text-lg h-input-md rounded-lg px-4";
             case "lg":
                 return "text-xl h-input-lg rounded-lg px-4";
             case "xl":
                 return "text-xl h-input-xl rounded-xl px-8";
 
             default:
-                return "text-xl h-input rounded-lg px-4";
+                return "text-base h-input rounded-lg px-4";
         }
     }, [bigness]);
 

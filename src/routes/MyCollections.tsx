@@ -129,8 +129,8 @@ export default function MyCollections(): React.ReactElement {
                 >
                     <div className="absolute top-0 left-0 right-0 bottom-0 bg-slate-900/75"></div>
                     <div className="absolute top-0 left-0 right-0 bottom-0 bg-blue-900/25"></div>
-                    <Button className="z-10" onClick={handleOnEnterBtnClicked}>
-                        <span className="px-12 font-bold">Enter</span>
+                    <Button bigness="lg" className="z-10" onClick={handleOnEnterBtnClicked}>
+                        <span className="px-12">Enter</span>
                     </Button>
                 </div>
             );
@@ -149,6 +149,7 @@ export default function MyCollections(): React.ReactElement {
                 )}
                 {!mintState.agent && (
                     <Button
+                        bigness="lg"
                         onClick={handleOnMintBtnClicked}
                         className="z-10"
                         bTransparent={!collectionState.whitelistSpot}
@@ -323,7 +324,7 @@ export default function MyCollections(): React.ReactElement {
                     <div className="mb-8 tablet-2:hidden">{renderDomainPanel()}</div>
 
                     <div className="mb-8 tablet-2:mb-14 last:mb-0 flex flex-col flex-nowrap w-full">
-                        <Panel className="py-4">
+                        <Panel className="py-4 font-emphasis">
                             <div className="flex flex-col tablet:flex-row flex-nowrap justify-between items-center">
                                 <div className="mb-8 last:mb-0 tablet:mb-0 desktop:ml-20 first:ml-0 flex flex-col items-center tablet:items-start">
                                     <div className="text-blue-300">Starting Date</div>
@@ -343,6 +344,7 @@ export default function MyCollections(): React.ReactElement {
 
                     <div className="mb-4 tablet:mb-8 last:mb-0 flex flex-col tablet:flex-row flex-nowrap">
                         <Button
+                            
                             className="w-full tablet:w-auto"
                             bTransparent={Boolean(collectionState.whitelistSpot)}
                             bActivated={Boolean(collectionState.whitelistSpot)}
