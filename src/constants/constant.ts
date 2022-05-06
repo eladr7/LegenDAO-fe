@@ -26,4 +26,5 @@ export const AIRDROP_BTN_NAME = {
 
 export const MESSAGE_ERROR = {
   REQUEST_REJECTED: "Request rejected",
+  SIGNER_NOT_SET: "signer not set"
 };

@@ -110,6 +110,7 @@ const _netMiddlewareClosure = (): Middleware => {
         signature: undefined,
         account: "",
     };
+    const chainId = process.env.REACT_APP_NET_CHAIN_ID;
 
     const initAddressArray = [
         LGND_ADDRESS,
@@ -138,6 +139,11 @@ const _netMiddlewareClosure = (): Middleware => {
                     .catch((err) => {
                         console.warn(err);
                         store.dispatch(networkActions.disconnect());
+                        store.dispatch(
+                            applicationActions.toastRequestRejected({
+                                errorMsg: (err as any)?.message as string,
+                            })
+                        );
                     });
 
                 break;
@@ -190,8 +196,6 @@ const _netMiddlewareClosure = (): Middleware => {
                         store.dispatch(walletAsyncActions.connect({ delay: 200 }));
                         next({ ...action, payload: { signature: signer.signature } });
                     } else {
-                        const chainId = process.env.REACT_APP_NET_CHAIN_ID;
-
                         const msg = {
                             permit_name: KEY.PERMIT_NAME,
                             permissions: ["balance", "owner"],
@@ -252,7 +256,6 @@ const _netMiddlewareClosure = (): Middleware => {
             }
 
             case walletActions.getBalance.type: {
-                const chainId = process.env.REACT_APP_NET_CHAIN_ID;
                 const lgndToken = process.env.REACT_APP_ADDRESS_LGND;
                 const contractAddress = process.env.REACT_APP_ADDRESS_PLATFORM;
 
@@ -854,7 +857,6 @@ const _netMiddlewareClosure = (): Middleware => {
 
             case collectionAtions.getCollection.type: {
                 const getTokens = async () => {
-                    const chainId = process.env.REACT_APP_NET_CHAIN_ID;
                     if (!client || !NFT_ADDRESS || !chainId || !signerPermit.signature) return;
                     const tokens = await client.query.compute.queryContract({
                         contractAddress: NFT_ADDRESS,
@@ -932,7 +934,15 @@ const _netMiddlewareClosure = (): Middleware => {
                             })
                         );
                         break;
-
+                    case MESSAGE_ERROR.SIGNER_NOT_SET:
+                        window.keplr?.enable(chainId as string).catch((error) => {
+                            store.dispatch(
+                                applicationActions.toastRequestRejected({
+                                    errorMsg: (error as any)?.message as string,
+                                })
+                            );
+                        });
+                        break;
                     default:
                         console.error(message);
                         break;
