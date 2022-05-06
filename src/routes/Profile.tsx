@@ -247,6 +247,7 @@ export default function Profile(): React.ReactElement {
             bFooterOn={!mediaQuery.checkMatchMinWidth(1020)}
             headerType="general"
             headerDomainNode={renderHeaderDomainNode()}
+            bHeaderAlwaysOnTop
         >
             <Article className="grow pb-20">
                 <div

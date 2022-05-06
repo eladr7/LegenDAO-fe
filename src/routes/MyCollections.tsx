@@ -452,7 +452,14 @@ export default function MyCollections(): React.ReactElement {
     }, []);
 
     return (
-        <DefaultLayout headerType="collection" sidebarTab="tab/collections">
+        <DefaultLayout
+            headerType="collection"
+            sidebarTab="tab/collections"
+            bHeaderAlwaysOnTop={
+                !accessibilityState.bMintConfirmPurchasePanelOn &&
+                !accessibilityState.bMintSuccessfulPanelOn
+            }
+        >
             <Article className="grow text-white pb-20">
                 <div
                     className={cn(
