@@ -435,7 +435,7 @@ export default function MyCollections(): React.ReactElement {
     }, []);
 
     return (
-        <DefaultLayout headerType="collection" sidebarTab="tab/collections" bHeaderAlwaysOnTop>
+        <DefaultLayout headerType="collection" sidebarTab="tab/collections">
             <Article className="grow text-white pb-20">
                 <div
                     className={cn(
