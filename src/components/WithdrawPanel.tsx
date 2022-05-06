@@ -1,11 +1,11 @@
 import BigNumber from "bignumber.js";
 import cn from "classnames";
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
 import { PLATFORM_ADDRESS } from "../constants/contractAddress";
 import { DF_DENOM } from "../constants/defaults";
 import { transactionActions } from "../features/transaction/transactionSlice";
-import { formatBalance, parseBalance, shortenAddress } from "../helpers/format";
+import { formatBalance, formatIntBalance, parseBalance, shortenAddress } from "../helpers/format";
 import validator from "../helpers/validator";
 import Button from "./commons/Button";
 import Input from "./commons/Input";
@@ -22,6 +22,17 @@ export default function WithdrawPanel({ onCloseBtnClicked }: Props): React.React
         amount: "",
         error: "",
     });
+    const [dataExpand, setDataExpand] = useState({
+        unbonding: {
+            amount: "0",
+            denom: DF_DENOM.toUpperCase(),
+        },
+        unlocked: {
+            amount: "0",
+            denom: DF_DENOM.toUpperCase(),
+        },
+    });
+
     const walletState = useAppSelector((state) => state.wallet);
     const networkState = useAppSelector((state) => state.network);
     const transactionState = useAppSelector((state) => state.transaction);
@@ -81,6 +92,48 @@ export default function WithdrawPanel({ onCloseBtnClicked }: Props): React.React
         });
     }, [walletState.balances]);
 
+    useEffect(() => {
+        const unbondings =
+            walletState.balances[PLATFORM_ADDRESS as string]?.pending_redeem?.unbondings;
+
+        const unbonding = {
+            amount: "0",
+            denom: (
+                walletState.balances[PLATFORM_ADDRESS as string]?.denom || DF_DENOM
+            ).toUpperCase(),
+        };
+
+        if (unbondings) {
+            const results = unbondings.reduce(
+                (
+                    preVal: string,
+                    curVal: {
+                        end_ts: string;
+                        amount: string;
+                    }
+                ) => {
+                    return new BigNumber(preVal).plus(curVal?.amount).toString();
+                },
+                "0"
+            );
+
+            unbonding["amount"] = formatIntBalance(formatBalance(results));
+        }
+
+        const unlocked = {
+            amount:
+                walletState.balances[PLATFORM_ADDRESS as string]?.pending_redeem?.claimable || "0",
+            denom: (
+                walletState.balances[PLATFORM_ADDRESS as string]?.denom || DF_DENOM
+            ).toUpperCase(),
+        };
+
+        setDataExpand({
+            unbonding,
+            unlocked,
+        });
+    }, [walletState.balances]);
+
     return (
         <Panel onCloseBtnClicked={onCloseBtnClicked} className="grow">
             <div className={cn("w-full text-white", "flex flex-col items-stretch justify-start")}>
@@ -109,8 +162,10 @@ export default function WithdrawPanel({ onCloseBtnClicked }: Props): React.React
                         <label className="opacity-75 font-emphasis">Amount to Withdraw</label>
                         <label className="opacity-75 font-emphasis">
                             Balance:{" "}
-                            {formatBalance(
-                                walletState.balances[PLATFORM_ADDRESS as string]?.staked || "0"
+                            {formatIntBalance(
+                                formatBalance(
+                                    walletState.balances[PLATFORM_ADDRESS as string]?.staked || "0"
+                                )
                             ) || "--"}{" "}
                             {walletState.balances[
                                 PLATFORM_ADDRESS as string
@@ -163,7 +218,7 @@ export default function WithdrawPanel({ onCloseBtnClicked }: Props): React.React
                                     bTransparent
                                     bigness="xl"
                                     placeholder="Address"
-                                    value={`${15.1436} LGND`}
+                                    value={`${dataExpand.unbonding.amount} ${dataExpand.unbonding.denom}`}
                                     disabled
                                     className="truncate"
                                 />
@@ -177,7 +232,7 @@ export default function WithdrawPanel({ onCloseBtnClicked }: Props): React.React
                                     bTransparent
                                     bigness="xl"
                                     placeholder="Address"
-                                    value={`${15.1436} LGND`}
+                                    value={`${dataExpand.unlocked.amount} ${dataExpand.unlocked.denom}`}
                                     disabled
                                     className="truncate"
                                 />
