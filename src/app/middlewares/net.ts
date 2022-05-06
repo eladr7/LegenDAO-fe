@@ -24,6 +24,7 @@ import {
     toggleDepositPanel,
     toggleWithdrawPanel,
 } from "../../features/accessibility/accessibilitySlice";
+import walletAPI from "../../features/wallet/walletApi";
 
 interface IBalanceSnip20 {
     balance: {
@@ -120,7 +121,7 @@ const _netMiddlewareClosure = (): Middleware => {
         STAKING_ADDRESS,
     ];
 
-    return (store: MiddlewareAPI<TAppDispatch, TRootState>) => (next) => (action) => {
+    return (store: MiddlewareAPI<TAppDispatch, TRootState>) => (next) => async (action) => {
         switch (action.type) {
             case networkActions.tryConnecting.type: {
                 console.log("%cSTART CONNECTING TO SECRET NETWORK...", "color: lightgreen");
@@ -130,6 +131,7 @@ const _netMiddlewareClosure = (): Middleware => {
                     console.log("%CLEAR PREVIOUS CLIENT...", "color: yellow");
                     client = null;
                 }
+                await walletAPI.suggestChain({delay: 500});
 
                 _connect()
                     .then((result) => {
@@ -190,9 +192,6 @@ const _netMiddlewareClosure = (): Middleware => {
                     const allowedTokensMsg = signer?.msg.allowed_tokens;
 
                     const matchArray = initAddressArray.equals(allowedTokensMsg);
-                    if (!client) {
-                        await store.dispatch(networkActions.tryConnecting());
-                    }
 
                     if (signer && signer.account === client?.address && matchArray) {
                         signerPermit = signer;
@@ -455,7 +454,9 @@ const _netMiddlewareClosure = (): Middleware => {
                         }
                     })
                     .then((tx) => {
-                        store.dispatch(toggleDepositPanel());
+                        if (tx?.data.length) {
+                            store.dispatch(toggleDepositPanel());
+                        }
                         next({ ...action, payload: { ...action.payload, tx } });
                     })
                     .catch((error) => {

@@ -41,6 +41,7 @@ export function Header({
 }: Props): React.ReactElement {
     const navigate = useNavigate();
     const walletState = useAppSelector((state) => state.wallet);
+    const networkState = useAppSelector((state) => state.network);
     const accessibilityState = useAppSelector((state) => state.accessibility);
     const dispatch = useAppDispatch();
     const isWalletConnected = useCallback(() => {
@@ -62,12 +63,12 @@ export function Header({
     }, [accessibilityState.bDepositPanelOn, accessibilityState.bWithdrawPanelOn, dispatch]);
 
     const handleOnConnectWalletBtnClicked = useCallback(() => {
-        if (walletState.signature) {
+        if (!networkState.bIsConnected) {
             dispatch(networkActions.tryConnecting());
         } else {
             dispatch(walletActions.getSigner());
         }
-    }, [dispatch, walletState.signature]);
+    }, [dispatch, networkState.bIsConnected]);
 
     const handleOnGetLGNDBtnClicked = useCallback(() => {
         window.open("https://app.osmosis.zone/?from=ATOM&to=OSMO", "_blank");
@@ -235,24 +236,14 @@ export function Header({
         }
 
         return (
-            <Button
-                disabled={!walletState.bSuggested}
-                bigness="sm"
-                bTransparent
-                className={cn({ "animate-pulse": !walletState.bSuggested })}
-                onClick={handleOnConnectWalletBtnClicked}
-            >
+            <Button bigness="sm" bTransparent onClick={handleOnConnectWalletBtnClicked}>
                 <div className="flex flex-row flex-nowrap justify-center items-center">
                     <div className="w-icon h-icon grow-0 shrink-0 mr-2 last:mr-0">
                         <WalletIcon className="fill-white group-hover:fill-purple-700 transition-[fill]" />
                     </div>
 
-                    <span className="hidden tablet-2:inline-block">
-                        {walletState.bSuggested ? "Connect Wallet" : "Suggesting Chain..."}
-                    </span>
-                    <span className="tablet-2:hidden">
-                        {walletState.bSuggested ? "Wallet" : "..."}
-                    </span>
+                    <span className="hidden tablet-2:inline-block">Connect Wallet</span>
+                    <span className="tablet-2:hidden">Wallet</span>
                 </div>
             </Button>
         );
@@ -263,7 +254,6 @@ export function Header({
         handleOnConnectWalletBtnClicked,
         handleOnWalletBtnClicked,
         isWalletConnected,
-        walletState.bSuggested,
         walletState.primary?.address,
     ]);
 
