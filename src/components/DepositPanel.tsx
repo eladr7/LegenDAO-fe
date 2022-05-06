@@ -96,9 +96,9 @@ export default function DepositPanel({ onCloseBtnClicked }: Props): React.ReactE
                     />
                 </div>
                 <div className="mb-6 last:mb-0 flex flex-col flex-nowrap">
-                    <div className="mb-2 last:mb-0 flex flex-row justify-between items-center text-sm tablet-2:text-base">
-                        <label className="opacity-75">Amount <span className="hidden tablet:inline">to Deposit</span></label>
-                        <label className="opacity-75">
+                    <div className="mb-2 last:mb-0 flex flex-row justify-between items-center">
+                        <label className="opacity-75 text-sm tablet-2:text-base">Amount <span className="hidden tablet:inline">to Deposit</span></label>
+                        <label className="opacity-75 text-xs tablet-2:text-base">
                             Balance:{" "}
                             {formatIntBalance(
                                 formatBalance(walletState.balances[LGND_ADDRESS as string].amount)
