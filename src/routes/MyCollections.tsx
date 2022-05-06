@@ -52,7 +52,8 @@ export default function MyCollections(): React.ReactElement {
 
     const handleOnGetWhitelistSpotBtnClicked = useCallback(() => {
         window.open("https://discord.com/invite/nRFUkj3sxZ", "_blank");
-    }, []);
+        dispatch(setWhitelistSpot(true));
+    }, [dispatch]);
 
     const handleOnMyCollectionBtnClicked = useCallback(() => {
         navigate("/profile/collected");
