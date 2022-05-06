@@ -56,7 +56,7 @@ function Home(): React.ReactElement {
                         ></div>
                         <div
                             className={cn(
-                                "absolute left-0 bottom-60 w-[180px] h-[320px]",
+                                "absolute left-0 bottom-36 w-[180px] h-[320px]",
                                 "tablet-2: tablet-2:w-[350px] tablet-2:h-[700px]",
                                 "bg-no-repeat bg-contain bg-left-bottom"
                             )}
@@ -111,21 +111,21 @@ function Home(): React.ReactElement {
                         className={cn(
                             "relative w-full tablet-2:w-1/2 z-10 bg-slate-900 px-16 pb-28",
                             "flex flex-col flex-nowrap justify-end items-center",
-                            "bg-no-repeat bg-cover bg-right-bottom",
+                            "bg-no-repeat bg-cover bg-bottom tablet:bg-right-bottom",
                             "h-screen tablet-2:h-auto"
                         )}
                         style={{ backgroundImage: `url(${imgMountain01})` }}
                     >
                         <div
                             className={cn(
-                                "absolute right-0 bottom-0 w-3/4 h-3/4",
+                                "absolute right-0 bottom-0 w-2/3 tablet:w-3/4 h-3/4",
                                 "bg-no-repeat bg-contain bg-right-bottom"
                             )}
                             style={{ backgroundImage: `url(${imgYeti01})` }}
                         ></div>
                         <div
                             className={cn(
-                                "absolute left-0 bottom-0 w-2/3 h-2/3",
+                                "absolute left-0 bottom-0 w-1/2 tablet:w-2/3 h-2/3",
                                 "bg-no-repeat bg-contain bg-left-bottom"
                             )}
                             style={{ backgroundImage: `url(${imgYeti02})` }}

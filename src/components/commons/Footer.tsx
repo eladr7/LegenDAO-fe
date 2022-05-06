@@ -73,7 +73,7 @@ export function Footer(): React.ReactElement {
                     </Button>
                 </div>
                 <div className="flex flex-col flex-nowrap items-center">
-                    <div className="font-bold mb-4 last:mb-0">Join our community</div>
+                    <div className="font-normal tablet:font-bold mb-4 last:mb-0">Join our community</div>
                     <div className="flex flex-row flex-nowrap items-center">
                         <div
                             className="w-icon-lg h-iconw-icon-lg grow-0 shrink-0 mr-10 last:mr-0 opacity-80"
