@@ -34,7 +34,7 @@ export default function TeamArticle(): React.ReactElement {
         []
     );
     return (
-        <Article>
+        <Article className=" px-5 lg:px-16 py-8 lg:py-16">
             <div
                 className={cn(
                     "absolute top-0 bottom-0 right-0 left-0",
@@ -44,11 +44,11 @@ export default function TeamArticle(): React.ReactElement {
 
             <div
                 className={cn(
-                    "grow z-20 bg-primary-mint-lab px-5 lg:px-16",
+                    "grow z-20 bg-primary-mint-lab ",
                     "text-white flex flex-col flex-nowrap justify-center items-center overflow-hidden "
                 )}
             >
-                <h1 className="mb-8 last:mb-0 font-bold text-3xl lg:text-5xl">
+                <h1 className="mb-8 last:mb-0 font-bold text-2xl lg:text-5xl">
                     The Legendary Team
                 </h1>
                 <div
