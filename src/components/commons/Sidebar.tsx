@@ -28,6 +28,7 @@ type Props = React.BaseHTMLAttributes<HTMLDivElement> & {
 
 export default function Sidebar({ bodyElement, activatingTab }: Props): React.ReactElement {
     const navigate = useNavigate();
+    const walletState = useAppSelector((state) => state.wallet);
     const accessibilityState = useAppSelector((state) => state.accessibility);
     const dispatch = useAppDispatch();
 
@@ -65,9 +66,10 @@ export default function Sidebar({ bodyElement, activatingTab }: Props): React.Re
     }, [dispatch, navigate]);
 
     const handleOnWalletBtnClicked = useCallback(() => {
+        if (!walletState.primary) return;
         dispatch(accessibilityActions.toggleSidebar(false));
         dispatch(accessibilityActions.toggleBalanceMenu(true));
-    }, [dispatch]);
+    }, [dispatch, walletState.primary]);
 
     return ReactDOM.createPortal(
         <div
