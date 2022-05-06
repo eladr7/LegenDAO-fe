@@ -6,6 +6,7 @@ import walletReducer, { walletAsyncActions } from "../features/wallet/walletSlic
 import collectionReducer from "../features/collection/collectionSlice";
 import airdropReducer from "../features/airdrop/airdropSlice";
 import mintReducer from "../features/mint/mintSlice";
+import profileReducer from "../features/profile/profileSlice";
 import networkReducer from "../features/network/networkSlice";
 import transactionReducer from "../features/transaction/transactionSlice";
 import { netMiddleware } from "./middlewares/net";
@@ -18,6 +19,7 @@ const rootReducer = combineReducers({
     airdrop: airdropReducer,
     collection: collectionReducer,
     mint: mintReducer,
+    profile: profileReducer,
     application: applicationReducer,
 });
 

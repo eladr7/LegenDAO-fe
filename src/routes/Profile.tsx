@@ -11,44 +11,33 @@ import imgYetiProfile01 from "./../assets/images/yeti-profile-01.png";
 import imgBox01 from "./../assets/images/box-01.png";
 import ProfileCollectedPanel from "../components/ProfileCollectedPanel";
 import ProfileMyCollectionPanel from "../components/ProfileMyCollectionPanel";
-import { useLocation } from "react-router-dom";
 import PencilIcon from "../components/icons/PencilIcon";
-import { useMediaQuery } from "../app/hooks";
+import { useAppDispatch, useAppSelector, useMediaQuery } from "../app/hooks";
+import { profileActions } from "../features/profile/profileSlice";
 
 const REGEXP_USERNAME = "^[0-9a-zA-Z]+$";
 
-const TABS = ["/profile/general", "/profile/collected", "/profile/created"] as const;
-type Tab = typeof TABS[number];
-
-function isTab(tab: string): tab is Tab {
-    return TABS.includes(tab as Tab);
-}
-
 export default function Profile(): React.ReactElement {
     const rfMyNameInput = useRef<HTMLInputElement>(null);
+    const profileState = useAppSelector((state) => state.profile);
+    const dispatch = useAppDispatch();
     const mediaQuery = useMediaQuery();
-    const { pathname } = useLocation();
-    const getInitialTab = useCallback((): Tab => {
-        if (!isTab(pathname)) return "/profile/general";
-        return pathname;
-    }, [pathname]);
 
-    const [tab, setTab] = useState<Tab>(getInitialTab());
     const [myName, setMyName] = useState<string>("");
     const [isDisableInput, setIsDisableInput] = useState<boolean>(true);
     const [myNameErrorMessage, setMyNameErrorMessage] = useState<string | undefined>(undefined);
 
     const handleOnGeneralTabClicked = useCallback(() => {
-        setTab("/profile/general");
-    }, []);
+        dispatch(profileActions.setTab("/profile/general"));
+    }, [dispatch]);
 
     const handleOnCollectedTabClicked = useCallback(() => {
-        setTab("/profile/collected");
-    }, []);
+        dispatch(profileActions.setTab("/profile/collected"));
+    }, [dispatch]);
 
     const handleOnCreatedTabClicked = useCallback(() => {
-        setTab("/profile/created");
-    }, []);
+        dispatch(profileActions.setTab("/profile/created"));
+    }, [dispatch]);
 
     const handleOnMyNameChanged = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
         if (!rfMyNameInput.current) return;
@@ -71,7 +60,7 @@ export default function Profile(): React.ReactElement {
             <div className="flex flex-row flex-nowrap lg:text-lg justify-around w-full text-[#B2BAC7]">
                 <div
                     className={cn("lg:ml-8 first:ml-0 cursor-pointer", {
-                        "text-purple-400": tab === "/profile/general",
+                        "text-purple-400": profileState.tab === "/profile/general",
                     })}
                     onClick={handleOnGeneralTabClicked}
                 >
@@ -80,7 +69,7 @@ export default function Profile(): React.ReactElement {
                 <div className="lg:ml-8 first:ml-0 opacity-25">|</div>
                 <div
                     className={cn("lg:ml-8 first:ml-0 cursor-pointer ", {
-                        "text-purple-400": tab === "/profile/collected",
+                        "text-purple-400": profileState.tab === "/profile/collected",
                     })}
                     onClick={handleOnCollectedTabClicked}
                 >
@@ -89,7 +78,7 @@ export default function Profile(): React.ReactElement {
                 <div className="lg:ml-8 first:ml-0 opacity-25">|</div>
                 <div
                     className={cn("lg:ml-8 first:ml-0 cursor-pointer", {
-                        "text-purple-400": tab === "/profile/created",
+                        "text-purple-400": profileState.tab === "/profile/created",
                     })}
                     onClick={handleOnCreatedTabClicked}
                 >
@@ -97,10 +86,15 @@ export default function Profile(): React.ReactElement {
                 </div>
             </div>
         );
-    }, [handleOnCollectedTabClicked, handleOnCreatedTabClicked, handleOnGeneralTabClicked, tab]);
+    }, [
+        handleOnCollectedTabClicked,
+        handleOnCreatedTabClicked,
+        handleOnGeneralTabClicked,
+        profileState.tab,
+    ]);
 
     const renderDomain = useCallback(() => {
-        switch (tab) {
+        switch (profileState.tab) {
             case "/profile/general": {
                 return (
                     <div
@@ -246,7 +240,7 @@ export default function Profile(): React.ReactElement {
                 );
             }
         }
-    }, [tab, myNameErrorMessage, handleOnMyNameChanged, myName, isDisableInput, setIsDisableInput]);
+    }, [profileState.tab, myNameErrorMessage, isDisableInput, handleOnMyNameChanged, myName]);
 
     return (
         <DefaultLayout

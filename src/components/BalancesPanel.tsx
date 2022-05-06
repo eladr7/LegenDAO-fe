@@ -10,6 +10,7 @@ import {
     toggleWithdrawPanel,
     turnOffAllPanel,
 } from "../features/accessibility/accessibilitySlice";
+import { profileActions } from "../features/profile/profileSlice";
 import { formatBalance, formatIntBalance } from "../helpers/format";
 import Button from "./commons/Button";
 import Panel from "./commons/Panel";
@@ -83,7 +84,8 @@ export default function BalancesPanel({
                 return;
             }
             dispatch(accessibilityActions.toggleBalanceMenu(false));
-            navigate("/profile/collected");
+            dispatch(profileActions.setTab("/profile/collected"));
+            navigate("/profile");
         },
         [dispatch, navigate, onMyCollectionBtnClicked]
     );
@@ -113,7 +115,10 @@ export default function BalancesPanel({
     return (
         <Panel onCloseBtnClicked={onCloseBtnClicked}>
             <div
-                className={cn("w-full tablet-2:w-64 text-white", "flex flex-col items-stretch justify-start")}
+                className={cn(
+                    "w-full tablet-2:w-64 text-white",
+                    "flex flex-col items-stretch justify-start"
+                )}
             >
                 <div className="mb-6 last:mb-0 flex flex-col flex-nowrap">
                     <div className="mb-2 last:mb-0 text-lg font-light text-white text-opacity-70">
