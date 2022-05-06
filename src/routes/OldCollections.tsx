@@ -28,6 +28,12 @@ export default function OldCollections(): React.ReactElement {
         dispatch(collectionAsyncActions.searchOld(collectionState.searchString));
     }, [collectionState.searchString, dispatch]);
 
+    const handleSearch = useCallback(() => {
+        if (collectionState.searchString.trim() === "") return;
+        // Press enter to search
+        dispatch(collectionAsyncActions.searchOld(collectionState.searchString));
+    }, [collectionState.searchString, dispatch]);
+
     return (
         <DefaultLayout headerType="collection">
             <Article className="grow text-white pb-20">
@@ -64,6 +70,7 @@ export default function OldCollections(): React.ReactElement {
                             id="input-search/collections"
                             className="w-full tablet-2:w-auto"
                             onChange={handleOnCollectionSearchInputChange}
+                            onKeyPress={(e) => e.key === "Enter" && handleSearch()}
                             value={collectionState.searchString}
                             rightIconNode={
                                 <label
