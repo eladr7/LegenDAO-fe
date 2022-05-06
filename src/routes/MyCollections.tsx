@@ -455,8 +455,8 @@ export default function MyCollections(): React.ReactElement {
                     style={{ backgroundImage: `url(${imgTopSecretColBg01})` }}
                 ></div>
 
-                <div className="absolute top-0 left-0 bottom-0 right-0 bg-blue-900/50"></div>
-                <div className="absolute top-0 left-0 bottom-0 right-0 bg-slate-900/75"></div>
+                <div className="absolute top-0 left-0 bottom-0 right-0 bg-blue-900/75"></div>
+                <div className="absolute top-0 left-0 bottom-0 right-0 bg-slate-900/80"></div>
 
                 <div className="grow flex flex-col flex-nowrap items-stretch z-10">
                     <div className="flex flex-row flex-nowrap">
