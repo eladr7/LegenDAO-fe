@@ -85,7 +85,7 @@ export default function LegendaryUniverseArticle(): React.ReactElement {
             </div>
             <div
                 className={cn(
-                    "relative min-h-screen lg:h-auto pt-[120px]",
+                    "relative min-h-screen lg:h-auto pt-[120px] lg:pt-[80px]",
                     "lg:w-1/2 z-20 lg:bg-primary-mint-lab lg:px-12",
                     "text-white flex flex-col flex-nowrap justify-center items-stretch px-8",
                     "bg-no-repeat "
@@ -110,11 +110,11 @@ export default function LegendaryUniverseArticle(): React.ReactElement {
                         "bg-gradient-to-b from-primary-mint-lab via-primary-mint-lab-900/75 to-slate-900/5"
                     )}
                 ></div>
-                <h1 className="mb-4 md:mb-8 last:mb-0 font-bold text-3xl lg:text-5xl">
+                <h1 className="mb-4 md:mb-8 last:mb-0 font-bold text-3xl lg:text-6xl">
                     The Legendary <p className="inline-block lg:block">Universe</p>
                 </h1>
                 <div className="mb-8 last:mb-0 lg:max-w-[600px]">
-                    <p className="lg:opacity-75 text-paragraph ">
+                    <p className="lg:opacity-75 text-paragraph lg:!text-lg ">
                         Bringing all legendary creators into the Cosmos. The immersive mintlab for
                         all significant NFT projects. Focused on Cosmos, powered by Secret Network
                         and Secret NFTs. Legendao is a play-to-mint NFT platform. The platform is
