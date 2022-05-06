@@ -417,7 +417,7 @@ export function Header({
                     <div className="hidden tablet:block">{renderActions()}</div>
                     <div className="ml-0 tablet:ml-8 first:ml-0 flex flex-row flex-nowrap">
                         <Button
-                            className="hidden desktop:flex !border-[#B2BAC7] !opacity-80"
+                            className="hidden w-[124.38px] desktop:flex !border-[#B2BAC7] !opacity-80"
                             bigness="sm"
                             bTransparent
                             onClick={handleOnGetLGNDBtnClicked}
@@ -425,7 +425,7 @@ export function Header({
                             Get $LGND
                         </Button>
                         <Button
-                            className="hidden desktop:flex !border-[#B2BAC7] !opacity-80"
+                            className="hidden w-[124.38px] desktop:flex !border-[#B2BAC7] !opacity-80"
                             bigness="sm"
                             bTransparent
                             onClick={handleOnCollectionsBtnClicked}
@@ -433,7 +433,7 @@ export function Header({
                             Collections
                         </Button>
                         <Button
-                            className="hidden desktop:flex !border-[#B2BAC7] !opacity-80"
+                            className="hidden w-[124.38px] desktop:flex !border-[#B2BAC7] !opacity-80"
                             bigness="sm"
                             bTransparent
                             onClick={handleOnCreateBtnClicked}
