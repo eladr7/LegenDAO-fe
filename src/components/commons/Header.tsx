@@ -406,7 +406,7 @@ export function Header({
                     "absolute top-0 left-0 right-0 p-4 tablet-2:py-8",
                     bAlwaysOnTop ? "z-[200] tablet-2:z-[100]" : "z-50",
                     "flex flex-row flex-nowrap justify-between items-center",
-                    "text-white",
+                    "text-white bg-[#001b47] tablet-2:bg-transparent",
                     "tablet:px-16"
                 )}
             >

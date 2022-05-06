@@ -87,8 +87,8 @@ export default function MyCollections(): React.ReactElement {
 
     const renderFollowingCollections = useCallback(() => {
         return (
-            <div className="mt-8 tablet-2:mt-24 px-4 tablet-2:px-16 flex flex-col flex-nowrap">
-                <div className="mb-4 last:mb-0 font-semibold text-xl text-[#B3BBC9]">
+            <div className="mt-12 tablet-2:mt-24 px-4 tablet-2:px-16 flex flex-col flex-nowrap">
+                <div className="mb-6 last:mb-0 font-semibold text-xl text-[#B3BBC9]">
                     Following Collections
                 </div>
                 <div
@@ -234,7 +234,7 @@ export default function MyCollections(): React.ReactElement {
             return (
                 <div
                     className={cn(
-                        "w-full tablet-2:w-1/2 px-4 tablet-2:px-8 pl-4 tablet-2:pl-16 mt-28",
+                        "w-full tablet-2:w-1/2 px-4 tablet-2:px-8 pl-4 tablet-2:pl-16 mt-20 tablet-2:mt-28",
                         "flex flex-col flex-nowrap justify-start items-start"
                     )}
                 >
@@ -266,15 +266,15 @@ export default function MyCollections(): React.ReactElement {
         return (
             <div
                 className={cn(
-                    "w-full tablet-2:w-1/2 px-4 tablet-2:px-8 pl-4 tablet-2:pl-16 mt-28",
+                    "w-full tablet-2:w-1/2 px-4 tablet-2:px-8 pl-4 tablet-2:pl-16 mt-20 tablet-2:mt-28",
                     "flex flex-col flex-nowrap justify-start items-start"
                 )}
             >
                 <div className="flex flex-col flex-nowrap items-stretch w-full max-w-[627px]">
-                    <h1 className="mb-4 tablet-2:mb-8 last:mb-0 font-bold text-3xl tablet-2:text-5xl">
+                    <h1 className="mb-6 tablet:mb-8 last:mb-0 font-bold text-3xl tablet-2:text-5xl">
                         Top Secret <span className="tablet-2:hidden">Mobile</span> Collection
                     </h1>
-                    <div className="mb-4 flex flex-row tablet-2:hidden">
+                    <div className="mb-6 tablet:mb-8 flex flex-row tablet-2:hidden">
                         <div
                             className="ml-8 first:ml-0 w-icon h-icon grow-0 shrink-0"
                             onClick={() => {
@@ -292,7 +292,7 @@ export default function MyCollections(): React.ReactElement {
                             <TwitterIcon />
                         </div>
                     </div>
-                    <div className="mb-4 tablet-2:mb-8 last:mb-0 ">
+                    <div className="mb-6 tablet:mb-8 last:mb-0 ">
                         <p className="  text-[#AFB7C6]">
                             The top secret collection contains things that should be kept secret.
                             5555 pieces of ancient Egyptian mythology symbols. The top secret
@@ -303,7 +303,7 @@ export default function MyCollections(): React.ReactElement {
 
                     <div
                         className={cn(
-                            "mb-4 tablet-2:mb-8 last:mb-0 flex flex-row flex-nowrap justify-start items-center shrink-0 self-stretch ",
+                            "mb-6 tablet-2:mb-8 last:mb-0 flex flex-row flex-nowrap justify-start items-center shrink-0 self-stretch ",
                             "text-[#B3BBC9]"
                         )}
                     >
@@ -373,10 +373,20 @@ export default function MyCollections(): React.ReactElement {
                                 )}
                             </div>
                         </Button>
-                        {collectionState.bEntered && (
+                        {collectionState.bEntered ? (
                             <div className="mt-4 tablet-2:mt-0 tablet-2:ml-8 w-full">
                                 <Button
-                                    className="w-full tablet:w-auto"
+                                    className="w-full tablet:w-auto border-[#915cd5]"
+                                    bTransparent
+                                    onClick={handleOnMyCollectionBtnClicked}
+                                >
+                                    <span className="w-44">My Collection</span>
+                                </Button>
+                            </div>
+                        ) : (
+                            <div className="tablet:hidden mt-4 tablet-2:mt-0 tablet-2:ml-8 w-full">
+                                <Button
+                                    className="w-full tablet:w-auto border-[#915cd5]"
                                     bTransparent
                                     onClick={handleOnMyCollectionBtnClicked}
                                 >
