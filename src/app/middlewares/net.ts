@@ -190,6 +190,9 @@ const _netMiddlewareClosure = (): Middleware => {
                     const allowedTokensMsg = signer?.msg.allowed_tokens;
 
                     const matchArray = initAddressArray.equals(allowedTokensMsg);
+                    if (!client) {
+                        await store.dispatch(networkActions.tryConnecting());
+                    }
 
                     if (signer && signer.account === client?.address && matchArray) {
                         signerPermit = signer;
@@ -935,13 +938,6 @@ const _netMiddlewareClosure = (): Middleware => {
                         );
                         break;
                     case MESSAGE_ERROR.SIGNER_NOT_SET:
-                        window.keplr?.enable(chainId as string).catch((error) => {
-                            store.dispatch(
-                                applicationActions.toastRequestRejected({
-                                    errorMsg: (error as any)?.message as string,
-                                })
-                            );
-                        });
                         break;
                     default:
                         console.error(message);

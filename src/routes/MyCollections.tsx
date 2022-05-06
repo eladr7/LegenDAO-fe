@@ -34,6 +34,7 @@ export default function MyCollections(): React.ReactElement {
     const { state } = useContext(AppContext);
     const collectionState = useAppSelector((state) => state.collection);
     const walletState = useAppSelector((state) => state.wallet);
+    const networkState = useAppSelector((state) => state.network);
     const accessibilityState = useAppSelector((state) => state.accessibility);
     const mintState = useAppSelector((state) => state.mint);
     const dispatch = useAppDispatch();
@@ -131,7 +132,12 @@ export default function MyCollections(): React.ReactElement {
                     <div className="absolute top-0 left-0 right-0 bottom-0 bg-slate-900/75"></div>
                     <div className="absolute top-0 left-0 right-0 bottom-0 bg-blue-900/25"></div>
                     <div>
-                        <Button bigness="lg" className="z-10" onClick={handleOnEnterBtnClicked}>
+                        <Button
+                            bigness="lg"
+                            className="z-10"
+                            onClick={handleOnEnterBtnClicked}
+                            disabled={!networkState.bIsConnected}
+                        >
                             <span className="px-12">Enter</span>
                         </Button>
                     </div>
@@ -171,6 +177,7 @@ export default function MyCollections(): React.ReactElement {
         handleOnEnterBtnClicked,
         handleOnMintBtnClicked,
         mintState.agent,
+        networkState.bIsConnected,
     ]);
 
     const renderModal = useCallback(() => {

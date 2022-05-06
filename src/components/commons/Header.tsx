@@ -21,6 +21,7 @@ import BalancesPanel from "../BalancesPanel";
 import { SOCIAL_NETWORK_URL } from "../../constants/linkSocial";
 import { shortenAddress } from "../../helpers/format";
 import ArrowDownIcon from "../icons/ArrowDownIcon";
+import { networkActions } from "../../features/network/networkSlice";
 
 const HEADER_TYPES = ["intro", "general", "collection"] as const;
 export type THeaderType = typeof HEADER_TYPES[number];
@@ -61,9 +62,12 @@ export function Header({
     }, [accessibilityState.bDepositPanelOn, accessibilityState.bWithdrawPanelOn, dispatch]);
 
     const handleOnConnectWalletBtnClicked = useCallback(() => {
-        dispatch(walletActions.getAllCodeHash());
-        dispatch(walletActions.getSigner());
-    }, [dispatch]);
+        if (walletState.signature) {
+            dispatch(networkActions.tryConnecting());
+        } else {
+            dispatch(walletActions.getSigner());
+        }
+    }, [dispatch, walletState.signature]);
 
     const handleOnGetLGNDBtnClicked = useCallback(() => {
         window.open("https://app.osmosis.zone/?from=ATOM&to=OSMO", "_blank");
