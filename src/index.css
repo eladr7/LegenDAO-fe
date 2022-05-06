@@ -6,6 +6,10 @@
     html {
         font-size: 18px;
     }
+    ::-webkit-scrollbar {
+        width: 0;
+        background: transparent;
+    }
 }
 
 @layer components {
