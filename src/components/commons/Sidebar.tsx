@@ -12,6 +12,8 @@ import { useNavigate } from "react-router-dom";
 import { collectionAtions } from "../../features/collection/collectionSlice";
 import Button from "./Button";
 import WalletIcon from "../icons/WalletIcon";
+import { walletActions } from "../../features/wallet/walletSlice";
+import { networkActions } from "../../features/network/networkSlice";
 
 export type TSidebarTab =
     | "tab/home"
@@ -29,6 +31,7 @@ type Props = React.BaseHTMLAttributes<HTMLDivElement> & {
 export default function Sidebar({ bodyElement, activatingTab }: Props): React.ReactElement {
     const navigate = useNavigate();
     const walletState = useAppSelector((state) => state.wallet);
+    const networkState = useAppSelector((state) => state.network);
     const accessibilityState = useAppSelector((state) => state.accessibility);
     const dispatch = useAppDispatch();
 
@@ -66,10 +69,17 @@ export default function Sidebar({ bodyElement, activatingTab }: Props): React.Re
     }, [dispatch, navigate]);
 
     const handleOnWalletBtnClicked = useCallback(() => {
-        if (!walletState.primary) return;
-        dispatch(accessibilityActions.toggleSidebar(false));
-        dispatch(accessibilityActions.toggleBalanceMenu(true));
-    }, [dispatch, walletState.primary]);
+        if (walletState.primary && walletState.signature) {
+            dispatch(accessibilityActions.toggleSidebar(false));
+            dispatch(accessibilityActions.toggleBalanceMenu(true));
+        } else {
+            if (!networkState.bIsConnected) {
+                dispatch(networkActions.tryConnecting());
+            } else {
+                dispatch(walletActions.getSigner());
+            }
+        }
+    }, [dispatch, networkState.bIsConnected, walletState.primary, walletState.signature]);
 
     return ReactDOM.createPortal(
         <div

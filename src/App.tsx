@@ -6,7 +6,7 @@ import store from "./app/store";
 import ToastMessage from "./components/commons/ToastMessage";
 import AppContext, { TAppContext } from "./contexts/AppContext";
 import { networkActions } from "./features/network/networkSlice";
-import { walletActions, walletAsyncActions } from "./features/wallet/walletSlice";
+import { walletActions } from "./features/wallet/walletSlice";
 import AirDrop from "./routes/AirDrop";
 import { Asset } from "./routes/Asset";
 import FormCreation from "./routes/FormCreation";
@@ -42,14 +42,8 @@ function App(): React.ReactElement {
     }, [getBodyElement]);
 
     useEffect(() => {
-        !walletState.bSuggested && dispatch(walletAsyncActions.suggestChain({ delay: 500 }));
-    }, [dispatch, walletState.bSuggested]);
-
-    useEffect(() => {
-        if (walletState.bSuggested) {
-            dispatch(networkActions.tryConnecting());
-        }
-    }, [dispatch, walletState.bSuggested]);
+        dispatch(networkActions.tryConnecting());
+    }, [dispatch]);
 
     useEffect(() => {
         if (networkState.bIsConnected && !walletState.signature) {
