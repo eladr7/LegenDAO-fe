@@ -13,6 +13,7 @@ import ProfileCollectedPanel from "../components/ProfileCollectedPanel";
 import ProfileMyCollectionPanel from "../components/ProfileMyCollectionPanel";
 import { useLocation } from "react-router-dom";
 import PencilIcon from "../components/icons/PencilIcon";
+import { useMediaQuery } from "../app/hooks";
 
 const REGEXP_USERNAME = "^[0-9a-zA-Z]+$";
 
@@ -25,6 +26,7 @@ function isTab(tab: string): tab is Tab {
 
 export default function Profile(): React.ReactElement {
     const rfMyNameInput = useRef<HTMLInputElement>(null);
+    const mediaQuery = useMediaQuery();
     const { pathname } = useLocation();
     const getInitialTab = useCallback((): Tab => {
         if (!isTab(pathname)) return "/profile/general";
@@ -66,27 +68,27 @@ export default function Profile(): React.ReactElement {
 
     const renderHeaderDomainNode = useCallback(() => {
         return (
-            <div className="flex flex-row flex-nowrap text-lg">
+            <div className="flex flex-row flex-nowrap lg:text-lg justify-around w-full text-[#B2BAC7]">
                 <div
-                    className={cn("ml-8 first:ml-0 cursor-pointer", {
+                    className={cn("lg:ml-8 first:ml-0 cursor-pointer", {
                         "text-purple-400": tab === "/profile/general",
                     })}
                     onClick={handleOnGeneralTabClicked}
                 >
                     General
                 </div>
-                <div className="ml-8 first:ml-0 opacity-25">|</div>
+                <div className="lg:ml-8 first:ml-0 opacity-25">|</div>
                 <div
-                    className={cn("ml-8 first:ml-0 cursor-pointer", {
+                    className={cn("lg:ml-8 first:ml-0 cursor-pointer ", {
                         "text-purple-400": tab === "/profile/collected",
                     })}
                     onClick={handleOnCollectedTabClicked}
                 >
                     Collected
                 </div>
-                <div className="ml-8 first:ml-0 opacity-25">|</div>
+                <div className="lg:ml-8 first:ml-0 opacity-25">|</div>
                 <div
-                    className={cn("ml-8 first:ml-0 cursor-pointer", {
+                    className={cn("lg:ml-8 first:ml-0 cursor-pointer", {
                         "text-purple-400": tab === "/profile/created",
                     })}
                     onClick={handleOnCreatedTabClicked}
@@ -103,8 +105,7 @@ export default function Profile(): React.ReactElement {
                 return (
                     <div
                         className={cn(
-                            "w-full z-10 text-white flex flex-col items-center",
-                            "lg:grid lg:grid-cols-3 lg:justify-items-center lg:items-start"
+                            "w-full z-10 text-white  grid grid-cols-1 lg:grid-cols-3 justify-items-center items-start"
                         )}
                     >
                         <form
@@ -122,6 +123,7 @@ export default function Profile(): React.ReactElement {
                                 <label className="text-red-500 h-8">{myNameErrorMessage}</label>
 
                                 <Input
+                                    className="w-[200px] lg:w-auto"
                                     refV={rfMyNameInput}
                                     rightIconNode={<PencilIcon size={18} />}
                                     rightIconOnClick={async () => {
@@ -131,7 +133,7 @@ export default function Profile(): React.ReactElement {
                                     onBlur={() => {
                                         setIsDisableInput(true);
                                     }}
-                                    disabled={isDisableInput || true}
+                                    disabled={isDisableInput}
                                     bigness="lg"
                                     id="input-profile/general/my-name"
                                     placeholder="Enter your name"
@@ -144,19 +146,19 @@ export default function Profile(): React.ReactElement {
                         </form>
 
                         <div
-                            className="w-[500px] h-[600px] bg-contain bg-top bg-no-repeat"
+                            className="w-full xs:h-[400px] my-6 bg-contain lg:w-[500px] lg:h-[600px]  bg-top bg-no-repeat"
                             style={{ backgroundImage: `url(${imgYetiProfile01})` }}
                         ></div>
 
                         <div className="justify-self-end flex flex-col flex-nowrap justify-start items-stretch">
                             <ProfileItemsPanel />
-                            <div className="mt-8 flex flex-col flex-nowrap justify-start items-center">
-                                <div className="mb-4 last:mb-0 font-semibold text-lg">
+                            <div className="mt-8 flex flex-col flex-nowrap justify-start items-center ">
+                                <div className="mb-4 last:mb-0 font-semibold text-lg text-[#B3BBC9]">
                                     Loot Boxes
                                 </div>
-                                <div className="mb-8 last:mb-0 text-center text-base">
+                                <div className="mb-8 last:mb-0 text-center text-base text-[#AFB7C6]">
                                     Where do they come from? What&apos;s inside?
-                                    <br />
+                                    <br className="hidden lg:block" />
                                     Stay tuned to learn more
                                 </div>
                                 <div
@@ -171,25 +173,30 @@ export default function Profile(): React.ReactElement {
 
             case "/profile/collected": {
                 return (
-                    <div className="w-full grid grid-cols-3 z-10 text-white justify-items-center items-start">
-                        <div className="justify-self-start">
+                    <div
+                        className={cn(
+                            "w-full z-10 text-white flex flex-col items-stretch ",
+                            "lg:flex-none lg:grid grid-cols-3 lg:justify-items-center lg:items-start"
+                        )}
+                    >
+                        <div className="justify-self-start lg:order-first">
                             <ProfileCollectedPanel />
                         </div>
 
                         <div
-                            className="w-[500px] h-[600px] bg-contain bg-top bg-no-repeat"
+                            className=" max-w-full xs:h-[400px] my-6 bg-contain lg:w-[500px] lg:h-[600px]  bg-top bg-no-repeat xs:order-first  "
                             style={{ backgroundImage: `url(${imgYetiProfile01})` }}
                         ></div>
 
-                        <div className="justify-self-end flex flex-col flex-nowrap justify-start items-stretch">
+                        <div className="mt-8 lg:mt-0 justify-self-end flex flex-col flex-nowrap justify-start items-stretch">
                             <ProfileItemsPanel />
-                            <div className="mt-8 flex flex-col flex-nowrap justify-start items-center">
-                                <div className="mb-4 last:mb-0 font-semibold text-lg">
+                            <div className="mt-8 flex flex-col flex-nowrap justify-start items-center ">
+                                <div className="mb-4 last:mb-0 font-semibold text-lg text-[#B3BBC9]">
                                     Loot Boxes
                                 </div>
-                                <div className="mb-8 last:mb-0 text-center text-base">
+                                <div className="mb-8 last:mb-0 text-center text-base text-[#AFB7C6]">
                                     Where do they come from? What&apos;s inside?
-                                    <br />
+                                    <br className="hidden lg:block" />
                                     Stay tuned to learn more
                                 </div>
                                 <div
@@ -204,25 +211,29 @@ export default function Profile(): React.ReactElement {
 
             case "/profile/created": {
                 return (
-                    <div className="w-full grid grid-cols-3 z-10 text-white justify-items-center items-start">
-                        <div className="justify-self-start">
+                    <div
+                        className={cn(
+                            "w-full z-10 text-white flex flex-col items-stretch ",
+                            "lg:flex-none lg:grid grid-cols-3 lg:justify-items-center lg:items-start"
+                        )}
+                    >
+                        <div className="justify-self-start lg:order-first">
                             <ProfileMyCollectionPanel />
                         </div>
 
                         <div
-                            className="w-[500px] h-[600px] bg-contain bg-top bg-no-repeat"
+                            className=" max-w-full xs:h-[400px] my-6 bg-contain lg:w-[500px] lg:h-[600px]  bg-top bg-no-repeat xs:order-first  "
                             style={{ backgroundImage: `url(${imgYetiProfile01})` }}
                         ></div>
-
-                        <div className="justify-self-end flex flex-col flex-nowrap justify-start items-stretch">
+                        <div className="mt-8 justify-self-end flex flex-col flex-nowrap justify-start items-stretch">
                             <ProfileItemsPanel />
-                            <div className="mt-8 flex flex-col flex-nowrap justify-start items-center">
-                                <div className="mb-4 last:mb-0 font-semibold text-lg">
+                            <div className="mt-8 flex flex-col flex-nowrap justify-start items-center ">
+                                <div className="mb-4 last:mb-0 font-semibold text-lg text-[#B3BBC9]">
                                     Loot Boxes
                                 </div>
-                                <div className="mb-8 last:mb-0 text-center text-base">
+                                <div className="mb-8 last:mb-0 text-center text-base text-[#AFB7C6]">
                                     Where do they come from? What&apos;s inside?
-                                    <br />
+                                    <br className="hidden lg:block" />
                                     Stay tuned to learn more
                                 </div>
                                 <div
@@ -238,7 +249,11 @@ export default function Profile(): React.ReactElement {
     }, [tab, myNameErrorMessage, handleOnMyNameChanged, myName, isDisableInput, setIsDisableInput]);
 
     return (
-        <DefaultLayout headerType="general" headerDomainNode={renderHeaderDomainNode()}>
+        <DefaultLayout
+            bFooterOn={!mediaQuery.checkMatchMinWidth(1020)}
+            headerType="general"
+            headerDomainNode={renderHeaderDomainNode()}
+        >
             <Article className="grow pb-20">
                 <div
                     className={cn(
@@ -249,7 +264,10 @@ export default function Profile(): React.ReactElement {
                 ></div>
                 <div className="absolute top-0 left-0 bottom-0 right-0 bg-blue-900/50"></div>
                 <div className="absolute top-0 left-0 bottom-0 right-0 bg-slate-900/75"></div>
-                <div className="w-full mt-28 px-16 z-10">{renderDomain()}</div>
+                <div className="w-full mt-28 px-5 lg:px-16 z-10">
+                    {!mediaQuery.checkMatchMinWidth(1020) && renderHeaderDomainNode()}
+                    {renderDomain()}
+                </div>
             </Article>
         </DefaultLayout>
     );

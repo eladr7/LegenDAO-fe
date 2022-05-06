@@ -5,7 +5,6 @@ import { useAppSelector } from "../app/hooks";
 import { collectionAtions } from "../features/collection/collectionSlice";
 import Panel from "./commons/Panel";
 
-
 export default function ProfileCollectedPanel(): React.ReactElement {
     const dispatch = useDispatch();
     const networkState = useAppSelector((state) => state.network);
@@ -42,7 +41,7 @@ export default function ProfileCollectedPanel(): React.ReactElement {
     }, [collectionState.listMyCollection]);
 
     return (
-        <Panel className="min-h-[694px] min-w-[368px]">
+        <Panel className="min-h-[300px] lg:h-[700px] w-full lg:min-w-[368px] lg:w-full ">
             <div className="mb-4 last:mb-0 text-teal-200 text-xl">Collected</div>
             <div className="grid grid-cols-2 gap-4">{renderListItem()}</div>
         </Panel>
