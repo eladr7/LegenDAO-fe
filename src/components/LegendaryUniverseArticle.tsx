@@ -58,13 +58,13 @@ export default function LegendaryUniverseArticle(): React.ReactElement {
                 <div
                     className={cn(
                         "lg:hidden",
-                        "absolute -bottom-10 left-0 right-0 h-1/2 z-10",
+                        "absolute -bottom-10 left-0 right-0 h-[100px] z-10",
                         "bg-gradient-to-t from-primary-mint-lab via-primary-mint-lab/75 to-slate-900/0"
                     )}
                 ></div>
                 <div
                     className={cn(
-                        "absolute left-[20px] lg:left-0 -bottom-24  w-3/4 h-[90%] ",
+                        "absolute left-[20px] lg:left-0 -bottom-8 lg:-bottom-24   w-3/4 h-[90%] ",
                         "bg-no-repeat bg-bottom "
                     )}
                     style={{
@@ -74,7 +74,7 @@ export default function LegendaryUniverseArticle(): React.ReactElement {
                 ></div>
                 <div
                     className={cn(
-                        "absolute right-0 -bottom-24 w-3/4 h-[80%]",
+                        "absolute -right-8 -bottom-6 lg:-bottom-24 w-3/4 h-[80%]",
                         "bg-no-repeat  bg-bottom"
                     )}
                     style={{

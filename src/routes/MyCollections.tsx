@@ -239,7 +239,7 @@ export default function MyCollections(): React.ReactElement {
                     )}
                 >
                     <div className="flex flex-col flex-nowrap">
-                        <h1 className="mb-8 last:mb-0 font-bold text-3xl tablet-2:text-5xl">
+                        <h1 className="mb-8 last:mb-0 font-bold text-2xl tablet-2:text-5xl">
                             Top Secret <span className="tablet-2:hidden">Mobile</span> Collection
                         </h1>
                         <div className="mb-8 last:mb-0">{mintState.agent.name}</div>

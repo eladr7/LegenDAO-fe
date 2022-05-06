@@ -35,7 +35,7 @@ export default function RoadmapArticle(): React.ReactElement {
                 stage: "Stage 2:",
                 title: "Legendary Creatures Appear",
                 desc: [
-                    "egendary Creatures collection launch.",
+                    "Legendary Creatures collection launch.",
                     "Mint your cryptid.",
                     "A cryptid owner will get whitelist spot for the 3D collection.",
                 ],
@@ -118,7 +118,7 @@ export default function RoadmapArticle(): React.ReactElement {
                 stage: "Stage 2:",
                 title: "Legendary Creatures Appear",
                 desc: [
-                    "egendary Creatures collection launch.",
+                    "Legendary Creatures collection launch.",
                     "Mint your cryptid.",
                     "A cryptid owner will get whitelist spot for the 3D collection.",
                 ],
@@ -193,7 +193,7 @@ export default function RoadmapArticle(): React.ReactElement {
                                 <div className="mt-3 text-2xl font-bold text-sky-300">
                                     {item.title}
                                 </div>
-                                <ul>
+                                <ul className="ml-8">
                                     {item.desc.map((item1, index1) => {
                                         return (
                                             <li
@@ -230,7 +230,7 @@ export default function RoadmapArticle(): React.ReactElement {
                                     {item.title}
                                 </div>
 
-                                <ul>
+                                <ul className="ml-8">
                                     {item.desc.map((item1, index1) => {
                                         return (
                                             <li
@@ -301,7 +301,7 @@ export default function RoadmapArticle(): React.ReactElement {
                     "text-white flex flex-col flex-nowrap justify-center flex:items-center"
                 )}
             >
-                <h1 className="mb-8 last:mb-0 lg:text-center font-bold text-3xl lg:text-5xl z-20">
+                <h1 className="mb-8 last:mb-0 lg:text-center font-bold text-2xl lg:text-5xl z-20">
                     The Legendary Roadmap
                 </h1>
                 <div

@@ -21,7 +21,7 @@ export default function LegendaryTokenArticle(): React.ReactElement {
                 )}
             >
                 <div className="flex flex-col flex-nowrap justify-center items-start">
-                    <h1 className="mb-8 last:mb-0 font-bold text-3xl lg:text-5xl">
+                    <h1 className="mb-8 last:mb-0 font-bold text-2xl lg:text-5xl">
                         Legendary Tokens
                     </h1>
                     <div className="mb-8 last:mb-0 lg:max-w-xl">

@@ -50,7 +50,7 @@ export default function SecretCollectionsArticle(): React.ReactElement {
                     "text-white flex flex-col flex-nowrap justify-center items-start lg:items-center"
                 )}
             >
-                <h1 className="mb-8 last:mb-0 font-bold text-3xl lg:text-5xl mt-10">Collections</h1>
+                <h1 className="mb-8 last:mb-0 font-bold text-2xl lg:text-5xl mt-10">Collections</h1>
                 <div className="mb-8 last:mb-0 lg:max-w-[70%]">
                     <p className=" last:mb-0 opacity-75 text-paragraph lg:text-center font-light">
                         Through a highly selective process, our goal is to bring the most legendary
