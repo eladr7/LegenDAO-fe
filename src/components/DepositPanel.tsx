@@ -6,7 +6,7 @@ import Button from "./commons/Button";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
 import { transactionActions } from "../features/transaction/transactionSlice";
 import validator from "../helpers/validator";
-import { formatBalance, formatIntBalance, parseBalance } from "../helpers/format";
+import { formatBalance, formatIntBalance, parseBalance, shortenAddress } from "../helpers/format";
 import { LGND_ADDRESS, PLATFORM_ADDRESS } from "../constants/contractAddress";
 import BigNumber from "bignumber.js";
 
@@ -84,7 +84,15 @@ export default function DepositPanel({ onCloseBtnClicked }: Props): React.ReactE
                         placeholder="Address"
                         value={PLATFORM_ADDRESS || ""}
                         disabled
-                        className="truncate"
+                        className="hidden tablet:block truncate"
+                    />
+                    <Input
+                        bTransparent
+                        bigness="xl"
+                        placeholder="Address"
+                        value={shortenAddress(PLATFORM_ADDRESS, 13) || ""}
+                        disabled
+                        className="tablet:hidden truncate"
                     />
                 </div>
                 <div className="mb-6 last:mb-0 flex flex-col flex-nowrap">

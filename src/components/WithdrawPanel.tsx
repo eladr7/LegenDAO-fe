@@ -5,7 +5,7 @@ import { useAppDispatch, useAppSelector } from "../app/hooks";
 import { PLATFORM_ADDRESS } from "../constants/contractAddress";
 import { DF_DENOM } from "../constants/defaults";
 import { transactionActions } from "../features/transaction/transactionSlice";
-import { formatBalance, parseBalance } from "../helpers/format";
+import { formatBalance, parseBalance, shortenAddress } from "../helpers/format";
 import validator from "../helpers/validator";
 import Button from "./commons/Button";
 import Input from "./commons/Input";
@@ -93,7 +93,15 @@ export default function WithdrawPanel({ onCloseBtnClicked }: Props): React.React
                         placeholder="Address"
                         value={PLATFORM_ADDRESS || ""}
                         disabled
-                        className="truncate"
+                        className="hidden tablet:block truncate"
+                    />
+                    <Input
+                        bTransparent
+                        bigness="xl"
+                        placeholder="Address"
+                        value={shortenAddress(PLATFORM_ADDRESS, 13) || ""}
+                        disabled
+                        className="tablet:hidden truncate"
                     />
                 </div>
                 <div className="mb-6 last:mb-0 flex flex-col flex-nowrap">
