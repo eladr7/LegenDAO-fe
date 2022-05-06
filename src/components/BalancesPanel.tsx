@@ -158,6 +158,7 @@ export default function BalancesPanel({
                             bigness="sm"
                             className="grow font-normal"
                             bTransparent
+                            bActivated={accessibilityState.bWithdrawPanelOn}
                             onClick={handleOnWithdrawBtnClicked}
                         >
                             Withdraw
