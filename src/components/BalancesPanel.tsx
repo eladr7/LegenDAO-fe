@@ -46,6 +46,7 @@ export default function BalancesPanel({
                 onProfileBtnClicked(e);
                 return;
             }
+            dispatch(profileActions.setTab("/profile/general"));
             dispatch(accessibilityActions.toggleBalanceMenu(false));
             navigate("/profile");
         },
