@@ -228,7 +228,7 @@ export function Header({
         return (
             <header
                 className={cn(
-                    "absolute top-0 left-0 right-0 p-8 px-4",
+                    "absolute top-0 left-0 right-0 p-4 tablet-2:py-8",
                     bAlwaysOnTop ? "z-[100]" : "z-50",
                     "flex flex-col flex-nowrap justify-start items-start",
                     "text-white",
@@ -282,8 +282,8 @@ export function Header({
         return (
             <header
                 className={cn(
-                    "absolute top-0 left-0 right-0 p-8 px-4",
-                    bAlwaysOnTop ? "z-[100]" : "z-50",
+                    "absolute top-0 left-0 right-0 p-4 tablet-2:py-8",
+                    bAlwaysOnTop ? "z-[100] tablet-2:z-[100]" : "z-50",
                     "flex flex-row flex-nowrap justify-between items-center",
                     "text-white",
                     "tablet-2:px-16"
@@ -322,7 +322,7 @@ export function Header({
         return (
             <header
                 className={cn(
-                    "absolute top-0 left-0 right-0 p-8 px-4",
+                    "absolute top-0 left-0 right-0 p-4 tablet-2:py-8",
                     bAlwaysOnTop ? "z-[100]" : "z-50",
                     "flex flex-row flex-nowrap justify-between items-center",
                     "text-white",
