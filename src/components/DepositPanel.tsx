@@ -8,6 +8,7 @@ import { transactionActions } from "../features/transaction/transactionSlice";
 import validator from "../helpers/validator";
 import { formatBalance, formatIntBalance, parseBalance } from "../helpers/format";
 import { LGND_ADDRESS, PLATFORM_ADDRESS } from "../constants/contractAddress";
+import BigNumber from "bignumber.js";
 
 type Props = {
     onCloseBtnClicked?: React.MouseEventHandler<HTMLElement>;
@@ -105,6 +106,9 @@ export default function DepositPanel({ onCloseBtnClicked }: Props): React.ReactE
                         onChange={handleOnDepositAmountChanged}
                         onKeyDown={handleOnDepositAmountKeyDown}
                         rightButtonOnClick={handleOnMaxBtnClicked}
+                        rightButtonIsDisabled={new BigNumber(
+                            walletState.balances[LGND_ADDRESS as string].amount
+                        ).isZero()}
                         placeholder="0.00"
                         autoFocus
                     />

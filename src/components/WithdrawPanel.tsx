@@ -1,3 +1,4 @@
+import BigNumber from "bignumber.js";
 import cn from "classnames";
 import React, { useCallback, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
@@ -116,6 +117,9 @@ export default function WithdrawPanel({ onCloseBtnClicked }: Props): React.React
                         onChange={handleOnWithdrawAmountChanged}
                         onKeyDown={handleOnWithdrawAmountKeyDown}
                         rightButtonOnClick={handleOnMaxBtnClicked}
+                        rightButtonIsDisabled={new BigNumber(
+                            walletState.balances[PLATFORM_ADDRESS as string]?.staked || "0"
+                        ).isZero()}
                         placeholder="0.00"
                         autoFocus
                     />

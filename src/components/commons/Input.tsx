@@ -9,6 +9,7 @@ interface IProps extends React.InputHTMLAttributes<HTMLInputElement> {
     rightIconOnClick?: React.MouseEventHandler<HTMLElement>;
     rightButtonText?: string;
     rightButtonOnClick?: React.MouseEventHandler<HTMLElement>;
+    rightButtonIsDisabled?: boolean;
     bTransparent?: boolean;
 }
 
@@ -21,6 +22,7 @@ export default function Input({
     rightIconOnClick,
     rightButtonText,
     rightButtonOnClick,
+    rightButtonIsDisabled,
     ...props
 }: IProps): React.ReactElement {
     const getBignessClassNames = useCallback(() => {
@@ -127,6 +129,7 @@ export default function Input({
                             onClick={rightButtonOnClick}
                             bigness="sm"
                             className="px-4 opacity-50 hover:opacity-100"
+                            disabled={rightButtonIsDisabled}
                         >
                             <span className="text-sm">{rightButtonText}</span>
                         </Button>
@@ -139,6 +142,7 @@ export default function Input({
     }, [
         getIconBignessClassName,
         renderInput,
+        rightButtonIsDisabled,
         rightButtonOnClick,
         rightButtonText,
         rightIconNode,
