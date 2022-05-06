@@ -207,7 +207,7 @@ export default function AirDropStatusPanel({ onCloseBtnClicked }: Props): React.
                         )}
                         <Input
                             bigness="xl"
-                            className="w-full placeholder:text-[16px]"
+                            className="w-full placeholder:text-[15px]"
                             rightIconNode={
                                 !errors?.walletAddress && watch("walletAddress") ? (
                                     <CheckIcon className="fill-green-500" />
@@ -231,7 +231,7 @@ export default function AirDropStatusPanel({ onCloseBtnClicked }: Props): React.
                         )}
                         <Input
                             bigness="xl"
-                            className="w-full placeholder:text-[16px]"
+                            className="w-full placeholder:text-[15px]"
                             rightIconNode={
                                 !errors?.twitterProfile && watch("twitterProfile") ? (
                                     <CheckIcon className="fill-green-500" />
@@ -255,7 +255,7 @@ export default function AirDropStatusPanel({ onCloseBtnClicked }: Props): React.
                         )}
                         <Input
                             bigness="xl"
-                            className="w-full placeholder:text-[16px]"
+                            className="w-full placeholder:text-[15px]"
                             rightIconNode={
                                 !errors?.discordUserId && watch("discordUserId") ? (
                                     <CheckIcon className="fill-green-500" />
