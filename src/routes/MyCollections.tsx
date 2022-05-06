@@ -129,9 +129,11 @@ export default function MyCollections(): React.ReactElement {
                 >
                     <div className="absolute top-0 left-0 right-0 bottom-0 bg-slate-900/75"></div>
                     <div className="absolute top-0 left-0 right-0 bottom-0 bg-blue-900/25"></div>
-                    <Button bigness="lg" className="z-10" onClick={handleOnEnterBtnClicked}>
-                        <span className="px-12">Enter</span>
-                    </Button>
+                    <div>
+                        <Button bigness="lg" className="z-10" onClick={handleOnEnterBtnClicked}>
+                            <span className="px-12">Enter</span>
+                        </Button>
+                    </div>
                 </div>
             );
         }
@@ -148,15 +150,17 @@ export default function MyCollections(): React.ReactElement {
                     <div className="absolute top-0 left-0 right-0 bottom-0 bg-slate-900/70"></div>
                 )}
                 {!mintState.agent && (
-                    <Button
-                        bigness="lg"
-                        onClick={handleOnMintBtnClicked}
-                        className="z-10"
-                        bTransparent={!collectionState.whitelistSpot}
-                        disabled={!collectionState.whitelistSpot}
-                    >
-                        <span className="px-12">Mint</span>
-                    </Button>
+                    <div>
+                        <Button
+                            bigness="lg"
+                            onClick={handleOnMintBtnClicked}
+                            className="z-10"
+                            bTransparent={!collectionState.whitelistSpot}
+                            disabled={!collectionState.whitelistSpot}
+                        >
+                            <span className="px-12">Mint</span>
+                        </Button>
+                    </div>
                 )}
             </div>
         );
@@ -344,7 +348,6 @@ export default function MyCollections(): React.ReactElement {
 
                     <div className="mb-4 tablet:mb-8 last:mb-0 flex flex-col tablet:flex-row flex-nowrap">
                         <Button
-                            
                             className="w-full tablet:w-auto"
                             bTransparent={Boolean(collectionState.whitelistSpot)}
                             bActivated={Boolean(collectionState.whitelistSpot)}
