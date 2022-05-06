@@ -56,6 +56,7 @@ export function Header({
             dispatch(toggleDepositPanel(false));
             return;
         }
+        dispatch(accessibilityActions.toggleCreationFormPanel(false));
         dispatch(toggleBalanceMenu());
     }, [accessibilityState.bDepositPanelOn, accessibilityState.bWithdrawPanelOn, dispatch]);
 
