@@ -146,7 +146,7 @@ export default function WithdrawPanel({ onCloseBtnClicked }: Props): React.React
 
                 {bIsExpanded ? (
                     <>
-                        <div className="grid grid-cols-2 gap-4">
+                        <div className="mb-6 tablet-2:mb-0 grid grid-cols-1 tablet-2:grid-cols-2 gap-0 tablet-2:gap-4">
                             <div className="mb-6 last:mb-0 flex flex-col flex-nowrap">
                                 <div className="mb-2 last:mb-0 flex flex-row justify-between items-center text-sm tablet-2:text-base">
                                     <label className="opacity-75 font-emphasis">Unbounding</label>

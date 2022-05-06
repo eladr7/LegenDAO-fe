@@ -12,12 +12,15 @@ import {
     accessibilityActions,
     toggleBalanceMenu,
     toggleCreationFormPanel,
+    toggleDepositPanel,
     toggleSidebar,
+    toggleWithdrawPanel,
 } from "../../features/accessibility/accessibilitySlice";
 import { walletActions } from "../../features/wallet/walletSlice";
 import BalancesPanel from "../BalancesPanel";
 import { SOCIAL_NETWORK_URL } from "../../constants/linkSocial";
 import { shortenAddress } from "../../helpers/format";
+import ArrowDownIcon from "../icons/ArrowDownIcon";
 
 const HEADER_TYPES = ["intro", "general", "collection"] as const;
 export type THeaderType = typeof HEADER_TYPES[number];
@@ -48,8 +51,13 @@ export function Header({
     }, [dispatch]);
 
     const handleOnWalletBtnClicked = useCallback(() => {
+        if (accessibilityState.bWithdrawPanelOn || accessibilityState.bDepositPanelOn) {
+            dispatch(toggleWithdrawPanel(false));
+            dispatch(toggleDepositPanel(false));
+            return;
+        }
         dispatch(toggleBalanceMenu());
-    }, [dispatch]);
+    }, [accessibilityState.bDepositPanelOn, accessibilityState.bWithdrawPanelOn, dispatch]);
 
     const handleOnConnectWalletBtnClicked = useCallback(() => {
         dispatch(walletActions.getAllCodeHash());
@@ -112,6 +120,98 @@ export function Header({
     }, [bMenuOn, handleOnMenuBtnClicked]);
 
     const renderWalletBtn = useCallback(() => {
+        let buttonContent: React.ReactNode = (
+            <div className="flex flex-row flex-nowrap justify-center items-center">
+                <div className="w-icon h-icon grow-0 shrink-0 mr-2 last:mr-0">
+                    <WalletIcon
+                        className={cn(
+                            accessibilityState.bBalanceMenuOn ? "fill-purple-700" : "fill-white",
+                            "group-hover:fill-purple-700 transition-[fill]"
+                        )}
+                    />
+                </div>
+                <span
+                    className={cn("truncate max-w-[200px]", {
+                        "hidden tablet-2:inline-block": !accessibilityState.bBalanceMenuOn,
+                    })}
+                    title={walletState.primary?.address}
+                >
+                    {shortenAddress(walletState.primary?.address)}
+                </span>
+                {!accessibilityState.bBalanceMenuOn && (
+                    <span className="tablet-2:hidden">Wallet</span>
+                )}
+            </div>
+        );
+
+        if (accessibilityState.bWithdrawPanelOn) {
+            buttonContent = (
+                <div className="flex flex-row flex-nowrap justify-center items-center">
+                    <div className="hidden tablet-2:block w-icon h-icon grow-0 shrink-0 mr-2 last:mr-0">
+                        <WalletIcon
+                            className={cn(
+                                accessibilityState.bBalanceMenuOn
+                                    ? "fill-purple-700"
+                                    : "fill-white",
+                                "group-hover:fill-purple-700 transition-[fill]"
+                            )}
+                        />
+                    </div>
+                    <div className="tablet-2:hidden w-icon-xs h-icon-xw-icon-xs grow-0 shrink-0 mr-2 last:mr-0 rotate-90">
+                        <ArrowDownIcon
+                            className={cn(
+                                accessibilityState.bBalanceMenuOn
+                                    ? "fill-purple-700"
+                                    : "fill-white",
+                                "group-hover:fill-purple-700 transition-[fill]"
+                            )}
+                        />
+                    </div>
+                    <span
+                        className={cn("truncate max-w-[200px]", "hidden tablet-2:inline-block")}
+                        title={walletState.primary?.address}
+                    >
+                        {shortenAddress(walletState.primary?.address)}
+                    </span>
+                    <span className="tablet-2:hidden">Withdraw</span>
+                </div>
+            );
+        }
+
+        if (accessibilityState.bDepositPanelOn) {
+            buttonContent = (
+                <div className="flex flex-row flex-nowrap justify-center items-center">
+                    <div className="hidden tablet-2:block w-icon h-icon grow-0 shrink-0 mr-2 last:mr-0">
+                        <WalletIcon
+                            className={cn(
+                                accessibilityState.bBalanceMenuOn
+                                    ? "fill-purple-700"
+                                    : "fill-white",
+                                "group-hover:fill-purple-700 transition-[fill]"
+                            )}
+                        />
+                    </div>
+                    <div className="tablet-2:hidden w-icon-xs h-icon-xw-icon-xs grow-0 shrink-0 mr-2 last:mr-0 rotate-90">
+                        <ArrowDownIcon
+                            className={cn(
+                                accessibilityState.bBalanceMenuOn
+                                    ? "fill-purple-700"
+                                    : "fill-white",
+                                "group-hover:fill-purple-700 transition-[fill]"
+                            )}
+                        />
+                    </div>
+                    <span
+                        className={cn("truncate max-w-[200px]", "hidden tablet-2:inline-block")}
+                        title={walletState.primary?.address}
+                    >
+                        {shortenAddress(walletState.primary?.address)}
+                    </span>
+                    <span className="tablet-2:hidden">Deposit</span>
+                </div>
+            );
+        }
+
         if (isWalletConnected()) {
             return (
                 <Button
@@ -124,29 +224,7 @@ export function Header({
                         "!text-sm !h-8 !px-2 tablet-2:!h-input-sm tablet-2:!px-4 tablet-2:!text-base !border-[#B2BAC7] !opacity-80"
                     )}
                 >
-                    <div className="flex flex-row flex-nowrap justify-center items-center">
-                        <div className="w-icon h-icon grow-0 shrink-0 mr-2 last:mr-0">
-                            <WalletIcon
-                                className={cn(
-                                    accessibilityState.bBalanceMenuOn
-                                        ? "fill-purple-700"
-                                        : "fill-white",
-                                    "group-hover:fill-purple-700 transition-[fill]"
-                                )}
-                            />
-                        </div>
-                        <span
-                            className={cn("truncate max-w-[200px]", {
-                                "hidden tablet-2:inline-block": !accessibilityState.bBalanceMenuOn,
-                            })}
-                            title={walletState.primary?.address}
-                        >
-                            {shortenAddress(walletState.primary?.address)}
-                        </span>
-                        {!accessibilityState.bBalanceMenuOn && (
-                            <span className="tablet-2:hidden">Wallet</span>
-                        )}
-                    </div>
+                    {buttonContent}
                 </Button>
             );
         }
@@ -175,6 +253,8 @@ export function Header({
         );
     }, [
         accessibilityState.bBalanceMenuOn,
+        accessibilityState.bDepositPanelOn,
+        accessibilityState.bWithdrawPanelOn,
         handleOnConnectWalletBtnClicked,
         handleOnWalletBtnClicked,
         isWalletConnected,
@@ -197,7 +277,7 @@ export function Header({
                 {accessibilityState.bBalanceMenuOn && (
                     <div
                         className={cn(
-                            "absolute top-header left-0 right-0 p-4",
+                            "absolute top-header left-0 right-0 p-4 pt-0 tablet-2:pt-4",
                             "tablet-2:p-0 tablet:left-auto tablet-2:top-input-lg",
                             {
                                 "hidden tablet-2:block":
@@ -229,7 +309,7 @@ export function Header({
             <header
                 className={cn(
                     "absolute top-0 left-0 right-0 p-4 tablet-2:py-8",
-                    bAlwaysOnTop ? "z-[100]" : "z-50",
+                    bAlwaysOnTop ? "z-[200] tablet-2:z-[100]" : "z-50",
                     "flex flex-col flex-nowrap justify-start items-start",
                     "text-white",
                     "tablet-2:px-16 tablet-2:flex-row tablet-2:justify-between tablet-2:items-center"
@@ -283,7 +363,7 @@ export function Header({
             <header
                 className={cn(
                     "absolute top-0 left-0 right-0 p-4 tablet-2:py-8",
-                    bAlwaysOnTop ? "z-[100] tablet-2:z-[100]" : "z-50",
+                    bAlwaysOnTop ? "z-[200] tablet-2:z-[100]" : "z-50",
                     "flex flex-row flex-nowrap justify-between items-center",
                     "text-white",
                     "tablet-2:px-16"
@@ -323,7 +403,7 @@ export function Header({
             <header
                 className={cn(
                     "absolute top-0 left-0 right-0 p-4 tablet-2:py-8",
-                    bAlwaysOnTop ? "z-[100]" : "z-50",
+                    bAlwaysOnTop ? "z-[200] tablet-2:z-[100]" : "z-50",
                     "flex flex-row flex-nowrap justify-between items-center",
                     "text-white",
                     "tablet:px-16"

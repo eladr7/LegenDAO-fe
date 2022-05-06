@@ -10,7 +10,7 @@ import RoadmapArticle from "../components/RoadmapArticle";
 
 export function MintLabLanding(): React.ReactElement {
     return (
-        <DefaultLayout headerType="general" sidebarTab="tab/home" bFooterOn>
+        <DefaultLayout headerType="general" sidebarTab="tab/home" bFooterOn bHeaderAlwaysOnTop>
             <LegendaryUniverseArticle />
             <LegendaryPlatformArticle />
             <MountainsOfSodArticle />
