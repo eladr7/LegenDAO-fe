@@ -73,10 +73,12 @@ export function Footer(): React.ReactElement {
                     </Button>
                 </div>
                 <div className="flex flex-col flex-nowrap items-center">
-                    <div className="font-normal tablet:font-bold mb-4 last:mb-0">Join our community</div>
+                    <div className="font-normal tablet:font-bold mb-4 last:mb-0">
+                        Join our community
+                    </div>
                     <div className="flex flex-row flex-nowrap items-center">
                         <div
-                            className="w-icon-lg h-iconw-icon-lg grow-0 shrink-0 mr-10 last:mr-0 opacity-80"
+                            className="tablet:w-icon-lg tablet:h-iconw-icon-lg grow-0 shrink-0 mr-10 last:mr-0 opacity-80"
                             onClick={() => {
                                 window.open(SOCIAL_NETWORK_URL.discord, "_blank");
                             }}
@@ -84,7 +86,7 @@ export function Footer(): React.ReactElement {
                             <DiscordIcon className="fill-slate-300" />
                         </div>
                         <div
-                            className="w-icon-lg h-iconw-icon-lg grow-0 shrink-0 mr-10 last:mr-0 opacity-80"
+                            className="tablet:w-icon-lg tablet:h-iconw-icon-lg grow-0 shrink-0 mr-10 last:mr-0 opacity-80"
                             onClick={() => {
                                 window.open(SOCIAL_NETWORK_URL.twitter, "_blank");
                             }}
