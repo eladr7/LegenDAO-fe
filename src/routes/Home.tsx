@@ -10,14 +10,57 @@ import imgYeti02 from "./../assets/images/yeti-02.png";
 import imgMountain01 from "./../assets/images/mountain-01.png";
 import imgLab01 from "./../assets/images/lab-01.png";
 import Button from "../components/commons/Button";
-import { useCallback } from "react";
+import { useCallback, useEffect, useState } from "react";
 import MintLabStatusPanel from "../components/MintLabStatusPanel";
 import { Footer } from "../components/commons/Footer";
+import { legendServices } from "../app/commons/legendServices";
+import { useDispatch } from "react-redux";
+import { applicationActions } from "../features/application/applicationSlice";
+
+interface IStatus {
+    price: number;
+    apy: number;
+    liquidity: number;
+    dailyVolume: number;
+}
 
 function Home(): React.ReactElement {
+    const [dataMintLab, setdataMintLab] = useState<IStatus>({
+        apy: 0,
+        price: 0,
+        liquidity: 0,
+        dailyVolume: 0,
+    });
+    const dispatch = useDispatch();
+
     const handleOnMintLabLaunchBtnClicked = useCallback(() => {
         window.open("/mint-lab", "_blank");
     }, []);
+
+    
+    useEffect(() => {
+        (async () => {
+            try {
+                const res = await legendServices.getTokenData();
+                
+                if (res.status === 200) {
+                    const { apy, daily_volume, liquidity, price_usd } = res.data;
+                    setdataMintLab({
+                        apy: apy,
+                        price: price_usd,
+                        liquidity: liquidity,
+                        dailyVolume: daily_volume,
+                    });
+                }
+            } catch (error) {
+                dispatch(
+                    applicationActions.toastRequestRejected({
+                        errorMsg: (error as any)?.message as string,
+                    })
+                );
+            }
+        })();
+    }, [dispatch]);
 
     return (
         <DefaultLayout headerType="intro" sidebarTab="tab/home">
@@ -93,10 +136,10 @@ function Home(): React.ReactElement {
                         <div className="hidden tablet-2:flex flex-col flex-nowrap z-10">
                             <div className="mb-8 last:mb-0">
                                 <MintLabStatusPanel
-                                    price={0.5}
-                                    apy={55}
-                                    liquidity={25}
-                                    volume={2.5}
+                                    price={dataMintLab.price}
+                                    apy={dataMintLab.apy}
+                                    liquidity={dataMintLab.liquidity}
+                                    volume={dataMintLab.dailyVolume}
                                 />
                             </div>
                             <div className="mb-8 last:mb-0 flex flex-col justify-center items-center">
@@ -171,7 +214,12 @@ function Home(): React.ReactElement {
                         "h-screen tablet-2:h-auto"
                     )}
                 >
-                    <MintLabStatusPanel price={0.5} apy={55} liquidity={25} volume={2.5} />
+                    <MintLabStatusPanel 
+                        price={dataMintLab.price}
+                        apy={dataMintLab.apy}
+                        liquidity={dataMintLab.liquidity}
+                        volume={dataMintLab.dailyVolume}
+                    />
                 </div>
             </Article>
 

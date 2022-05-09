@@ -74,3 +74,10 @@ export interface IAttributeStaticsData {
 export interface IIsWhitelisted {
     whitelist: boolean;
 }
+
+export interface ITokenData {
+    apy: number,
+    daily_volume: number,
+    liquidity: number,
+    price_usd: number,
+}

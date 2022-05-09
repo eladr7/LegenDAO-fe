@@ -1,5 +1,5 @@
 import { ICreationForms } from "../../components/CreationFormPanel";
-import { HTTPBaseService, IClaimResponse, ISubmitClaimData } from "./HTTPBaseRequest";
+import { HTTPBaseService, IClaimResponse, ISubmitClaimData, ITokenData } from "./HTTPBaseRequest";
 
 class LegendServices extends HTTPBaseService {
     protected baseURL: string | undefined = process.env.REACT_APP_LEGEND_API_URL;
@@ -23,6 +23,12 @@ class LegendServices extends HTTPBaseService {
                 code: "/ebdKLfLEklqdYN0WXHqLapwlKxp8mqP2s2bZBhTMxFd28mnhWsYCQ==",
                 addresses,
             },
+        });
+    }
+
+    public async getTokenData() {
+        return await this.instance.get<ITokenData>("/api/tokendata", {
+            baseURL: this.baseURL,
         });
     }
 }

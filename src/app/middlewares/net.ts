@@ -941,6 +941,16 @@ const _netMiddlewareClosure = (): Middleware => {
                     case MESSAGE_ERROR.SIGNER_NOT_SET:
                         break;
                     default:
+                        store.dispatch(
+                            addPopup({
+                                content: {
+                                    txn: {
+                                        success: false,
+                                        errSummary: "System error!",
+                                    },
+                                },
+                            })
+                        );
                         console.error(message);
                         break;
                 }

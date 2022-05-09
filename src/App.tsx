@@ -1,12 +1,10 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { Provider } from "react-redux";
 import { Route, Routes } from "react-router-dom";
-import { useActivePopups, useAppDispatch, useAppSelector } from "./app/hooks";
+import { useActivePopups } from "./app/hooks";
 import store from "./app/store";
 import ToastMessage from "./components/commons/ToastMessage";
 import AppContext, { TAppContext } from "./contexts/AppContext";
-import { networkActions } from "./features/network/networkSlice";
-import { walletActions } from "./features/wallet/walletSlice";
 import AirDrop from "./routes/AirDrop";
 import { Asset } from "./routes/Asset";
 import FormCreation from "./routes/FormCreation";
@@ -22,10 +20,6 @@ import UI from "./routes/UI";
 function App(): React.ReactElement {
     // App context (for stuffs that should not use redux by performance)
     const [bodyElement, setBodyElement] = useState<HTMLBodyElement>();
-    const walletState = useAppSelector((state) => state.wallet);
-    const dispatch = useAppDispatch();
-    const networkState = useAppSelector((state) => state.network);
-    const transactionState = useAppSelector((state) => state.transaction);
     const activePopups = useActivePopups();
 
     const appContextValue: TAppContext = {
@@ -40,23 +34,6 @@ function App(): React.ReactElement {
     useEffect(() => {
         setBodyElement(getBodyElement() || undefined);
     }, [getBodyElement]);
-
-    useEffect(() => {
-        dispatch(networkActions.tryConnecting());
-    }, [dispatch]);
-
-    useEffect(() => {
-        if (networkState.bIsConnected && !walletState.signature) {
-            dispatch(walletActions.getAllCodeHash());
-            dispatch(walletActions.getSigner());
-        }
-    }, [dispatch, walletState.signature, networkState.bIsConnected]);
-
-    useEffect(() => {
-        if (walletState.signature) {
-            dispatch(walletActions.getBalance());
-        }
-    }, [dispatch, transactionState.tx?.txHash, walletState.signature]);
 
     const renderPopups = useCallback(() => {
         return activePopups.map((item, index) => {
