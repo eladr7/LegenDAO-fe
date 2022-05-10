@@ -71,7 +71,9 @@ export default function Input({
                     "grow shrink px-4",
                     { [getIconRightMargin()]: Boolean(rightIconNode) },
                     { "pr-24": Boolean(rightButtonText) },
-                    bTransparent ? "bg-slate-900/50 text-white/90" : "bg-slate-900 text-white",
+                    bTransparent
+                        ? "bg-primary-input-bg text-white/90"
+                        : "bg-primary-input-bg text-white",
                     className
                 )}
                 {...props}
