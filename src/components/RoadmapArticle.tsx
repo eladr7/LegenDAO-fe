@@ -190,7 +190,7 @@ export default function RoadmapArticle(): React.ReactElement {
                                 <div className="mt-28 text-white text-xl font-bold">
                                     {item.stage}
                                 </div>
-                                <div className="mt-3 text-2xl font-bold text-sky-300">
+                                <div className="mt-3 text-2xl font-bold text-[#90E4FF]">
                                     {item.title}
                                 </div>
                                 <ul className="ml-8">
@@ -226,7 +226,7 @@ export default function RoadmapArticle(): React.ReactElement {
                                 <div className="mt-36 text-white text-xl font-bold">
                                     {item.stage}
                                 </div>
-                                <div className="mt-3 text-2xl font-bold text-orange-300">
+                                <div className="mt-3 text-2xl font-bold text-[#FFC09D]">
                                     {item.title}
                                 </div>
 
