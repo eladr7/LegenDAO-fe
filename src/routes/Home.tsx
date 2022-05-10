@@ -1,21 +1,19 @@
-import Article from "../components/commons/Article";
 import cn from "classnames";
+import { useCallback } from "react";
+import { useAppSelector } from "../app/hooks";
+import Article from "../components/commons/Article";
+import Button from "../components/commons/Button";
+import { Footer } from "../components/commons/Footer";
 import { DefaultLayout } from "../components/layouts/DefaultLayout";
-
-import imgTank01 from "./../assets/images/tank-01.png";
-import imgYetiSleep01 from "./../assets/images/yeti-sleep-01.png";
+import MintLabStatusPanel from "../components/MintLabStatusPanel";
+import imgLab01 from "./../assets/images/lab-01.png";
+import imgMountain01 from "./../assets/images/mountain-01.png";
 import imgTank01Filter from "./../assets/images/tank-01-filter.png";
+import imgTank01 from "./../assets/images/tank-01.png";
 import imgYeti01 from "./../assets/images/yeti-01.png";
 import imgYeti02 from "./../assets/images/yeti-02.png";
-import imgMountain01 from "./../assets/images/mountain-01.png";
-import imgLab01 from "./../assets/images/lab-01.png";
-import Button from "../components/commons/Button";
-import { useCallback, useEffect, useState } from "react";
-import MintLabStatusPanel from "../components/MintLabStatusPanel";
-import { Footer } from "../components/commons/Footer";
-import { legendServices } from "../app/commons/legendServices";
-import { useDispatch } from "react-redux";
-import { applicationActions } from "../features/application/applicationSlice";
+import imgYetiSleep01 from "./../assets/images/yeti-sleep-01.png";
+
 
 interface IStatus {
     price: number;
@@ -25,42 +23,11 @@ interface IStatus {
 }
 
 function Home(): React.ReactElement {
-    const [dataMintLab, setdataMintLab] = useState<IStatus>({
-        apy: 0,
-        price: 0,
-        liquidity: 0,
-        dailyVolume: 0,
-    });
-    const dispatch = useDispatch();
+    const { tokenData } = useAppSelector((state) => state.wallet);
 
     const handleOnMintLabLaunchBtnClicked = useCallback(() => {
         window.open("/mint-lab", "_blank");
     }, []);
-
-    
-    useEffect(() => {
-        (async () => {
-            try {
-                const res = await legendServices.getTokenData();
-                
-                if (res.status === 200) {
-                    const { apy, daily_volume, liquidity, price_usd } = res.data;
-                    setdataMintLab({
-                        apy: apy,
-                        price: price_usd,
-                        liquidity: liquidity,
-                        dailyVolume: daily_volume,
-                    });
-                }
-            } catch (error) {
-                dispatch(
-                    applicationActions.toastRequestRejected({
-                        errorMsg: (error as any)?.message as string,
-                    })
-                );
-            }
-        })();
-    }, [dispatch]);
 
     return (
         <DefaultLayout headerType="intro" sidebarTab="tab/home">
@@ -136,10 +103,10 @@ function Home(): React.ReactElement {
                         <div className="hidden tablet-2:flex flex-col flex-nowrap z-10">
                             <div className="mb-8 last:mb-0">
                                 <MintLabStatusPanel
-                                    price={dataMintLab.price}
-                                    apy={dataMintLab.apy}
-                                    liquidity={dataMintLab.liquidity}
-                                    volume={dataMintLab.dailyVolume}
+                                    price={(tokenData as IStatus).price}
+                                    apy={(tokenData as IStatus).apy}
+                                    liquidity={(tokenData as IStatus).liquidity}
+                                    volume={(tokenData as IStatus).dailyVolume}
                                 />
                             </div>
                             <div className="mb-8 last:mb-0 flex flex-col justify-center items-center">
@@ -215,10 +182,10 @@ function Home(): React.ReactElement {
                     )}
                 >
                     <MintLabStatusPanel 
-                        price={dataMintLab.price}
-                        apy={dataMintLab.apy}
-                        liquidity={dataMintLab.liquidity}
-                        volume={dataMintLab.dailyVolume}
+                        price={(tokenData as IStatus).price}
+                        apy={(tokenData as IStatus).apy}
+                        liquidity={(tokenData as IStatus).liquidity}
+                        volume={(tokenData as IStatus).dailyVolume}
                     />
                 </div>
             </Article>

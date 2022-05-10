@@ -34,6 +34,7 @@ const _suggestChain: TSend<TWalletSuggestChainReturn, TWalletSuggestChainOptions
         }
 
         if (!window.keplr) {
+            window.open("https://www.keplr.app/", "_blank");
             reject("invalid/keplr");
             return;
         }

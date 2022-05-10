@@ -1,6 +1,5 @@
 import cn from "classnames";
 import React from "react";
-import imgYetiHead01 from "./../assets/images/yeti-head-01.png";
 
 type Props = {
     classname: string;

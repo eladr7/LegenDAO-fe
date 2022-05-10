@@ -28,7 +28,7 @@ const _toggleEnter: CaseReducer<TCollectionState, PayloadAction<boolean | undefi
 };
 
 const searchOld = createAsyncThunk<MyData, string>("collection/searchOld", async (input) => {
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve) => {
         setTimeout(() => resolve(`Fetch ${input} Done`), 2000);
     });
 });
@@ -81,10 +81,10 @@ const collectionSlice = createSlice({
         getCollection: _getCollection,
     },
     extraReducers: (builder) => {
-        builder.addCase(searchOld.pending, (state, action) => {
+        builder.addCase(searchOld.pending, (state) => {
             state.searchStage = "pending";
         });
-        builder.addCase(searchOld.fulfilled, (state, action) => {
+        builder.addCase(searchOld.fulfilled, (state) => {
             state.searchStage = "fulfilled";
             state.searchResult = [];
         });

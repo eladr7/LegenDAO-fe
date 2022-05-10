@@ -3,10 +3,7 @@ import { SecretNetworkClient, Coin, StdSignature } from "secretjs";
 import { CaseReducer, createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { TActionStage } from "../../app/commons/api";
 import { TWallet } from "../../classes/Wallet";
-import walletAPI, {
-    TWalletConnectOptions,
-    TWalletConnectReturn,
-} from "./walletApi";
+import walletAPI, { TWalletConnectOptions, TWalletConnectReturn } from "./walletApi";
 import { DF_DENOM } from "../../constants/defaults";
 import { TDenomination } from "../../classes/Currency";
 import { LGND_ADDRESS } from "../../constants/contractAddress";
@@ -24,10 +21,17 @@ interface IBalance {
     };
 }
 
+interface ITokenData {
+    price: number;
+    apy: number;
+    liquidity: number;
+    dailyVolume: number;
+}
+
 type TBalance = {
     denom: string;
     amount: string;
-    tokenAddress?: string;
+    tokenAddress: string;
 };
 
 export type TWalletState = {
@@ -47,6 +51,7 @@ export type TWalletState = {
     suggestStage?: TActionStage;
     connectStage?: TActionStage;
     signature?: StdSignature;
+    tokenData?: ITokenData;
 };
 
 const initialState: TWalletState = {
@@ -70,6 +75,12 @@ const initialState: TWalletState = {
     },
     fiatUnclaim: { amount: 0 },
     signature: undefined,
+    tokenData: {
+        apy: 0,
+        price: 0,
+        liquidity: 0,
+        dailyVolume: 0,
+    },
 };
 
 const connect = createAsyncThunk("wallet/connect", async (options: TWalletConnectOptions) => {
@@ -119,6 +130,14 @@ const _getSigner: CaseReducer<
     return;
 };
 
+const _getTokenData: CaseReducer<
+    TWalletState,
+    PayloadAction<{ tokenData: ITokenData } | undefined>
+> = (state, action) => {
+    state.tokenData = action.payload?.tokenData;
+    return;
+};
+
 const walletSlice = createSlice({
     name: "wallet",
     initialState,
@@ -127,6 +146,7 @@ const walletSlice = createSlice({
         getBalance: _getBalance,
         getAllCodeHash: _getAllCodeHash,
         getSigner: _getSigner,
+        getTokenData: _getTokenData,
     },
     extraReducers: (builder) => {
         builder.addCase(connect.pending, (state) => {

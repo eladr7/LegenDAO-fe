@@ -1,3 +1,4 @@
+import BigNumber from "bignumber.js";
 import cn from "classnames";
 import React, { useCallback } from "react";
 import { useNavigate } from "react-router-dom";
@@ -137,7 +138,18 @@ export default function BalancesPanel({
                             ).toUpperCase()}
                         </div>
                         <span className="ml-2 first:ml-0 opacity-50 font-light leading-none">
-                            (${walletState.fiatBalance.amount.toFixed(2)})
+                            ($
+                            {formatIntBalance(
+                                formatBalance(
+                                    new BigNumber(
+                                        walletState.balances[PLATFORM_ADDRESS as string]?.staked ||
+                                            "0"
+                                    )
+                                        .times(walletState.tokenData?.price || "0")
+                                        .toFixed()
+                                )
+                            )}
+                            )
                         </span>
                     </div>
                 </div>

@@ -357,8 +357,7 @@ export default function MyCollections(): React.ReactElement {
                     <div className="mb-4 tablet:mb-8 last:mb-0 flex flex-col tablet:flex-row flex-nowrap">
                         <Button
                             className="w-full tablet:w-auto"
-                            bTransparent={Boolean(collectionState.whitelistSpot)}
-                            bActivated={Boolean(collectionState.whitelistSpot)}
+                            disabled={Boolean(collectionState.whitelistSpot)}
                             onClick={handleOnGetWhitelistSpotBtnClicked}
                         >
                             <div className="flex flex-row flex-nowrap">
