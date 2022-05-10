@@ -101,9 +101,9 @@ export default function MintConfirmPurchasePanel({
                     onClick={handleOnAgreeTermOfServiceBtnClicked}
                 >
                     <CheckBox bChecked={mintState.bAgreeTermOfService} />
-                    <span className="ml-2 text-sm tablet-2:text-base">
+                    <span className="ml-2 text-sm tablet-2:text-sm">
                         By checking this box, I agree to{" "}
-                        <span className="text-blue-300 cursor-pointer">
+                        <span className="text-[#8c70ed] underline cursor-pointer">
                             Legendao&apos;s Terms of Service
                         </span>
                     </span>
