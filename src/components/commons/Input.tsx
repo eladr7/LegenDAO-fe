@@ -72,8 +72,8 @@ export default function Input({
                     { [getIconRightMargin()]: Boolean(rightIconNode) },
                     { "pr-24": Boolean(rightButtonText) },
                     bTransparent
-                        ? "bg-primary-mint-lab text-white/90"
-                        : "bg-primary-mint-lab text-white",
+                        ? "bg-primary-input-bg text-white/90"
+                        : "bg-primary-input-bg text-white",
                     className
                 )}
                 {...props}
