@@ -64,8 +64,8 @@ export default function OldCollections(): React.ReactElement {
                     </div>
                 </div>
 
-                <div className="grow flex flex-col flex-nowrap items-stretch z-10 mt-28">
-                    <div className="flex flex-col items-stretch tablet-2:items-start px-4 tablet-2:px-16 mb-8 tablet-2:mb-12 last:mb-0">
+                <div className="grow flex flex-col flex-nowrap items-stretch z-10 mt-24 tablet:mt-44">
+                    <div className="flex flex-col items-stretch tablet-2:items-start px-4 tablet-2:px-16 mb-8 tablet-2:mb-20 tablet-2:mb-12 last:mb-0">
                         <Input
                             id="input-search/collections"
                             className="w-full tablet-2:w-auto"
