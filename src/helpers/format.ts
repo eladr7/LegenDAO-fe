@@ -42,11 +42,14 @@ export const formatIntBalance = (num: string | number, decimals= 6) => {
 
 export const shortenNumber = (num: string | number) => {
     const number = new BigNumber(num);
-    if (number.div(100_000_000).gt(1)) {
+    if (number.div(1_000_000_000_000).gt(1)) {
+        return `${number.div(1_000_000_000_000).toFixed()}T`;
+    }
+    if (number.div(1_000_000_000).gt(1)) {
         return `${number.div(1_000_000_000).toFixed()}B`;
-    } else if (number.div(100_000).gt(1)) {
+    } else if (number.div(1_000_000).gt(1)) {
         return `${number.div(1_000_000).toFixed()}M`;
-    } else if (number.div(100).gt(1)) {
+    } else if (number.div(1_000).gt(1)) {
         return `${number.div(1_000).toFixed()}K`;
     } else {
         return num;

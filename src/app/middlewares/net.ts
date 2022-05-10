@@ -25,6 +25,7 @@ import {
     toggleWithdrawPanel,
 } from "../../features/accessibility/accessibilitySlice";
 import walletAPI from "../../features/wallet/walletApi";
+import { legendServices } from "../commons/legendServices";
 
 interface IBalanceSnip20 {
     balance: {
@@ -131,7 +132,7 @@ const _netMiddlewareClosure = (): Middleware => {
                     console.log("%CLEAR PREVIOUS CLIENT...", "color: yellow");
                     client = null;
                 }
-                await walletAPI.suggestChain({delay: 500});
+                await walletAPI.suggestChain({ delay: 500 });
 
                 _connect()
                     .then((result) => {
@@ -457,6 +458,20 @@ const _netMiddlewareClosure = (): Middleware => {
                         if (tx?.data.length) {
                             store.dispatch(toggleDepositPanel());
                         }
+                        store.dispatch(
+                            addPopup({
+                                content: {
+                                    txn: {
+                                        success: Boolean(tx?.data.length),
+                                        summary: `Deposit ${formatBalance(
+                                            amount
+                                        )} $${DF_DENOM.toUpperCase()} successfully`,
+                                        errSummary: "Deposit unsuccessfully. Please try again.",
+                                    },
+                                },
+                                key: tx?.transactionHash,
+                            })
+                        );
                         next({ ...action, payload: { ...action.payload, tx } });
                     })
                     .catch((error) => {
@@ -810,26 +825,45 @@ const _netMiddlewareClosure = (): Middleware => {
 
             case transactionActions.withdrawFromPlatform.type: {
                 const platformContractAddress = PLATFORM_ADDRESS;
-                if (!client || !platformContractAddress) return;
+                if (!client || !platformContractAddress || !STAKING_ADDRESS) return;
                 const { amount } = action.payload;
                 store.dispatch(transactionActions.startTransaction());
 
                 client.tx.compute
                     .executeContract(
                         {
-                            contractAddress: PLATFORM_ADDRESS as string,
-                            codeHash: codeHashes[platformContractAddress].codeHash || "",
+                            contractAddress: STAKING_ADDRESS,
+                            codeHash: codeHashes[STAKING_ADDRESS]?.codeHash,
                             sender: client.address,
                             msg: {
-                                redeem: {
-                                    amount,
+                                withdraw: {
+                                    amount: amount,
                                 },
                             },
                         },
-                        {
-                            gasLimit: 300_000,
-                        }
+                        { gasLimit: 500_000 }
                     )
+                    .then((tx) => {
+                        if (!tx.data.length || !client || !STAKING_ADDRESS) {
+                            return tx;
+                        } else {
+                            return client.tx.compute.executeContract(
+                                {
+                                    contractAddress: PLATFORM_ADDRESS as string,
+                                    codeHash: codeHashes[platformContractAddress].codeHash || "",
+                                    sender: client.address,
+                                    msg: {
+                                        redeem: {
+                                            amount,
+                                        },
+                                    },
+                                },
+                                {
+                                    gasLimit: 300_000,
+                                }
+                            );
+                        }
+                    })
                     .then((tx) => {
                         store.dispatch(
                             addPopup({
@@ -845,7 +879,9 @@ const _netMiddlewareClosure = (): Middleware => {
                                 key: tx.transactionHash,
                             })
                         );
-                        store.dispatch(toggleWithdrawPanel());
+                        if (tx?.data.length) {
+                            store.dispatch(toggleWithdrawPanel());
+                        }
                         next({ ...action, payload: { ...action.payload, tx } });
                     })
                     .catch((error) => {
@@ -958,6 +994,35 @@ const _netMiddlewareClosure = (): Middleware => {
                 store.dispatch(transactionActions.endTransaction());
                 break;
             }
+
+            case walletActions.getTokenData.type:
+                (async () => {
+                    try {
+                        const res = await legendServices.getTokenData();
+
+                        if (res.status === 200) {
+                            const { apy, daily_volume, liquidity, price_usd } = res.data;
+                            next({
+                                ...action,
+                                payload: {
+                                    tokenData: {
+                                        apy: apy,
+                                        price: price_usd,
+                                        liquidity: liquidity,
+                                        dailyVolume: daily_volume,
+                                    },
+                                },
+                            });
+                        }
+                    } catch (error) {
+                        store.dispatch(
+                            applicationActions.toastRequestRejected({
+                                errorMsg: (error as any)?.message as string,
+                            })
+                        );
+                    }
+                })();
+                break;
 
             default:
                 next(action);
