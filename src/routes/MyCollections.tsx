@@ -356,7 +356,7 @@ export default function MyCollections(): React.ReactElement {
 
                     <div className="mb-4 tablet:mb-8 last:mb-0 flex flex-col tablet:flex-row flex-nowrap">
                         <Button
-                            className="w-full tablet:w-auto"
+                            className="w-full tablet:w-auto disabled:bg-gradient-to-b disabled:from-[#CAB5E0] disabled:to-[#655BA4] disabled:text-white"
                             disabled={Boolean(collectionState.whitelistSpot)}
                             onClick={handleOnGetWhitelistSpotBtnClicked}
                         >
@@ -374,7 +374,7 @@ export default function MyCollections(): React.ReactElement {
                                             "ml-4 first:ml-0 w-icon h-icon grow-0 shrink-0"
                                         )}
                                     >
-                                        <CheckIcon className="fill-purple-700" />
+                                        <CheckIcon className="fill-white" />
                                     </div>
                                 )}
                             </div>
@@ -382,7 +382,7 @@ export default function MyCollections(): React.ReactElement {
                         {collectionState.bEntered ? (
                             <div className="mt-4 tablet-2:mt-0 tablet-2:ml-8 w-full">
                                 <Button
-                                    className="w-full tablet:w-auto border-[#915cd5]"
+                                    className="w-full tablet:w-auto !border-[#915cd5]"
                                     bTransparent
                                     onClick={handleOnMyCollectionBtnClicked}
                                 >
@@ -392,7 +392,7 @@ export default function MyCollections(): React.ReactElement {
                         ) : (
                             <div className="tablet:hidden mt-4 tablet-2:mt-0 tablet-2:ml-8 w-full">
                                 <Button
-                                    className="w-full tablet:w-auto border-[#915cd5]"
+                                    className="w-full tablet:w-auto !border-[#915cd5]"
                                     bTransparent
                                     onClick={handleOnMyCollectionBtnClicked}
                                 >
