@@ -1,10 +1,11 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { Provider } from "react-redux";
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes, useLocation } from "react-router-dom";
 import { useActivePopups, useAppDispatch, useAppSelector } from "./app/hooks";
 import store from "./app/store";
 import ToastMessage from "./components/commons/ToastMessage";
 import AppContext, { TAppContext } from "./contexts/AppContext";
+import { networkActions } from "./features/network/networkSlice";
 import { walletActions } from "./features/wallet/walletSlice";
 import AirDrop from "./routes/AirDrop";
 import { Asset } from "./routes/Asset";
@@ -28,6 +29,8 @@ function App(): React.ReactElement {
     const networkState = useAppSelector((state) => state.network);
     const transactionState = useAppSelector((state) => state.transaction);
 
+    const location = useLocation();
+
     const appContextValue: TAppContext = {
         state: {
             bodyElement,
@@ -40,6 +43,10 @@ function App(): React.ReactElement {
     useEffect(() => {
         setBodyElement(getBodyElement() || undefined);
     }, [getBodyElement]);
+
+    useEffect(() => {
+        location.pathname !== "/" && dispatch(networkActions.tryConnecting());
+    }, [dispatch, location.pathname]);
 
     useEffect(() => {
         if (networkState.bIsConnected && !walletState.signature) {
