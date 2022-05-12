@@ -6,6 +6,7 @@ import imgRoadmapMobile from "../assets/images/roadmap-mobile-background.png";
 import Article from "./commons/Article";
 import { ArticleBox } from "./ArticleBox";
 import { useMediaQuery } from "../app/hooks";
+import RoadMapCanvas from "./RoadMapCanvas";
 
 export default function RoadmapArticle(): React.ReactElement {
     const mediaQuery = useMediaQuery();
@@ -186,7 +187,7 @@ export default function RoadmapArticle(): React.ReactElement {
                     })
                     .map((item, index) => {
                         return (
-                            <div key={index}>
+                            <div className="canvas-paragraph" key={index}>
                                 <div className="mt-28 text-white text-xl font-bold">
                                     {item.stage}
                                 </div>
@@ -222,7 +223,7 @@ export default function RoadmapArticle(): React.ReactElement {
                     })
                     .map((item, index) => {
                         return (
-                            <div key={index}>
+                            <div className="canvas-paragraph" key={index}>
                                 <div className="mt-36 text-white text-xl font-bold">
                                     {item.stage}
                                 </div>
@@ -286,15 +287,9 @@ export default function RoadmapArticle(): React.ReactElement {
             </div>
         );
     }, []);
+
     return (
         <Article className="flex-col lg:flex-row min-h-[700px]">
-            <div
-                className={cn(
-                    "absolute top-0 bottom-0 right-0 left-0",
-                    "bg-no-repeat bg-cover bg-center bg-primary-mint-lab"
-                )}
-            ></div>
-
             <div
                 className={cn(
                     "grow z-20 bg-primary-mint-lab px-5 lg:px-12",
@@ -304,25 +299,43 @@ export default function RoadmapArticle(): React.ReactElement {
                 <h1 className="mb-8 last:mb-0 lg:text-center font-bold text-2xl lg:text-5xl z-20">
                     The Legendary Roadmap
                 </h1>
+
                 <div
                     className={cn(
                         "absolute top-0 lg:top-20 bottom-0 right-0 left-0",
-                        "bg-no-repeat bg-cover bg-top"
+                        "bg-no-repeat  "
                     )}
                     style={{
-                        backgroundImage: mediaQuery.checkMatchMinWidth(760)
+                        backgroundImage: mediaQuery.checkMatchMinWidth(1024)
                             ? `url(${imgRoadmap01})`
                             : `url(${imgRoadmapMobile})`,
+                        backgroundSize: "cover",
                     }}
                 ></div>
-
-                {mediaQuery.checkMatchMinWidth(1024) && (
-                    <ArticleBox
-                        className="bg-contain bg-repeat-round justify-between  lg:pt-12 lg:pb-36 lg:pr-36 lg:pl-48  z-10"
-                        childElement={renderArr()}
-                    />
-                )}
-                {!mediaQuery.checkMatchMinWidth(1024) && renderArrMobile()}
+                <div
+                    className={cn(
+                        "bg-gradient-to-b from-primary-mint-lab via-primary-mint-lab/100 to-slate-900/0 ",
+                        "absolute h-1/4 w-full top-[3%] right-0 left-0  "
+                    )}
+                ></div>
+                <div
+                    className={cn(
+                        "bg-gradient-to-t from-primary-mint-lab via-primary-mint-lab-900/75 to-slate-900/0 ",
+                        "absolute h-1/5 w-full bottom-0 right-0 left-0  "
+                    )}
+                ></div>
+                <div className="canvas-container relative">
+                    {mediaQuery.checkMatchMinWidth(1024) && (
+                        <>
+                            <RoadMapCanvas />
+                            <ArticleBox
+                                className="bg-contain bg-repeat-round justify-between lg:pt-12 lg:pb-36 4xl:pr-36 4xl:pl-48  z-10"
+                                childElement={renderArr()}
+                            />
+                        </>
+                    )}
+                    {!mediaQuery.checkMatchMinWidth(1024) && renderArrMobile()}
+                </div>
             </div>
         </Article>
     );
