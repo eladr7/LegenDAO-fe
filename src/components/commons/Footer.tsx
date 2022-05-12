@@ -1,4 +1,4 @@
-import React, { useCallback } from "react";
+import React, { useCallback, useState } from "react";
 import imgYetiHead01 from "../../assets/images/yeti-head-01.png";
 import DiscordIcon from "../icons/DiscordIcon";
 import TwitterIcon from "../icons/TwitterIcon";
@@ -16,6 +16,7 @@ interface IFormEmail {
 
 export function Footer(): React.ReactElement {
     const dispatch = useDispatch();
+    const [showInputEmail, setShowInputEmail] = useState<boolean>(false);
     const {
         handleSubmit,
         register,
@@ -50,6 +51,10 @@ export function Footer(): React.ReactElement {
         [dispatch, reset]
     );
 
+    const handleShowInputEmail = useCallback(() => {
+        setShowInputEmail(true);
+    }, []);
+
     return (
         <div className="text-white flex flex-col justify-between items-stretch">
             <div className="p-8 tablet-2:p-0 tablet-2:h-footer bg-[#08152a] flex flex-col tablet-2:flex-row justify-around items-center">
@@ -67,11 +72,18 @@ export function Footer(): React.ReactElement {
                         </div>
                     </div>
                 </div>
-                <div className="tablet-2:hidden mb-8 w-full">
-                    <Button className="!w-full" bigness="sm" bTransparent>
-                        Contact Us
-                    </Button>
-                </div>
+                {showInputEmail === false && (
+                    <div className="tablet-2:hidden mb-8 w-full">
+                        <Button
+                            onClick={handleShowInputEmail}
+                            className="!w-full"
+                            bigness="sm"
+                            bTransparent
+                        >
+                            Contact Us
+                        </Button>
+                    </div>
+                )}
                 <div className="flex flex-col flex-nowrap items-center">
                     <div className="font-normal tablet:font-bold mb-4 last:mb-0">
                         Join our community
@@ -147,6 +159,48 @@ export function Footer(): React.ReactElement {
                         )}
                     </form>
                 </div>
+                {showInputEmail === true && (
+                    <div className="tablet-2:hidden mt-4 flex flex-col flex-wrap items-center">
+                        <div className="font-normal tablet:font-bold mb-4 last:mb-0">
+                            Stay in the loop
+                        </div>
+                        <div className="opacity-50 max-w-[300px] tablet:max-w-[400px] font-light mb-3 last:mb-0 text-sm">
+                            Join our mailing list to be the first one to hear about{" "}
+                            <span className="whitespace-nowrap">new collection</span>, feature
+                            releases tips and tricks.
+                        </div>
+                        <form onSubmit={handleSubmit(handleSubmitEmail)}>
+                            <div className="flex justify-between flex-col items-center ">
+                                <div className="grow flex flex-col items-stretch w-[300px] tablet:w-[400px] mb-2">
+                                    <Input
+                                        className="text-slate-700 bg-white"
+                                        type="email"
+                                        placeholder="Your email"
+                                        value={watch("email")}
+                                        {...register("email", {
+                                            validate: validator.validateForm.email,
+                                            onChange: (e: React.ChangeEvent<HTMLInputElement>) => {
+                                                setValue("email", e.target.value);
+                                            },
+                                        })}
+                                    />
+                                </div>
+                                <div className="ml-0 first:mr-0">
+                                    <Button type="submit">
+                                        <span className="px-4 w-[264px] tablet:w-[364px]">
+                                            Submit
+                                        </span>
+                                    </Button>
+                                </div>
+                            </div>
+                            {errors?.email && (
+                                <label className="leading-8 text-red-500">
+                                    {errors?.email.message}
+                                </label>
+                            )}
+                        </form>
+                    </div>
+                )}
             </div>
 
             <div className="bg-[#020c20] h-20 flex justify-center items-center">
