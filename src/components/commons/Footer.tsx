@@ -134,7 +134,8 @@ export function Footer(): React.ReactElement {
                         <div className="flex justify-between items-center">
                             <div className="grow flex flex-col items-stretch">
                                 <Input
-                                    className="text-slate-700 bg-white"
+                                    className="text-slate-700"
+                                    backgroundColor="bg-white"
                                     type="email"
                                     placeholder="Your email"
                                     value={watch("email")}
@@ -173,7 +174,8 @@ export function Footer(): React.ReactElement {
                             <div className="flex justify-between flex-col items-center ">
                                 <div className="grow flex flex-col items-stretch w-[300px] tablet:w-[400px] mb-2">
                                     <Input
-                                        className="text-slate-700 bg-white"
+                                        className="text-slate-700"
+                                        backgroundColor="#FFFFFF"
                                         type="email"
                                         placeholder="Your email"
                                         value={watch("email")}

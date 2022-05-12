@@ -4,6 +4,7 @@ import Button from "./Button";
 
 interface IProps extends React.InputHTMLAttributes<HTMLInputElement> {
     refV?: React.LegacyRef<HTMLInputElement>;
+    backgroundColor?: string;
     bigness?: "sm" | "md" | "lg" | "xl";
     rightIconNode?: React.ReactNode;
     rightIconOnClick?: React.MouseEventHandler<HTMLElement>;
@@ -15,6 +16,7 @@ interface IProps extends React.InputHTMLAttributes<HTMLInputElement> {
 
 export default function Input({
     refV,
+    backgroundColor,
     bigness,
     bTransparent,
     className,
@@ -71,7 +73,11 @@ export default function Input({
                     "grow shrink px-4",
                     { [getIconRightMargin()]: Boolean(rightIconNode) },
                     { "pr-24": Boolean(rightButtonText) },
-                    bTransparent
+                    backgroundColor
+                        ? bTransparent
+                            ? "backgroundColor text-white/90"
+                            : "backgroundColor text-white"
+                        : bTransparent
                         ? "bg-primary-input-bg text-white/90"
                         : "bg-primary-input-bg text-white",
                     className
@@ -82,6 +88,7 @@ export default function Input({
         );
     }, [
         bTransparent,
+        backgroundColor,
         className,
         getBignessClassNames,
         getIconRightMargin,
