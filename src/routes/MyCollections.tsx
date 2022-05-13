@@ -28,6 +28,7 @@ import { useNavigate } from "react-router-dom";
 import { transactionActions } from "../features/transaction/transactionSlice";
 import { cryptidsServices } from "../app/commons/cryptidsServices";
 import { Footer } from "../components/commons/Footer";
+import { profileActions } from "../features/profile/profileSlice";
 
 export default function MyCollections(): React.ReactElement {
     const navigate = useNavigate();
@@ -57,8 +58,9 @@ export default function MyCollections(): React.ReactElement {
     }, [dispatch]);
 
     const handleOnMyCollectionBtnClicked = useCallback(() => {
+        dispatch(profileActions.setTab("/profile/collected"));
         navigate("/profile/collected");
-    }, [navigate]);
+    }, [dispatch, navigate]);
 
     const handleOnEnterBtnClicked = useCallback(() => {
         dispatch(toggleEnter(true));
