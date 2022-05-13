@@ -59,7 +59,7 @@ const _sendTokenFromPlatformToContract: CaseReducer<
 
 const _depositToPlatform: CaseReducer<
     TTransactionState,
-    PayloadAction<{ snipContractAddress?: string; amount: string; toAddress?: string; tx?: Tx }>
+    PayloadAction<{ amount: string; toAddress?: string; tx?: Tx }>
 > = (state, action) => {
     state.bIsPending = false;
     state.tx = {

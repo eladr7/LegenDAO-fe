@@ -1,6 +1,11 @@
 /* eslint-disable no-console */
 import { Buffer } from "buffer";
-import { SecretNetworkClient, StdSignature } from "secretjs";
+import {
+    MsgExecuteContract,
+    MsgSnip20Send,
+    SecretNetworkClient,
+    StdSignature,
+} from "secretjs";
 import { AccountData } from "secretjs/dist/wallet_amino";
 import { Middleware, MiddlewareAPI } from "redux";
 import { TAppDispatch, TRootState } from "../store";
@@ -398,63 +403,48 @@ const _netMiddlewareClosure = (): Middleware => {
             }
 
             case transactionActions.depositToPlatform.type: {
-                const { snipContractAddress, amount, toAddress } = action.payload;
-                const platformContractAddress: string | undefined = PLATFORM_ADDRESS;
-                const targetContractAddress: string | undefined =
-                    snipContractAddress || LGND_ADDRESS;
-                if (!client || !platformContractAddress || !targetContractAddress) return;
+                const { amount, toAddress } = action.payload;
+                if (!client || !PLATFORM_ADDRESS || !LGND_ADDRESS) return;
                 store.dispatch(transactionActions.startTransaction());
 
-                const msg = Buffer.from(
-                    JSON.stringify({ deposit: { to: toAddress || client.address } })
-                ).toString("base64");
-
-                client.tx.snip20
-                    .send(
-                        {
-                            sender: client.address,
-                            contractAddress: targetContractAddress,
-                            codeHash: codeHashes[targetContractAddress]?.codeHash || "",
-                            msg: {
-                                send: {
-                                    recipient: platformContractAddress,
-                                    amount: amount,
-                                    msg,
-                                },
-                            },
+                const msgDeposit = new MsgSnip20Send({
+                    contractAddress: LGND_ADDRESS,
+                    sender: client.address,
+                    codeHash: codeHashes[LGND_ADDRESS]?.codeHash || "",
+                    msg: {
+                        send: {
+                            recipient: PLATFORM_ADDRESS,
+                            amount: amount,
+                            msg: Buffer.from(
+                                JSON.stringify({ deposit: { to: toAddress || client.address } })
+                            ).toString("base64"),
                         },
-                        { gasLimit: 500_000 }
-                    )
-                    .then((tx) => {
-                        if (!client || !tx.data.length || !PLATFORM_ADDRESS) return;
+                    },
+                });
 
-                        if (!tx.data.length) {
-                            return tx;
-                        } else {
-                            const rawMsg = Buffer.from(
+                const msgStake = new MsgExecuteContract({
+                    contractAddress: PLATFORM_ADDRESS,
+                    sender: client.address,
+                    codeHash: codeHashes[PLATFORM_ADDRESS]?.codeHash || "",
+                    msg: {
+                        send_from_platform: {
+                            contract_addr: STAKING_ADDRESS,
+                            amount: amount,
+                            msg: Buffer.from(
                                 JSON.stringify({
                                     Deposit: {},
                                 })
-                            ).toString("base64");
+                            ).toString("base64"),
+                        },
+                    },
+                });
 
-                            return client.tx.compute.executeContract(
-                                {
-                                    contractAddress: PLATFORM_ADDRESS,
-                                    codeHash: codeHashes[PLATFORM_ADDRESS]?.codeHash,
-                                    sender: client.address,
-                                    msg: {
-                                        send_from_platform: {
-                                            contract_addr: STAKING_ADDRESS,
-                                            amount: amount,
-                                            msg: rawMsg,
-                                        },
-                                    },
-                                },
-                                { gasLimit: 500_000 }
-                            );
-                        }
+                client.tx
+                    .broadcast([msgDeposit, msgStake], {
+                        gasLimit: 500_000,
                     })
                     .then((tx) => {
+                        console.log(tx);
                         if (tx?.data.length) {
                             store.dispatch(toggleDepositPanel());
                         }
