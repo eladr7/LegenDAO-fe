@@ -47,7 +47,7 @@ export default function LegendaryUniverseArticle(): React.ReactElement {
                 )}
             ></div>
 
-            <div className="relative lg:w-1/2 z-20 h-[400px] lg:h-auto">
+            <div className="relative lg:w-[60%] z-20 h-[400px] lg:h-auto">
                 <div
                     className={cn(
                         "hidden lg:block",
@@ -64,8 +64,8 @@ export default function LegendaryUniverseArticle(): React.ReactElement {
                 ></div>
                 <div
                     className={cn(
-                        "absolute left-[20px] lg:left-0 -bottom-8 lg:-bottom-24   w-3/4 h-[90%] ",
-                        "bg-no-repeat bg-bottom "
+                        "absolute left-[20px] lg:left-0 -bottom-8 lg:-bottom-24   w-3/4 h-[90%] tablet:h-[100%]",
+                        "bg-no-repeat bg-left-bottom"
                     )}
                     style={{
                         backgroundImage: `url(${imgYetiHoodie01})`,
@@ -74,8 +74,8 @@ export default function LegendaryUniverseArticle(): React.ReactElement {
                 ></div>
                 <div
                     className={cn(
-                        "absolute -right-8 -bottom-6 lg:-bottom-24 w-3/4 h-[80%]",
-                        "bg-no-repeat  bg-bottom"
+                        "absolute right-0 -bottom-6 lg:-bottom-24 w-3/4 h-[80%] tablet:h-[90%]",
+                        "bg-no-repeat  bg-right-bottom"
                     )}
                     style={{
                         backgroundImage: `url(${imgYetiGirl01})`,
@@ -85,8 +85,8 @@ export default function LegendaryUniverseArticle(): React.ReactElement {
             </div>
             <div
                 className={cn(
-                    "relative min-h-screen lg:h-auto pt-[120px] lg:pt-[80px]",
-                    "lg:w-1/2 z-20 lg:bg-primary-mint-lab lg:px-12",
+                    "relative min-h-[90vh] lg:h-auto pt-[120px] lg:pt-[80px]",
+                    "lg:w-[40%] z-20 lg:bg-primary-mint-lab lg:px-12",
                     "text-white flex flex-col flex-nowrap justify-center items-stretch px-8",
                     "bg-no-repeat "
                 )}
