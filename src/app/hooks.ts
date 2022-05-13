@@ -99,7 +99,7 @@ export const useActivePopups = () => {
 export const useMediaQuery = () => {
     const setSize = useState([0, 0])[1];
     const checkMatchMinWidth = useCallback((breakPointInput?: number) => {
-        if (!breakPointInput) return;
+        if (!breakPointInput || !window) return;
         return window.matchMedia(`(min-width: ${breakPointInput}px)`).matches;
     }, []);
     const updateSize = useCallback(() => {

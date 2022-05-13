@@ -18,9 +18,8 @@ function RoadMapCanvas() {
             if (!canvasContainer) return { x: 0, y: 0, type };
             let x;
             const y =
-                element.getBoundingClientRect().y -
-                canvasContainer.getBoundingClientRect().y +
-                element.getBoundingClientRect().height / 2;
+                element.getBoundingClientRect().y - canvasContainer.getBoundingClientRect().y + 20;
+            // element.getBoundingClientRect().height / 2;
             if (type === "right") {
                 x =
                     element.getBoundingClientRect().x -
@@ -40,23 +39,20 @@ function RoadMapCanvas() {
     );
 
     const drawTwoCurves = useCallback(
-        (start: TPosition, end: TPosition, direction: "LTR" | "RTL") => {
+        (start: TPosition, end: TPosition) => {
             if (!ctx) return;
             const controlPoint1 = {
                 x: start.x,
-                y: start.y + (end.y - start.y) / 2,
+                y: (end.y + start.y) / 2,
             };
             const endPoint1 = {
-                x:
-                    direction === "LTR"
-                        ? start.x + (end.x - start.x) / 2
-                        : end.x + (start.x - end.x) / 2,
-                y: start.y + (end.y - start.y) / 2,
+                x: (start.x + end.x) / 2,
+                y: (end.y + start.y) / 2,
             };
 
             const controlPoint2 = {
                 x: end.x,
-                y: start.y + (end.y - start.y) / 2,
+                y: (end.y + start.y) / 2,
             };
             const endPoint2 = {
                 x: end.x,
@@ -115,12 +111,12 @@ function RoadMapCanvas() {
 
         //Draw Curves
         drawOneCurve(positionArr[0], positionArr[5], "LTR");
-        drawTwoCurves(positionArr[5], positionArr[1], "RTL");
-        drawTwoCurves(positionArr[1], positionArr[6], "LTR");
-        drawTwoCurves(positionArr[6], positionArr[2], "RTL");
-        drawTwoCurves(positionArr[2], positionArr[7], "LTR");
-        drawTwoCurves(positionArr[7], positionArr[3], "RTL");
-        drawTwoCurves(positionArr[3], positionArr[8], "LTR");
+        drawTwoCurves(positionArr[5], positionArr[1]);
+        drawTwoCurves(positionArr[1], positionArr[6]);
+        drawTwoCurves(positionArr[6], positionArr[2]);
+        drawTwoCurves(positionArr[2], positionArr[7]);
+        drawTwoCurves(positionArr[7], positionArr[3]);
+        drawTwoCurves(positionArr[3], positionArr[8]);
         drawOneCurve(positionArr[8], positionArr[4], "RTL");
 
         //Draw Points
