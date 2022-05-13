@@ -30,7 +30,7 @@ const validateForm = {
                 return "This field is required.";
             }
             if (!isAddress(val) || index === -1) {
-                return "Invalid wallet address. Please try again.";
+                return "Address not valid, please enter a valid address.";
             }
         },
     },
