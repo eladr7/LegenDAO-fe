@@ -13,7 +13,7 @@ export default function ProfileItemsPanel(): React.ReactElement {
                         "flex justify-center items-center text-center text-sm font-semibold cursor-pointer"
                     )}
                 >
-                    Comming Soon
+                    Coming Soon
                 </div>
                 <div
                     className={cn(
@@ -21,7 +21,7 @@ export default function ProfileItemsPanel(): React.ReactElement {
                         "flex justify-center items-center text-center text-sm font-semibold cursor-pointer"
                     )}
                 >
-                    Comming Soon
+                    Coming Soon
                 </div>
                 <div
                     className={cn(
@@ -29,7 +29,7 @@ export default function ProfileItemsPanel(): React.ReactElement {
                         "flex justify-center items-center text-center text-sm font-semibold cursor-pointer"
                     )}
                 >
-                    Comming Soon
+                    Coming Soon
                 </div>
 
                 <div
@@ -38,7 +38,7 @@ export default function ProfileItemsPanel(): React.ReactElement {
                         "flex justify-center items-center text-center text-sm font-semibold cursor-pointer"
                     )}
                 >
-                    Comming Soon
+                    Coming Soon
                 </div>
                 <div
                     className={cn(
@@ -46,7 +46,7 @@ export default function ProfileItemsPanel(): React.ReactElement {
                         "flex justify-center items-center text-center text-sm font-semibold cursor-pointer"
                     )}
                 >
-                    Comming Soon
+                    Coming Soon
                 </div>
                 <div
                     className={cn(
@@ -54,7 +54,7 @@ export default function ProfileItemsPanel(): React.ReactElement {
                         "flex justify-center items-center text-center text-sm font-semibold cursor-pointer"
                     )}
                 >
-                    Comming Soon
+                    Coming Soon
                 </div>
             </div>
         </Panel>
