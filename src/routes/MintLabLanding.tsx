@@ -6,12 +6,13 @@ import LegendaryUniverseArticle from "../components/LegendaryUniverseArticle";
 import MountainsOfSodArticle from "../components/MountainsOfSodArticle";
 import RoadmapArticle from "../components/RoadmapArticle";
 import SecretCollectionsArticle from "../components/SecretCollectionsArticle";
+import SnowFall from "../components/SnowFall";
 import TeamArticle from "../components/TeamArticle";
 
 export function MintLabLanding(): React.ReactElement {
-
     return (
         <DefaultLayout headerType="general" sidebarTab="tab/home" bFooterOn bHeaderAlwaysOnTop>
+            <SnowFall />
             <LegendaryUniverseArticle />
             <LegendaryPlatformArticle />
             <MountainsOfSodArticle />

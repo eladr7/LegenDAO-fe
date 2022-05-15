@@ -27,6 +27,41 @@ module.exports = {
             "desktop-5": "1800px",
         },
         extend: {
+            animation: {
+                "snowfall-fast-l-r": "snowfall-l-r 17s linear infinite 2s",
+                "snowfall-fast-l-r-lg": "snowfall-l-r-lg 15s linear infinite 3s",
+                "snowfall-normal-l-r": "snowfall-l-r 30s linear infinite",
+                "snowfall-slow-l-r": "snowfall-l-r 50s linear infinite",
+                "snowfall-fast-r-l": "snowfall-r-l 15s linear infinite",
+                "snowfall-normal-r-l": "snowfall-r-l 30s linear infinite",
+                "snowfall-slow-r-l": "snowfall-r-l 50s linear infinite",
+            },
+            keyframes: {
+                "snowfall-l-r": {
+                    "0%": {
+                        transform: "translate3d(0, -20vh, 0)",
+                    },
+                    "100%": {
+                        transform: "translate3d(10vw, 120vh, 0)",
+                    },
+                },
+                "snowfall-l-r-lg": {
+                    "0%": {
+                        transform: "translate3d(0, -20vh, 0)",
+                    },
+                    "100%": {
+                        transform: "translate3d(20vw, 150vh, 0)",
+                    },
+                },
+                "snowfall-r-l": {
+                    "0%": {
+                        transform: "translate3d(0, -10vh, 0)",
+                    },
+                    "100%": {
+                        transform: "translate3d(-10vw, 110vh, 0)",
+                    },
+                },
+            },
             colors: {
                 "primary-mint-lab": "#001b47",
                 "primary-input-bg": "#001b47",
