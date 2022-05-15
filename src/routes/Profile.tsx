@@ -151,9 +151,9 @@ export default function Profile(): React.ReactElement {
                                     Loot Boxes
                                 </div>
                                 <div className="mb-8 last:mb-0 text-center text-base text-[#AFB7C6]">
-                                    Where do they come from? What&apos;s inside?
-                                    <br className="hidden lg:block" />
-                                    Stay tuned to learn more
+                                    Where do they come from? <span className="whitespace-nowrap">What&apos;s inside?</span>
+                                    <br className="hidden lg:block" />&nbsp;
+                                    Stay tuned to <span className="whitespace-nowrap">learn more</span>
                                 </div>
                                 <div
                                     className="mb-4 last:mb-0 w-[130px] h-[130px] bg-contain bg-no-repeat bg-center"
@@ -189,9 +189,9 @@ export default function Profile(): React.ReactElement {
                                     Loot Boxes
                                 </div>
                                 <div className="mb-8 last:mb-0 text-center text-base text-[#AFB7C6]">
-                                    Where do they come from? What&apos;s inside?
-                                    <br className="hidden lg:block" />
-                                    Stay tuned to learn more
+                                    Where do they come from? <span className="whitespace-nowrap">What&apos;s inside?</span>
+                                    <br className="hidden lg:block" />&nbsp;
+                                    Stay tuned to <span className="whitespace-nowrap">learn more</span>
                                 </div>
                                 <div
                                     className="mb-4 last:mb-0 w-[130px] h-[130px] bg-contain bg-no-repeat bg-center"
@@ -226,9 +226,9 @@ export default function Profile(): React.ReactElement {
                                     Loot Boxes
                                 </div>
                                 <div className="mb-8 last:mb-0 text-center text-base text-[#AFB7C6]">
-                                    Where do they come from? What&apos;s inside?
-                                    <br className="hidden lg:block" />
-                                    Stay tuned to learn more
+                                    Where do they come from? <span className="whitespace-nowrap">What&apos;s inside?</span>
+                                    <br className="hidden lg:block" />&nbsp;
+                                    Stay tuned to <span className="whitespace-nowrap">learn more</span>
                                 </div>
                                 <div
                                     className="mb-4 last:mb-0 w-[130px] h-[130px] bg-contain bg-no-repeat bg-center"

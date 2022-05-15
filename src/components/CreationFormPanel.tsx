@@ -160,7 +160,6 @@ export default function CreationFormPanel({ onCloseBtnClicked }: Props): React.R
                                 onChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => {
                                     setValue("details", e.target.value);
                                 },
-                                validate: validator.validateForm.requireField,
                             })}
                         />
                     </div>
