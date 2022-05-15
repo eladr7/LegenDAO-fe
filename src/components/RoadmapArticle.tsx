@@ -10,6 +10,7 @@ import RoadMapCanvas from "./RoadMapCanvas";
 
 export default function RoadmapArticle(): React.ReactElement {
     const mediaQuery = useMediaQuery();
+
     const arr = useMemo(
         () => [
             {
@@ -187,14 +188,14 @@ export default function RoadmapArticle(): React.ReactElement {
                     })
                     .map((item, index) => {
                         return (
-                            <div className="canvas-paragraph" key={index}>
+                            <div className="" key={index}>
                                 <div className="mt-28 text-white text-xl font-bold">
                                     {item.stage}
                                 </div>
-                                <div className="mt-3 text-2xl font-bold text-[#90E4FF]">
+                                <div className="mt-3 text-2xl font-bold text-[#90E4FF] canvas-paragraph">
                                     {item.title}
                                 </div>
-                                <ul className="ml-8">
+                                <ul className="ml-8 ">
                                     {item.desc.map((item1, index1) => {
                                         return (
                                             <li
@@ -223,15 +224,15 @@ export default function RoadmapArticle(): React.ReactElement {
                     })
                     .map((item, index) => {
                         return (
-                            <div className="canvas-paragraph" key={index}>
+                            <div className="" key={index}>
                                 <div className="mt-36 text-white text-xl font-bold">
                                     {item.stage}
                                 </div>
-                                <div className="mt-3 text-2xl font-bold text-[#FFC09D]">
+                                <div className="mt-3 text-2xl font-bold text-[#FFC09D] canvas-paragraph">
                                     {item.title}
                                 </div>
 
-                                <ul className="ml-8">
+                                <ul className="ml-8 ">
                                     {item.desc.map((item1, index1) => {
                                         return (
                                             <li
@@ -287,7 +288,6 @@ export default function RoadmapArticle(): React.ReactElement {
             </div>
         );
     }, []);
-
     return (
         <Article className="flex-col lg:flex-row min-h-[700px]">
             <div
