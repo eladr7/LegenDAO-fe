@@ -271,7 +271,7 @@ export default function AirDropStatusPanel({ onCloseBtnClicked }: Props): React.
                         />
                     </div>
                     <div className="mb-6 last:mb-0 flex flex-col flex-nowrap">
-                        <Button bigness="xl" type="submit">
+                        <Button className="!font-body font-semibold" bigness="xl" type="submit">
                             Check Airdrop
                         </Button>
                     </div>
@@ -327,6 +327,7 @@ export default function AirDropStatusPanel({ onCloseBtnClicked }: Props): React.
 
                     <div className="mb-6 last:mb-0 flex flex-col flex-nowrap">
                         <Button
+                            className="!font-body font-semibold"
                             bigness="xl"
                             onClick={handleOnClaimAirdropBtnClicked}
                             disabled={dataAirdrop.buttonName === AIRDROP_BTN_NAME.CLAIMED}
@@ -380,7 +381,7 @@ export default function AirDropStatusPanel({ onCloseBtnClicked }: Props): React.
                     </div>
 
                     <div className="mb-6 last:mb-0 flex flex-col flex-nowrap">
-                        <Button bigness="xl" onClick={handleCheckAnotherAddress}>
+                        <Button className="!font-body font-semibold" bigness="xl" onClick={handleCheckAnotherAddress}>
                             Check Another Address
                         </Button>
                     </div>
