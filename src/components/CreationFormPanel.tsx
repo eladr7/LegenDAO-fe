@@ -81,7 +81,7 @@ export default function CreationFormPanel({ onCloseBtnClicked }: Props): React.R
                 <h1 className="mb-6 last:mb-0 text-2xl font-bold">Creation Form</h1>
                 <p className="mb-6 last:mb-0 opacity-100">
                     Legendao, the home of creators who want their content to reach a global
-                    audience, welcomes you Discover new ways to{" "}
+                    audience, welcomes you to Discover new ways to{" "}
                     <span className="whitespace-nowrap">express your art</span>
                 </p>
                 <form onSubmit={handleSubmit(onSubmit)}>
