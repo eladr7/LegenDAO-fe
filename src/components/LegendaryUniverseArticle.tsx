@@ -41,13 +41,13 @@ export default function LegendaryUniverseArticle(): React.ReactElement {
             ></div>
             <div
                 className={cn(
-                    "hidden lg:block",
-                    "absolute bottom-0 left-0 right-0 h-[100px] z-30 ",
+                    "hidden lg:block ",
+                    "absolute bottom-0 left-0 right-0 h-[100px] z-[40] ",
                     "bg-gradient-to-t from-primary-mint-lab via-primary-mint-lab-900/75 to-slate-900/0"
                 )}
             ></div>
 
-            <div className="relative lg:w-[55%] z-[41] h-[400px] lg:h-auto">
+            <div className="relative lg:w-[55%] z-[41] lg:z-[39] h-[400px] lg:h-auto">
                 <div
                     className={cn(
                         "hidden lg:block",
