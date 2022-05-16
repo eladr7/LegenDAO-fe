@@ -46,6 +46,7 @@ export function Footer(): React.ReactElement {
                         },
                     })
                 );
+                setShowInputEmail(false);
                 reset();
             }
         },
