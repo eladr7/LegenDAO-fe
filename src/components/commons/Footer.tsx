@@ -177,7 +177,7 @@ export function Footer(): React.ReactElement {
                                     <Input
                                         className="text-slate-700"
                                         backgroundColor="#FFFFFF"
-                                        type="email"
+                                        type="text"
                                         placeholder="Your email"
                                         value={watch("email")}
                                         {...register("email", {
