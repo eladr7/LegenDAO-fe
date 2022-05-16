@@ -86,9 +86,9 @@ export default function LegendaryUniverseArticle(): React.ReactElement {
             <div
                 className={cn(
                     "relative min-h-[90vh] lg:h-auto pt-[120px] lg:pt-[80px]",
-                    "lg:w-[45%] z-20 lg:bg-primary-mint-lab lg:px-12",
+                    "lg:w-[45%] z-40 lg:bg-primary-mint-lab lg:px-12",
                     "text-white flex flex-col flex-nowrap justify-center items-stretch px-8",
-                    "bg-no-repeat "
+                    "bg-no-repeat"
                 )}
                 style={{
                     backgroundImage: mediaQuery.checkMatchMinWidth(1024)
