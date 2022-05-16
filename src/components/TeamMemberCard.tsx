@@ -17,7 +17,7 @@ export default function TeamMemberCard({
     return (
         <div className={cn("flex flex-col flex-nowrap justify-between items-center", classname)}>
             <div
-                className="w-[230px] h-[180px] bg-no-repeat bg-contain bg-center mb-2 last:mb-0"
+                className="w-[230px] h-[180px] desktop-4:w-[350px] desktop-4:h-[250px] bg-no-repeat bg-contain bg-center mb-2 last:mb-0"
                 style={{ backgroundImage: `url(${img})` }}
             ></div>
             <div className="text-center -mt-8">
