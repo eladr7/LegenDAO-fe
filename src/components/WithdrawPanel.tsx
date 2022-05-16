@@ -2,7 +2,7 @@ import BigNumber from "bignumber.js";
 import cn from "classnames";
 import React, { useCallback, useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
-import { PLATFORM_ADDRESS } from "../constants/contractAddress";
+import { PLATFORM_ADDRESS, STAKING_ADDRESS } from "../constants/contractAddress";
 import { DF_DENOM } from "../constants/defaults";
 import { transactionActions } from "../features/transaction/transactionSlice";
 import { formatBalance, formatIntBalance, parseBalance, shortenAddress } from "../helpers/format";
@@ -164,11 +164,11 @@ export default function WithdrawPanel({ onCloseBtnClicked }: Props): React.React
                             Balance:{" "}
                             {formatIntBalance(
                                 formatBalance(
-                                    walletState.balances[PLATFORM_ADDRESS as string]?.staked || "0"
+                                    walletState.balances[STAKING_ADDRESS as string]?.amount || "0"
                                 )
                             ) || "--"}{" "}
                             {walletState.balances[
-                                PLATFORM_ADDRESS as string
+                                STAKING_ADDRESS as string
                             ]?.denom?.toUpperCase() || DF_DENOM?.toUpperCase()}
                         </label>
                     </div>
@@ -181,7 +181,7 @@ export default function WithdrawPanel({ onCloseBtnClicked }: Props): React.React
                         onKeyDown={handleOnWithdrawAmountKeyDown}
                         rightButtonOnClick={handleOnMaxBtnClicked}
                         rightButtonIsDisabled={new BigNumber(
-                            walletState.balances[PLATFORM_ADDRESS as string]?.staked || "0"
+                            walletState.balances[STAKING_ADDRESS as string]?.amount || "0"
                         ).isZero()}
                         placeholder="0.00"
                         autoFocus

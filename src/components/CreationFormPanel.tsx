@@ -30,7 +30,8 @@ export default function CreationFormPanel({ onCloseBtnClicked }: Props): React.R
         setValue,
         formState: { errors },
     } = useForm<ICreationForms>({
-        mode: "onChange",
+        mode: "onSubmit",
+        reValidateMode: "onSubmit",
         defaultValues: {
             name: "",
             email: "",
@@ -120,6 +121,7 @@ export default function CreationFormPanel({ onCloseBtnClicked }: Props): React.R
                                 onChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => {
                                     setValue("email", e.target.value);
                                 },
+
                                 validate: {
                                     ...validator.validateForm.email,
                                     ...validator.validateForm.requireField,

@@ -3,7 +3,7 @@ import cn from "classnames";
 import React, { useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
-import { PLATFORM_ADDRESS } from "../constants/contractAddress";
+import { STAKING_ADDRESS } from "../constants/contractAddress";
 import { DF_DENOM } from "../constants/defaults";
 import {
     accessibilityActions,
@@ -130,11 +130,11 @@ export default function BalancesPanel({
                         <div className="font-semibold text-2xl leading-none uppercase">
                             {formatIntBalance(
                                 formatBalance(
-                                    walletState.balances[PLATFORM_ADDRESS as string]?.staked || "0"
+                                    walletState.balances[STAKING_ADDRESS as string]?.amount || "0"
                                 )
                             )}{" "}
                             {(
-                                walletState.balances[PLATFORM_ADDRESS as string]?.denom || DF_DENOM
+                                walletState.balances[STAKING_ADDRESS as string]?.denom || DF_DENOM
                             ).toUpperCase()}
                         </div>
                         <span className="ml-2 first:ml-0 opacity-50 font-light leading-none">
@@ -142,7 +142,7 @@ export default function BalancesPanel({
                             {formatIntBalance(
                                 formatBalance(
                                     new BigNumber(
-                                        walletState.balances[PLATFORM_ADDRESS as string]?.staked ||
+                                        walletState.balances[STAKING_ADDRESS as string]?.amount ||
                                             "0"
                                     )
                                         .times(walletState.tokenData?.price || "0")

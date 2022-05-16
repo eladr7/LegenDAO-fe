@@ -278,6 +278,10 @@ const _netMiddlewareClosure = (): Middleware => {
                         denom: DF_DENOM,
                         tokenAddress: PLATFORM_ADDRESS as string,
                     },
+                    {
+                        denom: DF_DENOM,
+                        tokenAddress: STAKING_ADDRESS as string,
+                    }
                 ];
                 const tokens = action.payload?.tokens;
 
