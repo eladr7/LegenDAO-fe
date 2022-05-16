@@ -10,10 +10,12 @@ import {
 } from "../../features/accessibility/accessibilitySlice";
 import { useNavigate } from "react-router-dom";
 import { collectionAtions } from "../../features/collection/collectionSlice";
+// import { profileActions } from "../features/profile/profileSlice";
 import Button from "./Button";
 import WalletIcon from "../icons/WalletIcon";
 import { walletActions } from "../../features/wallet/walletSlice";
 import { networkActions } from "../../features/network/networkSlice";
+import { profileActions } from "../../features/profile/profileSlice";
 
 export type TSidebarTab =
     | "tab/home"
@@ -21,6 +23,7 @@ export type TSidebarTab =
     | "tab/collections"
     | "tab/governance"
     | "tab/airdrop"
+    | "tab/profile"
     | "tab/docs";
 
 type Props = React.BaseHTMLAttributes<HTMLDivElement> & {
@@ -61,6 +64,12 @@ export default function Sidebar({ bodyElement, activatingTab }: Props): React.Re
     const handleOnAirdropTabClicked = useCallback(() => {
         dispatch(toggleSidebar(false));
         navigate("/airdrop");
+    }, [dispatch, navigate]);
+
+    const handleOnProfileTabClicked = useCallback(() => {
+        dispatch(toggleSidebar(false));
+        dispatch(profileActions.setTab("/profile/general"));
+        navigate("/profile");
     }, [dispatch, navigate]);
 
     const handleOnDocsTabClicked = useCallback(() => {
@@ -216,6 +225,25 @@ export default function Sidebar({ bodyElement, activatingTab }: Props): React.Re
                         )}
                     >
                         Airdrop
+                    </div>
+                </div>
+                <div
+                    className={cn(
+                        "px-12 flex flex-row justify-center items-center select-none cursor-pointer hover:text-purple-400"
+                    )}
+                    onClick={handleOnProfileTabClicked}
+                >
+                    <div
+                        className={cn(
+                            "py-4 grow text-center",
+                            "border-b border-slate-800",
+                            "text-xl",
+                            {
+                                "text-purple-400": activatingTab === "tab/profile",
+                            }
+                        )}
+                    >
+                        Profile
                     </div>
                 </div>
                 <div
