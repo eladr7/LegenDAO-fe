@@ -25,6 +25,7 @@ module.exports = {
             "desktop-3": "1400px",
             "desktop-4": "1590px",
             "desktop-5": "1800px",
+            "desktop-6": "2200px",
         },
         extend: {
             animation: {

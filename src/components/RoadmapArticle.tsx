@@ -189,7 +189,7 @@ export default function RoadmapArticle(): React.ReactElement {
                     .map((item, index) => {
                         return (
                             <div className="" key={index}>
-                                <div className="mt-28 text-white text-xl font-bold">
+                                <div className="mt-28 desktop-6:mt-36 text-white text-xl font-bold">
                                     {item.stage}
                                 </div>
                                 <div className="mt-3 text-2xl font-bold text-[#90E4FF] canvas-paragraph">
@@ -225,7 +225,7 @@ export default function RoadmapArticle(): React.ReactElement {
                     .map((item, index) => {
                         return (
                             <div className="" key={index}>
-                                <div className="mt-36 text-white text-xl font-bold">
+                                <div className="mt-36 desktop-6:mt-40 text-white text-xl font-bold">
                                     {item.stage}
                                 </div>
                                 <div className="mt-3 text-2xl font-bold text-[#FFC09D] canvas-paragraph">
@@ -302,7 +302,7 @@ export default function RoadmapArticle(): React.ReactElement {
 
                 <div
                     className={cn(
-                        "absolute top-0 lg:top-20 bottom-0 right-0 left-0",
+                        "absolute top-0 md:top-20 bottom-0 right-0 left-0",
                         "bg-no-repeat  "
                     )}
                     style={{
@@ -310,17 +310,18 @@ export default function RoadmapArticle(): React.ReactElement {
                             ? `url(${imgRoadmap01})`
                             : `url(${imgRoadmapMobile})`,
                         backgroundSize: "cover",
+                        backgroundPosition: "center",
                     }}
                 ></div>
                 <div
                     className={cn(
-                        "bg-gradient-to-b from-primary-mint-lab via-primary-mint-lab/100 to-slate-900/0 ",
+                        "hidden md:block bg-gradient-to-b from-primary-mint-lab via-primary-mint-lab/100 to-slate-900/0 ",
                         "absolute h-1/4 w-full top-[3%] right-0 left-0  "
                     )}
                 ></div>
                 <div
                     className={cn(
-                        "bg-gradient-to-t from-primary-mint-lab via-primary-mint-lab-900/75 to-slate-900/0 ",
+                        "hidden md:block bg-gradient-to-t from-primary-mint-lab via-primary-mint-lab-900/75 to-slate-900/0 ",
                         "absolute h-1/5 w-full bottom-0 right-0 left-0  "
                     )}
                 ></div>
