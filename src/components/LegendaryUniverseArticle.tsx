@@ -47,7 +47,7 @@ export default function LegendaryUniverseArticle(): React.ReactElement {
                 )}
             ></div>
 
-            <div className="relative lg:w-[55%] z-[21] h-[400px] lg:h-auto">
+            <div className="relative lg:w-[55%] z-[41] h-[400px] lg:h-auto">
                 <div
                     className={cn(
                         "hidden lg:block",
