@@ -25,7 +25,8 @@ export function Footer(): React.ReactElement {
         watch,
         formState: { errors },
     } = useForm<IFormEmail>({
-        mode: "onChange",
+        mode: "onSubmit",
+        reValidateMode: "onSubmit",
         defaultValues: {
             email: "",
         },
@@ -136,7 +137,7 @@ export function Footer(): React.ReactElement {
                                 <Input
                                     className="text-slate-700"
                                     backgroundColor="bg-white"
-                                    type="email"
+                                    type="text"
                                     placeholder="Your email"
                                     value={watch("email")}
                                     {...register("email", {

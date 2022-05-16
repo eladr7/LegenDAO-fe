@@ -114,7 +114,7 @@ export default function CreationFormPanel({ onCloseBtnClicked }: Props): React.R
                             </label>
                         )}
                         <Input
-                            type="email"
+                            type="text"
                             bigness="md"
                             placeholder="Email"
                             {...register("email", {
