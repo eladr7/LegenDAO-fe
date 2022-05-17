@@ -48,7 +48,7 @@ export default function TeamArticle(): React.ReactElement {
                     "text-white flex flex-col flex-nowrap justify-center items-center overflow-hidden "
                 )}
             >
-                <h1 className="mb-8 last:mb-0 font-bold text-2xl lg:text-5xl">
+                <h1 className="mb-20 last:mb-0 font-bold text-2xl lg:text-5xl">
                     The Legendary Team
                 </h1>
                 <div
