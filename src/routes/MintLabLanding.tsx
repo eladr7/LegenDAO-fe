@@ -11,7 +11,7 @@ import TeamArticle from "../components/TeamArticle";
 
 export function MintLabLanding(): React.ReactElement {
     return (
-        <DefaultLayout headerType="general" sidebarTab="tab/home" bFooterOn bHeaderAlwaysOnTop>
+        <DefaultLayout headerType="general" sidebarTab="tab/home" bFooterOn>
             <SnowFall />
             <LegendaryUniverseArticle />
             <LegendaryPlatformArticle />
