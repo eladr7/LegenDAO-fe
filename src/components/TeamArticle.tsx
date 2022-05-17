@@ -34,7 +34,7 @@ export default function TeamArticle(): React.ReactElement {
         []
     );
     return (
-        <Article className=" px-5 lg:px-16 py-8 lg:py-16">
+        <Article className=" px-5 lg:px-16 py-8 lg:py-16 lg:mb-14">
             <div
                 className={cn(
                     "absolute top-0 bottom-0 right-0 left-0",
