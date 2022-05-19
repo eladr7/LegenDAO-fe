@@ -309,7 +309,6 @@ const _netMiddlewareClosure = (): Middleware => {
                                 },
                             },
                         });
-
                         const balance = {
                             ...(result as IBalanceSnip20)?.balance,
                             denom: denom || DF_DENOM,
