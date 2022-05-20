@@ -34,7 +34,7 @@ export default function TeamArticle(): React.ReactElement {
         []
     );
     return (
-        <Article className=" px-5 lg:px-16 py-8 lg:py-16 lg:mb-14">
+        <Article className=" px-5 lg:px-16 py-8 !pt-16  lg:py-16 lg:mb-14">
             <div
                 className={cn(
                     "absolute top-0 bottom-0 right-0 left-0",
@@ -48,14 +48,14 @@ export default function TeamArticle(): React.ReactElement {
                     "text-white flex flex-col flex-nowrap justify-center items-center overflow-hidden "
                 )}
             >
-                <h1 className="mb-20 last:mb-0 font-bold text-2xl lg:text-5xl">
+                <h1 className=" mb-6 lg:mb-20 last:mb-0 font-bold text-2xl lg:text-5xl">
                     The Legendary Team
                 </h1>
                 <div
                     className={cn(
-                        "w-full flex flex-row flex-nowrap ",
+                        "w-full flex flex-row flex-nowrap gap-8 ",
                         "overflow-x-scroll snap-x scrollbar-none",
-                        " lg:grid lg:grid-cols-4 lg:gap-8 lg:justify-items-center lg:items-center"
+                        " lg:grid lg:grid-cols-4  lg:justify-items-center lg:items-center"
                     )}
                 >
                     {teamMemberArr.map((item, i) => {
