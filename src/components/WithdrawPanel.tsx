@@ -64,7 +64,7 @@ export default function WithdrawPanel({ onCloseBtnClicked }: Props): React.React
                 value = value.substring(1, value.length);
             }
             const balance = formatBalance(
-                walletState.balances[PLATFORM_ADDRESS as string]?.staked as string
+                walletState.balances[STAKING_ADDRESS as string]?.amount as string
             );
             const error = validator.inputAmount(value, balance);
 
@@ -87,7 +87,7 @@ export default function WithdrawPanel({ onCloseBtnClicked }: Props): React.React
 
     const handleOnMaxBtnClicked = useCallback(() => {
         setInputAmount({
-            amount: formatBalance(walletState.balances[PLATFORM_ADDRESS as string]?.staked || "0"),
+            amount: formatBalance(walletState.balances[STAKING_ADDRESS as string]?.amount || "0"),
             error: "",
         });
     }, [walletState.balances]);

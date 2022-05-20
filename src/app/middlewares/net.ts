@@ -1,6 +1,7 @@
 /* eslint-disable no-console */
 import { Buffer } from "buffer";
 import {
+    Coin,
     MsgExecuteContract,
     MsgSnip20Send,
     SecretNetworkClient,
@@ -11,7 +12,7 @@ import { Middleware, MiddlewareAPI } from "redux";
 import { TAppDispatch, TRootState } from "../store";
 import { TNetError } from "../commons/types";
 import { networkActions } from "../../features/network/networkSlice";
-import { walletActions, walletAsyncActions } from "../../features/wallet/walletSlice";
+import { IDataStaking, walletActions, walletAsyncActions } from "../../features/wallet/walletSlice";
 import {
     LGND_ADDRESS,
     NFT_ADDRESS,
@@ -31,6 +32,7 @@ import {
 } from "../../features/accessibility/accessibilitySlice";
 import walletAPI from "../../features/wallet/walletApi";
 import { legendServices } from "../commons/legendServices";
+import BigNumber from "bignumber.js";
 
 interface IBalanceSnip20 {
     balance: {
@@ -55,6 +57,12 @@ interface ISigner {
     };
     signature?: StdSignature;
     account?: string;
+}
+
+type TRewards = {
+    rewards: {
+        rewards: string;
+    };
 }
 
 const _connect = (): Promise<{ client: SecretNetworkClient; account: AccountData }> => {
@@ -137,7 +145,7 @@ const _netMiddlewareClosure = (): Middleware => {
                     console.log("%CLEAR PREVIOUS CLIENT...", "color: yellow");
                     client = null;
                 }
-                await walletAPI.suggestChain({ delay: 500 });
+                await walletAPI.suggestChain({ delay: 0 });
 
                 _connect()
                     .then((result) => {
@@ -281,7 +289,7 @@ const _netMiddlewareClosure = (): Middleware => {
                     {
                         denom: DF_DENOM,
                         tokenAddress: STAKING_ADDRESS as string,
-                    }
+                    },
                 ];
                 const tokens = action.payload?.tokens;
 
@@ -345,7 +353,7 @@ const _netMiddlewareClosure = (): Middleware => {
 
             case transactionActions.sendTokenFromPlatformToContract.type: {
                 const platformContractAddress: string = PLATFORM_ADDRESS || "";
-                if (!client || !platformContractAddress) return;
+                if (!client || !platformContractAddress || !STAKING_ADDRESS) return;
 
                 const { sendAmount, amountToMint, forAddress, mintingContractAddress } =
                     action.payload;
@@ -364,22 +372,34 @@ const _netMiddlewareClosure = (): Middleware => {
                     })
                 ).toString("base64");
 
-                client.tx.compute
-                    .executeContract(
-                        {
-                            sender: client.address,
-                            contractAddress: platformContractAddress,
-                            codeHash: codeHashes[platformContractAddress].codeHash || "",
-                            msg: {
-                                send_from_platform: {
-                                    contract_addr: mintingContractAddress,
-                                    amount: sendAmount,
-                                    msg: wantedMsg,
-                                },
-                            },
+                const msgWithdrawFromStaking = new MsgExecuteContract({
+                    contractAddress: STAKING_ADDRESS,
+                    codeHash: codeHashes[STAKING_ADDRESS]?.codeHash,
+                    sender: client.address,
+                    msg: {
+                        withdraw: {
+                            amount: sendAmount,
                         },
-                        { gasLimit: 500_000 }
-                    )
+                    },
+                });
+
+                const msgSendFromPlatform = new MsgExecuteContract({
+                    sender: client.address,
+                    contractAddress: platformContractAddress,
+                    codeHash: codeHashes[platformContractAddress].codeHash || "",
+                    msg: {
+                        send_from_platform: {
+                            contract_addr: mintingContractAddress,
+                            amount: sendAmount,
+                            msg: wantedMsg,
+                        },
+                    },
+                });
+
+                client.tx
+                    .broadcast([msgWithdrawFromStaking, msgSendFromPlatform], {
+                        gasLimit: 500_000,
+                    })
                     .then((tx) => {
                         store.dispatch(
                             addPopup({
@@ -447,7 +467,6 @@ const _netMiddlewareClosure = (): Middleware => {
                         gasLimit: 500_000,
                     })
                     .then((tx) => {
-                        console.log(tx);
                         if (tx?.data.length) {
                             store.dispatch(toggleDepositPanel());
                         }
@@ -822,40 +841,31 @@ const _netMiddlewareClosure = (): Middleware => {
                 const { amount } = action.payload;
                 store.dispatch(transactionActions.startTransaction());
 
-                client.tx.compute
-                    .executeContract(
-                        {
-                            contractAddress: STAKING_ADDRESS,
-                            codeHash: codeHashes[STAKING_ADDRESS]?.codeHash,
-                            sender: client.address,
-                            msg: {
-                                withdraw: {
-                                    amount: amount,
-                                },
-                            },
+                const msgWithdrawFromStaking = new MsgExecuteContract({
+                    contractAddress: STAKING_ADDRESS,
+                    codeHash: codeHashes[STAKING_ADDRESS]?.codeHash,
+                    sender: client.address,
+                    msg: {
+                        withdraw: {
+                            amount: amount,
                         },
-                        { gasLimit: 500_000 }
-                    )
-                    .then((tx) => {
-                        if (!tx.data.length || !client || !STAKING_ADDRESS) {
-                            return tx;
-                        } else {
-                            return client.tx.compute.executeContract(
-                                {
-                                    contractAddress: PLATFORM_ADDRESS as string,
-                                    codeHash: codeHashes[platformContractAddress].codeHash || "",
-                                    sender: client.address,
-                                    msg: {
-                                        redeem: {
-                                            amount,
-                                        },
-                                    },
-                                },
-                                {
-                                    gasLimit: 300_000,
-                                }
-                            );
-                        }
+                    },
+                });
+
+                const msgRedeemFromPlatform = new MsgExecuteContract({
+                    contractAddress: PLATFORM_ADDRESS as string,
+                    codeHash: codeHashes[platformContractAddress].codeHash || "",
+                    sender: client.address,
+                    msg: {
+                        redeem: {
+                            amount,
+                        },
+                    },
+                });
+
+                client.tx
+                    .broadcast([msgWithdrawFromStaking, msgRedeemFromPlatform], {
+                        gasLimit: 500_000,
                     })
                     .then((tx) => {
                         store.dispatch(
@@ -1015,6 +1025,70 @@ const _netMiddlewareClosure = (): Middleware => {
                         );
                     }
                 })();
+                break;
+
+            case walletActions.getRewardsStaking.type:
+                (async () => {
+                    try {
+                        if (!client || !STAKING_ADDRESS) return;
+                        const results = await client.query.snip20.queryContract({
+                            contractAddress: STAKING_ADDRESS,
+                            codeHash: codeHashes[STAKING_ADDRESS]?.codeHash || "",
+                            query: {
+                                with_permit: {
+                                    query: { 
+                                        rewards: {
+                                            height: 1,
+                                        } 
+                                    },
+                                    permit: {
+                                        params: {
+                                            ...signerPermit?.msg,
+                                            chain_id: chainId,
+                                        },
+                                        signature: signerPermit?.signature as StdSignature,
+                                    },
+                                },
+                            },
+                        });
+
+                        const amountRewards = (results as TRewards)?.rewards.rewards;
+
+                        const rewards: Coin = {
+                            amount: formatBalance(amountRewards),
+                            denom: DF_DENOM,
+                        };
+
+                        const storeState = store.getState();
+                        const { balances, tokenData } = storeState.wallet;
+
+                        const totalStakedBalance = balances[STAKING_ADDRESS]?.amount;
+                        const priceStaked = new BigNumber(totalStakedBalance).times(tokenData?.price || "0").toFixed();
+                        const priceReward = new BigNumber(amountRewards).times(tokenData?.price || "0").toFixed();
+
+                        const dataStaking: IDataStaking = {
+                            apr: "10",
+                            value: "0",
+                            tvl: "0",
+                            totalStakedBalance: formatBalance(totalStakedBalance),
+                            priceStaked: formatBalance(priceStaked),
+                            rewards,
+                            priceReward: formatBalance(priceReward),
+                        };
+
+                        next({
+                            ...action,
+                            payload: { dataStaking },
+                        });
+                    } catch (error) {
+                        store.dispatch(
+                            applicationActions.toastRequestRejected({
+                                errorMsg: (error as any)?.message as string,
+                            })
+                        );
+                    }
+                })();
+
                 break;
 
             default:

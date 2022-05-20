@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import cn from "classnames";
 import Article from "../components/commons/Article";
 import { DefaultLayout } from "../components/layouts/DefaultLayout";
@@ -8,11 +8,23 @@ import Modal from "../components/commons/Modal";
 import AppContext from "../contexts/AppContext";
 import StakeFormPanel from "../components/StakeFormPanel";
 import { useAppSelector } from "../app/hooks";
+import { useDispatch } from "react-redux";
+import { walletActions } from "../features/wallet/walletSlice";
+import { STAKING_ADDRESS } from "../constants/contractAddress";
 
 export default function Stake(): React.ReactElement {
     const { state } = useContext(AppContext);
     const depositPanel = useAppSelector((state) => state.accessibility.bDepositPanelOn);
     const withdrawPanel = useAppSelector((state) => state.accessibility.bWithdrawPanelOn);
+    const walletState = useAppSelector((state) => state.wallet);
+
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        if (walletState.balances[STAKING_ADDRESS as string]) {
+            dispatch(walletActions.getRewardsStaking());
+        }
+    }, [dispatch, walletState.balances]);
 
     return (
         <DefaultLayout headerType="general" bHeaderAlwaysOnTop sidebarTab="tab/stake">
@@ -28,13 +40,7 @@ export default function Stake(): React.ReactElement {
                 {state.bodyElement && depositPanel === false && withdrawPanel === false && (
                     <Modal bodyElement={state.bodyElement}>
                         <StakeFormPanel
-                            apr={55.27}
-                            value={2.86}
-                            tvl={15839485}
-                            totalLGNDBalance={40.2839}
-                            totalFiatBalance={80.37}
-                            rewardLGND={20}
-                            rewardFiat={600}
+                            dataStaking={walletState.dataStaking}
                         />
                     </Modal>
                 )}

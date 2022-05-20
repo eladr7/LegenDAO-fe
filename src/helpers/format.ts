@@ -16,7 +16,8 @@ export const parseBalance = (str: string | number, decimals = 6): string => {
     return balance.toFixed();
 };
 
-export const formatIntBalance = (num: string | number, decimals= 6) => {
+export const formatIntBalance = (num?: string | number, decimals= 6) => {
+    if (!num) return "0.00";
     const balanceSplit = String(num).split(".");
 
     if (balanceSplit.length === 1 || balanceSplit[1] === "0") {

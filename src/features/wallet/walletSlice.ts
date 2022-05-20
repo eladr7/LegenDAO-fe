@@ -34,24 +34,24 @@ type TBalance = {
     tokenAddress: string;
 };
 
+export interface IDataStaking {
+    apr: string;
+    value: string;
+    tvl: string;
+    totalStakedBalance: string;
+    priceStaked: string;
+    rewards: Coin;
+    priceReward: string;
+}
+
 export type TWalletState = {
     primary?: TWallet;
     balances: IBalance;
-    fiatBalance: {
-        amount: number;
-    };
-    undelegate: Coin;
-    fiatUndelegate: {
-        amount: number;
-    };
-    unclaim: Coin;
-    fiatUnclaim: {
-        amount: number;
-    };
     suggestStage?: TActionStage;
     connectStage?: TActionStage;
     signature?: StdSignature;
     tokenData?: ITokenData;
+    dataStaking?: IDataStaking;
 };
 
 const initialState: TWalletState = {
@@ -63,23 +63,24 @@ const initialState: TWalletState = {
             tokenAddress: "",
         },
     },
-    fiatBalance: { amount: 0 },
-    undelegate: {
-        amount: "0",
-        denom: DF_DENOM,
-    },
-    fiatUndelegate: { amount: 0 },
-    unclaim: {
-        amount: "0",
-        denom: DF_DENOM,
-    },
-    fiatUnclaim: { amount: 0 },
     signature: undefined,
     tokenData: {
         apy: 0,
         price: 0,
         liquidity: 0,
         dailyVolume: 0,
+    },
+    dataStaking: {
+        apr: "0",
+        value: "0",
+        tvl: "0",
+        totalStakedBalance: "0",
+        priceStaked: "0",
+        rewards: {
+            amount: "0",
+            denom: DF_DENOM,
+        },
+        priceReward: "0",
     },
 };
 
@@ -138,6 +139,14 @@ const _getTokenData: CaseReducer<
     return;
 };
 
+const _getRewardsStaking: CaseReducer<
+    TWalletState,
+    PayloadAction<{ dataStaking?: IDataStaking } | undefined>
+> = (state, action) => {
+    state.dataStaking = action.payload?.dataStaking;
+    return;
+};
+
 const walletSlice = createSlice({
     name: "wallet",
     initialState,
@@ -147,6 +156,7 @@ const walletSlice = createSlice({
         getAllCodeHash: _getAllCodeHash,
         getSigner: _getSigner,
         getTokenData: _getTokenData,
+        getRewardsStaking: _getRewardsStaking,
     },
     extraReducers: (builder) => {
         builder.addCase(connect.pending, (state) => {

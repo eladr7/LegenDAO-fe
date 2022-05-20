@@ -9,7 +9,6 @@ import Panel from "../components/commons/Panel";
 import CreationFormPanel from "../components/CreationFormPanel";
 import DepositPanel from "../components/DepositPanel";
 import { VoidLayout } from "../components/layouts/VoidLayout";
-import StakeFormPanel from "../components/StakeFormPanel";
 import WithdrawPanel from "../components/WithdrawPanel";
 import AppContext from "../contexts/AppContext";
 
@@ -91,19 +90,6 @@ export default function UI(): React.ReactElement {
             <div className="mb-8 last:mb-0 flex">
                 <CreationFormPanel />
             </div>
-
-            <div className="mb-8 last:mb-0 flex">
-                <StakeFormPanel
-                    apr={55.27}
-                    value={2.86}
-                    tvl={15839485}
-                    totalLGNDBalance={40.2839}
-                    totalFiatBalance={80.37}
-                    rewardLGND={20}
-                    rewardFiat={600}
-                />
-            </div>
-
             <div className="mb-8 last:mb-0 flex">
                 <AirDropStatusPanel />
             </div>
