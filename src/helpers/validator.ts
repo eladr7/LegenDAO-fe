@@ -15,7 +15,7 @@ const inputingFloat = (
     return true;
 };
 
-const REGEXP_TWITTER_PROFILE = /^(?=[a-zA-Z0-9._])(?!.*[_.]{2})[^_.].*[^_.]$/;
+const REGEXP_TWITTER_PROFILE = /^[a-zA-Z0-9]*$/;
 const REGEXP_DISCORD_USER_ID = /^.{3,32}#[0-9]{4}$/;
 const SUPPORT_CHAIN = ["secret", "cosmos", "terra"];
 const REGEXP_EMAIL = /^\w+([\\.-]?\w+)*@\w+([\\.-]?\w+)*(\.\w{2,3})+$/;
