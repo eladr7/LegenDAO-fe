@@ -39,7 +39,7 @@ const validateForm = {
             if (!val) {
                 return "This field is required.";
             }
-            if (!REGEXP_TWITTER_PROFILE.test(val)) {
+            if (!REGEXP_TWITTER_PROFILE.test(val) || val.toLowerCase() === "here" || val.toLowerCase() === "everyone") {
                 return "Invalid profile. Please try again.";
             }
         },
