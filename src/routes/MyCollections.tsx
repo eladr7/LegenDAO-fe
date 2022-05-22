@@ -138,7 +138,6 @@ export default function MyCollections(): React.ReactElement {
                             bigness="lg"
                             className="z-10"
                             onClick={handleOnEnterBtnClicked}
-                            disabled={!networkState.bIsConnected}
                         >
                             <span className="px-12">Enter</span>
                         </Button>
@@ -165,7 +164,7 @@ export default function MyCollections(): React.ReactElement {
                             onClick={handleOnMintBtnClicked}
                             className="z-10"
                             bTransparent={!collectionState.whitelistSpot}
-                            disabled={!collectionState.whitelistSpot}
+                            disabled={!collectionState.whitelistSpot || !networkState.bIsConnected}
                         >
                             <span className="px-12">Mint</span>
                         </Button>
