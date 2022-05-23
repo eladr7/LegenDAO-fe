@@ -4,6 +4,7 @@ import {
     Coin,
     MsgExecuteContract,
     MsgSnip20Send,
+    Permission,
     SecretNetworkClient,
     StdSignature,
 } from "secretjs";
@@ -33,37 +34,16 @@ import {
 import walletAPI from "../../features/wallet/walletApi";
 import { legendServices } from "../commons/legendServices";
 import BigNumber from "bignumber.js";
-
-interface IBalanceSnip20 {
-    balance: {
-        amount: string;
-        denom: string;
-        tokenAddress: string;
-    };
-}
-
-interface ICodeHash {
-    [key: string]: {
-        codeHash?: string;
-        address?: string;
-    };
-}
-
-interface ISigner {
-    msg?: {
-        permit_name: string;
-        allowed_tokens?: string[];
-        permissions: string[];
-    };
-    signature?: StdSignature;
-    account?: string;
-}
-
-type TRewards = {
-    rewards: {
-        rewards: string;
-    };
-}
+import { getDetailNft, getMintingHistory } from "../nftContract";
+import {
+    ISigner,
+    TBalanceSnip20,
+    TCodeHash,
+    TRewards,
+    TTotalLocked,
+    TTransactionHistory,
+} from "../../classes/QueryContract";
+import { mintActions } from "../../features/mint/mintSlice";
 
 const _connect = (): Promise<{ client: SecretNetworkClient; account: AccountData }> => {
     return new Promise((resolve, reject: (reason?: TNetError) => void) => {
@@ -115,12 +95,12 @@ const _connect = (): Promise<{ client: SecretNetworkClient; account: AccountData
 
 const _netMiddlewareClosure = (): Middleware => {
     let client: SecretNetworkClient | null = null;
-    let codeHashes: ICodeHash = {};
+    let codeHashes: TCodeHash = {};
     let signerPermit: ISigner = {
         msg: {
             permit_name: KEY.PERMIT_NAME,
             allowed_tokens: [],
-            permissions: ["balance", "owner"],
+            permissions: ["balance", "owner"] as Permission[],
         },
         signature: undefined,
         account: "",
@@ -318,7 +298,7 @@ const _netMiddlewareClosure = (): Middleware => {
                             },
                         });
                         const balance = {
-                            ...(result as IBalanceSnip20)?.balance,
+                            ...(result as TBalanceSnip20)?.balance,
                             denom: denom || DF_DENOM,
                             tokenAddress,
                         };
@@ -768,17 +748,17 @@ const _netMiddlewareClosure = (): Middleware => {
             }
 
             case transactionActions.isWhitelisted.type: {
-                const { address } = action.payload;
-                const nftContractAddress: string | undefined = NFT_ADDRESS;
-                if (!client || !nftContractAddress) return;
+                const { address, nftMintingContract } = action.payload;
+                if (!client || !nftMintingContract) return;
 
                 client.query.compute
                     .queryContract({
-                        contractAddress: nftContractAddress,
+                        contractAddress: nftMintingContract,
+                        codeHash: codeHashes[nftMintingContract]?.codeHash,
                         query: { is_whitelisted: { address } },
                     })
-                    .then((results) => {
-                        next({ ...action, payload: { ...action.payload, results } });
+                    .then((status) => {
+                        next({ ...action, payload: { ...action.payload, status } });
                     })
                     .catch((error) => {
                         store.dispatch(
@@ -1031,15 +1011,24 @@ const _netMiddlewareClosure = (): Middleware => {
                 (async () => {
                     try {
                         if (!client || !STAKING_ADDRESS) return;
-                        const results = await client.query.snip20.queryContract({
-                            contractAddress: STAKING_ADDRESS,
-                            codeHash: codeHashes[STAKING_ADDRESS]?.codeHash || "",
-                            query: {
+                        const getDataStaking = (query: any) => {
+                            if (!client || !STAKING_ADDRESS) return;
+                            return client.query.snip20.queryContract({
+                                contractAddress: STAKING_ADDRESS,
+                                codeHash: codeHashes[STAKING_ADDRESS]?.codeHash || "",
+                                query: {
+                                    ...query,
+                                },
+                            });
+                        };
+
+                        const [rewardsResult, totalLocked] = await Promise.all([
+                            getDataStaking({
                                 with_permit: {
-                                    query: { 
+                                    query: {
                                         rewards: {
                                             height: 1,
-                                        } 
+                                        },
                                     },
                                     permit: {
                                         params: {
@@ -1049,10 +1038,22 @@ const _netMiddlewareClosure = (): Middleware => {
                                         signature: signerPermit?.signature as StdSignature,
                                     },
                                 },
-                            },
-                        });
+                            }),
+                            getDataStaking({
+                                total_locked: {},
+                            }),
+                        ]);
 
-                        const amountRewards = (results as TRewards)?.rewards.rewards;
+                        const amountRewards = (rewardsResult as TRewards)?.rewards.rewards;
+                        const amountTotalLocked = (totalLocked as TTotalLocked)?.total_locked
+                            .amount;
+
+                        const value = process.env.REACT_APP_PER_LGND || "0";
+                        const tvl = new BigNumber(amountTotalLocked).times(value).toFixed();
+                        const apr = new BigNumber(process.env.REACT_APP_APY || "0")
+                            .div(tvl)
+                            .times(100)
+                            .toFixed();
 
                         const rewards: Coin = {
                             amount: formatBalance(amountRewards),
@@ -1060,16 +1061,20 @@ const _netMiddlewareClosure = (): Middleware => {
                         };
 
                         const storeState = store.getState();
-                        const { balances, tokenData } = storeState.wallet;
+                        const { balances } = storeState.wallet;
 
                         const totalStakedBalance = balances[STAKING_ADDRESS]?.amount;
-                        const priceStaked = new BigNumber(totalStakedBalance).times(tokenData?.price || "0").toFixed();
-                        const priceReward = new BigNumber(amountRewards).times(tokenData?.price || "0").toFixed();
+                        const priceStaked = new BigNumber(totalStakedBalance)
+                            .times(value || "0")
+                            .toFixed();
+                        const priceReward = new BigNumber(amountRewards)
+                            .times(value || "0")
+                            .toFixed();
 
                         const dataStaking: IDataStaking = {
-                            apr: "10",
-                            value: "0",
-                            tvl: "0",
+                            apr: formatBalance(apr),
+                            value,
+                            tvl: formatBalance(tvl),
                             totalStakedBalance: formatBalance(totalStakedBalance),
                             priceStaked: formatBalance(priceStaked),
                             rewards,
@@ -1089,6 +1094,73 @@ const _netMiddlewareClosure = (): Middleware => {
                     }
                 })();
 
+                break;
+
+            case mintActions.getLatestNft.type:
+                (async () => {
+                    try {
+                        console.log("run");
+
+                        if (!client || !NFT_ADDRESS || !signerPermit.msg?.allowed_tokens) return;
+                        const mintingHistory = await getMintingHistory(
+                            client,
+                            {
+                                params: {
+                                    ...signerPermit.msg,
+                                    allowed_tokens: signerPermit.msg.allowed_tokens,
+                                    permissions: signerPermit.msg.permissions as Permission[],
+                                    chain_id: chainId as string,
+                                },
+                                signature: signerPermit.signature as StdSignature,
+                            },
+                            codeHashes[NFT_ADDRESS]?.codeHash
+                        );
+
+                        const latestTx = (mintingHistory as TTransactionHistory).transaction_history
+                            .txs[0];
+
+                        const latestNft = await getDetailNft(
+                            client,
+                            latestTx.token_id,
+                            {
+                                params: {
+                                    ...signerPermit.msg,
+                                    allowed_tokens: signerPermit.msg.allowed_tokens,
+                                    permissions: signerPermit.msg.permissions as Permission[],
+                                    chain_id: chainId as string,
+                                },
+                                signature: signerPermit.signature as StdSignature,
+                            },
+                            codeHashes[NFT_ADDRESS]?.codeHash
+                        );
+
+                        const publicData = (latestNft as any).nft_dossier?.public_metadata
+                            .extension;
+                        const privateData = (latestNft as any).nft_dossier?.private_metadata
+                            ?.extension;
+                        const royalties = (latestNft as any).nft_dossier?.royalty_info?.royalties;
+
+                        const agent = {
+                            name: publicData?.name,
+                            description: publicData?.description,
+                            publicAttributes: publicData?.attributes?.map(
+                                (item: any) => item.trait_type
+                            ),
+                            privateAttributes: privateData?.attributes?.map(
+                                (item: any) => item.trait_type
+                            ),
+                            token: royalties[0]?.recipient,
+                            royalties: royalties[0].rate,
+                        };
+
+                        next({
+                            ...action,
+                            payload: { agent },
+                        });
+                    } catch (error) {
+                        console.log(error);
+                    }
+                })();
                 break;
 
             default:

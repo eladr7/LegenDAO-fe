@@ -5,6 +5,12 @@ import { TRANSACTION_KEY } from "../../constants/constant";
 export type TTransactionState = {
     bIsPending: boolean;
     tx?: ITx;
+    collections: {
+        [address: string]: {
+            is_whitelisted?: boolean;
+            amount?: string | undefined;
+        };
+    };
 };
 
 export interface ITx {
@@ -16,6 +22,7 @@ export interface ITx {
 const initialState: TTransactionState = {
     bIsPending: false,
     tx: undefined,
+    collections: {},
 };
 
 export interface IAttributes {
@@ -126,10 +133,21 @@ const _viewTokens: CaseReducer<
     state.bIsPending = false;
 };
 
-const _isWhitelisted: CaseReducer<TTransactionState, PayloadAction<{ address: string }>> = (
-    state
-) => {
+const _isWhitelisted: CaseReducer<
+    TTransactionState,
+    PayloadAction<{
+        address: string;
+        nftMintingContract: string;
+        status?: {
+            is_whitelisted: boolean;
+            amount: string | undefined;
+        };
+    }>
+> = (state, action) => {
     state.bIsPending = false;
+    state.collections[action.payload.nftMintingContract] = {
+        ...action.payload.status,
+    };
 };
 
 const _claimPlatform: CaseReducer<

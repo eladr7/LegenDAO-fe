@@ -17,14 +17,15 @@ export default function Stake(): React.ReactElement {
     const depositPanel = useAppSelector((state) => state.accessibility.bDepositPanelOn);
     const withdrawPanel = useAppSelector((state) => state.accessibility.bWithdrawPanelOn);
     const walletState = useAppSelector((state) => state.wallet);
+    const balance = walletState.balances[STAKING_ADDRESS as string]?.amount;
 
     const dispatch = useDispatch();
 
     useEffect(() => {
-        if (walletState.balances[STAKING_ADDRESS as string]) {
+        if (balance) {
             dispatch(walletActions.getRewardsStaking());
         }
-    }, [dispatch, walletState.balances]);
+    }, [dispatch, balance]);
 
     return (
         <DefaultLayout headerType="general" bHeaderAlwaysOnTop sidebarTab="tab/stake">

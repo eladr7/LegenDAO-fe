@@ -7,7 +7,11 @@ import {
     toggleMintSuccessfulPanelOn,
     turnOffAllPanel,
 } from "../features/accessibility/accessibilitySlice";
-import { setAgent, setSuccessMessage, toggleAgreeTermOfService } from "../features/mint/mintSlice";
+import {
+    mintActions,
+    setSuccessMessage,
+    toggleAgreeTermOfService,
+} from "../features/mint/mintSlice";
 import { transactionActions } from "../features/transaction/transactionSlice";
 import Button from "./commons/Button";
 import CheckBox from "./commons/CheckBox";
@@ -36,6 +40,7 @@ export default function MintConfirmPurchasePanel({
     }, [dispatch]);
 
     const handleOnMintNowBtnClicked = useCallback(() => {
+        dispatch(mintActions.clearLatestNft());
         if (!networkState.bIsConnected) return;
         const amountToMint = 1;
         const tokenPrice = process.env.REACT_APP_TOKEN_PRICE || "1000000";
@@ -55,25 +60,20 @@ export default function MintConfirmPurchasePanel({
             !transactionState.bIsPending &&
             transactionState.tx?.txName === TRANSACTION_KEY.MINT_NFT
         ) {
-            dispatch(turnOffAllPanel());
-            dispatch(toggleMintSuccessfulPanelOn(true));
-            dispatch(
-                setAgent({
-                    name: "Agent #4322",
-                    description: "Agent #4322",
-                    publicAttributes: ["Head", "Skin", "Eyes", "Bear", "Hair", "Shape"],
-                    privateAttributes: ["High Res"],
-                    token: "secret12hakz7t8z5ks4fucwzn92rg24muxcs4uvzyz2w",
-                    royalties: 5,
-                })
-            );
-            dispatch(setSuccessMessage("Congratulations, you've successfully minted an NFT!"));
+            if (mintState.agent) {
+                dispatch(turnOffAllPanel());
+                dispatch(toggleMintSuccessfulPanelOn(true));
+                dispatch(setSuccessMessage("Congratulations, you've successfully minted an NFT!"));
+            } else {
+                dispatch(mintActions.getLatestNft());
+            }
         }
     }, [
         dispatch,
         transactionState.tx?.txStatus,
         transactionState.bIsPending,
         transactionState.tx?.txName,
+        mintState.agent,
     ]);
 
     return (
@@ -92,7 +92,9 @@ export default function MintConfirmPurchasePanel({
                         <div className="text-blue-300">Item Price</div>
                         <div className="">
                             <span className="font-bold text-lg">{priceInLGND} $LGND</span>
-                            <span className="ml-4 opacity-75 hidden tablet-2:inline">(${priceInFiat})</span>
+                            <span className="ml-4 opacity-75 hidden tablet-2:inline">
+                                (${priceInFiat})
+                            </span>
                         </div>
                     </div>
                 </div>
@@ -123,7 +125,9 @@ export default function MintConfirmPurchasePanel({
                 </div>
 
                 <div className="mt-6 w-full text-center">
-                    <span className="opacity-75" onClick={onCloseBtnClicked}>Back</span>
+                    <span className="opacity-75" onClick={onCloseBtnClicked}>
+                        Back
+                    </span>
                 </div>
             </div>
         </Panel>

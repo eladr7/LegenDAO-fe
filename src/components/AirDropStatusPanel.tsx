@@ -77,7 +77,7 @@ export default function AirDropStatusPanel({ onCloseBtnClicked }: Props): React.
                 switch (claimStatus.status) {
                     case CLAIM_STATUS.NOT_CLAIMED:
                         setDataAirdrop({
-                            amountClaim: claimStatus.amount.toString(),
+                            amountClaim: claimStatus.amount.$numberDecimal,
                             buttonName: AIRDROP_BTN_NAME.CLAIM_YOUR_AIRDROP,
                             status: "eligible",
                         });
@@ -94,7 +94,7 @@ export default function AirDropStatusPanel({ onCloseBtnClicked }: Props): React.
                     case CLAIM_STATUS.SUBMITTED:
                     case CLAIM_STATUS.CLAIMED:
                         setDataAirdrop({
-                            amountClaim: claimStatus.amount.toString(),
+                            amountClaim: claimStatus.amount.$numberDecimal,
                             buttonName: AIRDROP_BTN_NAME.CLAIMED,
                             status: "eligible",
                         });
@@ -148,6 +148,7 @@ export default function AirDropStatusPanel({ onCloseBtnClicked }: Props): React.
                     ],
                 });
                 if (res.status === 200) {
+                    reset();
                     setDataAirdrop({
                         amountClaim: "0",
                         buttonName: AIRDROP_BTN_NAME.CLAIMED,
@@ -180,6 +181,7 @@ export default function AirDropStatusPanel({ onCloseBtnClicked }: Props): React.
     }, [
         dispatch,
         networkState.bIsConnected,
+        reset,
         transactionState.bIsPending,
         walletState.primary?.address,
         watch,
@@ -381,7 +383,11 @@ export default function AirDropStatusPanel({ onCloseBtnClicked }: Props): React.
                     </div>
 
                     <div className="mb-6 last:mb-0 flex flex-col flex-nowrap">
-                        <Button className="!font-body font-semibold" bigness="xl" onClick={handleCheckAnotherAddress}>
+                        <Button
+                            className="!font-body font-semibold"
+                            bigness="xl"
+                            onClick={handleCheckAnotherAddress}
+                        >
                             Check Another Address
                         </Button>
                     </div>

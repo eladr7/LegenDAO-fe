@@ -26,14 +26,15 @@ import MintAgentDetailPanel from "../components/MintAgentDetailPanel";
 import { SOCIAL_NETWORK_URL } from "../constants/linkSocial";
 import { useNavigate } from "react-router-dom";
 import { transactionActions } from "../features/transaction/transactionSlice";
-import { cryptidsServices } from "../app/commons/cryptidsServices";
 import { Footer } from "../components/commons/Footer";
 import { profileActions } from "../features/profile/profileSlice";
+import { NFT_MINTING_ADDRESS } from "../constants/contractAddress";
 
 export default function MyCollections(): React.ReactElement {
     const navigate = useNavigate();
     const { state } = useContext(AppContext);
     const collectionState = useAppSelector((state) => state.collection);
+    const transactionState = useAppSelector((state) => state.transaction);
     const walletState = useAppSelector((state) => state.wallet);
     const networkState = useAppSelector((state) => state.network);
     const accessibilityState = useAppSelector((state) => state.accessibility);
@@ -76,17 +77,23 @@ export default function MyCollections(): React.ReactElement {
 
     useEffect(() => {
         (async () => {
-            try {
-                if (!walletState?.primary?.address) return;
-                const res = await cryptidsServices.isWhiteListed(walletState?.primary?.address);
-                if (res.status === 200) {
-                    dispatch(setWhitelistSpot(res.data.whitelist));
-                }
-            } catch (error) {
-                dispatch(setWhitelistSpot(false));
-            }
+            if (!walletState?.primary?.address) return;
+            dispatch(
+                transactionActions.isWhitelisted({
+                    address: walletState.primary.address,
+                    nftMintingContract: NFT_MINTING_ADDRESS as string,
+                })
+            );
         })();
     }, [dispatch, walletState?.primary?.address]);
+
+    useEffect(() => {
+        dispatch(
+            setWhitelistSpot(
+                transactionState.collections[NFT_MINTING_ADDRESS as string]?.is_whitelisted
+            )
+        );
+    }, [dispatch, transactionState.collections]);
 
     const renderFollowingCollections = useCallback(() => {
         return (
@@ -134,11 +141,7 @@ export default function MyCollections(): React.ReactElement {
                     <div className="absolute top-0 left-0 right-0 bottom-0 bg-slate-900/75"></div>
                     <div className="absolute top-0 left-0 right-0 bottom-0 bg-blue-900/25"></div>
                     <div>
-                        <Button
-                            bigness="lg"
-                            className="z-10"
-                            onClick={handleOnEnterBtnClicked}
-                        >
+                        <Button bigness="lg" className="z-10" onClick={handleOnEnterBtnClicked}>
                             <span className="px-12">Enter</span>
                         </Button>
                     </div>

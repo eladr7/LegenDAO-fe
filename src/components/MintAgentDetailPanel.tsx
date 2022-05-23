@@ -61,7 +61,7 @@ export default function MintAgentDetailPanel({
                             {mintAgent.token}
                         </div>
                         <div className="mt-4 tablet-2:mt-0 tablet-2:ml-4 first:ml-0 bg-slate-900 px-8 h-input rounded-lg flex justify-center items-center">
-                            {mintAgent.royalties}
+                            {mintAgent.royalties}%
                         </div>
                     </div>
                 </div>

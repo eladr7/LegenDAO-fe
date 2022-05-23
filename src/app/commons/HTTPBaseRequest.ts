@@ -46,7 +46,9 @@ export interface IClaimResponse {
     status: {
         [address: string]: {
             status: TClaimStatus;
-            amount: number;
+            amount: {
+                $numberDecimal: string;
+            };
         }
     }
 }

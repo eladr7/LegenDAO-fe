@@ -34,6 +34,17 @@ const _setSuccessMessage: CaseReducer<TMintState, PayloadAction<string | undefin
     state.successMessage = action.payload;
 };
 
+const _getLatestNft: CaseReducer<
+    TMintState,
+    PayloadAction<{ agent?: any } | undefined>
+> = (state, action) => {
+    state.agent = action.payload?.agent;
+};
+
+const _clearLatestNft: CaseReducer<TMintState, PayloadAction> = (state) => {
+    state.agent = undefined;
+};
+
 const mintSlice = createSlice({
     name: "mint",
     initialState,
@@ -41,9 +52,12 @@ const mintSlice = createSlice({
         setAgent: _setAgent,
         toggleAgreeTermOfService: _toggleAgreeTermOfService,
         setSuccessMessage: _setSuccessMessage,
+        getLatestNft: _getLatestNft,
+        clearLatestNft: _clearLatestNft,
     },
 });
 
 export const { setAgent, toggleAgreeTermOfService, setSuccessMessage } = mintSlice.actions;
+export const mintActions = mintSlice.actions;
 
 export default mintSlice.reducer;
