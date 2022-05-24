@@ -110,7 +110,7 @@ function Home(): React.ReactElement {
                         ></div>
                         <div
                             className={cn(
-                                "absolute left-0 bottom-0 w-1/2 tablet:w-2/3 h-2/3",
+                                "absolute left-0 bottom-0 w-1/2 tablet:w-[40%] h-2/3",
                                 "bg-no-repeat bg-contain bg-left-bottom"
                             )}
                             style={{ backgroundImage: `url(${imgYeti02})` }}
