@@ -50,31 +50,6 @@ function Home(): React.ReactElement {
                     >
                         <div
                             className={cn(
-                                "absolute left-0 bottom-20 w-[200px] h-[500px]",
-                                "tablet-2:w-[400px] tablet-2:h-[1000px]",
-                                "bg-no-repeat bg-contain bg-left-bottom"
-                            )}
-                            style={{ backgroundImage: `url(${imgTank01})` }}
-                        ></div>
-                        <div
-                            className={cn(
-                                "absolute left-0 bottom-52 w-[180px] h-[300px]",
-                                "tablet-2:bottom-60 tablet-2:w-[380px] tablet-2:h-[700px]",
-                                "bg-no-repeat bg-contain bg-left-bottom"
-                            )}
-                            style={{ backgroundImage: `url(${imgYetiSleep01})` }}
-                        ></div>
-                        <div
-                            className={cn(
-                                "absolute left-0 bottom-36 w-[180px] h-[320px]",
-                                "tablet-2: tablet-2:w-[350px] tablet-2:h-[700px]",
-                                "bg-no-repeat bg-contain bg-left-bottom"
-                            )}
-                            style={{ backgroundImage: `url(${imgTank01Filter})` }}
-                        ></div>
-
-                        <div
-                            className={cn(
                                 "absolute top-0 left-0 right-0 bottom-0",
                                 "bg-cyan-900/50"
                             )}
