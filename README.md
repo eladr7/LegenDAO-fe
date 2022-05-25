@@ -199,3 +199,13 @@ Use sans-serif font family
 | Base                             | `text-base` | `line-height: 1.5rem; font-size: 1rem; /* 16px */`      |
 | Sub                              | `text-md`   | `line-height: 1.25rem; font-size: 0.875rem; /* 14px */` |
 | Tiny                             | `text-sm`   | `line-height: 1rem; font-size: 0.75rem; /* 12px */`     |
+
+
+## Deploy
+
+- Create build folder:
+    ```
+        npm run build
+    ```
+- Setup environment: ```.env``` file
+- The build folder is ready to be deployed. You may serve it with a static server.

@@ -8,12 +8,8 @@ import { DefaultLayout } from "../components/layouts/DefaultLayout";
 import MintLabStatusPanel from "../components/MintLabStatusPanel";
 import imgLab01 from "./../assets/images/lab-01.png";
 import imgMountain01 from "./../assets/images/mountain-01.png";
-import imgTank01Filter from "./../assets/images/tank-01-filter.png";
-import imgTank01 from "./../assets/images/tank-01.png";
 import imgYeti01 from "./../assets/images/yeti-01.png";
 import imgYeti02 from "./../assets/images/yeti-02.png";
-import imgYetiSleep01 from "./../assets/images/yeti-sleep-01.png";
-
 
 interface IStatus {
     price: number;
@@ -66,10 +62,7 @@ function Home(): React.ReactElement {
                                 Mint Lab
                             </h1>
                             <div className="tablet-2:hidden">
-                                <Button
-                                    bigness="lg"
-                                    onClick={handleOnMintLabLaunchBtnClicked}
-                                >
+                                <Button bigness="lg" onClick={handleOnMintLabLaunchBtnClicked}>
                                     <span className="px-12 text-lg">Launch</span>
                                 </Button>
                             </div>
@@ -156,7 +149,7 @@ function Home(): React.ReactElement {
                         "h-screen tablet-2:h-auto"
                     )}
                 >
-                    <MintLabStatusPanel 
+                    <MintLabStatusPanel
                         price={(tokenData as IStatus).price}
                         apy={(tokenData as IStatus).apy}
                         liquidity={(tokenData as IStatus).liquidity}

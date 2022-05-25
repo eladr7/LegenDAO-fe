@@ -1158,7 +1158,11 @@ const _netMiddlewareClosure = (): Middleware => {
                             payload: { agent },
                         });
                     } catch (error) {
-                        console.log(error);
+                        store.dispatch(
+                            applicationActions.toastRequestRejected({
+                                errorMsg: (error as any)?.message as string,
+                            })
+                        );
                     }
                 })();
                 break;
