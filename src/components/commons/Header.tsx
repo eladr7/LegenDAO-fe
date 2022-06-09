@@ -325,6 +325,9 @@ export function Header({
                             "font-emphasis text-xl"
                         )}
                     >
+                        <Link className="mr-8 last:mr-0 opacity-80 hover:opacity-100" to="/">
+                            Home
+                        </Link>
                         <Link className="mr-8 last:mr-0 opacity-80 hover:opacity-100" to="/about">
                             About
                         </Link>

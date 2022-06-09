@@ -6,9 +6,14 @@ import store from "./app/store";
 import ToastMessage from "./components/commons/ToastMessage";
 import AppContext, { TAppContext } from "./contexts/AppContext";
 import { walletActions } from "./features/wallet/walletSlice";
+import About from "./routes/About";
 import AirDrop from "./routes/AirDrop";
 import { Asset } from "./routes/Asset";
+import Community from "./routes/Community";
+import Docs from "./routes/Docs";
+import Faq from "./routes/FAQ";
 import FormCreation from "./routes/FormCreation";
+import Governance from "./routes/Governance";
 import Home from "./routes/Home";
 import { MintLabLanding } from "./routes/MintLabLanding";
 import MyCollections from "./routes/MyCollections";
@@ -75,11 +80,11 @@ function App(): React.ReactElement {
                 <div className="App">
                     <Routes>
                         <Route path="/" element={<Home />} />
-                        {/* <Route path="/about" element={<About />} />
+                        <Route path="/about" element={<About />} />
                         <Route path="/docs" element={<Docs />} />
                         <Route path="/faq" element={<Faq />} />
                         <Route path="/governance" element={<Governance />} />
-                        <Route path="/community" element={<Community />} /> */}
+                        <Route path="/community" element={<Community />} />
                         <Route path="/ui" element={<UI />} />
                         <Route path="/asset" element={<Asset />} />
                         <Route path="/mint-lab" element={<MintLabLanding />} />
