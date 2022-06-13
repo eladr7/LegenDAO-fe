@@ -95,6 +95,13 @@ export default function MyCollections(): React.ReactElement {
         );
     }, [dispatch, transactionState.collections]);
 
+    const getNftPriceInLgnd = useCallback(() => {
+        const priceInULgnd = collectionState.whitelistSpot
+            ? parseInt(process.env.REACT_APP_TOKEN_WHITELIST_PRICE || "100000")
+            : parseInt(process.env.REACT_APP_TOKEN_PRICE || "1000000");
+        return priceInULgnd / 1000000;
+    }, [collectionState.whitelistSpot]);
+
     const renderFollowingCollections = useCallback(() => {
         return (
             <div className="mt-12 tablet-2:mt-24 px-4 tablet-2:px-16 flex flex-col flex-nowrap">
@@ -191,7 +198,7 @@ export default function MyCollections(): React.ReactElement {
                 <Modal bodyElement={state.bodyElement} onOuterClick={handleOnMintCloseBtnClicked}>
                     <MintConfirmPurchasePanel
                         onCloseBtnClicked={handleOnMintCloseBtnClicked}
-                        priceInLGND={25}
+                        priceInLGND={getNftPriceInLgnd()}
                         priceInFiat={70.5}
                         itemCoverUrl={imgTopSecretColMintBg01}
                     />

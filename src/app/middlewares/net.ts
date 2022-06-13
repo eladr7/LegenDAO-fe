@@ -352,17 +352,6 @@ const _netMiddlewareClosure = (): Middleware => {
                     })
                 ).toString("base64");
 
-                const msgWithdrawFromStaking = new MsgExecuteContract({
-                    contractAddress: STAKING_ADDRESS,
-                    codeHash: codeHashes[STAKING_ADDRESS]?.codeHash,
-                    sender: client.address,
-                    msg: {
-                        withdraw: {
-                            amount: sendAmount,
-                        },
-                    },
-                });
-
                 const msgSendFromPlatform = new MsgExecuteContract({
                     sender: client.address,
                     contractAddress: platformContractAddress,
@@ -377,7 +366,7 @@ const _netMiddlewareClosure = (): Middleware => {
                 });
 
                 client.tx
-                    .broadcast([msgWithdrawFromStaking, msgSendFromPlatform], {
+                    .broadcast([msgSendFromPlatform], {
                         gasLimit: 500_000,
                     })
                     .then((tx) => {

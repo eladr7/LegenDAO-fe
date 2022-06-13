@@ -43,7 +43,7 @@ export default function MintConfirmPurchasePanel({
         dispatch(mintActions.clearLatestNft());
         if (!networkState.bIsConnected) return;
         const amountToMint = 1;
-        const tokenPrice = process.env.REACT_APP_TOKEN_PRICE || "1000000";
+        const tokenPrice = (priceInLGND * 1000000).toString();
         dispatch(transactionActions.startTransaction());
         dispatch(
             transactionActions.sendTokenFromPlatformToContract({
@@ -52,7 +52,7 @@ export default function MintConfirmPurchasePanel({
                 mintingContractAddress: process.env.REACT_APP_ADDRESS_NFT_MINTING,
             })
         );
-    }, [dispatch, networkState.bIsConnected]);
+    }, [dispatch, networkState.bIsConnected, priceInLGND]);
 
     useEffect(() => {
         if (

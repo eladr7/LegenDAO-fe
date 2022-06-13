@@ -17,6 +17,8 @@ export default function ProfileCollectedPanel(): React.ReactElement {
     }, [dispatch, networkState.bIsConnected, walletState.signature]);
 
     const renderListItem = useCallback(() => {
+        const imgBaseUrl = `${process.env.REACT_APP_CRYPTIDS_API_URL}/api/ipfstoimage?uri=`;
+
         const listItems = collectionState.listMyCollection;
         if (listItems?.length) {
             return listItems.map((item, index) => {
@@ -28,7 +30,7 @@ export default function ProfileCollectedPanel(): React.ReactElement {
                                 "bg-contain bg-center bg-no-repeat cursor-pointer"
                             )}
                             style={{
-                                backgroundImage: `url(${item.nft_dossier.public_metadata.extension.image})`,
+                                backgroundImage: `url(${imgBaseUrl}${item.nft_dossier.public_metadata.extension.image})`,
                             }}
                         ></div>
                         <div className="mt-2 text-teal-200 font-normal text-sm">
