@@ -40,9 +40,7 @@ export default function Stake(): React.ReactElement {
                 <div className="absolute top-0 left-0 bottom-0 right-0 bg-slate-900/75"></div>
                 {state.bodyElement && depositPanel === false && withdrawPanel === false && (
                     <Modal bodyElement={state.bodyElement}>
-                        <StakeFormPanel
-                            dataStaking={walletState.dataStaking}
-                        />
+                        <StakeFormPanel dataStaking={walletState.dataStaking} />
                     </Modal>
                 )}
             </Article>

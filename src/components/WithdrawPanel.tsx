@@ -57,6 +57,16 @@ export default function WithdrawPanel({ onCloseBtnClicked }: Props): React.React
         );
     }, [dispatch, inputAmount, networkState.bIsConnected, transactionState.bIsPending]);
 
+    const handleOnRedeemBtnClicked = useCallback(() => {
+        if (!networkState.bIsConnected) return;
+        if (transactionState.bIsPending) return;
+        dispatch(
+            transactionActions.claimPlatform({
+                amountClaim: parseBalance(dataExpand.unlocked.amount) || "0",
+            })
+        );
+    }, [dispatch, dataExpand.unlocked, networkState.bIsConnected, transactionState.bIsPending]);
+
     const handleOnWithdrawAmountChanged = useCallback(
         (e: React.ChangeEvent<HTMLInputElement>) => {
             let value = e.target.value;
@@ -235,6 +245,7 @@ export default function WithdrawPanel({ onCloseBtnClicked }: Props): React.React
                                     value={`${dataExpand.unlocked.amount} ${dataExpand.unlocked.denom}`}
                                     disabled
                                     className="truncate"
+                                    onClick={handleOnRedeemBtnClicked}
                                 />
                             </div>
                         </div>
