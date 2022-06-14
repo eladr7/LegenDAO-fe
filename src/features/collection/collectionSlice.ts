@@ -2,13 +2,17 @@ import { CaseReducer, createSlice, PayloadAction, createAsyncThunk } from "@redu
 import { TActionStage } from "../../app/commons/api";
 
 type MyData = string;
+export type TListCollection = {
+    [key: string]: Array<any>
+}
+
 export type TCollectionState = {
     searchStage: TActionStage | undefined;
     searchResult: Array<unknown> | undefined;
     searchString: string;
     whitelistSpot?: unknown;
     bEntered: boolean;
-    listMyCollection: Array<any>;
+    listMyCollection: TListCollection;
 };
 
 const initialState: TCollectionState = {
@@ -17,7 +21,7 @@ const initialState: TCollectionState = {
     searchString: "",
     whitelistSpot: undefined,
     bEntered: false,
-    listMyCollection: [],
+    listMyCollection: {},
 };
 
 const _toggleEnter: CaseReducer<TCollectionState, PayloadAction<boolean | undefined>> = (
@@ -65,9 +69,16 @@ const _setWhitelistSpot: CaseReducer<TCollectionState, PayloadAction<unknown | u
 
 const _getCollection: CaseReducer<
     TCollectionState,
-    PayloadAction<{ listMyCollection?: any } | undefined>
+    PayloadAction<{ 
+        listMyCollection?: any;
+        nftContract: string;
+    }>
 > = (state, action) => {
-    state.listMyCollection = action.payload?.listMyCollection;
+    const nftContractAddress = action.payload?.nftContract;
+        const collectionItems = action.payload?.listMyCollection;
+        state.listMyCollection[nftContractAddress as string] = [
+            ...collectionItems
+        ]
 };
 
 const collectionSlice = createSlice({

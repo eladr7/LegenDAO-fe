@@ -1,8 +1,9 @@
 import cn from "classnames";
-import React, { useCallback, useEffect } from "react";
+import React, { useCallback, useEffect, useMemo } from "react";
 import { useDispatch } from "react-redux";
 import { useAppSelector } from "../app/hooks";
-import { collectionAtions } from "../features/collection/collectionSlice";
+import { NFT_ADDRESSES } from "../constants/contractAddress";
+import { collectionAtions, TListCollection } from "../features/collection/collectionSlice";
 import Panel from "./commons/Panel";
 
 export default function ProfileCollectedPanel(): React.ReactElement {
@@ -13,13 +14,26 @@ export default function ProfileCollectedPanel(): React.ReactElement {
 
     useEffect(() => {
         if (!networkState.bIsConnected || !walletState.signature) return;
-        dispatch(collectionAtions.getCollection({}));
+        NFT_ADDRESSES.forEach((nftContractAddress) => {
+            dispatch(collectionAtions.getCollection({ nftContract: nftContractAddress as string }));
+        }); // TODO: if no further use of getCollection - unify this dispatch to loop internaly
     }, [dispatch, networkState.bIsConnected, walletState.signature]);
+
+    const combineCollections = (listMyCollection: TListCollection): Array<any> => {
+        let listItems: Array<any> = [];
+        for (const key in listMyCollection) {
+            listItems = listItems.concat(listMyCollection[key]);
+        }
+        return listItems;
+    };
+
+    const listItems = useMemo(() => {
+        return combineCollections(collectionState.listMyCollection);
+    }, [collectionState.listMyCollection]);
 
     const renderListItem = useCallback(() => {
         const imgBaseUrl = `${process.env.REACT_APP_CRYPTIDS_API_URL}/api/ipfstoimage?uri=`;
-
-        const listItems = collectionState.listMyCollection;
+        debugger;
         if (listItems?.length) {
             return listItems.map((item, index) => {
                 return (

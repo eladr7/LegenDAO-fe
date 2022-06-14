@@ -868,11 +868,12 @@ const _netMiddlewareClosure = (): Middleware => {
             }
 
             case collectionAtions.getCollection.type: {
+                const { nftContract } = action.payload;
                 const getTokens = async () => {
-                    if (!client || !NFT_ADDRESS || !chainId || !signerPermit.signature) return;
+                    if (!client || !nftContract || !chainId || !signerPermit.signature) return;
                     const tokens = await client.query.compute.queryContract({
-                        contractAddress: NFT_ADDRESS,
-                        codeHash: codeHashes[NFT_ADDRESS]?.codeHash || "",
+                        contractAddress: nftContract,
+                        codeHash: codeHashes[nftContract]?.codeHash || "",
                         query: {
                             with_permit: {
                                 query: {
@@ -914,8 +915,8 @@ const _netMiddlewareClosure = (): Middleware => {
                         };
 
                         return (client as SecretNetworkClient).query.compute.queryContract({
-                            contractAddress: NFT_ADDRESS as string,
-                            codeHash: codeHashes[NFT_ADDRESS as string]?.codeHash || "",
+                            contractAddress: nftContract as string,
+                            codeHash: codeHashes[nftContract as string]?.codeHash || "",
                             query: {
                                 ...msg,
                             },
@@ -923,7 +924,7 @@ const _netMiddlewareClosure = (): Middleware => {
                     });
 
                     const listMyCollection = await Promise.all(collectionsDetails);
-                    next({ ...action, payload: { listMyCollection } });
+                    next({ ...action, payload: { listMyCollection, nftContract } }); // , nftContract: nftContract
                 };
 
                 getTokens();
