@@ -14,18 +14,23 @@ import ProfileMyCollectionPanel from "../components/ProfileMyCollectionPanel";
 import PencilIcon from "../components/icons/PencilIcon";
 import { useAppDispatch, useAppSelector, useMediaQuery } from "../app/hooks";
 import { profileActions } from "../features/profile/profileSlice";
+import MintAgentDetailPanel from "../components/MintAgentDetailPanel";
+import { TMintAgent } from "../classes/MintAgent";
 
 const REGEXP_USERNAME = "^[0-9a-zA-Z]+$";
 
 export default function Profile(): React.ReactElement {
     const rfMyNameInput = useRef<HTMLInputElement>(null);
     const profileState = useAppSelector((state) => state.profile);
+
     const dispatch = useAppDispatch();
     const mediaQuery = useMediaQuery();
 
     const [myName, setMyName] = useState<string>("");
     const [isDisableInput, setIsDisableInput] = useState<boolean>(true);
     const [myNameErrorMessage, setMyNameErrorMessage] = useState<string | undefined>(undefined);
+
+    const [selectedNft, setSelectedNft] = useState<TMintAgent | undefined>();
 
     const handleOnGeneralTabClicked = useCallback(() => {
         dispatch(profileActions.setTab("/profile/general"));
@@ -151,9 +156,11 @@ export default function Profile(): React.ReactElement {
                                     Loot Boxes
                                 </div>
                                 <div className="mb-8 last:mb-0 text-center text-base text-[#AFB7C6]">
-                                    Where do they come from? <span className="whitespace-nowrap">What&apos;s inside?</span>
-                                    <br className="hidden lg:block" />&nbsp;
-                                    Stay tuned to <span className="whitespace-nowrap">learn more</span>
+                                    Where do they come from?{" "}
+                                    <span className="whitespace-nowrap">What&apos;s inside?</span>
+                                    <br className="hidden lg:block" />
+                                    &nbsp; Stay tuned to{" "}
+                                    <span className="whitespace-nowrap">learn more</span>
                                 </div>
                                 <div
                                     className="mb-4 last:mb-0 w-[130px] h-[130px] bg-contain bg-no-repeat bg-center"
@@ -174,7 +181,7 @@ export default function Profile(): React.ReactElement {
                         )}
                     >
                         <div className="justify-self-start lg:order-first">
-                            <ProfileCollectedPanel />
+                            <ProfileCollectedPanel setSelectedNft={setSelectedNft} />
                         </div>
 
                         <div
@@ -189,9 +196,11 @@ export default function Profile(): React.ReactElement {
                                     Loot Boxes
                                 </div>
                                 <div className="mb-8 last:mb-0 text-center text-base text-[#AFB7C6]">
-                                    Where do they come from? <span className="whitespace-nowrap">What&apos;s inside?</span>
-                                    <br className="hidden lg:block" />&nbsp;
-                                    Stay tuned to <span className="whitespace-nowrap">learn more</span>
+                                    Where do they come from?{" "}
+                                    <span className="whitespace-nowrap">What&apos;s inside?</span>
+                                    <br className="hidden lg:block" />
+                                    &nbsp; Stay tuned to{" "}
+                                    <span className="whitespace-nowrap">learn more</span>
                                 </div>
                                 <div
                                     className="mb-4 last:mb-0 w-[130px] h-[130px] bg-contain bg-no-repeat bg-center"
@@ -226,9 +235,11 @@ export default function Profile(): React.ReactElement {
                                     Loot Boxes
                                 </div>
                                 <div className="mb-8 last:mb-0 text-center text-base text-[#AFB7C6]">
-                                    Where do they come from? <span className="whitespace-nowrap">What&apos;s inside?</span>
-                                    <br className="hidden lg:block" />&nbsp;
-                                    Stay tuned to <span className="whitespace-nowrap">learn more</span>
+                                    Where do they come from?{" "}
+                                    <span className="whitespace-nowrap">What&apos;s inside?</span>
+                                    <br className="hidden lg:block" />
+                                    &nbsp; Stay tuned to{" "}
+                                    <span className="whitespace-nowrap">learn more</span>
                                 </div>
                                 <div
                                     className="mb-4 last:mb-0 w-[130px] h-[130px] bg-contain bg-no-repeat bg-center"
@@ -240,7 +251,14 @@ export default function Profile(): React.ReactElement {
                 );
             }
         }
-    }, [profileState.tab, myNameErrorMessage, isDisableInput, handleOnMyNameChanged, myName]);
+    }, [
+        profileState.tab,
+        myNameErrorMessage,
+        isDisableInput,
+        handleOnMyNameChanged,
+        myName,
+        selectedNft,
+    ]);
 
     return (
         <DefaultLayout
@@ -257,6 +275,13 @@ export default function Profile(): React.ReactElement {
                     )}
                     style={{ backgroundImage: `url(${imgArticleUniverse01Background})` }}
                 ></div>
+                {selectedNft && profileState.tab === "/profile/collected" && (
+                    <div className="absolute ml-96 mt-40 z-20">
+                        <div className="ml-72">
+                            <MintAgentDetailPanel mintAgent={selectedNft} />
+                        </div>
+                    </div>
+                )}
                 <div className="absolute top-0 left-0 bottom-0 right-0 bg-blue-900/50"></div>
                 <div className="absolute top-0 left-0 bottom-0 right-0 bg-slate-900/75"></div>
                 <div className="w-full mt-28 px-5 lg:px-16 z-10">

@@ -2,11 +2,15 @@ import cn from "classnames";
 import React, { useCallback, useEffect, useMemo } from "react";
 import { useDispatch } from "react-redux";
 import { useAppSelector } from "../app/hooks";
+import { TMintAgent } from "../classes/MintAgent";
 import { NFT_ADDRESSES } from "../constants/contractAddress";
 import { collectionAtions, TListCollection } from "../features/collection/collectionSlice";
 import Panel from "./commons/Panel";
 
-export default function ProfileCollectedPanel(): React.ReactElement {
+type Props = {
+    setSelectedNft: (nftItem: any) => any;
+};
+export default function ProfileCollectedPanel({ setSelectedNft }: Props): React.ReactElement {
     const dispatch = useDispatch();
     const networkState = useAppSelector((state) => state.network);
     const collectionState = useAppSelector((state) => state.collection);
@@ -35,8 +39,20 @@ export default function ProfileCollectedPanel(): React.ReactElement {
         const imgBaseUrl = `${process.env.REACT_APP_CRYPTIDS_API_URL}/api/ipfstoimage?uri=`;
         if (listItems?.length) {
             return listItems.map((item, index) => {
+                const nftItem: TMintAgent = {
+                    name: "Hard coded name: " + index.toString(),
+                    description: "Hard coded description: " + index.toString(),
+                    publicAttributes: [],
+                    privateAttributes: [],
+                    token: "Hard coded token",
+                    royalties: 0,
+                };
                 return (
-                    <div className="flex flex-col justify-center items-center" key={index}>
+                    <div
+                        className="flex flex-col justify-center items-center"
+                        key={index}
+                        onClick={() => setSelectedNft(nftItem)}
+                    >
                         <div
                             className={cn(
                                 "w-[124px] h-[124px] bg-slate-900/75 rounded-lg hover:bg-slate-900 transition-colors",
