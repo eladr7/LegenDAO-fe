@@ -33,7 +33,6 @@ export default function ProfileCollectedPanel(): React.ReactElement {
 
     const renderListItem = useCallback(() => {
         const imgBaseUrl = `${process.env.REACT_APP_CRYPTIDS_API_URL}/api/ipfstoimage?uri=`;
-        debugger;
         if (listItems?.length) {
             return listItems.map((item, index) => {
                 return (

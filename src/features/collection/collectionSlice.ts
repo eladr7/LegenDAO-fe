@@ -12,6 +12,7 @@ export type TCollectionState = {
     searchString: string;
     whitelistSpot?: unknown;
     bEntered: boolean;
+    selectedCollectionIndex: number;
     listMyCollection: TListCollection;
 };
 
@@ -21,14 +22,19 @@ const initialState: TCollectionState = {
     searchString: "",
     whitelistSpot: undefined,
     bEntered: false,
+    selectedCollectionIndex: 0,
     listMyCollection: {},
 };
 
-const _toggleEnter: CaseReducer<TCollectionState, PayloadAction<boolean | undefined>> = (
+const _toggleEnter: CaseReducer<TCollectionState, PayloadAction<{
+    entered: boolean | undefined;
+    collectionIndex: number;
+}>> = (
     state,
     action
 ) => {
-    state.bEntered = action.payload ?? !state.bEntered;
+    state.bEntered = action.payload.entered ?? !state.bEntered;
+    state.selectedCollectionIndex = action.payload.collectionIndex;
 };
 
 const searchOld = createAsyncThunk<MyData, string>("collection/searchOld", async (input) => {

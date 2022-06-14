@@ -3,6 +3,7 @@ import cn from "classnames";
 import React, { useCallback, useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
 import { TRANSACTION_KEY } from "../constants/constant";
+import { NFT_MINTING_ADDRESSES } from "../constants/contractAddress";
 import {
     toggleMintSuccessfulPanelOn,
     turnOffAllPanel,
@@ -31,6 +32,7 @@ export default function MintConfirmPurchasePanel({
     onCloseBtnClicked,
 }: Props): React.ReactElement {
     const mintState = useAppSelector((state) => state.mint);
+    const collectionState = useAppSelector((state) => state.collection);
     const transactionState = useAppSelector((state) => state.transaction);
     const networkState = useAppSelector((state) => state.network);
     const dispatch = useAppDispatch();
@@ -49,10 +51,11 @@ export default function MintConfirmPurchasePanel({
             transactionActions.sendTokenFromPlatformToContract({
                 amountToMint,
                 sendAmount: new BigNumber(amountToMint).times(tokenPrice).toFixed(),
-                mintingContractAddress: process.env.REACT_APP_ADDRESS_NFT_MINTING,
+                mintingContractAddress:
+                    NFT_MINTING_ADDRESSES[collectionState.selectedCollectionIndex],
             })
         );
-    }, [dispatch, networkState.bIsConnected, priceInLGND]);
+    }, [dispatch, networkState.bIsConnected, priceInLGND, collectionState.selectedCollectionIndex]);
 
     useEffect(() => {
         if (
@@ -65,7 +68,11 @@ export default function MintConfirmPurchasePanel({
                 dispatch(toggleMintSuccessfulPanelOn(true));
                 dispatch(setSuccessMessage("Congratulations, you've successfully minted an NFT!"));
             } else {
-                dispatch(mintActions.getLatestNft());
+                dispatch(
+                    mintActions.getLatestNft({
+                        selectedCollectionIndex: collectionState.selectedCollectionIndex,
+                    })
+                );
             }
         }
     }, [
@@ -74,6 +81,7 @@ export default function MintConfirmPurchasePanel({
         transactionState.bIsPending,
         transactionState.tx?.txName,
         mintState.agent,
+        collectionState.selectedCollectionIndex,
     ]);
 
     return (

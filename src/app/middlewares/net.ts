@@ -16,8 +16,8 @@ import { networkActions } from "../../features/network/networkSlice";
 import { IDataStaking, walletActions, walletAsyncActions } from "../../features/wallet/walletSlice";
 import {
     LGND_ADDRESS,
-    NFT_ADDRESS,
-    NFT_MINTING_ADDRESS,
+    NFT_ADDRESSES,
+    NFT_MINTING_ADDRESSES,
     PLATFORM_ADDRESS,
     STAKING_ADDRESS,
 } from "../../constants/contractAddress";
@@ -110,8 +110,8 @@ const _netMiddlewareClosure = (): Middleware => {
     const initAddressArray = [
         LGND_ADDRESS,
         PLATFORM_ADDRESS,
-        NFT_ADDRESS,
-        NFT_MINTING_ADDRESS,
+        ...NFT_ADDRESSES,
+        ...NFT_MINTING_ADDRESSES,
         STAKING_ADDRESS,
     ];
 
@@ -468,7 +468,7 @@ const _netMiddlewareClosure = (): Middleware => {
 
             case transactionActions.addMinters.type: {
                 const { minters, codeHash } = action.payload;
-                const nftContractAddress: string | undefined = NFT_ADDRESS;
+                const nftContractAddress: string | undefined = NFT_ADDRESSES[0]; //TODO: adjust for all collections
                 if (!client || !nftContractAddress) return;
 
                 client.tx.compute
@@ -500,7 +500,7 @@ const _netMiddlewareClosure = (): Middleware => {
 
             case transactionActions.mintNfts.type: {
                 const { amount } = action.payload;
-                const nftContractAddress: string | undefined = NFT_ADDRESS;
+                const nftContractAddress: string | undefined = NFT_ADDRESSES[0]; //TODO: adjust for all collections;
                 if (!client || !nftContractAddress) return;
 
                 client.tx.compute
@@ -533,7 +533,7 @@ const _netMiddlewareClosure = (): Middleware => {
 
             case transactionActions.mintNftsWithSnip.type: {
                 const { snipContract, priceForEach, amountToBuy, buyFor } = action.payload;
-                const nftContractAddress: string | undefined = NFT_ADDRESS;
+                const nftContractAddress: string | undefined = NFT_ADDRESSES[0]; //TODO: adjust for all collections;
                 if (!client || !nftContractAddress) return;
                 const msg = Buffer.from(
                     JSON.stringify({
@@ -578,7 +578,7 @@ const _netMiddlewareClosure = (): Middleware => {
 
             case transactionActions.mintAdminNfts.type: {
                 const { amount } = action.payload;
-                const nftContractAddress: string | undefined = NFT_ADDRESS;
+                const nftContractAddress: string | undefined = NFT_ADDRESSES[0]; //TODO: adjust for all collections;
                 if (!client || !nftContractAddress) return;
 
                 client.tx.compute
@@ -609,7 +609,7 @@ const _netMiddlewareClosure = (): Middleware => {
 
             case transactionActions.setTokenAttributes.type: {
                 const { attributes, codeHash } = action.payload;
-                const nftContractAddress: string | undefined = NFT_ADDRESS;
+                const nftContractAddress: string | undefined = NFT_ADDRESSES[0]; //TODO: adjust for all collections;
                 if (!client || !nftContractAddress) return;
 
                 client.tx.compute
@@ -641,7 +641,7 @@ const _netMiddlewareClosure = (): Middleware => {
 
             case transactionActions.changeWhitelistLevel.type: {
                 const { newLevel, codeHash } = action.payload;
-                const nftContractAddress: string | undefined = NFT_ADDRESS;
+                const nftContractAddress: string | undefined = NFT_ADDRESSES[0]; //TODO: adjust for all collections;
                 if (!client || !nftContractAddress) return;
 
                 client.tx.compute
@@ -673,7 +673,7 @@ const _netMiddlewareClosure = (): Middleware => {
 
             case transactionActions.addToWhitelist.type: {
                 const { address, codeHash } = action.payload;
-                const nftContractAddress: string | undefined = NFT_ADDRESS;
+                const nftContractAddress: string | undefined = NFT_ADDRESSES[0]; //TODO: adjust for all collections;
                 if (!client || !nftContractAddress) return;
 
                 client.tx.compute
@@ -705,7 +705,7 @@ const _netMiddlewareClosure = (): Middleware => {
 
             case transactionActions.viewTokens.type: {
                 const { codeHash, address, key } = action.payload;
-                const nftContractAddress: string | undefined = NFT_ADDRESS;
+                const nftContractAddress: string | undefined = NFT_ADDRESSES[0]; //TODO: adjust for all collections;
                 if (!client || !nftContractAddress) return;
 
                 client.query.snip721
@@ -1088,10 +1088,13 @@ const _netMiddlewareClosure = (): Middleware => {
 
             case mintActions.getLatestNft.type:
                 (async () => {
+                    const { selectedCollectionIndex } = action.payload;
+
                     try {
                         console.log("run");
 
-                        if (!client || !NFT_ADDRESS || !signerPermit.msg?.allowed_tokens) return;
+                        if (!client || !NFT_ADDRESSES[selectedCollectionIndex] || !signerPermit.msg?.allowed_tokens) return;
+                        const selectedNFTCollectionAddress = NFT_ADDRESSES[selectedCollectionIndex]!;
                         const mintingHistory = await getMintingHistory(
                             client,
                             {
@@ -1103,7 +1106,8 @@ const _netMiddlewareClosure = (): Middleware => {
                                 },
                                 signature: signerPermit.signature as StdSignature,
                             },
-                            codeHashes[NFT_ADDRESS]?.codeHash
+                            selectedNFTCollectionAddress,
+                            codeHashes[selectedNFTCollectionAddress]?.codeHash
                         );
 
                         const latestTx = (mintingHistory as TTransactionHistory).transaction_history
@@ -1121,7 +1125,8 @@ const _netMiddlewareClosure = (): Middleware => {
                                 },
                                 signature: signerPermit.signature as StdSignature,
                             },
-                            codeHashes[NFT_ADDRESS]?.codeHash
+                            selectedNFTCollectionAddress,
+                            codeHashes[selectedNFTCollectionAddress]?.codeHash
                         );
 
                         const publicData = (latestNft as any).nft_dossier?.public_metadata

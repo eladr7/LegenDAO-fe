@@ -1,4 +1,4 @@
-import React, { useCallback, useContext, useEffect } from "react";
+import React, { useCallback, useContext, useEffect, useState } from "react";
 import cn from "classnames";
 import Article from "../components/commons/Article";
 import { DefaultLayout } from "../components/layouts/DefaultLayout";
@@ -28,7 +28,7 @@ import { useNavigate } from "react-router-dom";
 import { transactionActions } from "../features/transaction/transactionSlice";
 import { Footer } from "../components/commons/Footer";
 import { profileActions } from "../features/profile/profileSlice";
-import { NFT_MINTING_ADDRESS } from "../constants/contractAddress";
+import { NFT_MINTING_ADDRESSES } from "../constants/contractAddress";
 
 export default function MyCollections(): React.ReactElement {
     const navigate = useNavigate();
@@ -63,9 +63,13 @@ export default function MyCollections(): React.ReactElement {
         navigate("/profile/collected");
     }, [dispatch, navigate]);
 
-    const handleOnEnterBtnClicked = useCallback(() => {
-        dispatch(toggleEnter(true));
-    }, [dispatch]);
+    // const handleOnEnterBtnClicked = useCallback(() => {
+    //     dispatch(toggleEnter(true));
+    // }, [dispatch]);
+
+    const handleOnEnterBtnClicked = (selectedCollectionIndex: number) => {
+        dispatch(toggleEnter({ entered: true, collectionIndex: selectedCollectionIndex }));
+    };
 
     const handleOnMintBtnClicked = useCallback(() => {
         dispatch(toggleMintConfirmPurchasePanel(true));
@@ -81,19 +85,23 @@ export default function MyCollections(): React.ReactElement {
             dispatch(
                 transactionActions.isWhitelisted({
                     address: walletState.primary.address,
-                    nftMintingContract: NFT_MINTING_ADDRESS as string,
+                    nftMintingContract: NFT_MINTING_ADDRESSES[
+                        collectionState.selectedCollectionIndex
+                    ] as string,
                 })
             );
         })();
-    }, [dispatch, walletState?.primary?.address]);
+    }, [dispatch, walletState?.primary?.address, collectionState.selectedCollectionIndex]);
 
     useEffect(() => {
         dispatch(
             setWhitelistSpot(
-                transactionState.collections[NFT_MINTING_ADDRESS as string]?.is_whitelisted
+                transactionState.collections[
+                    NFT_MINTING_ADDRESSES[collectionState.selectedCollectionIndex] as string
+                ]?.is_whitelisted
             )
         );
-    }, [dispatch, transactionState.collections]);
+    }, [dispatch, transactionState.collections, collectionState.selectedCollectionIndex]);
 
     const getNftPriceInLgnd = useCallback(() => {
         const priceInULgnd = collectionState.whitelistSpot
@@ -122,6 +130,8 @@ export default function MyCollections(): React.ReactElement {
                         startingDate={new Date(2022, 3, 18)}
                         totalItemNum={5555}
                         mintPrice={25}
+                        handleOnEnterBtnClicked={handleOnEnterBtnClicked}
+                        collectionNftIndex={1}
                     />
 
                     <CollectionItem
@@ -132,11 +142,13 @@ export default function MyCollections(): React.ReactElement {
                         startingDate={new Date(2022, 3, 18)}
                         totalItemNum={5555}
                         mintPrice={25}
+                        handleOnEnterBtnClicked={handleOnEnterBtnClicked}
+                        collectionNftIndex={2}
                     />
                 </div>
             </div>
         );
-    }, []);
+    }, [collectionState.selectedCollectionIndex]);
 
     const renderDomainPanel = useCallback(() => {
         if (!collectionState.bEntered) {
@@ -148,7 +160,11 @@ export default function MyCollections(): React.ReactElement {
                     <div className="absolute top-0 left-0 right-0 bottom-0 bg-slate-900/75"></div>
                     <div className="absolute top-0 left-0 right-0 bottom-0 bg-blue-900/25"></div>
                     <div>
-                        <Button bigness="lg" className="z-10" onClick={handleOnEnterBtnClicked}>
+                        <Button
+                            bigness="lg"
+                            className="z-10"
+                            onClick={() => handleOnEnterBtnClicked(0)}
+                        >
                             <span className="px-12">Enter</span>
                         </Button>
                     </div>
@@ -189,6 +205,7 @@ export default function MyCollections(): React.ReactElement {
         handleOnMintBtnClicked,
         mintState.agent,
         networkState.bIsConnected,
+        collectionState.selectedCollectionIndex,
     ]);
 
     const renderModal = useCallback(() => {
@@ -245,9 +262,11 @@ export default function MyCollections(): React.ReactElement {
         handleOnMintSuccessfulModalOuterClicked,
         mintState.successMessage,
         state.bodyElement,
+        collectionState.selectedCollectionIndex,
     ]);
 
     const renderInfo = useCallback(() => {
+        // TODO: add logic for presenting the info according to collectionState.selectedCollectionIndex
         if (mintState.agent) {
             return (
                 <div
@@ -344,7 +363,7 @@ export default function MyCollections(): React.ReactElement {
                         </div>
                     </div>
 
-                    <div className="mb-8 tablet-2:hidden">{renderDomainPanel()}</div>
+                    {/* <div className="mb-8 tablet-2:hidden">{renderDomainPanel()}</div> */}
 
                     <div className="mb-8 tablet-2:mb-14 last:mb-0 flex flex-col flex-nowrap w-full">
                         <Panel className="py-4">
@@ -423,9 +442,11 @@ export default function MyCollections(): React.ReactElement {
         handleOnMyCollectionBtnClicked,
         mintState.agent,
         renderDomainPanel,
+        collectionState.selectedCollectionIndex,
     ]);
 
     const renderWiki = useCallback(() => {
+        // TODO: add logic for presenting the info according to collectionState.selectedCollectionIndex
         return (
             <div
                 className={cn(
@@ -459,8 +480,7 @@ export default function MyCollections(): React.ReactElement {
                 </div>
             </div>
         );
-    }, []);
-
+    }, [collectionState.selectedCollectionIndex]);
     return (
         <DefaultLayout
             headerType="collection"

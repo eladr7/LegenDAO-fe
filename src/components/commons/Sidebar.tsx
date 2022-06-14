@@ -57,7 +57,12 @@ export default function Sidebar({ bodyElement, activatingTab }: Props): React.Re
 
     const handleOnCollectionsTabClicked = useCallback(() => {
         dispatch(toggleSidebar(false));
-        dispatch(collectionAtions.toggleEnter(false));
+        dispatch(
+            collectionAtions.toggleEnter({
+                entered: false,
+                collectionIndex: 0,
+            })
+        );
         navigate("/collections");
     }, [dispatch, navigate]);
 

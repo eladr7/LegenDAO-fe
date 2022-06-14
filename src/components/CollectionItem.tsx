@@ -1,6 +1,7 @@
 import React from "react";
 import cn from "classnames";
 import Panel from "./commons/Panel";
+import Button from "./commons/Button";
 
 type Props = {
     coverImgUrl: string;
@@ -9,6 +10,8 @@ type Props = {
     startingDate: Date;
     totalItemNum: number;
     mintPrice: number;
+    handleOnEnterBtnClicked: any;
+    collectionNftIndex: number;
 };
 
 export default function CollectionItem({
@@ -18,9 +21,15 @@ export default function CollectionItem({
     startingDate,
     totalItemNum,
     mintPrice,
+    handleOnEnterBtnClicked,
+    collectionNftIndex,
 }: Props): React.ReactElement {
     return (
-        <div className={cn("max-w-[320px] tablet-2:max-w-lg flex flex-col flex-nowrap rounded-xl overflow-hidden shrink-0")}>
+        <div
+            className={cn(
+                "max-w-[320px] tablet-2:max-w-lg flex flex-col flex-nowrap rounded-xl overflow-hidden shrink-0 group relative"
+            )}
+        >
             <div
                 className={cn("h-[200px]  bg-cover bg-no-repeat bg-center")}
                 style={{ backgroundImage: `url(${coverImgUrl})` }}
@@ -40,6 +49,7 @@ export default function CollectionItem({
                                 })}
                             </div>
                         </div>
+
                         <div className="mb-4 tablet-2:mb-0 flex flex-col">
                             <div className="text-blue-300 font-emphasis">Total Items</div>
                             <div className="font-bold">{totalItemNum.toLocaleString()}</div>
@@ -51,6 +61,13 @@ export default function CollectionItem({
                     </div>
                 </div>
             </Panel>
+            <Button
+                bigness="lg"
+                className="z-10 hidden group-hover:block absolute -mt-64 mr-8"
+                onClick={() => handleOnEnterBtnClicked(collectionNftIndex)}
+            >
+                <span className="px-12">Enter</span>
+            </Button>
         </div>
     );
 }
