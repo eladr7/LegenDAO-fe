@@ -36,6 +36,13 @@ export default function Profile(): React.ReactElement {
         setSelectedNft(undefined);
     }, [profileState.tab]);
 
+    useEffect(() => {
+        const userProfileName = localStorage.getItem("user-profile-name");
+        if (userProfileName) {
+            setMyName(JSON.parse(userProfileName));
+        }
+    }, []);
+
     const onCloseBtnClicked = () => {
         setSelectedNft(undefined);
     };
@@ -64,6 +71,7 @@ export default function Profile(): React.ReactElement {
             setMyNameErrorMessage("You can use letters and digits only");
             rfMyNameInput.current.reportValidity();
         } else {
+            localStorage.setItem("user-profile-name", JSON.stringify(value));
             setMyNameErrorMessage(undefined);
         }
     }, []);
