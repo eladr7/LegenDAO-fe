@@ -39,13 +39,17 @@ export default function ProfileCollectedPanel({ setSelectedNft }: Props): React.
         const imgBaseUrl = `${process.env.REACT_APP_CRYPTIDS_API_URL}/api/ipfstoimage?uri=`;
         if (listItems?.length) {
             return listItems.map((item, index) => {
+                const publicData = (item as any).nft_dossier?.public_metadata.extension;
+                const privateData = (item as any).nft_dossier?.private_metadata?.extension;
+                const royalties = (item as any).nft_dossier?.royalty_info?.royalties;
+
                 const nftItem: TMintAgent = {
-                    name: "Hard coded name: " + index.toString(),
-                    description: "Hard coded description: " + index.toString(),
-                    publicAttributes: [],
-                    privateAttributes: [],
-                    token: "Hard coded token",
-                    royalties: 0,
+                    name: publicData?.name,
+                    description: publicData?.description,
+                    publicAttributes: publicData?.attributes?.map((item: any) => item.trait_type),
+                    privateAttributes: privateData?.attributes?.map((item: any) => item.trait_type),
+                    token: royalties[0]?.recipient,
+                    royalties: royalties[0].rate,
                 };
                 return (
                     <div
@@ -72,7 +76,7 @@ export default function ProfileCollectedPanel({ setSelectedNft }: Props): React.
     }, [collectionState.listMyCollection]);
 
     return (
-        <Panel className="min-h-[300px] lg:h-[700px] w-full lg:min-w-[368px] lg:w-full ">
+        <Panel className="min-h-[300px] lg:h-[700px] w-full lg:min-w-[368px] lg:w-full">
             <div className="mb-4 last:mb-0 text-teal-200 text-xl">Collected</div>
             <div className="grid grid-cols-2 gap-4">{renderListItem()}</div>
         </Panel>

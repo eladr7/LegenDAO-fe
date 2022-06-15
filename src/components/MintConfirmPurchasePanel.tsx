@@ -106,16 +106,20 @@ export default function MintConfirmPurchasePanel({
                         </div>
                     </div>
                 </div>
-                <div
-                    className="mb-6 last:mb-0 flex flex-row flex-nowrap items-center cursor-pointer"
-                    onClick={handleOnAgreeTermOfServiceBtnClicked}
-                >
-                    <CheckBox bChecked={mintState.bAgreeTermOfService} />
+                <div className="mb-6 last:mb-0 flex flex-row flex-nowrap items-center">
+                    <div onClick={handleOnAgreeTermOfServiceBtnClicked}>
+                        <CheckBox bChecked={mintState.bAgreeTermOfService} />
+                    </div>
                     <span className="ml-2 text-sm tablet-2:text-sm">
                         By checking this box, I agree to{" "}
-                        <span className="text-[#8c70ed] underline cursor-pointer">
+                        <a
+                            className="text-[#8c70ed] underline cursor-pointer"
+                            href="https://docs.google.com/document/d/1toH4ICe9CCySDeVNd7tbKJNst-DnNIYcidpGi9XNk5k/edit#heading=h.gjdgxs"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                        >
                             Legendao&apos;s Terms of Service
-                        </span>
+                        </a>
                     </span>
                 </div>
 

@@ -1,4 +1,4 @@
-import React, { useCallback, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import cn from "classnames";
 import Article from "../components/commons/Article";
 import { DefaultLayout } from "../components/layouts/DefaultLayout";
@@ -31,6 +31,14 @@ export default function Profile(): React.ReactElement {
     const [myNameErrorMessage, setMyNameErrorMessage] = useState<string | undefined>(undefined);
 
     const [selectedNft, setSelectedNft] = useState<TMintAgent | undefined>();
+
+    useEffect(() => {
+        setSelectedNft(undefined);
+    }, [profileState.tab]);
+
+    const onCloseBtnClicked = () => {
+        setSelectedNft(undefined);
+    };
 
     const handleOnGeneralTabClicked = useCallback(() => {
         dispatch(profileActions.setTab("/profile/general"));
@@ -267,7 +275,7 @@ export default function Profile(): React.ReactElement {
             headerDomainNode={renderHeaderDomainNode()}
             bHeaderAlwaysOnTop
         >
-            <Article className="grow pb-20">
+            <Article className="grow pb-20 overflow-y-scroll">
                 <div
                     className={cn(
                         "absolute top-0 bottom-0 right-0 left-0",
@@ -276,10 +284,16 @@ export default function Profile(): React.ReactElement {
                     style={{ backgroundImage: `url(${imgArticleUniverse01Background})` }}
                 ></div>
                 {selectedNft && profileState.tab === "/profile/collected" && (
-                    <div className="absolute ml-96 mt-40 z-20">
-                        <div className="ml-72">
-                            <MintAgentDetailPanel mintAgent={selectedNft} />
-                        </div>
+                    <div
+                        className={cn(
+                            "absolute top-[15%] left-[29%] w-[40%] z-20"
+                            // "xs:w-[90%] xs:top:[10%] xs:left-[5%]"
+                        )}
+                    >
+                        <MintAgentDetailPanel
+                            mintAgent={selectedNft}
+                            onCloseBtnClicked={onCloseBtnClicked}
+                        />
                     </div>
                 )}
                 <div className="absolute top-0 left-0 bottom-0 right-0 bg-blue-900/50"></div>
