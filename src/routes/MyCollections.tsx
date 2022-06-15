@@ -12,7 +12,12 @@ import Panel from "../components/commons/Panel";
 import Button from "../components/commons/Button";
 import CollectionItem from "../components/CollectionItem";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
-import { setWhitelistSpot, toggleEnter } from "../features/collection/collectionSlice";
+import {
+    collectionAtions,
+    setWhitelistSpot,
+    TGeneralCollectionData,
+    toggleEnter,
+} from "../features/collection/collectionSlice";
 import CheckIcon from "../components/icons/CheckIcon";
 import AppContext from "../contexts/AppContext";
 import Modal from "../components/commons/Modal";
@@ -103,12 +108,27 @@ export default function MyCollections(): React.ReactElement {
         );
     }, [dispatch, transactionState.collections, collectionState.selectedCollectionIndex]);
 
+    useEffect(() => {
+        if (!networkState.bIsConnected || !walletState.signature) return;
+        // TODO: for efficiency: separate this from collectionSlice because each time we'll
+        // navigante between the user NFTs and the Collections page, the store will get run over
+        dispatch(collectionAtions.getGeneralCollectionsData({}));
+    }, [dispatch, networkState.bIsConnected, walletState.signature]);
+
     const getNftPriceInLgnd = useCallback(() => {
         const priceInULgnd = collectionState.whitelistSpot
             ? parseInt(process.env.REACT_APP_TOKEN_WHITELIST_PRICE || "100000")
             : parseInt(process.env.REACT_APP_TOKEN_PRICE || "1000000");
         return priceInULgnd / 1000000;
     }, [collectionState.whitelistSpot]);
+
+    const getNftPriceInFiat = useCallback(
+        (priceInLGND: number) => {
+            const lgndPriceInFiat = walletState.tokenData ? walletState.tokenData.price : -1; // TODO: figure a logical default value in case of fetch failure
+            return lgndPriceInFiat * priceInLGND;
+        },
+        [walletState.tokenData]
+    );
 
     const renderFollowingCollections = useCallback(() => {
         return (
@@ -122,35 +142,31 @@ export default function MyCollections(): React.ReactElement {
                         "tablet-2:grid tablet-2:grid-cols-[repeat(auto-fill,_minmax(380px,_1fr))] tablet-2:gap-10 tablet-2:overflow-x-hidden"
                     )}
                 >
-                    <CollectionItem
-                        coverImgUrl={imgTopSecretColBg01}
-                        name="Hall of Legend"
-                        description="There is a hall, full of legends that being kept by
-                mysteries creatures"
-                        startingDate={new Date(2022, 3, 18)}
-                        totalItemNum={5555}
-                        mintPrice={25}
-                        handleOnEnterBtnClicked={handleOnEnterBtnClicked}
-                        collectionNftIndex={1}
-                    />
-
-                    <CollectionItem
-                        coverImgUrl={imgTopSecretColBg01}
-                        name="Hall of Legend"
-                        description="There is a hall, full of legends that being kept by
-                mysteries creatures"
-                        startingDate={new Date(2022, 3, 18)}
-                        totalItemNum={5555}
-                        mintPrice={25}
-                        handleOnEnterBtnClicked={handleOnEnterBtnClicked}
-                        collectionNftIndex={2}
-                    />
+                    {collectionState.generalCollectionsData.map((collectionGeneralData, index) => {
+                        if (index !== collectionState.selectedCollectionIndex) {
+                            return (
+                                <CollectionItem
+                                    coverImgUrl={collectionGeneralData.coverImgUrl}
+                                    name={collectionGeneralData.name}
+                                    description={collectionGeneralData.description}
+                                    startingDate={collectionGeneralData.startingDate}
+                                    totalItemNum={collectionGeneralData.totalItemNum}
+                                    mintPrice={collectionGeneralData.mintPrice}
+                                    handleOnEnterBtnClicked={handleOnEnterBtnClicked}
+                                    collectionNftIndex={index}
+                                />
+                            );
+                        }
+                    })}
                 </div>
             </div>
         );
-    }, [collectionState.selectedCollectionIndex]);
+    }, [collectionState.selectedCollectionIndex, collectionState.generalCollectionsData]);
 
     const renderDomainPanel = useCallback(() => {
+        if (collectionState.generalCollectionsData.length === 0) return <div>nothing yet</div>;
+        const selectedCollectionData: TGeneralCollectionData =
+            collectionState.generalCollectionsData[collectionState.selectedCollectionIndex];
         if (!collectionState.bEntered) {
             return (
                 <div
@@ -178,7 +194,7 @@ export default function MyCollections(): React.ReactElement {
                     "relative flex justify-center items-center",
                     "w-full max-w-[700px] h-[300px] tablet-2:h-[500px] bg-no-repeat container bg-cover bg-center"
                 )}
-                style={{ backgroundImage: `url(${imgTopSecretColMintBg01})` }}
+                style={{ backgroundImage: `url(${selectedCollectionData.coverImgUrl})` }}
             >
                 {!mintState.agent && (
                     <div className="absolute top-0 left-0 right-0 bottom-0 bg-slate-900/70"></div>
@@ -206,17 +222,20 @@ export default function MyCollections(): React.ReactElement {
         mintState.agent,
         networkState.bIsConnected,
         collectionState.selectedCollectionIndex,
+        collectionState.generalCollectionsData,
     ]);
 
     const renderModal = useCallback(() => {
+        const priceInLGND = getNftPriceInLgnd();
+        const priceInFiat = getNftPriceInFiat(priceInLGND);
         if (!state.bodyElement) return null;
         if (accessibilityState.bMintConfirmPurchasePanelOn) {
             return (
                 <Modal bodyElement={state.bodyElement} onOuterClick={handleOnMintCloseBtnClicked}>
                     <MintConfirmPurchasePanel
                         onCloseBtnClicked={handleOnMintCloseBtnClicked}
-                        priceInLGND={getNftPriceInLgnd()}
-                        priceInFiat={70.5}
+                        priceInLGND={priceInLGND}
+                        priceInFiat={priceInFiat}
                         itemCoverUrl={imgTopSecretColMintBg01}
                     />
                 </Modal>
@@ -263,10 +282,14 @@ export default function MyCollections(): React.ReactElement {
         mintState.successMessage,
         state.bodyElement,
         collectionState.selectedCollectionIndex,
+        collectionState.generalCollectionsData,
     ]);
 
     const renderInfo = useCallback(() => {
         // TODO: add logic for presenting the info according to collectionState.selectedCollectionIndex
+        if (collectionState.generalCollectionsData.length === 0) return <div>nothing yet</div>;
+        const selectedCollectionData: TGeneralCollectionData =
+            collectionState.generalCollectionsData[collectionState.selectedCollectionIndex];
         if (mintState.agent) {
             return (
                 <div
@@ -277,7 +300,8 @@ export default function MyCollections(): React.ReactElement {
                 >
                     <div className="flex flex-col flex-nowrap">
                         <h1 className="mb-8 last:mb-0 font-bold text-2xl tablet-2:text-5xl">
-                            Top Secret <span className="tablet-2:hidden">Mobile</span> Collection
+                            {selectedCollectionData.name}
+                            {/* Top Secret <span className="tablet-2:hidden">Mobile</span> Collection */}
                         </h1>
                         <div className="mb-8 last:mb-0">{mintState.agent.name}</div>
 
@@ -286,7 +310,9 @@ export default function MyCollections(): React.ReactElement {
                                 "mb-6 w-full h-[200px] bg-no-repeat bg-cover bg-center rounded-lg overflow-hidden",
                                 "tablet-2:hidden tablet-2:w-[150px] tablet-2:h-[100px] tablet-2:mb-0"
                             )}
-                            style={{ backgroundImage: `url(${imgTopSecretColMintBg01})` }}
+                            style={{
+                                backgroundImage: `url(${selectedCollectionData.coverImgUrl})`,
+                            }}
                         ></div>
 
                         <MintAgentDetailPanel mintAgent={mintState.agent} />
@@ -309,7 +335,8 @@ export default function MyCollections(): React.ReactElement {
             >
                 <div className="flex flex-col flex-nowrap items-stretch w-full max-w-[627px]">
                     <h1 className="mb-6 tablet:mb-8 last:mb-0 font-bold text-3xl tablet-2:text-5xl">
-                        Top Secret <span className="tablet-2:hidden">Mobile</span> Collection
+                        {/* Top Secret <span className="tablet-2:hidden">Mobile</span> Collection */}
+                        {selectedCollectionData.name}
                     </h1>
                     <div className="mb-6 tablet:mb-8 flex flex-row tablet-2:hidden">
                         <div
@@ -334,7 +361,7 @@ export default function MyCollections(): React.ReactElement {
                             The top secret collection contains things that should be kept secret.
                             5555 pieces of ancient Egyptian mythology symbols. The top secret
                             collection contains things that should be kept secret. 5555 pieces of
-                            ancient Egyptian mythology symbols.
+                            ancient Egyptian mythology symbols. // TODO: is that description?
                         </p>
                     </div>
 
@@ -344,7 +371,9 @@ export default function MyCollections(): React.ReactElement {
                             "text-[#B3BBC9]"
                         )}
                     >
-                        <div className="ml-8 first:ml-0 font-bold">Creators: XXXX XXXXX XXXX</div>
+                        <div className="ml-8 first:ml-0 font-bold">
+                            Creators: {selectedCollectionData.artistName}
+                        </div>
                         <div
                             className="ml-8 first:ml-0 w-icon h-icon grow-0 shrink-0 hidden tablet-2:block"
                             onClick={() => {
@@ -370,15 +399,21 @@ export default function MyCollections(): React.ReactElement {
                             <div className="flex flex-col tablet:flex-row flex-nowrap justify-between items-center">
                                 <div className="mb-8 last:mb-0 tablet:mb-0 desktop:ml-20 first:ml-0 flex flex-col items-center tablet:items-start">
                                     <div className="text-blue-300 font-emphasis">Starting Date</div>
-                                    <div className="font-bold">4/18/2022</div>
+                                    <div className="font-bold">
+                                        {selectedCollectionData.startingDate.toString()}
+                                    </div>
                                 </div>
                                 <div className="mb-8 last:mb-0 tablet:mb-0 desktop:ml-20 first:ml-0 flex flex-col items-center tablet:items-start">
                                     <div className="text-blue-300 font-emphasis">Total Items</div>
-                                    <div className="font-bold">5,555</div>
+                                    <div className="font-bold">
+                                        {selectedCollectionData.totalItemNum}
+                                    </div>
                                 </div>
                                 <div className="mb-8 last:mb-0 tablet:mb-0 desktop:ml-20 first:ml-0 flex flex-col items-center tablet:items-start">
                                     <div className="text-blue-300 font-emphasis">Mint Price</div>
-                                    <div className="font-bold">25 $LGND</div>
+                                    <div className="font-bold">
+                                        {selectedCollectionData.mintPrice} $LGND
+                                    </div>
                                 </div>
                             </div>
                         </Panel>
@@ -443,10 +478,14 @@ export default function MyCollections(): React.ReactElement {
         mintState.agent,
         renderDomainPanel,
         collectionState.selectedCollectionIndex,
+        collectionState.generalCollectionsData,
     ]);
 
     const renderWiki = useCallback(() => {
+        if (collectionState.generalCollectionsData.length === 0) return <div>nothing yet</div>;
         // TODO: add logic for presenting the info according to collectionState.selectedCollectionIndex
+        const selectedCollectionData: TGeneralCollectionData =
+            collectionState.generalCollectionsData[collectionState.selectedCollectionIndex];
         return (
             <div
                 className={cn(
@@ -459,11 +498,7 @@ export default function MyCollections(): React.ReactElement {
                         About the Collection
                     </div>
                     <p className="max-w-[700px] text-paragraph">
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-                        tempor incididunt ut labore et dolore magna aliqua. Suscipit tellus mauris a
-                        diam maecenas sed enim ut sem. Pharetra diam sit amet nisl. Cras ornare arcu
-                        dui vivamus arcu felis bibendum. Dapibus ultrices in iaculis nunc sed augue
-                        lacus viverra vitae. Duis ut diam quam nulla porttitor massa id neque.
+                        {selectedCollectionData.description}
                     </p>
                 </div>
                 <div className="flex flex-col flex-nowrap">
@@ -471,16 +506,12 @@ export default function MyCollections(): React.ReactElement {
                         About the Artist
                     </div>
                     <p className="max-w-[700px] text-paragraph">
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-                        tempor incididunt ut labore et dolore magna aliqua. Suscipit tellus mauris a
-                        diam maecenas sed enim ut sem. Pharetra diam sit amet nisl. Cras ornare arcu
-                        dui vivamus arcu felis bibendum. Dapibus ultrices in iaculis nunc sed augue
-                        lacus viverra vitae. Duis ut diam quam nulla porttitor massa id neque.
+                        {selectedCollectionData.artistDescription}
                     </p>
                 </div>
             </div>
         );
-    }, [collectionState.selectedCollectionIndex]);
+    }, [collectionState.selectedCollectionIndex, collectionState.generalCollectionsData]);
     return (
         <DefaultLayout
             headerType="collection"

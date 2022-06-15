@@ -24,7 +24,7 @@ import {
 import { transactionActions } from "../../features/transaction/transactionSlice";
 import { DF_DENOM } from "../../constants/defaults";
 import { KEY, MESSAGE_ERROR } from "../../constants/constant";
-import { collectionAtions } from "../../features/collection/collectionSlice";
+import { collectionAtions, TGeneralCollectionData } from "../../features/collection/collectionSlice";
 import { addPopup, applicationActions } from "../../features/application/applicationSlice";
 import { formatBalance } from "../../helpers/format";
 import {
@@ -44,6 +44,9 @@ import {
     TTransactionHistory,
 } from "../../classes/QueryContract";
 import { mintActions } from "../../features/mint/mintSlice";
+
+import imgTopSecretColBg01 from "../../assets/images/top-secret-col-background-01.png";
+import imgTopSecretColMintBg01 from "../../assets/images/top-secret-col-mint-background-01.png";
 
 const _connect = (): Promise<{ client: SecretNetworkClient; account: AccountData }> => {
     return new Promise((resolve, reject: (reason?: TNetError) => void) => {
@@ -930,6 +933,59 @@ const _netMiddlewareClosure = (): Middleware => {
                 getTokens();
 
                 break;
+            }
+
+            case collectionAtions.getGeneralCollectionsData.type: {
+                // TODO: impl the real method
+                // const { nftContract } = action.payload;
+
+                const collectionItems: Array<TGeneralCollectionData> = [
+                    {
+                        coverImgUrl: imgTopSecretColMintBg01,
+                        name: "Top Secret Collection",
+                        description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod \
+                        tempor incididunt ut labore et dolore magna aliqua. Suscipit tellus mauris a \
+                        diam maecenas sed enim ut sem. Pharetra diam sit amet nisl. Cras ornare arcu \
+                        dui vivamus arcu felis bibendum. Dapibus ultrices in iaculis nunc sed augue \
+                        lacus viverra vitae. Duis ut diam quam nulla porttitor massa id neque.",
+                        artistDescription: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod \
+                        tempor incididunt ut labore et dolore magna aliqua. Suscipit tellus mauris a \
+                        diam maecenas sed enim ut sem. Pharetra diam sit amet nisl. Cras ornare arcu \
+                        dui vivamus arcu felis bibendum. Dapibus ultrices in iaculis nunc sed augue \
+                        lacus viverra vitae. Duis ut diam quam nulla porttitor massa id neque.",
+                        artistName: "XXXX XXXXX XXXX",
+                        startingDate: new Date(2022, 4, 18),
+                        totalItemNum: 300,
+                        mintPrice: 0.1,
+                        nftContractAddress: NFT_ADDRESSES[0]!
+                    },
+                    {
+                        coverImgUrl: imgTopSecretColBg01,
+                        name: "Hall of Legend 1",
+                        description: "There is a hall, full of legends that being kept by mysteries creatures 1",
+                        artistDescription: " 3",
+                        artistName: "XXXX XXXXX XXXX 1",
+                        startingDate: new Date(2022, 3, 18),
+                        totalItemNum: 100,
+                        mintPrice: 0.1,
+                        nftContractAddress: NFT_ADDRESSES[1]!
+                    },
+                    {
+                        coverImgUrl: imgTopSecretColBg01,
+                        name: "Hall of Legend 2",
+                        description: "There is a hall, full of legends that being kept by mysteries creatures 2",
+                        artistDescription: " 2",
+                        artistName: "XXXX XXXXX XXXX 2",
+                        startingDate: new Date(2022, 3, 18),
+                        totalItemNum: 100,
+                        mintPrice: 0.1,
+                        nftContractAddress: NFT_ADDRESSES[2]!
+                    }
+                 ]
+
+                 next({ ...action, payload: { generalCollectionsData: collectionItems } });
+
+                 break;
             }
 
             case applicationActions.toastRequestRejected.type: {

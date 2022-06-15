@@ -21,7 +21,7 @@ export default function ProfileCollectedPanel({ setSelectedNft }: Props): React.
         NFT_ADDRESSES.forEach((nftContractAddress) => {
             dispatch(collectionAtions.getCollection({ nftContract: nftContractAddress as string }));
         }); // TODO: if no further use of getCollection - unify this dispatch to loop internaly
-    }, [dispatch, networkState.bIsConnected, walletState.signature]);
+    }, [dispatch, networkState.bIsConnected, walletState.signature]); // TODO: check if will get updated once a mint was done
 
     const combineCollections = (listMyCollection: TListCollection): Array<any> => {
         let listItems: Array<any> = [];

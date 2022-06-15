@@ -5,6 +5,8 @@ import { useActivePopups, useAppDispatch, useAppSelector } from "./app/hooks";
 import store from "./app/store";
 import ToastMessage from "./components/commons/ToastMessage";
 import AppContext, { TAppContext } from "./contexts/AppContext";
+import { collectionAtions } from "./features/collection/collectionSlice";
+import { networkActions } from "./features/network/networkSlice";
 import { walletActions } from "./features/wallet/walletSlice";
 import About from "./routes/About";
 import AirDrop from "./routes/AirDrop";
@@ -59,6 +61,12 @@ function App(): React.ReactElement {
         }
         dispatch(walletActions.getTokenData());
     }, [dispatch, transactionState.tx?.txHash, walletState.signature]);
+
+    useEffect(() => {
+        // TODO: for efficiency: separate this from collectionSlice because each time we'll
+        // navigante between the user NFTs and the Collections page, the store will get run over
+        dispatch(collectionAtions.getGeneralCollectionsData({}));
+    }, [dispatch, networkState.bIsConnected, walletState.signature]);
 
     const renderPopups = useCallback(() => {
         return activePopups.map((item, index) => {

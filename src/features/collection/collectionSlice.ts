@@ -1,9 +1,22 @@
 import { CaseReducer, createSlice, PayloadAction, createAsyncThunk } from "@reduxjs/toolkit";
 import { TActionStage } from "../../app/commons/api";
 
+
 type MyData = string;
 export type TListCollection = {
     [key: string]: Array<any>
+}
+
+export type TGeneralCollectionData = {
+    coverImgUrl: string;
+    name: string;
+    description: string;
+    artistDescription: string;
+    artistName: string;
+    startingDate: Date;
+    totalItemNum: number;
+    mintPrice: number;
+    nftContractAddress: string;
 }
 
 export type TCollectionState = {
@@ -14,6 +27,7 @@ export type TCollectionState = {
     bEntered: boolean;
     selectedCollectionIndex: number;
     listMyCollection: TListCollection;
+    generalCollectionsData: Array<TGeneralCollectionData>;
 };
 
 const initialState: TCollectionState = {
@@ -24,6 +38,7 @@ const initialState: TCollectionState = {
     bEntered: false,
     selectedCollectionIndex: 0,
     listMyCollection: {},
+    generalCollectionsData: []
 };
 
 const _toggleEnter: CaseReducer<TCollectionState, PayloadAction<{
@@ -87,6 +102,21 @@ const _getCollection: CaseReducer<
         ]
 };
 
+const _getGeneralCollectionsData: CaseReducer<
+    TCollectionState,
+    PayloadAction<{ 
+        generalCollectionsData?: Array<TGeneralCollectionData>;
+    }>
+> = (state, action) => {
+     // TODO: impl the real method
+     const collectionItems = action.payload?.generalCollectionsData;
+    if (collectionItems){
+        state.generalCollectionsData = [
+            ...collectionItems
+        ]
+    }
+};
+
 const collectionSlice = createSlice({
     name: "collection",
     initialState,
@@ -96,6 +126,7 @@ const collectionSlice = createSlice({
         toggleEnter: _toggleEnter,
         setWhitelistSpot: _setWhitelistSpot,
         getCollection: _getCollection,
+        getGeneralCollectionsData: _getGeneralCollectionsData
     },
     extraReducers: (builder) => {
         builder.addCase(searchOld.pending, (state) => {
