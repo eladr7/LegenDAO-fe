@@ -938,7 +938,8 @@ const _netMiddlewareClosure = (): Middleware => {
             case collectionAtions.getGeneralCollectionsData.type: {
                 // TODO: impl the real method
                 // const { nftContract } = action.payload;
-
+                // Notice to always put a collection with "onSale: true" as the first element of the array,
+                // since collectionSlice::selectedCollectionIndex is set to 0 by default
                 const collectionItems: Array<TGeneralCollectionData> = [
                     {
                         coverImgUrl: imgTopSecretColMintBg01,
@@ -957,18 +958,20 @@ const _netMiddlewareClosure = (): Middleware => {
                         startingDate: new Date(2022, 4, 18),
                         totalItemNum: 300,
                         mintPrice: 0.1,
-                        nftContractAddress: NFT_ADDRESSES[0]!
+                        nftContractAddress: NFT_ADDRESSES[0]!,
+                        onSale: true
                     },
                     {
                         coverImgUrl: imgTopSecretColBg01,
                         name: "Hall of Legend 1",
                         description: "There is a hall, full of legends that being kept by mysteries creatures 1",
-                        artistDescription: " 3",
+                        artistDescription: " 1",
                         artistName: "XXXX XXXXX XXXX 1",
                         startingDate: new Date(2022, 3, 18),
                         totalItemNum: 100,
                         mintPrice: 0.1,
-                        nftContractAddress: NFT_ADDRESSES[1]!
+                        nftContractAddress: NFT_ADDRESSES[1]!,
+                        onSale: true
                     },
                     {
                         coverImgUrl: imgTopSecretColBg01,
@@ -976,11 +979,37 @@ const _netMiddlewareClosure = (): Middleware => {
                         description: "There is a hall, full of legends that being kept by mysteries creatures 2",
                         artistDescription: " 2",
                         artistName: "XXXX XXXXX XXXX 2",
-                        startingDate: new Date(2022, 3, 18),
+                        startingDate: new Date(2022, 6, 12),
                         totalItemNum: 100,
                         mintPrice: 0.1,
-                        nftContractAddress: NFT_ADDRESSES[2]!
-                    }
+                        nftContractAddress: NFT_ADDRESSES[2]!,
+                        onSale: true
+                    },
+                    {
+                        coverImgUrl: imgTopSecretColBg01,
+                        name: "Hall of Legend 3",
+                        description: "There is a hall, full of legends that being kept by mysteries creatures 3",
+                        artistDescription: " 3",
+                        artistName: "XXXX XXXXX XXXX 3",
+                        startingDate: new Date(2021, 1, 1),
+                        totalItemNum: 200,
+                        mintPrice: 0.1,
+                        nftContractAddress: "some address 3",
+                        onSale: false
+                    },
+                    {
+                        coverImgUrl: imgTopSecretColBg01,
+                        name: "Hall of Legend 4",
+                        description: "There is a hall, full of legends that being kept by mysteries creatures 4",
+                        artistDescription: " 4",
+                        artistName: "XXXX XXXXX XXXX 4",
+                        startingDate: new Date(2021, 7, 5),
+                        totalItemNum: 200,
+                        mintPrice: 0.1,
+                        nftContractAddress: "some address 4",
+                        onSale: false
+                    },
+                    
                  ]
 
                  next({ ...action, payload: { generalCollectionsData: collectionItems } });

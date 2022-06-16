@@ -30,6 +30,13 @@ export default function CollectionItem({
                 "max-w-[320px] tablet-2:max-w-lg flex flex-col flex-nowrap rounded-xl overflow-hidden shrink-0 group relative"
             )}
         >
+            <Button
+                bigness="lg"
+                className="z-10 group-hover:visible invisible absolute top-[25%] w-[70%] left-[15%]"
+                onClick={() => handleOnEnterBtnClicked(collectionNftIndex)}
+            >
+                <span className="px-12">Enter</span>
+            </Button>
             <div
                 className={cn("h-[200px]  bg-cover bg-no-repeat bg-center")}
                 style={{ backgroundImage: `url(${coverImgUrl})` }}
@@ -61,13 +68,6 @@ export default function CollectionItem({
                     </div>
                 </div>
             </Panel>
-            <Button
-                bigness="lg"
-                className="z-10 hidden group-hover:block absolute -mt-64 mr-8"
-                onClick={() => handleOnEnterBtnClicked(collectionNftIndex)}
-            >
-                <span className="px-12">Enter</span>
-            </Button>
         </div>
     );
 }

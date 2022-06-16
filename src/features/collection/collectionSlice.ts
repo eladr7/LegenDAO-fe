@@ -17,6 +17,7 @@ export type TGeneralCollectionData = {
     totalItemNum: number;
     mintPrice: number;
     nftContractAddress: string;
+    onSale: boolean;
 }
 
 export type TCollectionState = {

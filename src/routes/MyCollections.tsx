@@ -143,7 +143,10 @@ export default function MyCollections(): React.ReactElement {
                     )}
                 >
                     {collectionState.generalCollectionsData.map((collectionGeneralData, index) => {
-                        if (index !== collectionState.selectedCollectionIndex) {
+                        if (
+                            index !== collectionState.selectedCollectionIndex &&
+                            collectionGeneralData.onSale === true
+                        ) {
                             return (
                                 <CollectionItem
                                     coverImgUrl={collectionGeneralData.coverImgUrl}
@@ -206,9 +209,15 @@ export default function MyCollections(): React.ReactElement {
                             onClick={handleOnMintBtnClicked}
                             className="z-10"
                             bTransparent={!collectionState.whitelistSpot}
-                            disabled={!collectionState.whitelistSpot || !networkState.bIsConnected}
+                            disabled={
+                                !collectionState.whitelistSpot ||
+                                !networkState.bIsConnected ||
+                                !selectedCollectionData.onSale
+                            }
                         >
-                            <span className="px-12">Mint</span>
+                            <span className="px-12">{`${
+                                selectedCollectionData.onSale ? "Mint" : "Sold Out"
+                            }`}</span>
                         </Button>
                     </div>
                 )}
