@@ -8,9 +8,9 @@ import { collectionAtions, TListCollection } from "../features/collection/collec
 import Panel from "./commons/Panel";
 
 type Props = {
-    setSelectedNft: (nftItem: any) => any;
+    setNftAndPosition: (nftItem: any, e: any) => any;
 };
-export default function ProfileCollectedPanel({ setSelectedNft }: Props): React.ReactElement {
+export default function ProfileCollectedPanel({ setNftAndPosition }: Props): React.ReactElement {
     const dispatch = useDispatch();
     const networkState = useAppSelector((state) => state.network);
     const collectionState = useAppSelector((state) => state.collection);
@@ -51,11 +51,13 @@ export default function ProfileCollectedPanel({ setSelectedNft }: Props): React.
                     token: royalties[0]?.recipient,
                     royalties: royalties[0].rate,
                 };
+                // TODO: Add scroll on desktop, on mobile no just take the space
                 return (
                     <div
                         className="flex flex-col justify-center items-center"
                         key={index}
-                        onClick={() => setSelectedNft(nftItem)}
+                        onClick={(e) => setNftAndPosition(nftItem, "nft-" + index.toString())}
+                        id={"nft-" + index.toString()}
                     >
                         <div
                             className={cn(

@@ -31,6 +31,25 @@ export default function Profile(): React.ReactElement {
     const [myNameErrorMessage, setMyNameErrorMessage] = useState<string | undefined>(undefined);
 
     const [selectedNft, setSelectedNft] = useState<TMintAgent | undefined>();
+    const [clickedYCoordinate, setClickedYCoordinate] = useState("0px");
+
+    const setNftAndPosition = (nftItem: TMintAgent, nftId: string) => {
+        const element = document.getElementById(nftId);
+        const winWidth = window.innerWidth;
+        let positionY;
+        if (winWidth < 550) {
+            // on mobile - always position beneath the clicked element
+            const elementHeight = element!.clientHeight;
+            const topY = element!.getBoundingClientRect().top + window.scrollY + elementHeight + 10;
+            positionY = topY.toString() + "px";
+        } else {
+            // on desktop - always position at the top of the page
+            positionY = "15%";
+        }
+
+        setClickedYCoordinate(positionY);
+        setSelectedNft(nftItem);
+    };
 
     useEffect(() => {
         setSelectedNft(undefined);
@@ -197,9 +216,22 @@ export default function Profile(): React.ReactElement {
                         )}
                     >
                         <div className="justify-self-start lg:order-first">
-                            <ProfileCollectedPanel setSelectedNft={setSelectedNft} />
+                            <ProfileCollectedPanel setNftAndPosition={setNftAndPosition} />
                         </div>
-
+                        {selectedNft && profileState.tab === "/profile/collected" && (
+                            <div
+                                className={cn(
+                                    "absolute md:left-[29%] md:w-[40%] xs:left-[5%] xs:w-[90%] z-20"
+                                    // "xs:w-[90%] xs:top:[10%] xs:left-[5%]"
+                                )}
+                                style={{ top: `${clickedYCoordinate}` }}
+                            >
+                                <MintAgentDetailPanel
+                                    mintAgent={selectedNft}
+                                    onCloseBtnClicked={onCloseBtnClicked}
+                                />
+                            </div>
+                        )}
                         <div
                             className=" max-w-full xs:h-[400px] my-6 bg-contain lg:w-[500px] lg:h-[600px]  bg-top bg-no-repeat xs:order-first  "
                             style={{ backgroundImage: `url(${imgYetiProfile01})` }}
@@ -274,6 +306,7 @@ export default function Profile(): React.ReactElement {
         handleOnMyNameChanged,
         myName,
         selectedNft,
+        clickedYCoordinate,
     ]);
 
     return (
@@ -291,19 +324,6 @@ export default function Profile(): React.ReactElement {
                     )}
                     style={{ backgroundImage: `url(${imgArticleUniverse01Background})` }}
                 ></div>
-                {selectedNft && profileState.tab === "/profile/collected" && (
-                    <div
-                        className={cn(
-                            "absolute top-[15%] left-[29%] w-[40%] z-20"
-                            // "xs:w-[90%] xs:top:[10%] xs:left-[5%]"
-                        )}
-                    >
-                        <MintAgentDetailPanel
-                            mintAgent={selectedNft}
-                            onCloseBtnClicked={onCloseBtnClicked}
-                        />
-                    </div>
-                )}
                 <div className="absolute top-0 left-0 bottom-0 right-0 bg-blue-900/50"></div>
                 <div className="absolute top-0 left-0 bottom-0 right-0 bg-slate-900/75"></div>
                 <div className="w-full mt-28 px-5 lg:px-16 z-10">
