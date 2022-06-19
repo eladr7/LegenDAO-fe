@@ -32,7 +32,7 @@ import {
     toggleWithdrawPanel,
 } from "../../features/accessibility/accessibilitySlice";
 import walletAPI from "../../features/wallet/walletApi";
-import { legendServices } from "../commons/legendServices";
+import { mongoDbServices } from "../commons/mongoDbServices";
 import BigNumber from "bignumber.js";
 import { getDetailNft, getMintingHistory } from "../nftContract";
 import {
@@ -1056,18 +1056,20 @@ const _netMiddlewareClosure = (): Middleware => {
             case walletActions.getTokenData.type:
                 (async () => {
                     try {
-                        const res = await legendServices.getTokenData();
+                        const res = await mongoDbServices.getTokenDataMongoDb();
 
                         if (res.status === 200) {
-                            const { apy, daily_volume, liquidity, price_usd } = res.data;
+                            const { apy, apr, liquidity, price_usd, total_locked, daily_volume} = res.data.document;
                             next({
                                 ...action,
                                 payload: {
                                     tokenData: {
-                                        apy: apy,
                                         price: price_usd,
+                                        apy: apy,
+                                        apr: apr,
                                         liquidity: liquidity,
                                         dailyVolume: daily_volume,
+                                        totalLocked: total_locked
                                     },
                                 },
                             });
@@ -1097,7 +1099,7 @@ const _netMiddlewareClosure = (): Middleware => {
                             });
                         };
 
-                        const [rewardsResult, totalLocked] = await Promise.all([
+                        const [rewardsResult] = await Promise.all([
                             getDataStaking({
                                 with_permit: {
                                     query: {
@@ -1113,22 +1115,10 @@ const _netMiddlewareClosure = (): Middleware => {
                                         signature: signerPermit?.signature as StdSignature,
                                     },
                                 },
-                            }),
-                            getDataStaking({
-                                total_locked: {},
-                            }),
+                            })
                         ]);
 
                         const amountRewards = (rewardsResult as TRewards)?.rewards.rewards;
-                        const amountTotalLocked = (totalLocked as TTotalLocked)?.total_locked
-                            .amount;
-
-                        const value = process.env.REACT_APP_PER_LGND || "0";
-                        const tvl = new BigNumber(amountTotalLocked).times(value).toFixed();
-                        const apr = new BigNumber(process.env.REACT_APP_APY || "0")
-                            .div(tvl)
-                            .times(100)
-                            .toFixed();
 
                         const rewards: Coin = {
                             amount: formatBalance(amountRewards),
@@ -1137,19 +1127,18 @@ const _netMiddlewareClosure = (): Middleware => {
 
                         const storeState = store.getState();
                         const { balances } = storeState.wallet;
-
+                        const price = storeState.wallet.tokenData?.price?? 0;
+                        
+                        // The amount staked by the user
                         const totalStakedBalance = balances[STAKING_ADDRESS]?.amount;
                         const priceStaked = new BigNumber(totalStakedBalance)
-                            .times(value || "0")
+                            .times(price.toString())
                             .toFixed();
                         const priceReward = new BigNumber(amountRewards)
-                            .times(value || "0")
+                            .times(price.toString())
                             .toFixed();
 
                         const dataStaking: IDataStaking = {
-                            apr: formatBalance(apr),
-                            value,
-                            tvl: formatBalance(tvl),
                             totalStakedBalance: formatBalance(totalStakedBalance),
                             priceStaked: formatBalance(priceStaked),
                             rewards,

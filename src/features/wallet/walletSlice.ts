@@ -21,11 +21,13 @@ interface IBalance {
     };
 }
 
-interface ITokenData {
+export interface ITokenData {
     price: number;
     apy: number;
+    apr: number;
     liquidity: number;
     dailyVolume: number;
+    totalLocked: number,
 }
 
 type TBalance = {
@@ -35,12 +37,12 @@ type TBalance = {
 };
 
 export interface IDataStaking {
-    apr: string;
-    value: string;
-    tvl: string;
+    // value: string; // TODO: should this be ITokenData::price? 
     totalStakedBalance: string;
+    // totalStakedBalance * ITokenData::price
     priceStaked: string;
     rewards: Coin;
+    // rewards.amount * ITokenData::price
     priceReward: string;
 }
 
@@ -66,14 +68,16 @@ const initialState: TWalletState = {
     signature: undefined,
     tokenData: {
         apy: 0,
+        apr: 0,
         price: 0,
         liquidity: 0,
         dailyVolume: 0,
+        totalLocked: 0,
     },
     dataStaking: {
-        apr: "0",
-        value: "0",
-        tvl: "0",
+        // apr: "0",
+        // value: "0",
+        // tvl: "0",
         totalStakedBalance: "0",
         priceStaked: "0",
         rewards: {
