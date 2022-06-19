@@ -57,24 +57,35 @@ export default function OldCollections(): React.ReactElement {
                     )}
                 >
                     {collectionState.generalCollectionsData.map((collectionGeneralData, index) => {
-                        return (
-                            <CollectionItem
-                                coverImgUrl={collectionGeneralData.coverImgUrl}
-                                name={collectionGeneralData.name}
-                                description={collectionGeneralData.description}
-                                startingDate={collectionGeneralData.startingDate}
-                                totalItemNum={collectionGeneralData.totalItemNum}
-                                mintPrice={collectionGeneralData.mintPrice}
-                                handleOnEnterBtnClicked={handleOnEnterBtnClicked}
-                                collectionNftIndex={index}
-                                key={index}
-                            />
-                        );
+                        if (
+                            !collectionState.searchString ||
+                            collectionGeneralData.name
+                                .toLowerCase()
+                                .includes(collectionState.searchString.toLowerCase())
+                        ) {
+                            return (
+                                <CollectionItem
+                                    coverImgUrl={collectionGeneralData.coverImgUrl}
+                                    name={collectionGeneralData.name}
+                                    description={collectionGeneralData.description}
+                                    startingDate={collectionGeneralData.startingDate}
+                                    totalItemNum={collectionGeneralData.totalItemNum}
+                                    mintPrice={collectionGeneralData.mintPrice}
+                                    handleOnEnterBtnClicked={handleOnEnterBtnClicked}
+                                    collectionNftIndex={index}
+                                    key={index}
+                                />
+                            );
+                        }
                     })}
                 </div>
             </div>
         );
-    }, [collectionState.selectedCollectionIndex, collectionState.generalCollectionsData]);
+    }, [
+        collectionState.selectedCollectionIndex,
+        collectionState.generalCollectionsData,
+        collectionState.searchString,
+    ]);
 
     return (
         <DefaultLayout headerType="collection">
