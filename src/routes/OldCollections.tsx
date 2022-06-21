@@ -12,6 +12,7 @@ import {
     collectionAtions,
     collectionAsyncActions,
     toggleEnter,
+    TGeneralCollectionData,
 } from "../features/collection/collectionSlice";
 import CollectionItem from "../components/CollectionItem";
 import { useNavigate } from "react-router-dom";
@@ -21,6 +22,8 @@ export default function OldCollections(): React.ReactElement {
 
     const dispatch = useAppDispatch();
     const collectionState = useAppSelector((state) => state.collection);
+    const transactionState = useAppSelector((state) => state.transaction);
+
     const handleOnCollectionSearchInputChange = useCallback(
         (e: React.ChangeEvent<HTMLInputElement>) => {
             // Press enter to search
@@ -63,6 +66,19 @@ export default function OldCollections(): React.ReactElement {
                                 .toLowerCase()
                                 .includes(collectionState.searchString.toLowerCase())
                         ) {
+                            const getUserPriceToMint = () => {
+                                const isWl =
+                                    transactionState.collections[
+                                        collectionGeneralData.minterContractAddress
+                                    ]?.is_whitelisted;
+                                const mintPrice = isWl
+                                    ? collectionGeneralData.mintPriceWL
+                                    : collectionGeneralData.mintPrice;
+                                return mintPrice / 1_000_000;
+                            };
+
+                            const mintPrice = getUserPriceToMint();
+
                             return (
                                 <CollectionItem
                                     coverImgUrl={collectionGeneralData.coverImgUrl}
@@ -70,7 +86,7 @@ export default function OldCollections(): React.ReactElement {
                                     description={collectionGeneralData.description}
                                     startingDate={collectionGeneralData.startingDate}
                                     totalItemNum={collectionGeneralData.totalItemNum}
-                                    mintPrice={collectionGeneralData.mintPrice}
+                                    mintPrice={mintPrice}
                                     handleOnEnterBtnClicked={handleOnEnterBtnClicked}
                                     collectionNftIndex={index}
                                     key={index}

@@ -16,7 +16,9 @@ export type TGeneralCollectionData = {
     startingDate: Date;
     totalItemNum: number;
     mintPrice: number;
+    mintPriceWL: number;
     nftContractAddress: string;
+    minterContractAddress: string;
     onSale: boolean;
 }
 
@@ -39,7 +41,20 @@ const initialState: TCollectionState = {
     bEntered: false,
     selectedCollectionIndex: 0,
     listMyCollection: {},
-    generalCollectionsData: []
+    generalCollectionsData: [{
+        coverImgUrl: "",
+        name: "",
+        description: "",
+        artistDescription: "",
+        artistName: "",
+        startingDate: new Date(),
+        totalItemNum: 0,
+        mintPrice: 0,
+        mintPriceWL: 0,
+        nftContractAddress: "",
+        minterContractAddress: "",
+        onSale: false
+    }]
 };
 
 const _toggleEnter: CaseReducer<TCollectionState, PayloadAction<{

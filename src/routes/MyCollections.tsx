@@ -60,17 +60,13 @@ export default function MyCollections(): React.ReactElement {
 
     const handleOnGetWhitelistSpotBtnClicked = useCallback(() => {
         window.open("https://discord.com/invite/nRFUkj3sxZ", "_blank");
-        dispatch(setWhitelistSpot(true));
+        // dispatch(setWhitelistSpot(true));
     }, [dispatch]);
 
     const handleOnMyCollectionBtnClicked = useCallback(() => {
         dispatch(profileActions.setTab("/profile/collected"));
         navigate("/profile/collected");
     }, [dispatch, navigate]);
-
-    // const handleOnEnterBtnClicked = useCallback(() => {
-    //     dispatch(toggleEnter(true));
-    // }, [dispatch]);
 
     const handleOnEnterBtnClicked = (selectedCollectionIndex: number) => {
         dispatch(toggleEnter({ entered: true, collectionIndex: selectedCollectionIndex }));
@@ -87,16 +83,17 @@ export default function MyCollections(): React.ReactElement {
     useEffect(() => {
         (async () => {
             if (!walletState?.primary?.address) return;
-            dispatch(
-                transactionActions.isWhitelisted({
-                    address: walletState.primary.address,
-                    nftMintingContract: NFT_MINTING_ADDRESSES[
-                        collectionState.selectedCollectionIndex
-                    ] as string,
-                })
-            );
+            const userAddress = walletState.primary.address;
+            NFT_MINTING_ADDRESSES.forEach((minterAddress) => {
+                dispatch(
+                    transactionActions.isWhitelisted({
+                        address: userAddress,
+                        nftMintingContract: minterAddress as string,
+                    })
+                );
+            });
         })();
-    }, [dispatch, walletState?.primary?.address, collectionState.selectedCollectionIndex]);
+    }, [dispatch, walletState?.primary?.address]);
 
     useEffect(() => {
         dispatch(
@@ -116,11 +113,15 @@ export default function MyCollections(): React.ReactElement {
     }, [dispatch, networkState.bIsConnected, walletState.signature]);
 
     const getNftPriceInLgnd = useCallback(() => {
+        const selectedCollectionData: TGeneralCollectionData =
+            collectionState.generalCollectionsData[collectionState.selectedCollectionIndex];
+
         const priceInULgnd = collectionState.whitelistSpot
-            ? parseInt(process.env.REACT_APP_TOKEN_WHITELIST_PRICE || "100000")
-            : parseInt(process.env.REACT_APP_TOKEN_PRICE || "1000000");
-        return priceInULgnd / 1000000;
-    }, [collectionState.whitelistSpot]);
+            ? selectedCollectionData.mintPriceWL
+            : selectedCollectionData.mintPrice;
+
+        return priceInULgnd / 1_000_000;
+    }, [collectionState.whitelistSpot, collectionState.selectedCollectionIndex]);
 
     const getNftPriceInFiat = useCallback(
         (priceInLGND: number) => {
@@ -147,6 +148,18 @@ export default function MyCollections(): React.ReactElement {
                             index !== collectionState.selectedCollectionIndex &&
                             collectionGeneralData.onSale === true
                         ) {
+                            const getUserPriceToMint = () => {
+                                const isWl =
+                                    transactionState.collections[
+                                        collectionGeneralData.minterContractAddress
+                                    ]?.is_whitelisted;
+                                const mintPrice = isWl
+                                    ? collectionGeneralData.mintPriceWL
+                                    : collectionGeneralData.mintPrice;
+                                return mintPrice / 1_000_000;
+                            };
+
+                            const mintPrice = getUserPriceToMint();
                             return (
                                 <CollectionItem
                                     coverImgUrl={collectionGeneralData.coverImgUrl}
@@ -154,7 +167,7 @@ export default function MyCollections(): React.ReactElement {
                                     description={collectionGeneralData.description}
                                     startingDate={collectionGeneralData.startingDate}
                                     totalItemNum={collectionGeneralData.totalItemNum}
-                                    mintPrice={collectionGeneralData.mintPrice}
+                                    mintPrice={mintPrice}
                                     handleOnEnterBtnClicked={handleOnEnterBtnClicked}
                                     collectionNftIndex={index}
                                 />
@@ -164,7 +177,11 @@ export default function MyCollections(): React.ReactElement {
                 </div>
             </div>
         );
-    }, [collectionState.selectedCollectionIndex, collectionState.generalCollectionsData]);
+    }, [
+        collectionState.selectedCollectionIndex,
+        collectionState.generalCollectionsData,
+        transactionState.collections,
+    ]);
 
     const renderDomainPanel = useCallback(() => {
         if (collectionState.generalCollectionsData.length === 0) return <div>nothing yet</div>;
@@ -334,7 +351,7 @@ export default function MyCollections(): React.ReactElement {
                 </div>
             );
         }
-
+        const priceInLGND = getNftPriceInLgnd();
         return (
             <div
                 className={cn(
@@ -420,9 +437,7 @@ export default function MyCollections(): React.ReactElement {
                                 </div>
                                 <div className="mb-8 last:mb-0 tablet:mb-0 desktop:ml-20 first:ml-0 flex flex-col items-center tablet:items-start">
                                     <div className="text-blue-300 font-emphasis">Mint Price</div>
-                                    <div className="font-bold">
-                                        {selectedCollectionData.mintPrice} $LGND
-                                    </div>
+                                    <div className="font-bold">{priceInLGND} $LGND</div>
                                 </div>
                             </div>
                         </Panel>

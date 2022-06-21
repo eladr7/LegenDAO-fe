@@ -45,7 +45,7 @@ export default function MintConfirmPurchasePanel({
         dispatch(mintActions.clearLatestNft());
         if (!networkState.bIsConnected) return;
         const amountToMint = 1;
-        const tokenPrice = (priceInLGND * 1000000).toString();
+        const tokenPrice = (priceInLGND * 1_000_000).toString();
         dispatch(transactionActions.startTransaction());
         dispatch(
             transactionActions.sendTokenFromPlatformToContract({
@@ -123,17 +123,23 @@ export default function MintConfirmPurchasePanel({
                     </span>
                 </div>
 
-                <div className="flex flex-row">
-                    <Button
-                        bigness="lg"
-                        onClick={handleOnMintNowBtnClicked}
-                        bTransparent={!mintState.bAgreeTermOfService}
-                        disabled={!mintState.bAgreeTermOfService}
-                        className="grow"
-                    >
-                        <span className="hidden tablet-2:inline">Mint Now</span>
-                        <span className="tablet-2:hidden">Buy Now</span>
-                    </Button>
+                <div className="flex flex-row justify-center">
+                    {priceInLGND ? (
+                        <Button
+                            bigness="lg"
+                            onClick={handleOnMintNowBtnClicked}
+                            bTransparent={!mintState.bAgreeTermOfService}
+                            disabled={!mintState.bAgreeTermOfService}
+                            className="grow"
+                        >
+                            <span className="hidden tablet-2:inline">Mint Now</span>
+                            <span className="tablet-2:hidden">Buy Now</span>
+                        </Button>
+                    ) : (
+                        <div className="justify-center">
+                            Cannot mint, collection info failed to load
+                        </div>
+                    )}
                 </div>
 
                 <div className="mt-6 w-full text-center">

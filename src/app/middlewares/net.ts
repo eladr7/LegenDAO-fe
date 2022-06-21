@@ -957,8 +957,10 @@ const _netMiddlewareClosure = (): Middleware => {
                         artistName: "XXXX XXXXX XXXX",
                         startingDate: new Date(2022, 4, 18),
                         totalItemNum: 300,
-                        mintPrice: 0.1,
+                        mintPriceWL: 100_000,
+                        mintPrice: 1_000_000,
                         nftContractAddress: NFT_ADDRESSES[0]!,
+                        minterContractAddress: NFT_MINTING_ADDRESSES[0]!,
                         onSale: true
                     },
                     {
@@ -969,8 +971,10 @@ const _netMiddlewareClosure = (): Middleware => {
                         artistName: "XXXX XXXXX XXXX 1",
                         startingDate: new Date(2022, 3, 18),
                         totalItemNum: 100,
-                        mintPrice: 0.1,
+                        mintPriceWL: 100_000,
+                        mintPrice: 1_000_000,
                         nftContractAddress: NFT_ADDRESSES[1]!,
+                        minterContractAddress: NFT_MINTING_ADDRESSES[1]!,
                         onSale: true
                     },
                     {
@@ -981,8 +985,10 @@ const _netMiddlewareClosure = (): Middleware => {
                         artistName: "XXXX XXXXX XXXX 2",
                         startingDate: new Date(2022, 6, 12),
                         totalItemNum: 100,
-                        mintPrice: 0.1,
+                        mintPriceWL: 100_000,
+                        mintPrice: 1_000_000,
                         nftContractAddress: NFT_ADDRESSES[2]!,
+                        minterContractAddress: NFT_MINTING_ADDRESSES[2]!,
                         onSale: true
                     },
                     {
@@ -993,8 +999,10 @@ const _netMiddlewareClosure = (): Middleware => {
                         artistName: "XXXX XXXXX XXXX 3",
                         startingDate: new Date(2021, 1, 1),
                         totalItemNum: 200,
-                        mintPrice: 0.1,
-                        nftContractAddress: "some address 3",
+                        mintPriceWL: 100_000,
+                        mintPrice: 1_000_000,
+                        nftContractAddress: "some nft address 3",
+                        minterContractAddress: "some minter address 3",
                         onSale: false
                     },
                     {
@@ -1005,8 +1013,10 @@ const _netMiddlewareClosure = (): Middleware => {
                         artistName: "XXXX XXXXX XXXX 4",
                         startingDate: new Date(2021, 7, 5),
                         totalItemNum: 200,
-                        mintPrice: 0.1,
-                        nftContractAddress: "some address 4",
+                        mintPriceWL: 100_000,
+                        mintPrice: 1_000_000,
+                        nftContractAddress: "some nft address 4",
+                        minterContractAddress: "some minter address 4",
                         onSale: false
                     },
                     
