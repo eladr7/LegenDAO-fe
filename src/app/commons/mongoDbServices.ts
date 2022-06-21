@@ -5,9 +5,9 @@ export interface ITokenDataMongoDb {
         apy: number,
         apr: number,
         liquidity: number,
-        price_usd: number,
-        total_locked: number,
-        daily_volume: number,
+        priceUsd: number,
+        totalLocked: number,
+        dailyVolume: number,
     }
 }
 
@@ -26,8 +26,8 @@ class MongoDbServices {
         });
 
         return await instance.post<ITokenDataMongoDb>("/action/findOne", {
-            "collection":"staking",
-            "database":"chain-info",
+            "collection":"test1",
+            "database":"test",
             "dataSource":"Cluster0",
             "projection": {}
         });

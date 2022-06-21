@@ -1059,17 +1059,17 @@ const _netMiddlewareClosure = (): Middleware => {
                         const res = await mongoDbServices.getTokenDataMongoDb();
 
                         if (res.status === 200) {
-                            const { apy, apr, liquidity, price_usd, total_locked, daily_volume} = res.data.document;
+                            const { apy, apr, liquidity, priceUsd, totalLocked, dailyVolume} = res.data.document;
                             next({
                                 ...action,
                                 payload: {
                                     tokenData: {
-                                        price: price_usd,
+                                        price: priceUsd,
                                         apy: apy,
                                         apr: apr,
                                         liquidity: liquidity,
-                                        dailyVolume: daily_volume,
-                                        totalLocked: total_locked
+                                        dailyVolume: dailyVolume,
+                                        totalLocked: totalLocked
                                     },
                                 },
                             });

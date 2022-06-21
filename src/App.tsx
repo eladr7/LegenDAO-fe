@@ -6,7 +6,6 @@ import store from "./app/store";
 import ToastMessage from "./components/commons/ToastMessage";
 import AppContext, { TAppContext } from "./contexts/AppContext";
 import { collectionAtions } from "./features/collection/collectionSlice";
-import { networkActions } from "./features/network/networkSlice";
 import { walletActions } from "./features/wallet/walletSlice";
 import About from "./routes/About";
 import AirDrop from "./routes/AirDrop";
@@ -67,6 +66,15 @@ function App(): React.ReactElement {
         // navigante between the user NFTs and the Collections page, the store will get run over
         dispatch(collectionAtions.getGeneralCollectionsData({}));
     }, [dispatch, networkState.bIsConnected, walletState.signature]);
+
+    const getAnswer = async () => {
+        dispatch(walletActions.getTokenData());
+    };
+
+    useEffect(() => {
+        const timer = setInterval(getAnswer, 60000);
+        return () => clearInterval(timer);
+    }, []);
 
     const renderPopups = useCallback(() => {
         return activePopups.map((item, index) => {
