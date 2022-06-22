@@ -936,95 +936,60 @@ const _netMiddlewareClosure = (): Middleware => {
             }
 
             case collectionAtions.getGeneralCollectionsData.type: {
-                // TODO: impl the real method
-                // const { nftContract } = action.payload;
-                // Notice to always put a collection with "onSale: true" as the first element of the array,
+                // Notice we always put a collection with "onSale: true" as the first element of the array,
                 // since collectionSlice::selectedCollectionIndex is set to 0 by default
-                const collectionItems: Array<TGeneralCollectionData> = [
-                    {
-                        coverImgUrl: imgTopSecretColMintBg01,
-                        name: "Top Secret Collection",
-                        description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod \
-                        tempor incididunt ut labore et dolore magna aliqua. Suscipit tellus mauris a \
-                        diam maecenas sed enim ut sem. Pharetra diam sit amet nisl. Cras ornare arcu \
-                        dui vivamus arcu felis bibendum. Dapibus ultrices in iaculis nunc sed augue \
-                        lacus viverra vitae. Duis ut diam quam nulla porttitor massa id neque.",
-                        artistDescription: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod \
-                        tempor incididunt ut labore et dolore magna aliqua. Suscipit tellus mauris a \
-                        diam maecenas sed enim ut sem. Pharetra diam sit amet nisl. Cras ornare arcu \
-                        dui vivamus arcu felis bibendum. Dapibus ultrices in iaculis nunc sed augue \
-                        lacus viverra vitae. Duis ut diam quam nulla porttitor massa id neque.",
-                        artistName: "XXXX XXXXX XXXX",
-                        startingDate: new Date(2022, 4, 18),
-                        totalItemNum: 300,
-                        mintPriceWL: 100_000,
-                        mintPrice: 1_000_000,
-                        nftContractAddress: NFT_ADDRESSES[0]!,
-                        minterContractAddress: NFT_MINTING_ADDRESSES[0]!,
-                        onSale: true
-                    },
-                    {
-                        coverImgUrl: imgTopSecretColBg01,
-                        name: "Hall of Legend 1",
-                        description: "There is a hall, full of legends that being kept by mysteries creatures 1",
-                        artistDescription: " 1",
-                        artistName: "XXXX XXXXX XXXX 1",
-                        startingDate: new Date(2022, 3, 18),
-                        totalItemNum: 100,
-                        mintPriceWL: 100_000,
-                        mintPrice: 1_000_000,
-                        nftContractAddress: NFT_ADDRESSES[1]!,
-                        minterContractAddress: NFT_MINTING_ADDRESSES[1]!,
-                        onSale: true
-                    },
-                    {
-                        coverImgUrl: imgTopSecretColBg01,
-                        name: "Hall of Legend 2",
-                        description: "There is a hall, full of legends that being kept by mysteries creatures 2",
-                        artistDescription: " 2",
-                        artistName: "XXXX XXXXX XXXX 2",
-                        startingDate: new Date(2022, 6, 12),
-                        totalItemNum: 100,
-                        mintPriceWL: 100_000,
-                        mintPrice: 1_000_000,
-                        nftContractAddress: NFT_ADDRESSES[2]!,
-                        minterContractAddress: NFT_MINTING_ADDRESSES[2]!,
-                        onSale: true
-                    },
-                    {
-                        coverImgUrl: imgTopSecretColBg01,
-                        name: "Hall of Legend 3",
-                        description: "There is a hall, full of legends that being kept by mysteries creatures 3",
-                        artistDescription: " 3",
-                        artistName: "XXXX XXXXX XXXX 3",
-                        startingDate: new Date(2021, 1, 1),
-                        totalItemNum: 200,
-                        mintPriceWL: 100_000,
-                        mintPrice: 1_000_000,
-                        nftContractAddress: "some nft address 3",
-                        minterContractAddress: "some minter address 3",
-                        onSale: false
-                    },
-                    {
-                        coverImgUrl: imgTopSecretColBg01,
-                        name: "Hall of Legend 4",
-                        description: "There is a hall, full of legends that being kept by mysteries creatures 4",
-                        artistDescription: " 4",
-                        artistName: "XXXX XXXXX XXXX 4",
-                        startingDate: new Date(2021, 7, 5),
-                        totalItemNum: 200,
-                        mintPriceWL: 100_000,
-                        mintPrice: 1_000_000,
-                        nftContractAddress: "some nft address 4",
-                        minterContractAddress: "some minter address 4",
-                        onSale: false
-                    },
-                    
-                 ]
+                (async () => {
+                    try {
+                        const nftCollections = await mongoDbServices.getCollectionsDataMongoDb();
+                        if (nftCollections.status === 200) {
+                            const collectionsData = [];
+                            for (let i = 0; i < nftCollections.data.documents.length; i++) {
+                                const { coverImg, name, description, artistDescription, artistName, startingDate, totalItemNum,
+                                    mintPrice, mintPriceWL, minterContractAddress, nftContractAddress, onSale} = nftCollections.data.documents[i];
 
-                 next({ ...action, payload: { generalCollectionsData: collectionItems } });
+                                const dataItem = {
+                                    coverImg,
+                                    name,
+                                    description,
+                                    artistDescription,
+                                    artistName,
+                                    startingDate: new Date(startingDate),
+                                    totalItemNum: parseInt(totalItemNum),
+                                    mintPrice: parseInt(mintPrice),
+                                    mintPriceWL: parseInt(mintPriceWL),
+                                    minterContractAddress,
+                                    nftContractAddress,
+                                    onSale: onSale === "true"
+                                };
+                                collectionsData.push(dataItem);
+                            }
 
-                 break;
+                            // Find an element with onSale === true and move it to the beginning of the array
+                            const fromIndex = collectionsData.findIndex(object => {
+                                return object.onSale === true;
+                            });
+                            const toIndex = 0;
+                            const element = collectionsData.splice(fromIndex, 1)[0];
+                            collectionsData.splice(toIndex, 0, element);
+
+                            next({
+                                ...action,
+                                payload: {
+                                    generalCollectionsData: [
+                                        ...collectionsData
+                                    ],
+                                },
+                            });
+                        }
+                    } catch (error) {
+                        store.dispatch(
+                            applicationActions.toastRequestRejected({
+                                errorMsg: (error as any)?.message as string,
+                            })
+                        );
+                    }
+                })();
+                break;
             }
 
             case applicationActions.toastRequestRejected.type: {

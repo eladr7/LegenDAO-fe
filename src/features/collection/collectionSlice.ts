@@ -8,7 +8,10 @@ export type TListCollection = {
 }
 
 export type TGeneralCollectionData = {
-    coverImgUrl: string;
+    coverImg: {
+        data: any,
+        contentType: string
+    };
     name: string;
     description: string;
     artistDescription: string;
@@ -42,7 +45,10 @@ const initialState: TCollectionState = {
     selectedCollectionIndex: 0,
     listMyCollection: {},
     generalCollectionsData: [{
-        coverImgUrl: "",
+        coverImg: {
+            data: null,
+            contentType: ""
+        },
         name: "",
         description: "",
         artistDescription: "",
@@ -124,7 +130,6 @@ const _getGeneralCollectionsData: CaseReducer<
         generalCollectionsData?: Array<TGeneralCollectionData>;
     }>
 > = (state, action) => {
-     // TODO: impl the real method
      const collectionItems = action.payload?.generalCollectionsData;
     if (collectionItems){
         state.generalCollectionsData = [

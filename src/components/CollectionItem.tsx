@@ -4,7 +4,7 @@ import Panel from "./commons/Panel";
 import Button from "./commons/Button";
 
 type Props = {
-    coverImgUrl: string;
+    coverImg: string;
     name: string;
     description: string;
     startingDate: Date;
@@ -15,7 +15,7 @@ type Props = {
 };
 
 export default function CollectionItem({
-    coverImgUrl,
+    coverImg,
     name,
     description,
     startingDate,
@@ -39,7 +39,7 @@ export default function CollectionItem({
             </Button>
             <div
                 className={cn("h-[200px]  bg-cover bg-no-repeat bg-center")}
-                style={{ backgroundImage: `url(${coverImgUrl})` }}
+                style={{ backgroundImage: coverImg }}
             ></div>
             <Panel bBordered={false} className="py-6">
                 <div className={cn("flex flex-col flex-none items-stretch")}>

@@ -12,7 +12,6 @@ import {
     collectionAtions,
     collectionAsyncActions,
     toggleEnter,
-    TGeneralCollectionData,
 } from "../features/collection/collectionSlice";
 import CollectionItem from "../components/CollectionItem";
 import { useNavigate } from "react-router-dom";
@@ -50,6 +49,15 @@ export default function OldCollections(): React.ReactElement {
         navigate("/collections");
     };
 
+    const getBgImageFromBinary = (coverImg: { data: any; contentType: string }) => {
+        let image = "";
+        if (coverImg.data && coverImg.data.Data) {
+            image = `url(data:image/png;base64,${coverImg.data.Data})`;
+        }
+
+        return image;
+    };
+
     const renderCollections = useCallback(() => {
         return (
             <div className="mt-4 tablet-2:mt-8 px-4 tablet-2:px-16 flex flex-col flex-nowrap">
@@ -71,9 +79,11 @@ export default function OldCollections(): React.ReactElement {
                                     transactionState.collections[
                                         collectionGeneralData.minterContractAddress
                                     ]?.is_whitelisted;
+
                                 const mintPrice = isWl
                                     ? collectionGeneralData.mintPriceWL
                                     : collectionGeneralData.mintPrice;
+
                                 return mintPrice / 1_000_000;
                             };
 
@@ -81,7 +91,7 @@ export default function OldCollections(): React.ReactElement {
 
                             return (
                                 <CollectionItem
-                                    coverImgUrl={collectionGeneralData.coverImgUrl}
+                                    coverImg={getBgImageFromBinary(collectionGeneralData.coverImg)}
                                     name={collectionGeneralData.name}
                                     description={collectionGeneralData.description}
                                     startingDate={collectionGeneralData.startingDate}

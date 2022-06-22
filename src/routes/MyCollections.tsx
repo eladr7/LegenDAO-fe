@@ -121,7 +121,11 @@ export default function MyCollections(): React.ReactElement {
             : selectedCollectionData.mintPrice;
 
         return priceInULgnd / 1_000_000;
-    }, [collectionState.whitelistSpot, collectionState.selectedCollectionIndex]);
+    }, [
+        collectionState.whitelistSpot,
+        collectionState.selectedCollectionIndex,
+        collectionState.generalCollectionsData,
+    ]);
 
     const getNftPriceInFiat = useCallback(
         (priceInLGND: number) => {
@@ -130,6 +134,15 @@ export default function MyCollections(): React.ReactElement {
         },
         [walletState.tokenData]
     );
+
+    const getBgImageFromBinary = (coverImg: { data: any; contentType: string }) => {
+        let image = "";
+        if (coverImg.data && coverImg.data.Data) {
+            image = `url(data:image/png;base64,${coverImg.data.Data})`;
+        }
+
+        return image;
+    };
 
     const renderFollowingCollections = useCallback(() => {
         return (
@@ -158,11 +171,10 @@ export default function MyCollections(): React.ReactElement {
                                     : collectionGeneralData.mintPrice;
                                 return mintPrice / 1_000_000;
                             };
-
                             const mintPrice = getUserPriceToMint();
                             return (
                                 <CollectionItem
-                                    coverImgUrl={collectionGeneralData.coverImgUrl}
+                                    coverImg={getBgImageFromBinary(collectionGeneralData.coverImg)}
                                     name={collectionGeneralData.name}
                                     description={collectionGeneralData.description}
                                     startingDate={collectionGeneralData.startingDate}
@@ -214,7 +226,9 @@ export default function MyCollections(): React.ReactElement {
                     "relative flex justify-center items-center",
                     "w-full max-w-[700px] h-[300px] tablet-2:h-[500px] bg-no-repeat container bg-cover bg-center"
                 )}
-                style={{ backgroundImage: `url(${selectedCollectionData.coverImgUrl})` }}
+                style={{
+                    backgroundImage: getBgImageFromBinary(selectedCollectionData.coverImg),
+                }}
             >
                 {!mintState.agent && (
                     <div className="absolute top-0 left-0 right-0 bottom-0 bg-slate-900/70"></div>
@@ -312,7 +326,6 @@ export default function MyCollections(): React.ReactElement {
     ]);
 
     const renderInfo = useCallback(() => {
-        // TODO: add logic for presenting the info according to collectionState.selectedCollectionIndex
         if (collectionState.generalCollectionsData.length === 0) return <div>nothing yet</div>;
         const selectedCollectionData: TGeneralCollectionData =
             collectionState.generalCollectionsData[collectionState.selectedCollectionIndex];
@@ -337,7 +350,9 @@ export default function MyCollections(): React.ReactElement {
                                 "tablet-2:hidden tablet-2:w-[150px] tablet-2:h-[100px] tablet-2:mb-0"
                             )}
                             style={{
-                                backgroundImage: `url(${selectedCollectionData.coverImgUrl})`,
+                                backgroundImage: getBgImageFromBinary(
+                                    selectedCollectionData.coverImg
+                                ),
                             }}
                         ></div>
 
