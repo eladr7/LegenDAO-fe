@@ -27,7 +27,7 @@ export default function CollectionItem({
     return (
         <div
             className={cn(
-                "max-w-[320px] tablet-2:max-w-lg flex flex-col flex-nowrap rounded-xl overflow-hidden shrink-0 group relative"
+                "max-w-[320px] xs:max-w-none tablet-2:max-w-lg flex flex-col flex-nowrap rounded-xl overflow-hidden shrink-0 group relative"
             )}
         >
             <Button
@@ -38,7 +38,7 @@ export default function CollectionItem({
                 <span className="px-12">Enter</span>
             </Button>
             <div
-                className={cn("h-[200px]  bg-cover bg-no-repeat bg-center")}
+                className={cn("h-[200px] bg-cover bg-no-repeat bg-center rounded-t-xl")}
                 style={{ backgroundImage: coverImg }}
             ></div>
             <Panel bBordered={false} className="py-6">

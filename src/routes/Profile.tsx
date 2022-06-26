@@ -221,7 +221,7 @@ export default function Profile(): React.ReactElement {
                         {selectedNft && profileState.tab === "/profile/collected" && (
                             <div
                                 className={cn(
-                                    "absolute md:left-[29%] md:w-[40%] xs:left-[5%] xs:w-[90%] z-20"
+                                    "xs:absolute lg:fixed md:fixed md:left-[29%] md:w-[40%] xs:left-[5%] xs:w-[90%] z-20"
                                     // "xs:w-[90%] xs:top:[10%] xs:left-[5%]"
                                 )}
                                 style={{ top: `${clickedYCoordinate}` }}

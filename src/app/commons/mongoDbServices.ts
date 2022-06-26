@@ -36,6 +36,7 @@ export type TCollectionDataMongoDb = {
 
 class MongoDbServices {
     protected baseURL: string | undefined = process.env.REACT_APP_MONGODB_API_URL;
+    protected apiKey: string | undefined = process.env.REACT_APP_MONGODB_API_KEY;
     public async getTokenDataMongoDb() {
         const instance = axios.create({
             baseURL: this.baseURL,
@@ -44,7 +45,7 @@ class MongoDbServices {
             "Accept": "application/json",
             "Content-Type": 'application/json',
             "Access-Control-Request-Headers": '*',
-            "api-key": 'FuzWIacYXkc3H0RFnHrp9w2keC9j2NjdV2pb11rw7iJLSIEtcPxTfGhORiHvWjpi',
+            "api-key": this.apiKey,
             },
         });
 
@@ -64,7 +65,7 @@ class MongoDbServices {
             "Accept": "application/json",
             "Content-Type": 'application/json',
             "Access-Control-Request-Headers": '*',
-            "api-key": 'FuzWIacYXkc3H0RFnHrp9w2keC9j2NjdV2pb11rw7iJLSIEtcPxTfGhORiHvWjpi',
+            "api-key": this.apiKey,
             },
         });
 

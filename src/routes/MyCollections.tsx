@@ -129,7 +129,7 @@ export default function MyCollections(): React.ReactElement {
 
     const getNftPriceInFiat = useCallback(
         (priceInLGND: number) => {
-            const lgndPriceInFiat = walletState.tokenData ? walletState.tokenData.price : -1; // TODO: figure a logical default value in case of fetch failure
+            const lgndPriceInFiat = walletState.tokenData ? walletState.tokenData.price : -1;
             return lgndPriceInFiat * priceInLGND;
         },
         [walletState.tokenData]
@@ -147,13 +147,13 @@ export default function MyCollections(): React.ReactElement {
     const renderFollowingCollections = useCallback(() => {
         return (
             <div className="mt-12 tablet-2:mt-24 px-4 tablet-2:px-16 flex flex-col flex-nowrap">
-                <div className="mb-6 last:mb-0 font-semibold text-xl text-[#B3BBC9]">
+                <div className="mb-6 xs:-mb-2 xs:mt-8 last:mb-0 font-semibold text-xl text-[#B3BBC9]">
                     Following Collections
                 </div>
                 <div
                     className={cn(
-                        "flex grid-cols-[repeat(auto-fill,_minmax(320px,_1fr))] gap-6 overflow-x-auto",
-                        "tablet-2:grid tablet-2:grid-cols-[repeat(auto-fill,_minmax(380px,_1fr))] tablet-2:gap-10 tablet-2:overflow-x-hidden"
+                        "flex xs:flex-col grid-cols-[repeat(auto-fill,_minmax(320px,_1fr))] gap-6 overflow-x-auto",
+                        "tablet-2:grid tablet-2:grid-cols-[repeat(auto-fill,_minmax(380px,_1fr))] tablet-2:gap-10 tablet-2:overflow-x-hidden px-1"
                     )}
                 >
                     {collectionState.generalCollectionsData.map((collectionGeneralData, index) => {
@@ -202,11 +202,11 @@ export default function MyCollections(): React.ReactElement {
         if (!collectionState.bEntered) {
             return (
                 <div
-                    className="relative w-full max-w-[700px] h-[300px] tablet-2:h-[500px] bg-no-repeat bg-cover container bg-center flex justify-center items-center"
+                    className="relative w-full max-w-[700px] h-[300px] tablet-2:h-[500px] bg-no-repeat bg-cover container bg-center flex justify-center items-center rounded-xl"
                     style={{ backgroundImage: `url(${imgTopSecretCol01})` }}
                 >
-                    <div className="absolute top-0 left-0 right-0 bottom-0 bg-slate-900/75"></div>
-                    <div className="absolute top-0 left-0 right-0 bottom-0 bg-blue-900/25"></div>
+                    <div className="absolute top-0 left-0 right-0 bottom-0 bg-slate-900/75 rounded-xl"></div>
+                    <div className="absolute top-0 left-0 right-0 bottom-0 bg-blue-900/25 rounded-xl"></div>
                     <div>
                         <Button
                             bigness="lg"
@@ -223,7 +223,7 @@ export default function MyCollections(): React.ReactElement {
         return (
             <div
                 className={cn(
-                    "relative flex justify-center items-center",
+                    "relative flex justify-center rounded-xl items-center",
                     "w-full max-w-[700px] h-[300px] tablet-2:h-[500px] bg-no-repeat container bg-cover bg-center"
                 )}
                 style={{
@@ -231,7 +231,7 @@ export default function MyCollections(): React.ReactElement {
                 }}
             >
                 {!mintState.agent && (
-                    <div className="absolute top-0 left-0 right-0 bottom-0 bg-slate-900/70"></div>
+                    <div className="absolute top-0 left-0 right-0 bottom-0 bg-slate-900/70 rounded-xl"></div>
                 )}
                 {!mintState.agent && (
                     <div>
@@ -522,7 +522,6 @@ export default function MyCollections(): React.ReactElement {
 
     const renderWiki = useCallback(() => {
         if (collectionState.generalCollectionsData.length === 0) return <div>nothing yet</div>;
-        // TODO: add logic for presenting the info according to collectionState.selectedCollectionIndex
         const selectedCollectionData: TGeneralCollectionData =
             collectionState.generalCollectionsData[collectionState.selectedCollectionIndex];
         return (
@@ -573,12 +572,14 @@ export default function MyCollections(): React.ReactElement {
                 <div className="absolute top-0 left-0 bottom-0 right-0 bg-slate-900/80"></div>
 
                 <div className="grow flex flex-col flex-nowrap items-stretch z-10">
-                    <div className="flex flex-row flex-nowrap">
+                    <div className="flex lg:flex-row md:flex-row xs:flex-col flex-nowrap">
                         {renderInfo()}
                         <div
                             className={cn(
-                                "w-1/2 z-10 mt-36 pr-16",
-                                "hidden flex-col justify-start items-end",
+                                "lg:w-1/2 z-10 lg:mt-36 lg:pr-16",
+                                "md:w-1/2 z-10 md:mt-36 md:pr-16",
+                                "xs:ml-[5%] xs:mt-4 xs:w-[90%]",
+                                "flex-col justify-start items-end",
                                 "tablet-2:flex"
                             )}
                         >

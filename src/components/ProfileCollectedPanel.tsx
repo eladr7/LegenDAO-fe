@@ -51,7 +51,7 @@ export default function ProfileCollectedPanel({ setNftAndPosition }: Props): Rea
                     token: royalties[0]?.recipient,
                     royalties: royalties[0].rate,
                 };
-                // TODO: Add scroll on desktop, on mobile no just take the space
+
                 return (
                     <div
                         className="flex flex-col justify-center items-center"
@@ -78,7 +78,7 @@ export default function ProfileCollectedPanel({ setNftAndPosition }: Props): Rea
     }, [collectionState.listMyCollection]);
 
     return (
-        <Panel className="min-h-[300px] lg:h-[700px] w-full lg:min-w-[368px] lg:w-full">
+        <Panel className="min-h-[300px] lg:min-h-[700px] w-full lg:min-w-[368px] lg:w-full">
             <div className="mb-4 last:mb-0 text-teal-200 text-xl">Collected</div>
             <div className="grid grid-cols-2 gap-4">{renderListItem()}</div>
         </Panel>
