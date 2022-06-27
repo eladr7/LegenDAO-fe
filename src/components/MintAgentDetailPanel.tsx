@@ -65,9 +65,9 @@ export default function MintAgentDetailPanel({
                         </div>
                     </div>
                 </div>
-                <div className="py-4 border-b last:border-b-0 border-white/10 flex flex-col flex-nowrap">
+                {/* <div className="py-4 border-b last:border-b-0 border-white/10 flex flex-col flex-nowrap">
                     <div className="mb-2 last:mb-0 text-blue-300">More Details</div>
-                </div>
+                </div> */}
             </div>
         </Panel>
     );
