@@ -5,7 +5,8 @@
         "quotes": ["warn", "double"],
         "no-console": ["warn"],
         "valid-typeof": ["error"],
-        "@typescript-eslint/no-explicit-any": "off"
+        "@typescript-eslint/no-explicit-any": "off",
+        "no-debugger": "off"
     },
     "extends": [
         "eslint:recommended",

@@ -60,7 +60,7 @@ const _sendTokenFromPlatformToContract: CaseReducer<
     state.tx = {
         txHash: action.payload.tx?.transactionHash,
         txName: TRANSACTION_KEY.MINT_NFT,
-        txStatus: Boolean(action.payload.tx?.data.length),
+        txStatus: action.payload.tx?.code === 0,
     };
 };
 
@@ -72,7 +72,7 @@ const _depositToPlatform: CaseReducer<
     state.tx = {
         txHash: action.payload.tx?.transactionHash,
         txName: TRANSACTION_KEY.DEPOSIT,
-        txStatus: Boolean(action.payload.tx?.data.length),
+        txStatus: action.payload.tx?.code === 0,
     };
 };
 
@@ -158,7 +158,7 @@ const _claimPlatform: CaseReducer<
     state.tx = {
         txHash: action.payload.tx?.transactionHash,
         txName: TRANSACTION_KEY.CLAIM_REDEEMED,
-        txStatus: Boolean(action.payload.tx?.data.length),
+        txStatus: action.payload.tx?.code === 0,
     };
 };
 
@@ -170,7 +170,7 @@ const _withdrawFromPlatform: CaseReducer<
     state.tx = {
         txHash: action.payload.tx?.transactionHash,
         txName: TRANSACTION_KEY.WITHDRAW,
-        txStatus: Boolean(action.payload.tx?.data.length),
+        txStatus: action.payload.tx?.code === 0,
     };
 };
 

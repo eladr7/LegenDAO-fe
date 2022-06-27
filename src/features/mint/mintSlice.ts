@@ -36,7 +36,7 @@ const _setSuccessMessage: CaseReducer<TMintState, PayloadAction<string | undefin
 
 const _getLatestNft: CaseReducer<
     TMintState,
-    PayloadAction<{ agent?: any } | undefined>
+    PayloadAction<{ agent?: any, selectedCollectionIndex?: number } | undefined>
 > = (state, action) => {
     state.agent = action.payload?.agent;
 };

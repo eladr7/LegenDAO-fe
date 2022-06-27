@@ -1,14 +1,39 @@
 import { CaseReducer, createSlice, PayloadAction, createAsyncThunk } from "@reduxjs/toolkit";
 import { TActionStage } from "../../app/commons/api";
 
+
 type MyData = string;
+export type TListCollection = {
+    [key: string]: Array<any>
+}
+
+export type TGeneralCollectionData = {
+    coverImg: {
+        data: any,
+        contentType: string
+    };
+    name: string;
+    description: string;
+    artistDescription: string;
+    artistName: string;
+    startingDate: Date;
+    totalItemNum: number;
+    mintPrice: number;
+    mintPriceWL: number;
+    nftContractAddress: string;
+    minterContractAddress: string;
+    onSale: boolean;
+}
+
 export type TCollectionState = {
     searchStage: TActionStage | undefined;
     searchResult: Array<unknown> | undefined;
     searchString: string;
     whitelistSpot?: unknown;
     bEntered: boolean;
-    listMyCollection: Array<any>;
+    selectedCollectionIndex: number;
+    listMyCollection: TListCollection;
+    generalCollectionsData: Array<TGeneralCollectionData>;
 };
 
 const initialState: TCollectionState = {
@@ -17,14 +42,36 @@ const initialState: TCollectionState = {
     searchString: "",
     whitelistSpot: undefined,
     bEntered: false,
-    listMyCollection: [],
+    selectedCollectionIndex: 0,
+    listMyCollection: {},
+    generalCollectionsData: [{
+        coverImg: {
+            data: null,
+            contentType: ""
+        },
+        name: "",
+        description: "",
+        artistDescription: "",
+        artistName: "",
+        startingDate: new Date(),
+        totalItemNum: 0,
+        mintPrice: 0,
+        mintPriceWL: 0,
+        nftContractAddress: "",
+        minterContractAddress: "",
+        onSale: false
+    }]
 };
 
-const _toggleEnter: CaseReducer<TCollectionState, PayloadAction<boolean | undefined>> = (
+const _toggleEnter: CaseReducer<TCollectionState, PayloadAction<{
+    entered: boolean | undefined;
+    collectionIndex: number;
+}>> = (
     state,
     action
 ) => {
-    state.bEntered = action.payload ?? !state.bEntered;
+    state.bEntered = action.payload.entered ?? !state.bEntered;
+    state.selectedCollectionIndex = action.payload.collectionIndex;
 };
 
 const searchOld = createAsyncThunk<MyData, string>("collection/searchOld", async (input) => {
@@ -65,9 +112,30 @@ const _setWhitelistSpot: CaseReducer<TCollectionState, PayloadAction<unknown | u
 
 const _getCollection: CaseReducer<
     TCollectionState,
-    PayloadAction<{ listMyCollection?: any } | undefined>
+    PayloadAction<{ 
+        listMyCollection?: any;
+        nftContract: string;
+    }>
 > = (state, action) => {
-    state.listMyCollection = action.payload?.listMyCollection;
+    const nftContractAddress = action.payload?.nftContract;
+        const collectionItems = action.payload?.listMyCollection;
+        state.listMyCollection[nftContractAddress as string] = [
+            ...collectionItems
+        ]
+};
+
+const _getGeneralCollectionsData: CaseReducer<
+    TCollectionState,
+    PayloadAction<{ 
+        generalCollectionsData?: Array<TGeneralCollectionData>;
+    }>
+> = (state, action) => {
+     const collectionItems = action.payload?.generalCollectionsData;
+    if (collectionItems){
+        state.generalCollectionsData = [
+            ...collectionItems
+        ]
+    }
 };
 
 const collectionSlice = createSlice({
@@ -79,6 +147,7 @@ const collectionSlice = createSlice({
         toggleEnter: _toggleEnter,
         setWhitelistSpot: _setWhitelistSpot,
         getCollection: _getCollection,
+        getGeneralCollectionsData: _getGeneralCollectionsData
     },
     extraReducers: (builder) => {
         builder.addCase(searchOld.pending, (state) => {
