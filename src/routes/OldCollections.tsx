@@ -93,7 +93,7 @@ export default function OldCollections(): React.ReactElement {
                                 <CollectionItem
                                     coverImg={getBgImageFromBinary(collectionGeneralData.coverImg)}
                                     name={collectionGeneralData.name}
-                                    description={collectionGeneralData.description}
+                                    intro={collectionGeneralData.intro}
                                     startingDate={collectionGeneralData.startingDate}
                                     totalItemNum={collectionGeneralData.totalItemNum}
                                     mintPrice={mintPrice}

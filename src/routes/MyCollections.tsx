@@ -176,7 +176,7 @@ export default function MyCollections(): React.ReactElement {
                                 <CollectionItem
                                     coverImg={getBgImageFromBinary(collectionGeneralData.coverImg)}
                                     name={collectionGeneralData.name}
-                                    description={collectionGeneralData.description}
+                                    intro={collectionGeneralData.intro}
                                     startingDate={collectionGeneralData.startingDate}
                                     totalItemNum={collectionGeneralData.totalItemNum}
                                     mintPrice={mintPrice}
@@ -398,12 +398,7 @@ export default function MyCollections(): React.ReactElement {
                         </div>
                     </div>
                     <div className="mb-6 tablet:mb-8 last:mb-0 ">
-                        <p className="  text-[#AFB7C6]">
-                            The top secret collection contains things that should be kept secret.
-                            5555 pieces of ancient Egyptian mythology symbols. The top secret
-                            collection contains things that should be kept secret. 5555 pieces of
-                            ancient Egyptian mythology symbols. // TODO: is that description?
-                        </p>
+                        <p className="  text-[#AFB7C6]">{selectedCollectionData.intro}</p>
                     </div>
 
                     <div

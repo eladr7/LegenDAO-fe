@@ -21,6 +21,7 @@ export type TCollectionDataMongoDb = {
             };
             name: string;
             description: string;
+            intro: string;
             artistDescription: string;
             artistName: string;
             startingDate: string;

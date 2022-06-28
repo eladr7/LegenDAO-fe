@@ -14,6 +14,7 @@ export type TGeneralCollectionData = {
     };
     name: string;
     description: string;
+    intro: string;
     artistDescription: string;
     artistName: string;
     startingDate: Date;
@@ -51,6 +52,7 @@ const initialState: TCollectionState = {
         },
         name: "",
         description: "",
+        intro: "",
         artistDescription: "",
         artistName: "",
         startingDate: new Date(),

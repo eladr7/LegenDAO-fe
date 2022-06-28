@@ -944,13 +944,14 @@ const _netMiddlewareClosure = (): Middleware => {
                         if (nftCollections.status === 200) {
                             const collectionsData = [];
                             for (let i = 0; i < nftCollections.data.documents.length; i++) {
-                                const { coverImg, name, description, artistDescription, artistName, startingDate, totalItemNum,
+                                const { coverImg, name, description, intro, artistDescription, artistName, startingDate, totalItemNum,
                                     mintPrice, mintPriceWL, minterContractAddress, nftContractAddress, onSale} = nftCollections.data.documents[i];
 
                                 const dataItem = {
                                     coverImg,
                                     name,
                                     description,
+                                    intro,
                                     artistDescription,
                                     artistName,
                                     startingDate: new Date(startingDate),
