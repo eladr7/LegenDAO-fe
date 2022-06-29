@@ -34,6 +34,7 @@ import { transactionActions } from "../features/transaction/transactionSlice";
 import { Footer } from "../components/commons/Footer";
 import { profileActions } from "../features/profile/profileSlice";
 import { NFT_MINTING_ADDRESSES } from "../constants/contractAddress";
+import { getBgImageFromBinary } from "../helpers/common";
 
 export default function MyCollections(): React.ReactElement {
     const navigate = useNavigate();
@@ -134,15 +135,6 @@ export default function MyCollections(): React.ReactElement {
         },
         [walletState.tokenData]
     );
-
-    const getBgImageFromBinary = (coverImg: { data: any; contentType: string }) => {
-        let image = "";
-        if (coverImg.data && coverImg.data.Data) {
-            image = `url(data:image/png;base64,${coverImg.data.Data})`;
-        }
-
-        return image;
-    };
 
     const renderFollowingCollections = useCallback(() => {
         return (
@@ -269,6 +261,8 @@ export default function MyCollections(): React.ReactElement {
         const priceInLGND = getNftPriceInLgnd();
         const priceInFiat = getNftPriceInFiat(priceInLGND);
         if (!state.bodyElement) return null;
+        const selectedCollectionData: TGeneralCollectionData =
+            collectionState.generalCollectionsData[collectionState.selectedCollectionIndex];
         if (accessibilityState.bMintConfirmPurchasePanelOn) {
             return (
                 <Modal bodyElement={state.bodyElement} onOuterClick={handleOnMintCloseBtnClicked}>
@@ -276,7 +270,7 @@ export default function MyCollections(): React.ReactElement {
                         onCloseBtnClicked={handleOnMintCloseBtnClicked}
                         priceInLGND={priceInLGND}
                         priceInFiat={priceInFiat}
-                        itemCoverUrl={imgTopSecretColMintBg01}
+                        itemCoverUrl={getBgImageFromBinary(selectedCollectionData.coverImg)}
                     />
                 </Modal>
             );
@@ -300,7 +294,11 @@ export default function MyCollections(): React.ReactElement {
                                     "mb-6 w-full h-[200px] bg-no-repeat bg-cover bg-center",
                                     "tablet-2:hidden tablet-2:w-[150px] tablet-2:h-[100px] tablet-2:mb-0"
                                 )}
-                                style={{ backgroundImage: `url(${imgTopSecretColMintBg01})` }}
+                                style={{
+                                    backgroundImage: getBgImageFromBinary(
+                                        selectedCollectionData.coverImg
+                                    ),
+                                }}
                             ></div>
                             <div className="flex flex-col items-stretch">
                                 <Button onClick={handleOnMintAgainBtnClicked}>Mint Again</Button>

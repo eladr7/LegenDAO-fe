@@ -94,7 +94,7 @@ export default function MintConfirmPurchasePanel({
                             "mb-6 w-full h-[200px] bg-no-repeat bg-cover bg-center",
                             "tablet-2:w-[150px] tablet-2:h-[100px] tablet-2:mb-0"
                         )}
-                        style={{ backgroundImage: `url(${itemCoverUrl})` }}
+                        style={{ backgroundImage: itemCoverUrl }}
                     ></div>
                     <div className="w-full tablet-2:ml-8 first:ml-0 flex flex-col flex-nowrap items-center tablet-2:items-start">
                         <div className="text-blue-300">Item Price</div>
