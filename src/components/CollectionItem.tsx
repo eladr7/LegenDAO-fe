@@ -6,7 +6,7 @@ import Button from "./commons/Button";
 type Props = {
     coverImg: string;
     name: string;
-    description: string;
+    intro: string;
     startingDate: Date;
     totalItemNum: number;
     mintPrice: number;
@@ -17,7 +17,7 @@ type Props = {
 export default function CollectionItem({
     coverImg,
     name,
-    description,
+    intro,
     startingDate,
     totalItemNum,
     mintPrice,
@@ -44,7 +44,7 @@ export default function CollectionItem({
             <Panel bBordered={false} className="py-6">
                 <div className={cn("flex flex-col flex-none items-stretch")}>
                     <div className="mb-2 last:mb-0 font-semibold text-xl opacity-80">{name}</div>
-                    <div className="mb-4 last:mb-0 text-sm text-[#AFB7C6]">{description}</div>
+                    <div className="mb-4 last:mb-0 text-sm text-[#AFB7C6]">{intro}</div>
                     <div className="mb-2 last:mb-0 flex flex-col tablet-2:flex-row flex-nowrap justify-between items-start tablet-2:items-center text-sm">
                         <div className="mb-4 tablet-2:mb-0 flex flex-col">
                             <div className="text-blue-300 font-emphasis">Starting Date</div>

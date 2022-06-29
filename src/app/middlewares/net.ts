@@ -943,14 +943,15 @@ const _netMiddlewareClosure = (): Middleware => {
                         const nftCollections = await mongoDbServices.getCollectionsDataMongoDb();
                         if (nftCollections.status === 200) {
                             const collectionsData = [];
-                            for (let i = 0; i < nftCollections.data.documents.length; i++) {
-                                const { coverImg, name, description, artistDescription, artistName, startingDate, totalItemNum,
-                                    mintPrice, mintPriceWL, minterContractAddress, nftContractAddress, onSale} = nftCollections.data.documents[i];
+                            for (let i = 0; i < nftCollections.data.length; i++) {
+                                const { coverImg, name, description, intro, artistDescription, artistName, startingDate, totalItemNum,
+                                    mintPrice, mintPriceWL, minterContractAddress, nftContractAddress, onSale} = nftCollections.data[i];
 
                                 const dataItem = {
                                     coverImg,
                                     name,
                                     description,
+                                    intro,
                                     artistDescription,
                                     artistName,
                                     startingDate: new Date(startingDate),
@@ -1034,7 +1035,7 @@ const _netMiddlewareClosure = (): Middleware => {
                         const res = await mongoDbServices.getTokenDataMongoDb();
 
                         if (res.status === 200) {
-                            const { apy, apr, liquidity, priceUsd, totalLocked, dailyVolume} = res.data.document;
+                            const { apy, apr, liquidity, priceUsd, totalLocked, dailyVolume} = res.data;
                             next({
                                 ...action,
                                 payload: {

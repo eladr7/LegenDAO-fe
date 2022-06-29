@@ -15,6 +15,7 @@ import {
 } from "../features/collection/collectionSlice";
 import CollectionItem from "../components/CollectionItem";
 import { useNavigate } from "react-router-dom";
+import { getBgImageFromBinary } from "../helpers/common";
 
 export default function OldCollections(): React.ReactElement {
     const navigate = useNavigate();
@@ -47,15 +48,6 @@ export default function OldCollections(): React.ReactElement {
     const handleOnEnterBtnClicked = (selectedCollectionIndex: number) => {
         dispatch(toggleEnter({ entered: true, collectionIndex: selectedCollectionIndex }));
         navigate("/collections");
-    };
-
-    const getBgImageFromBinary = (coverImg: { data: any; contentType: string }) => {
-        let image = "";
-        if (coverImg.data && coverImg.data.Data) {
-            image = `url(data:image/png;base64,${coverImg.data.Data})`;
-        }
-
-        return image;
     };
 
     const renderCollections = useCallback(() => {
@@ -93,7 +85,7 @@ export default function OldCollections(): React.ReactElement {
                                 <CollectionItem
                                     coverImg={getBgImageFromBinary(collectionGeneralData.coverImg)}
                                     name={collectionGeneralData.name}
-                                    description={collectionGeneralData.description}
+                                    intro={collectionGeneralData.intro}
                                     startingDate={collectionGeneralData.startingDate}
                                     totalItemNum={collectionGeneralData.totalItemNum}
                                     mintPrice={mintPrice}
