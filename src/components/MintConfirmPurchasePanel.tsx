@@ -3,6 +3,7 @@ import cn from "classnames";
 import React, { useCallback, useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
 import { TRANSACTION_KEY } from "../constants/constant";
+import { NFT_MINTING_ADDRESSES } from "../constants/contractAddress";
 import {
     toggleMintSuccessfulPanelOn,
     turnOffAllPanel,
@@ -31,6 +32,7 @@ export default function MintConfirmPurchasePanel({
     onCloseBtnClicked,
 }: Props): React.ReactElement {
     const mintState = useAppSelector((state) => state.mint);
+    const collectionState = useAppSelector((state) => state.collection);
     const transactionState = useAppSelector((state) => state.transaction);
     const networkState = useAppSelector((state) => state.network);
     const dispatch = useAppDispatch();
@@ -43,16 +45,17 @@ export default function MintConfirmPurchasePanel({
         dispatch(mintActions.clearLatestNft());
         if (!networkState.bIsConnected) return;
         const amountToMint = 1;
-        const tokenPrice = process.env.REACT_APP_TOKEN_PRICE || "1000000";
+        const tokenPrice = (priceInLGND * 1_000_000).toString();
         dispatch(transactionActions.startTransaction());
         dispatch(
             transactionActions.sendTokenFromPlatformToContract({
                 amountToMint,
                 sendAmount: new BigNumber(amountToMint).times(tokenPrice).toFixed(),
-                mintingContractAddress: process.env.REACT_APP_ADDRESS_NFT_MINTING,
+                mintingContractAddress:
+                    NFT_MINTING_ADDRESSES[collectionState.selectedCollectionIndex],
             })
         );
-    }, [dispatch, networkState.bIsConnected]);
+    }, [dispatch, networkState.bIsConnected, priceInLGND, collectionState.selectedCollectionIndex]);
 
     useEffect(() => {
         if (
@@ -65,7 +68,11 @@ export default function MintConfirmPurchasePanel({
                 dispatch(toggleMintSuccessfulPanelOn(true));
                 dispatch(setSuccessMessage("Congratulations, you've successfully minted an NFT!"));
             } else {
-                dispatch(mintActions.getLatestNft());
+                dispatch(
+                    mintActions.getLatestNft({
+                        selectedCollectionIndex: collectionState.selectedCollectionIndex,
+                    })
+                );
             }
         }
     }, [
@@ -74,6 +81,7 @@ export default function MintConfirmPurchasePanel({
         transactionState.bIsPending,
         transactionState.tx?.txName,
         mintState.agent,
+        collectionState.selectedCollectionIndex,
     ]);
 
     return (
@@ -86,7 +94,7 @@ export default function MintConfirmPurchasePanel({
                             "mb-6 w-full h-[200px] bg-no-repeat bg-cover bg-center",
                             "tablet-2:w-[150px] tablet-2:h-[100px] tablet-2:mb-0"
                         )}
-                        style={{ backgroundImage: `url(${itemCoverUrl})` }}
+                        style={{ backgroundImage: itemCoverUrl }}
                     ></div>
                     <div className="w-full tablet-2:ml-8 first:ml-0 flex flex-col flex-nowrap items-center tablet-2:items-start">
                         <div className="text-blue-300">Item Price</div>
@@ -98,30 +106,40 @@ export default function MintConfirmPurchasePanel({
                         </div>
                     </div>
                 </div>
-                <div
-                    className="mb-6 last:mb-0 flex flex-row flex-nowrap items-center cursor-pointer"
-                    onClick={handleOnAgreeTermOfServiceBtnClicked}
-                >
-                    <CheckBox bChecked={mintState.bAgreeTermOfService} />
+                <div className="mb-6 last:mb-0 flex flex-row flex-nowrap items-center">
+                    <div onClick={handleOnAgreeTermOfServiceBtnClicked}>
+                        <CheckBox bChecked={mintState.bAgreeTermOfService} />
+                    </div>
                     <span className="ml-2 text-sm tablet-2:text-sm">
                         By checking this box, I agree to{" "}
-                        <span className="text-[#8c70ed] underline cursor-pointer">
+                        <a
+                            className="text-[#8c70ed] underline cursor-pointer"
+                            href="https://docs.google.com/document/d/1toH4ICe9CCySDeVNd7tbKJNst-DnNIYcidpGi9XNk5k/edit#heading=h.gjdgxs"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                        >
                             Legendao&apos;s Terms of Service
-                        </span>
+                        </a>
                     </span>
                 </div>
 
-                <div className="flex flex-row">
-                    <Button
-                        bigness="lg"
-                        onClick={handleOnMintNowBtnClicked}
-                        bTransparent={!mintState.bAgreeTermOfService}
-                        disabled={!mintState.bAgreeTermOfService}
-                        className="grow"
-                    >
-                        <span className="hidden tablet-2:inline">Mint Now</span>
-                        <span className="tablet-2:hidden">Buy Now</span>
-                    </Button>
+                <div className="flex flex-row justify-center">
+                    {priceInLGND ? (
+                        <Button
+                            bigness="lg"
+                            onClick={handleOnMintNowBtnClicked}
+                            bTransparent={!mintState.bAgreeTermOfService}
+                            disabled={!mintState.bAgreeTermOfService}
+                            className="grow"
+                        >
+                            <span className="hidden tablet-2:inline">Mint Now</span>
+                            <span className="tablet-2:hidden">Buy Now</span>
+                        </Button>
+                    ) : (
+                        <div className="justify-center">
+                            Cannot mint, collection info failed to load
+                        </div>
+                    )}
                 </div>
 
                 <div className="mt-6 w-full text-center">

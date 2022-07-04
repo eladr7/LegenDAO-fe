@@ -16,15 +16,15 @@ import { networkActions } from "../../features/network/networkSlice";
 import { IDataStaking, walletActions, walletAsyncActions } from "../../features/wallet/walletSlice";
 import {
     LGND_ADDRESS,
-    NFT_ADDRESS,
-    NFT_MINTING_ADDRESS,
+    NFT_ADDRESSES,
+    NFT_MINTING_ADDRESSES,
     PLATFORM_ADDRESS,
     STAKING_ADDRESS,
 } from "../../constants/contractAddress";
 import { transactionActions } from "../../features/transaction/transactionSlice";
 import { DF_DENOM } from "../../constants/defaults";
 import { KEY, MESSAGE_ERROR } from "../../constants/constant";
-import { collectionAtions } from "../../features/collection/collectionSlice";
+import { collectionAtions, TGeneralCollectionData } from "../../features/collection/collectionSlice";
 import { addPopup, applicationActions } from "../../features/application/applicationSlice";
 import { formatBalance } from "../../helpers/format";
 import {
@@ -32,7 +32,7 @@ import {
     toggleWithdrawPanel,
 } from "../../features/accessibility/accessibilitySlice";
 import walletAPI from "../../features/wallet/walletApi";
-import { legendServices } from "../commons/legendServices";
+import { mongoDbServices } from "../commons/mongoDbServices";
 import BigNumber from "bignumber.js";
 import { getDetailNft, getMintingHistory } from "../nftContract";
 import {
@@ -44,6 +44,9 @@ import {
     TTransactionHistory,
 } from "../../classes/QueryContract";
 import { mintActions } from "../../features/mint/mintSlice";
+
+import imgTopSecretColBg01 from "../../assets/images/top-secret-col-background-01.png";
+import imgTopSecretColMintBg01 from "../../assets/images/top-secret-col-mint-background-01.png";
 
 const _connect = (): Promise<{ client: SecretNetworkClient; account: AccountData }> => {
     return new Promise((resolve, reject: (reason?: TNetError) => void) => {
@@ -110,8 +113,8 @@ const _netMiddlewareClosure = (): Middleware => {
     const initAddressArray = [
         LGND_ADDRESS,
         PLATFORM_ADDRESS,
-        NFT_ADDRESS,
-        NFT_MINTING_ADDRESS,
+        ...NFT_ADDRESSES,
+        ...NFT_MINTING_ADDRESSES,
         STAKING_ADDRESS,
     ];
 
@@ -352,17 +355,6 @@ const _netMiddlewareClosure = (): Middleware => {
                     })
                 ).toString("base64");
 
-                const msgWithdrawFromStaking = new MsgExecuteContract({
-                    contractAddress: STAKING_ADDRESS,
-                    codeHash: codeHashes[STAKING_ADDRESS]?.codeHash,
-                    sender: client.address,
-                    msg: {
-                        withdraw: {
-                            amount: sendAmount,
-                        },
-                    },
-                });
-
                 const msgSendFromPlatform = new MsgExecuteContract({
                     sender: client.address,
                     contractAddress: platformContractAddress,
@@ -377,7 +369,7 @@ const _netMiddlewareClosure = (): Middleware => {
                 });
 
                 client.tx
-                    .broadcast([msgWithdrawFromStaking, msgSendFromPlatform], {
+                    .broadcast([msgSendFromPlatform], {
                         gasLimit: 500_000,
                     })
                     .then((tx) => {
@@ -479,7 +471,7 @@ const _netMiddlewareClosure = (): Middleware => {
 
             case transactionActions.addMinters.type: {
                 const { minters, codeHash } = action.payload;
-                const nftContractAddress: string | undefined = NFT_ADDRESS;
+                const nftContractAddress: string | undefined = NFT_ADDRESSES[0]; //TODO: adjust for all collections
                 if (!client || !nftContractAddress) return;
 
                 client.tx.compute
@@ -511,7 +503,7 @@ const _netMiddlewareClosure = (): Middleware => {
 
             case transactionActions.mintNfts.type: {
                 const { amount } = action.payload;
-                const nftContractAddress: string | undefined = NFT_ADDRESS;
+                const nftContractAddress: string | undefined = NFT_ADDRESSES[0]; //TODO: adjust for all collections;
                 if (!client || !nftContractAddress) return;
 
                 client.tx.compute
@@ -544,7 +536,7 @@ const _netMiddlewareClosure = (): Middleware => {
 
             case transactionActions.mintNftsWithSnip.type: {
                 const { snipContract, priceForEach, amountToBuy, buyFor } = action.payload;
-                const nftContractAddress: string | undefined = NFT_ADDRESS;
+                const nftContractAddress: string | undefined = NFT_ADDRESSES[0]; //TODO: adjust for all collections;
                 if (!client || !nftContractAddress) return;
                 const msg = Buffer.from(
                     JSON.stringify({
@@ -589,7 +581,7 @@ const _netMiddlewareClosure = (): Middleware => {
 
             case transactionActions.mintAdminNfts.type: {
                 const { amount } = action.payload;
-                const nftContractAddress: string | undefined = NFT_ADDRESS;
+                const nftContractAddress: string | undefined = NFT_ADDRESSES[0]; //TODO: adjust for all collections;
                 if (!client || !nftContractAddress) return;
 
                 client.tx.compute
@@ -620,7 +612,7 @@ const _netMiddlewareClosure = (): Middleware => {
 
             case transactionActions.setTokenAttributes.type: {
                 const { attributes, codeHash } = action.payload;
-                const nftContractAddress: string | undefined = NFT_ADDRESS;
+                const nftContractAddress: string | undefined = NFT_ADDRESSES[0]; //TODO: adjust for all collections;
                 if (!client || !nftContractAddress) return;
 
                 client.tx.compute
@@ -652,7 +644,7 @@ const _netMiddlewareClosure = (): Middleware => {
 
             case transactionActions.changeWhitelistLevel.type: {
                 const { newLevel, codeHash } = action.payload;
-                const nftContractAddress: string | undefined = NFT_ADDRESS;
+                const nftContractAddress: string | undefined = NFT_ADDRESSES[0]; //TODO: adjust for all collections;
                 if (!client || !nftContractAddress) return;
 
                 client.tx.compute
@@ -684,7 +676,7 @@ const _netMiddlewareClosure = (): Middleware => {
 
             case transactionActions.addToWhitelist.type: {
                 const { address, codeHash } = action.payload;
-                const nftContractAddress: string | undefined = NFT_ADDRESS;
+                const nftContractAddress: string | undefined = NFT_ADDRESSES[0]; //TODO: adjust for all collections;
                 if (!client || !nftContractAddress) return;
 
                 client.tx.compute
@@ -716,7 +708,7 @@ const _netMiddlewareClosure = (): Middleware => {
 
             case transactionActions.viewTokens.type: {
                 const { codeHash, address, key } = action.payload;
-                const nftContractAddress: string | undefined = NFT_ADDRESS;
+                const nftContractAddress: string | undefined = NFT_ADDRESSES[0]; //TODO: adjust for all collections;
                 if (!client || !nftContractAddress) return;
 
                 client.query.snip721
@@ -879,11 +871,12 @@ const _netMiddlewareClosure = (): Middleware => {
             }
 
             case collectionAtions.getCollection.type: {
+                const { nftContract } = action.payload;
                 const getTokens = async () => {
-                    if (!client || !NFT_ADDRESS || !chainId || !signerPermit.signature) return;
+                    if (!client || !nftContract || !chainId || !signerPermit.signature) return;
                     const tokens = await client.query.compute.queryContract({
-                        contractAddress: NFT_ADDRESS,
-                        codeHash: codeHashes[NFT_ADDRESS]?.codeHash || "",
+                        contractAddress: nftContract,
+                        codeHash: codeHashes[nftContract]?.codeHash || "",
                         query: {
                             with_permit: {
                                 query: {
@@ -925,8 +918,8 @@ const _netMiddlewareClosure = (): Middleware => {
                         };
 
                         return (client as SecretNetworkClient).query.compute.queryContract({
-                            contractAddress: NFT_ADDRESS as string,
-                            codeHash: codeHashes[NFT_ADDRESS as string]?.codeHash || "",
+                            contractAddress: nftContract as string,
+                            codeHash: codeHashes[nftContract as string]?.codeHash || "",
                             query: {
                                 ...msg,
                             },
@@ -934,11 +927,69 @@ const _netMiddlewareClosure = (): Middleware => {
                     });
 
                     const listMyCollection = await Promise.all(collectionsDetails);
-                    next({ ...action, payload: { listMyCollection } });
+                    next({ ...action, payload: { listMyCollection, nftContract } }); // , nftContract: nftContract
                 };
 
                 getTokens();
 
+                break;
+            }
+
+            case collectionAtions.getGeneralCollectionsData.type: {
+                // Notice we always put a collection with "onSale: true" as the first element of the array,
+                // since collectionSlice::selectedCollectionIndex is set to 0 by default
+                (async () => {
+                    try {
+                        const nftCollections = await mongoDbServices.getCollectionsDataMongoDb();
+                        if (nftCollections.status === 200) {
+                            const collectionsData = [];
+                            for (let i = 0; i < nftCollections.data.length; i++) {
+                                const { coverImg, name, description, intro, artistDescription, artistName, startingDate, totalItemNum,
+                                    mintPrice, mintPriceWL, minterContractAddress, nftContractAddress, onSale} = nftCollections.data[i];
+
+                                const dataItem = {
+                                    coverImg,
+                                    name,
+                                    description,
+                                    intro,
+                                    artistDescription,
+                                    artistName,
+                                    startingDate: new Date(startingDate),
+                                    totalItemNum: parseInt(totalItemNum),
+                                    mintPrice: parseInt(mintPrice),
+                                    mintPriceWL: parseInt(mintPriceWL),
+                                    minterContractAddress,
+                                    nftContractAddress,
+                                    onSale: onSale === "true"
+                                };
+                                collectionsData.push(dataItem);
+                            }
+
+                            // Find an element with onSale === true and move it to the beginning of the array
+                            const fromIndex = collectionsData.findIndex(object => {
+                                return object.onSale === true;
+                            });
+                            const toIndex = 0;
+                            const element = collectionsData.splice(fromIndex, 1)[0];
+                            collectionsData.splice(toIndex, 0, element);
+
+                            next({
+                                ...action,
+                                payload: {
+                                    generalCollectionsData: [
+                                        ...collectionsData
+                                    ],
+                                },
+                            });
+                        }
+                    } catch (error) {
+                        store.dispatch(
+                            applicationActions.toastRequestRejected({
+                                errorMsg: (error as any)?.message as string,
+                            })
+                        );
+                    }
+                })();
                 break;
             }
 
@@ -981,18 +1032,20 @@ const _netMiddlewareClosure = (): Middleware => {
             case walletActions.getTokenData.type:
                 (async () => {
                     try {
-                        const res = await legendServices.getTokenData();
+                        const res = await mongoDbServices.getTokenDataMongoDb();
 
                         if (res.status === 200) {
-                            const { apy, daily_volume, liquidity, price_usd } = res.data;
+                            const { apy, apr, liquidity, priceUsd, totalLocked, dailyVolume} = res.data;
                             next({
                                 ...action,
                                 payload: {
                                     tokenData: {
+                                        price: priceUsd,
                                         apy: apy,
-                                        price: price_usd,
+                                        apr: apr,
                                         liquidity: liquidity,
-                                        dailyVolume: daily_volume,
+                                        dailyVolume: dailyVolume,
+                                        totalLocked: totalLocked
                                     },
                                 },
                             });
@@ -1022,7 +1075,7 @@ const _netMiddlewareClosure = (): Middleware => {
                             });
                         };
 
-                        const [rewardsResult, totalLocked] = await Promise.all([
+                        const [rewardsResult] = await Promise.all([
                             getDataStaking({
                                 with_permit: {
                                     query: {
@@ -1038,22 +1091,10 @@ const _netMiddlewareClosure = (): Middleware => {
                                         signature: signerPermit?.signature as StdSignature,
                                     },
                                 },
-                            }),
-                            getDataStaking({
-                                total_locked: {},
-                            }),
+                            })
                         ]);
 
                         const amountRewards = (rewardsResult as TRewards)?.rewards.rewards;
-                        const amountTotalLocked = (totalLocked as TTotalLocked)?.total_locked
-                            .amount;
-
-                        const value = process.env.REACT_APP_PER_LGND || "0";
-                        const tvl = new BigNumber(amountTotalLocked).times(value).toFixed();
-                        const apr = new BigNumber(process.env.REACT_APP_APY || "0")
-                            .div(tvl)
-                            .times(100)
-                            .toFixed();
 
                         const rewards: Coin = {
                             amount: formatBalance(amountRewards),
@@ -1062,19 +1103,18 @@ const _netMiddlewareClosure = (): Middleware => {
 
                         const storeState = store.getState();
                         const { balances } = storeState.wallet;
-
+                        const price = storeState.wallet.tokenData?.price?? 0;
+                        
+                        // The amount staked by the user
                         const totalStakedBalance = balances[STAKING_ADDRESS]?.amount;
                         const priceStaked = new BigNumber(totalStakedBalance)
-                            .times(value || "0")
+                            .times(price.toString())
                             .toFixed();
                         const priceReward = new BigNumber(amountRewards)
-                            .times(value || "0")
+                            .times(price.toString())
                             .toFixed();
 
                         const dataStaking: IDataStaking = {
-                            apr: formatBalance(apr),
-                            value,
-                            tvl: formatBalance(tvl),
                             totalStakedBalance: formatBalance(totalStakedBalance),
                             priceStaked: formatBalance(priceStaked),
                             rewards,
@@ -1098,10 +1138,13 @@ const _netMiddlewareClosure = (): Middleware => {
 
             case mintActions.getLatestNft.type:
                 (async () => {
+                    const { selectedCollectionIndex } = action.payload;
+
                     try {
                         console.log("run");
 
-                        if (!client || !NFT_ADDRESS || !signerPermit.msg?.allowed_tokens) return;
+                        if (!client || !NFT_ADDRESSES[selectedCollectionIndex] || !signerPermit.msg?.allowed_tokens) return;
+                        const selectedNFTCollectionAddress = NFT_ADDRESSES[selectedCollectionIndex]!;
                         const mintingHistory = await getMintingHistory(
                             client,
                             {
@@ -1113,7 +1156,8 @@ const _netMiddlewareClosure = (): Middleware => {
                                 },
                                 signature: signerPermit.signature as StdSignature,
                             },
-                            codeHashes[NFT_ADDRESS]?.codeHash
+                            selectedNFTCollectionAddress,
+                            codeHashes[selectedNFTCollectionAddress]?.codeHash
                         );
 
                         const latestTx = (mintingHistory as TTransactionHistory).transaction_history
@@ -1131,7 +1175,8 @@ const _netMiddlewareClosure = (): Middleware => {
                                 },
                                 signature: signerPermit.signature as StdSignature,
                             },
-                            codeHashes[NFT_ADDRESS]?.codeHash
+                            selectedNFTCollectionAddress,
+                            codeHashes[selectedNFTCollectionAddress]?.codeHash
                         );
 
                         const publicData = (latestNft as any).nft_dossier?.public_metadata

@@ -5,10 +5,16 @@ import { useActivePopups, useAppDispatch, useAppSelector } from "./app/hooks";
 import store from "./app/store";
 import ToastMessage from "./components/commons/ToastMessage";
 import AppContext, { TAppContext } from "./contexts/AppContext";
+import { collectionAtions } from "./features/collection/collectionSlice";
 import { walletActions } from "./features/wallet/walletSlice";
+import About from "./routes/About";
 import AirDrop from "./routes/AirDrop";
 import { Asset } from "./routes/Asset";
+import Community from "./routes/Community";
+import Docs from "./routes/Docs";
+import Faq from "./routes/FAQ";
 import FormCreation from "./routes/FormCreation";
+import Governance from "./routes/Governance";
 import Home from "./routes/Home";
 import { MintLabLanding } from "./routes/MintLabLanding";
 import MyCollections from "./routes/MyCollections";
@@ -55,6 +61,21 @@ function App(): React.ReactElement {
         dispatch(walletActions.getTokenData());
     }, [dispatch, transactionState.tx?.txHash, walletState.signature]);
 
+    useEffect(() => {
+        // TODO: for efficiency: separate this from collectionSlice because each time we'll
+        // navigante between the user NFTs and the Collections page, the store will get run over
+        dispatch(collectionAtions.getGeneralCollectionsData({}));
+    }, [dispatch, networkState.bIsConnected, walletState.signature]);
+
+    const getAnswer = async () => {
+        dispatch(walletActions.getTokenData());
+    };
+
+    useEffect(() => {
+        const timer = setInterval(getAnswer, 60000);
+        return () => clearInterval(timer);
+    }, []);
+
     const renderPopups = useCallback(() => {
         return activePopups.map((item, index) => {
             return (
@@ -75,11 +96,11 @@ function App(): React.ReactElement {
                 <div className="App">
                     <Routes>
                         <Route path="/" element={<Home />} />
-                        {/* <Route path="/about" element={<About />} />
+                        <Route path="/about" element={<About />} />
                         <Route path="/docs" element={<Docs />} />
                         <Route path="/faq" element={<Faq />} />
                         <Route path="/governance" element={<Governance />} />
-                        <Route path="/community" element={<Community />} /> */}
+                        <Route path="/community" element={<Community />} />
                         <Route path="/ui" element={<UI />} />
                         <Route path="/asset" element={<Asset />} />
                         <Route path="/mint-lab" element={<MintLabLanding />} />

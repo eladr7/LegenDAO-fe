@@ -42,6 +42,7 @@ export default function Stake(): React.ReactElement {
                     <Modal bodyElement={state.bodyElement}>
                         <StakeFormPanel
                             dataStaking={walletState.dataStaking}
+                            tokenData={walletState.tokenData}
                         />
                     </Modal>
                 )}

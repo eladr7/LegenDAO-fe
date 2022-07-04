@@ -1,25 +1,25 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { combineReducers } from "redux";
-import accessibilityReducer from "../features/accessibility/accessibilitySlice";
-import applicationReducer from "../features/application/applicationSlice";
+import networkReducer from "../features/network/networkSlice";
 import walletReducer, { walletAsyncActions } from "../features/wallet/walletSlice";
+import transactionReducer from "../features/transaction/transactionSlice";
+import mintReducer from "../features/mint/mintSlice";
 import collectionReducer from "../features/collection/collectionSlice";
 import airdropReducer from "../features/airdrop/airdropSlice";
-import mintReducer from "../features/mint/mintSlice";
 import profileReducer from "../features/profile/profileSlice";
-import networkReducer from "../features/network/networkSlice";
-import transactionReducer from "../features/transaction/transactionSlice";
+import accessibilityReducer from "../features/accessibility/accessibilitySlice";
+import applicationReducer from "../features/application/applicationSlice";
 import { netMiddleware } from "./middlewares/net";
 
 const rootReducer = combineReducers({
-    accessibility: accessibilityReducer,
     network: networkReducer,
-    transaction: transactionReducer,
     wallet: walletReducer,
-    airdrop: airdropReducer,
-    collection: collectionReducer,
+    transaction: transactionReducer,
     mint: mintReducer,
+    collection: collectionReducer,
+    airdrop: airdropReducer,
     profile: profileReducer,
+    accessibility: accessibilityReducer,
     application: applicationReducer,
 });
 

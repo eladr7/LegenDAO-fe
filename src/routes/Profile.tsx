@@ -1,4 +1,4 @@
-import React, { useCallback, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import cn from "classnames";
 import Article from "../components/commons/Article";
 import { DefaultLayout } from "../components/layouts/DefaultLayout";
@@ -14,18 +14,57 @@ import ProfileMyCollectionPanel from "../components/ProfileMyCollectionPanel";
 import PencilIcon from "../components/icons/PencilIcon";
 import { useAppDispatch, useAppSelector, useMediaQuery } from "../app/hooks";
 import { profileActions } from "../features/profile/profileSlice";
+import MintAgentDetailPanel from "../components/MintAgentDetailPanel";
+import { TMintAgent } from "../classes/MintAgent";
 
 const REGEXP_USERNAME = "^[0-9a-zA-Z]+$";
 
 export default function Profile(): React.ReactElement {
     const rfMyNameInput = useRef<HTMLInputElement>(null);
     const profileState = useAppSelector((state) => state.profile);
+
     const dispatch = useAppDispatch();
     const mediaQuery = useMediaQuery();
 
     const [myName, setMyName] = useState<string>("");
     const [isDisableInput, setIsDisableInput] = useState<boolean>(true);
     const [myNameErrorMessage, setMyNameErrorMessage] = useState<string | undefined>(undefined);
+
+    const [selectedNft, setSelectedNft] = useState<TMintAgent | undefined>();
+    const [clickedYCoordinate, setClickedYCoordinate] = useState("0px");
+
+    const setNftAndPosition = (nftItem: TMintAgent, nftId: string) => {
+        const element = document.getElementById(nftId);
+        const winWidth = window.innerWidth;
+        let positionY;
+        if (winWidth < 550) {
+            // on mobile - always position beneath the clicked element
+            const elementHeight = element!.clientHeight;
+            const topY = element!.getBoundingClientRect().top + window.scrollY + elementHeight + 10;
+            positionY = topY.toString() + "px";
+        } else {
+            // on desktop - always position at the top of the page
+            positionY = "15%";
+        }
+
+        setClickedYCoordinate(positionY);
+        setSelectedNft(nftItem);
+    };
+
+    useEffect(() => {
+        setSelectedNft(undefined);
+    }, [profileState.tab]);
+
+    useEffect(() => {
+        const userProfileName = localStorage.getItem("user-profile-name");
+        if (userProfileName) {
+            setMyName(JSON.parse(userProfileName));
+        }
+    }, []);
+
+    const onCloseBtnClicked = () => {
+        setSelectedNft(undefined);
+    };
 
     const handleOnGeneralTabClicked = useCallback(() => {
         dispatch(profileActions.setTab("/profile/general"));
@@ -51,6 +90,7 @@ export default function Profile(): React.ReactElement {
             setMyNameErrorMessage("You can use letters and digits only");
             rfMyNameInput.current.reportValidity();
         } else {
+            localStorage.setItem("user-profile-name", JSON.stringify(value));
             setMyNameErrorMessage(undefined);
         }
     }, []);
@@ -151,9 +191,11 @@ export default function Profile(): React.ReactElement {
                                     Loot Boxes
                                 </div>
                                 <div className="mb-8 last:mb-0 text-center text-base text-[#AFB7C6]">
-                                    Where do they come from? <span className="whitespace-nowrap">What&apos;s inside?</span>
-                                    <br className="hidden lg:block" />&nbsp;
-                                    Stay tuned to <span className="whitespace-nowrap">learn more</span>
+                                    Where do they come from?{" "}
+                                    <span className="whitespace-nowrap">What&apos;s inside?</span>
+                                    <br className="hidden lg:block" />
+                                    &nbsp; Stay tuned to{" "}
+                                    <span className="whitespace-nowrap">learn more</span>
                                 </div>
                                 <div
                                     className="mb-4 last:mb-0 w-[130px] h-[130px] bg-contain bg-no-repeat bg-center"
@@ -174,9 +216,22 @@ export default function Profile(): React.ReactElement {
                         )}
                     >
                         <div className="justify-self-start lg:order-first">
-                            <ProfileCollectedPanel />
+                            <ProfileCollectedPanel setNftAndPosition={setNftAndPosition} />
                         </div>
-
+                        {selectedNft && profileState.tab === "/profile/collected" && (
+                            <div
+                                className={cn(
+                                    "xs:absolute lg:fixed md:fixed md:left-[29%] md:w-[40%] xs:left-[5%] xs:w-[90%] z-20"
+                                    // "xs:w-[90%] xs:top:[10%] xs:left-[5%]"
+                                )}
+                                style={{ top: `${clickedYCoordinate}` }}
+                            >
+                                <MintAgentDetailPanel
+                                    mintAgent={selectedNft}
+                                    onCloseBtnClicked={onCloseBtnClicked}
+                                />
+                            </div>
+                        )}
                         <div
                             className=" max-w-full xs:h-[400px] my-6 bg-contain lg:w-[500px] lg:h-[600px]  bg-top bg-no-repeat xs:order-first  "
                             style={{ backgroundImage: `url(${imgYetiProfile01})` }}
@@ -189,9 +244,11 @@ export default function Profile(): React.ReactElement {
                                     Loot Boxes
                                 </div>
                                 <div className="mb-8 last:mb-0 text-center text-base text-[#AFB7C6]">
-                                    Where do they come from? <span className="whitespace-nowrap">What&apos;s inside?</span>
-                                    <br className="hidden lg:block" />&nbsp;
-                                    Stay tuned to <span className="whitespace-nowrap">learn more</span>
+                                    Where do they come from?{" "}
+                                    <span className="whitespace-nowrap">What&apos;s inside?</span>
+                                    <br className="hidden lg:block" />
+                                    &nbsp; Stay tuned to{" "}
+                                    <span className="whitespace-nowrap">learn more</span>
                                 </div>
                                 <div
                                     className="mb-4 last:mb-0 w-[130px] h-[130px] bg-contain bg-no-repeat bg-center"
@@ -226,9 +283,11 @@ export default function Profile(): React.ReactElement {
                                     Loot Boxes
                                 </div>
                                 <div className="mb-8 last:mb-0 text-center text-base text-[#AFB7C6]">
-                                    Where do they come from? <span className="whitespace-nowrap">What&apos;s inside?</span>
-                                    <br className="hidden lg:block" />&nbsp;
-                                    Stay tuned to <span className="whitespace-nowrap">learn more</span>
+                                    Where do they come from?{" "}
+                                    <span className="whitespace-nowrap">What&apos;s inside?</span>
+                                    <br className="hidden lg:block" />
+                                    &nbsp; Stay tuned to{" "}
+                                    <span className="whitespace-nowrap">learn more</span>
                                 </div>
                                 <div
                                     className="mb-4 last:mb-0 w-[130px] h-[130px] bg-contain bg-no-repeat bg-center"
@@ -240,7 +299,15 @@ export default function Profile(): React.ReactElement {
                 );
             }
         }
-    }, [profileState.tab, myNameErrorMessage, isDisableInput, handleOnMyNameChanged, myName]);
+    }, [
+        profileState.tab,
+        myNameErrorMessage,
+        isDisableInput,
+        handleOnMyNameChanged,
+        myName,
+        selectedNft,
+        clickedYCoordinate,
+    ]);
 
     return (
         <DefaultLayout
@@ -249,7 +316,7 @@ export default function Profile(): React.ReactElement {
             headerDomainNode={renderHeaderDomainNode()}
             bHeaderAlwaysOnTop
         >
-            <Article className="grow pb-20">
+            <Article className="grow pb-20 overflow-y-scroll">
                 <div
                     className={cn(
                         "absolute top-0 bottom-0 right-0 left-0",
